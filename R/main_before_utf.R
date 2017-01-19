@@ -4335,7 +4335,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
   return(list("A" = rafael_A,
               "B" = rafael_B,
               "C" = rafael_C,
-              "H" = rafael_C,
+              "H" = rafael_H,
               "L" = rafael_L,
               "M" = rafael_M,
               "P" = rafael_P))
