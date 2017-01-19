@@ -1,0 +1,25 @@
+# ~ *.zip - Suppression des fichiers en fin de traitement 
+
+## Description
+
+Supprime les fichiers de l'archive PMSI dézippés en début de traitement
+
+## Usage
+```r
+adelete(finess, annee, mois, path, liste, type)
+
+```
+## Arguments
+ - finess Finess du fichier a supprimer
+ - annee Annee du fichier
+ - mois Mois du fichier
+ - path Chemin d'acces aux fichiers
+ - liste Liste des fichiers a effacer
+ - type Type de fichier In / Out
+
+
+## Examples
+```r
+   adelete(750712184,2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
+```
+

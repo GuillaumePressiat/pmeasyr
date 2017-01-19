@@ -1,0 +1,23 @@
+# ~ Dico - Dictionnaire des tables 
+
+## Description
+
+Obtenir le dictionnaire d'une table importée
+
+## Usage
+```r
+dico(table)
+
+```
+## Arguments
+ - table Table dont on veut le dictionnaire de variables
+
+
+## Examples
+```r
+# N'importer qu'une ligne du fichier :
+   irsa(750712184, 2016, 8, '~/path/path', typi= 1, n_max = 1) -> import
+   dico(import$rsa)
+
+```
+

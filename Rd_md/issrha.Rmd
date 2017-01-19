@@ -1,0 +1,38 @@
+# ~ SSR - Import des SSRHA 
+
+## Description
+
+Import du fichier SHA
+
+## Usage
+```r
+issrha(finess, annee, mois, path, lib = T, ...)
+
+```
+## Arguments
+ - finess Finess du Out a importer : dans le nom du fichier
+ - annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+ - mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+ - path Localisation du fichier de donnees
+ - lib Ajout des libelles a la table : T
+ - ... parametres supplementaires a passer
+dans la fonction `readr::read_fwf()`, par exemple
+`n_max = 1e3` pour lire les 1000 premieres lignes,  `progress = F, skip = 1e3`
+
+
+## Details
+
+Formats depuis 2011 pris en charge
+Structure du nom du fichier attendu (sortie de Genrha) :
+
+  - **finess.annee.moisc.sha**
+  - **750712184.2016.2.sha**
+
+
+## Examples
+```r
+
+   sha <- issrha(750712184,2015,12,"~/pathpath/")
+
+```
+

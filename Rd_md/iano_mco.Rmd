@@ -1,0 +1,42 @@
+# ~ MCO - Import des Anohosp 
+
+## Description
+
+Import du fichier ANO In ou Out.
+
+## Usage
+```r
+iano_mco(finess, annee, mois, path, typano = "out", lib = T, ...)
+
+```
+## Arguments
+ - finess Finess du Out a importer : dans le nom du fichier
+ - annee Annee PMSI (nb) des données sur 4 caracteres (2016)
+ - mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+ - path Localisation du fichier de donnees
+ - typano Type de donnees In / Out
+ - lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package `sjmisc`
+ - ... parametres supplementaires a passer
+dans la fonction `readr::read_fwf()`, par exemple
+`n_max = 1e3` pour lire les 1000 premieres lignes,  `progress = F, skip = 1e3`
+
+
+## Details
+
+Formats depuis 2011 pris en charge
+Structure du nom du fichier attendu  :
+  
+  - **finess.annee.moisc.ano**
+  - **finess.annee.moisc.ano.txt**
+
+  - **750712184.2016.2.ano**
+  - **750712184.2016.2.ano.txt**
+
+
+## Examples
+```r
+   iano_mco(750712184,2015,12,'~/pathpath/') -> ano_out15
+   iano_mco(750712184,2015,12,'~/pathpath/', typano = "in") -> ano_in15
+
+```
+

@@ -1,0 +1,26 @@
+# ~ TRA - Ajout du TRA aux donnees Out 
+
+## Description
+
+Ajout du TRA par dplyr::inner_join
+
+## Usage
+```r
+inner_tra(table, tra, sel = 1, champ = "mco")
+
+```
+## Arguments
+ - table Table a laquelle rajouter le tra
+ - tra tra a rajouter
+ - sel Variable a garder du tra ; sel = 1 : numero de sejour, sel = 2 : toutes les variables
+ - champ Champ PMSI : mco, had, ssr, psy : deux tra en psy : psy_rpsa, psy_r3a
+
+
+## Examples
+```r
+   med <- imed_mco(750712184,2015,12,"~/pathpath/","out")
+   tra <- itra(750712184,2015,12,"~/pathpath/")
+   med <- inner_tra(med,tra)
+
+```
+

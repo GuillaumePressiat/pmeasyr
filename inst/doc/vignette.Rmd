@@ -1,0 +1,348 @@
+---
+title: "pmeasyr"
+author: "Guillaume Pressiat"
+date: 16/01/2017
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Starting with pmeasyr}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<div style="color:#333399">
+Cette vignette documente les principes generaux pour l'utilisation du package *pmeasyr*.
+
+
+## 1 - Gestion des archives in / out des logiciels ATIH
+
+Cette partie du package facilite la manipulation des archives PMSI, fichiers de type :
+
+  - finess.annee.mois.date_et_heure_de_creation.in.zip
+  - finess.annee.mois.date_et_heure_de_creation.out.zip
+
+Les fonctions permettent de dezipper les fichiers depuis R en ligne de commande, sans intervention manuelle de l'utilisateur. L'avantage est d'obtenir un processus ne relevant pas d'interventions externes au logiciel R (pour pouvoir garder trace des etapes, et faciliter la reproduction, tout est inscrit dans un programme, dan un flux de processus). Une fois que les traitements et analyses sur les fichiers sont faits, il est possible d'effacer les archives egalement en ligne de commande.
+
+Le nom des fonctions dont l'objectif est de manipuler les **a**rchives commence par **a**.
+
+|Nom       |Fonction                                                                               |
+|:---------|:--------------------------------------------------------------------------------------|
+|adezip    |~ *.zip - Dezippe des fichiers de larchive PMSI                                        |
+|adezip2   |~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive|
+|astat     |~ *.zip - Liste et volume des fichiers d'une archive PMSI                              |
+|adelete   |~ *.zip - Suppression des fichiers en fin de traitement                                |
+
+### adezip : dezipper
+
+```{r eval = F}
+library(pmeasyr)
+# Dezippage de tous les fichiers du in 2015 
+# Ex : 750100042.2015.12.20160130.153012.in.zip
+adezip(finess = 750100042, 
+       annee = 2015, 
+       mois = 12, 
+       path = '~/Documents/data/mco', 
+       liste = "", 
+       type = "in")
+
+# Dezippage uniquement des fichiers rsa, ano et tra du out 2015
+# Ex: 750100042.2015.12.20160130.153012.out.zip
+adezip(finess = 750100042, 
+       annee = 2015, 
+       mois = 12, 
+       path = '~/Documents/data/mco', 
+       liste = c("rsa", "ano", "tra"), 
+       type = "out")
+```
+
+### adelete : effacer
+
+```{r eval = F}
+# Effacer les fichiers
+adelete(finess = 750100042, 
+        annee = 2015, 
+        mois = 12, 
+        path = '~/Documents/data/mco', 
+        liste = c("rsa", "ano"), 
+        type = "out")
+```
+
+### astat : editer des statistiques
+
+```{r eval = F}
+# Informations sur les fichiers : Date de creation, Taille
+astat(path = '~/Documents/data/mco/', 
+      file = '750100042.2015.12.29012016174032.out.zip', 
+      view = F)
+```
+
+
+## 2 - Importer
+
+Une fois les fichiers extraits des .zip, on peut utiliser les fonctions d'imports.
+
+Le nom des fonctions permettant l'**i**mport des fichiers commence par **i**.
+
+En MCO, SSR et HAD les fonctions permettent d'importer les fichiers aux formats de 2011 a 2016. En PSY et pour les RSF, de 2012 a 2016.
+
+
+### Champ MCO
+
+|Nom       |Fonction                           |
+|:---------|:----------------------------------|
+|irsa      |~ MCO - Import des RSA             |
+|irum      |~ MCO - Import des RUM             |
+|idiap     |~ MCO - Import des DIAP            |
+|idmi_mco  |~ MCO - Import des DMI             |
+|iium      |~ MCO - Import des donnees UM      |
+|ileg_mco  |~ MCO - Import des erreurs Leg     |
+|imed_mco  |~ MCO - Import des Med             |
+|ipo       |~ MCO - Import des PO              |
+|iano_mco  |~ MCO - Import des Anohosp         |
+
+Les donnees in / out sont prises en charge.
+
+#### RSA
+
+```{r eval = F}
+# Import des rsa 2015
+irsa(finess = 750100042, 
+     annee = 2015, 
+     mois = 12, 
+     path = '~/Documents/data/mco')
+```
+
+Selon la nature des analyses a produire, plusieurs types d'imports sont possibles : 
+
+| Type|Import                                                                               |
+|----:|:------------------------------------------------------------------------------------|
+|    1|Light      : Partie fixe                                                             |
+|    2|Light+     : Partie fixe + stream en ligne (+) actes et das                          |
+|    3|Light++    : Partie fixe + stream en ligne (++) actes, das, typaut um et dpdr des um |
+|    4|Standard   : Partie fixe + creation des tables actes, das et rsa_um                  |
+|    5|Standard+  : Partie fixe + creation des tables actes, das et rsa_um + stream (+)     |
+|    6|Standard++ : Partie fixe + creation des tables actes, das et rsa_um + stream (++)    |
+
+
+```{r eval = F}
+# Import des rsa 2015 type 6
+irsa(finess = 750100042, 
+     annee = 2015, 
+     mois = 12, 
+     path = '~/Documents/data/mco', 
+     typi = 6) -> rsa15
+View(rsa15$rsa)
+View(rsa15$rsa_um)
+View(rsa15$actes)
+View(rsa15$das)
+```
+
+#### RUM
+
+```{r eval = F}
+# Import des rsa 2015
+irum(finess = 750100042, annee = 2015, mois = 12, path = '~/Documents/data/mco')
+```
+
+Selon la nature des analyses a produire, plusieurs types d'imports sont possibles : 
+
+| Type|Import                                                          |
+|----:|:---------------------------------------------------------------|
+|    1|XLight    : Partie fixe                                         |
+|    2|Light     : Partie fixe + stream en ligne des actes, das et dad |
+|    3|Standard  : Partie fixe + table actes, das, dad                 |
+|    4|Standard+ : Partie fixe + stream + table actes, das, dad        |
+
+#### Colonnes stream
+
+**Exemples sur quelques rsa** : 
+
+  - actes : Actes CCAM du Rsa
+
+| Cle RSA  |  actes                                 |
+|---------:|:---------------------------------------|
+|0000000001|      EDSF004, EDSF004, JQGA004, JQGA004|
+|0000000002|      EPLF002, DEQP003, DEQP007, DZQM006|
+|0000000003|               EBQH002, EEQH002, YYYY180|
+ 
+
+  - dpdrum : zones diagnostics des passages UM du Rsa
+
+| Cle RSA  |  dpdrum                   |                  
+|---------:|:--------------------------|
+|0000000004|                 Z098  I671|
+|0000000005|           Z380, P741, Z380|
+
+  - das : zones diagnostics associes du Rsa
+
+| Cle RSA  |  das                                               |
+|---------:|:---------------------------------------------------|
+|0000000006|                                        Z9580, Z9588|
+|0000000007|P011, P032, P036, P011, P032, P700, P011, P032, P036|
+
+  - um : types autorisations T2A des um de passage par ordre chronologique
+
+| Cle RSA  |  um                    |
+|---------:|:-----------------------|
+|0000000009|              01AC, 53 C|
+|0000000010|                    51 C|
+|0000000011|        71 C, 04 C, 71 C|
+
+### TRA
+
+Le fichier TRA est un fichier du *out* qui permet de relier les donnees anonymes du *out* au donnees du *in*, il comprend un lien entre : 
+
+  - MCO : cle_rsa, numero de rss, numero de sejour (nas)
+  - SSR : numero sequentiel du sejour + noseqrha et noseqrhs + numero de sejour
+  - PSY : numero sequentiel du sejour, numero de sequence, ipp et numero de sejour
+  - HAD : noseqsej, numero de sequence et sous-sequence et numero de sejour, numero de sequence et sous-sequence
+
+
+| Type     |Import                              |
+|---------:|:-----------------------------------|
+|itra      |~ TRA - Import du TRA               |
+|inner_tra |~ TRA - Ajout du TRA aux donnees Out|
+
+
+```{r eval = F}
+# lecture du fichier tra et jointure aux rsa
+itra(750100042, 2015, 12, '~/Documents/data/mco') -> tra
+# Ajout du tra aux rsa :
+inner_tra(rsa15$rsa, tra) -> rsa15$rsa
+```
+
+### Champ HAD, SSR, PSY et RSF
+
+Pour ces trois champs, seules les donnees du out sont prises en charge par le package pour le moment.
+Les fichiers tra sont egalement lus (ce qui permet de rattacher les informations du *out* au numeros des sejours locaux - du *in*).
+
+Les fonctions d'imports pour ces trois champs reposent sur le meme principe qu'en MCO.
+
+#### HAD
+
+|Nom        |Fonction                              |
+|:----------|:-------------------------------------|
+|iano_had   |~ HAD - Import des Anohosp            |
+|imed_had   |~ HAD - Import des Med                |
+|irapss     |~ HAD - Import des RAPSS              |
+
+#### SSR
+
+|Nom        |Fonction                              |
+|:----------|:-------------------------------------|
+|iano_ssr   |~ SSR - Import des Anohosp            |
+|irha       |~ SSR - Import des RHA                |
+|issrha     |~ SSR - Import des SSRHA              |
+
+
+#### PSY 
+|Nom        |Fonction                              |
+|:----------|:-------------------------------------|
+|iano_psy   |~ PSY - Import des Anohosp            |
+|ir3a       |~ PSY - Import des R3A                |
+|irpsa      |~ PSY - Import des RPSA               |
+
+#### RSF
+
+|Nom        |Fonction                              |
+|:----------|:-------------------------------------|
+|irafael    |~ RSF - Import des RSFA / Rafael      |
+|iano_rafael|~ RSF - Import des RSFA / ANO         |
+
+### Dico
+
+```{r eval = F}
+# Obtenir les noms, labels et type de variable (character, numeric, integer, date, ...)
+dico(rsa15$rsa)
+```
+
+### Tidy diagnostics
+
+Les analyses sur les diagnostics CIM-10 sont parfois fastidieuses du fait des multiples positions de diagnostics : DP principal du sejour, DR principal du sejour, DPUM, DRUM, DAS. La fonction *tdiag* permet de rassembler tous les diagnostics dans une seule table.
+
+```{r eval = F}
+# Pour les objets rsa et rum du MCO
+# Transbahuter tous les diagnostics dans une seule table
+tdiag(rsa15, "rsa") -> rsa15
+View(rsa15$diags)
+# Tous les diagnostics sont dans une table, avec un numero selon leur position  
+# 1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS
+```
+
+Exemple : 
+
+|CLE_RSA   |NSEQRUM|position| diag |
+|:---------|:------|--------|------|
+|0000000001|     01|       1|  Z511|
+|0000000001|     01|       2|   C18|
+|0000000002|     01|       1|  C501|
+|0000000002|     01|       3|  C501|
+|0000000002|     02|       1|  D051|
+|0000000002|     02|       5|  E109|
+
+## 3 - Exemples de requetes
+
+### Nombre de rsa avec un acte
+
+```{r eval = F}
+# En utilisant le package dplyr
+library(dplyr)
+# acte EBLA003
+rsa15$rsa %>% filter(grepl('EBLA003', actes)) %>% nrow()
+
+# actes EBLA001 ou EBLA002 ou EBLA003
+rsa15$rsa %>% filter(grepl('EBLA', actes)) %>% nrow()
+
+# actes EBLA003 ou EPLF002
+rsa15$rsa %>% filter(grepl('EBLA003|EPLF002', actes)) %>% nrow()
+
+# directement dans la table actes 
+rsa15$actes %>% filter(CDCCAM %in% c('EBLA003', 'EPLF002'))  %>% 
+  .$CLE_RSA %>% unique() %>% length()
+```
+
+### Nombre de rsa avec un diagnostic
+
+```{r eval = F}
+# Diagnostic categorie cancer du colon en toutes positions
+rsa15$rsa %>% filter(grepl('C18', dpdrum)|grepl('C18', das)) %>% nrow()
+
+# Autrement apres avoir utilise tdiag() :
+rsa15$diags %>% filter(grepl('C18', diag)) %>% 
+  .$CLE_RSA %>% unique() %>% length()
+
+# En restreignant au dp dr du sejour (avec la variable position)
+rsa15$diags %>% filter(grepl('C18', diag), position < 3) %>% 
+  .$CLE_RSA %>% unique() %>% length()
+```
+
+## 4 - Help
+
+Toutes les fonctions du package ont une page d'aide.
+
+```{r eval = F}
+library(pmeasyr)
+?irsa
+?irum
+
+?itra
+?inner_tra
+```
+
+## 5 - Format des donnees
+
+Le package comprend une table des formats des fichiers PMSI. Ce sont les formats inscrits dans les manuels techniques ATIH des logiciels relatifs aux champs MCO, SSR, HAD, PSY et RSF, respectivement [Genrsa](http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#G), [Genrha](http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#G), [Paprica](http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#P), [Pivoine](http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#P) et [Preface](http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#P). On peut obtenir ces manuels pdf dans l'[espace de telechargement](http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement) sur le site de l'ATIH.
+
+C'est le seul jeu de donnees inclus dans le package.
+
+```{r eval = F}
+# Charger les formats des donnees
+pmeasyr::formats
+```
+
+
+------------
+
+<center>SIMAP / DOMU / AP-HP</center>
+<center><img src="logo.jpg" alt="AP-HP Logo" style="width: 200px;"/></center>
+</div>
+

@@ -1,0 +1,37 @@
+# ~ PSY - Import des R3A 
+
+## Description
+
+Import du fichier R3A
+
+## Usage
+```r
+ir3a(finess, annee, mois, path, lib = T, ...)
+
+```
+## Arguments
+ - finess Finess du Out a importer : dans le nom du fichier
+ - annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+ - mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
+ - path Localisation du fichier de donnees
+ - lib Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package `sjmisc`
+ - ... parametres supplementaires a passer
+dans la fonction `readr::read_fwf()`, par exemple
+`n_max = 1e3` pour lire les 1000 premieres lignes,  `progress = F, skip = 1e3`
+
+
+## Details
+
+Formats depuis 2012 pris en charge
+Structure du nom du fichier attendu (sortie de Pivoine) :
+
+  - **finess.annee.moisc.r3a**
+  - **750712184.2016.3.r3a**
+
+
+## Examples
+```r
+   r3a <- ir3a(750712184,2015,12,"~/pathpath/")
+
+```
+

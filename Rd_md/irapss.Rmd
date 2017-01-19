@@ -1,0 +1,36 @@
+# ~ HAD - Import des RAPSS 
+
+## Description
+
+Imports du fichier RAPSS
+
+## Usage
+```r
+irapss(finess, annee, mois, path, lib = T, ...)
+
+```
+## Arguments
+ - finess Finess du Out a importer : dans le nom du fichier
+ - annee Annee PMSI (nb) des données sur 4 caracteres (2016)
+ - mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+ - path Localisation du fichier de donnees
+ - ... parametres supplementaires a passer
+dans la fonction `r readr::read_fwf()`, par exemple
+`r n_max = 1e3` pour lire les 1000 premieres lignes,  `r progress = F, skip = 1e3`
+
+
+## Details
+
+Formats depuis 2011 pris en charge
+Structure du nom du fichier attendu (sortie de Paprica) :
+
+  - **finess.annee.moisc.rapss**
+  - **750712184.2016.2.rapss**
+
+
+## Examples
+```r
+   um <- iium(750712184,2015,12,"~/pathpath/")
+
+```
+

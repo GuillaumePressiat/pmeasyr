@@ -1,0 +1,55 @@
+# ~ MCO - Import des RUM 
+
+## Description
+
+Import des données RUM. 4 types d'imports possibles.
+
+## Usage
+```r
+irum(finess, annee, mois, path, lib = T, typi = 0, ...)
+
+```
+## Arguments
+ - finess Finess du In a importer : dans le nom du fichier
+ - annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+ - mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+ - path Localisation du fichier de donnees
+ - lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package `sjmisc`
+ - typi Type d'import, par defaut a 0 : propose a l'utilisateur de choisir au lancement
+ - ... parametres supplementaires a passer
+dans la fonction `readr::read_fwf()`, par exemple
+`n_max = 1e3` pour lire les 1000 premieres lignes,  `progress = F, skip = 1e3`
+
+
+## Details
+
+Formats depuis 2011 pris en charge
+
+Structure du nom du fichier attendu (entrée pour Genrsa) :
+
+  - **finess.annee.moisc.rum**
+  - **750712184.2016.2.rum**
+
+Types d'imports :
+
+  - 1 XLight : partie fixe
+  - 2 Light :  partie fixe +  streaming des actes, dad et das
+  - 3 Standard : partie fixe + table acdi
+  - 4 Standard+ : Import standard (3) + stream
+
+
+**Principe du streaming :**
+Mise en chaîne de caractères de la succession d'actes CCAM au cours du RUM, par exemple, pour un RUM :
+`"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"`
+
+La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélérée, comparée à une requête sur la large table acdi par une requête du type :
+
+`grepl("ZZQP004",rum$actes)`  # toutes les lignes de  RUM avec au moins un ZZQP004
+`grepl("ZZQP004|EBLA003",rum$actes)`  # toutes les lignes de  RUM avec au moins un ZZQP004 ou un EBLA003
+
+
+## Examples
+```r
+   irum(750712184,2015,12,'~/pathpath/', typi = 1) -> rum15
+```
+

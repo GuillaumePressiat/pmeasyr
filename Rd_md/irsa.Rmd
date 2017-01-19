@@ -1,0 +1,60 @@
+# ~ MCO - Import des RSA 
+
+## Description
+
+Import des données RSA. 6 types d'imports possibles.
+
+## Usage
+```r
+irsa(finess, annee, mois, path, lib = T, typi = 0, ...)
+
+```
+## Arguments
+ - finess Finess du Out a importer : dans le nom du fichier
+ - annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+ - mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+ - path Localisation du fichier de donnees
+ - lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package `sjmisc`
+ - typi Type d'import, par defaut a 0 : propose a l'utilisateur de choisir au lancement
+ - ... parametres supplementaires a passer
+dans la fonction `readr::read_fwf()`, par exemple
+`n_max = 1e3` pour lire les 1000 premieres lignes,  `progress = F, skip = 1e3`
+
+
+## Details
+
+Formats depuis 2011 pris en charge
+Structure du nom du fichier attendu (sortie de Genrsa) :
+
+  - **finess.annee.moisc.rsa**
+  - **750712184.2016.2.rsa**
+
+Types d'imports :
+
+  - 1 Light : partie fixe (très rapide)
+  - 2 Light+ : Partie fixe + stream en ligne (+) actes et das
+  - 3 Light++ : Partie fixe + stream en ligne (++) actes, das, typaut um et dpdr des um
+  - 4 Standard : Partie fixe + création des tables acdi et rsa_um
+  - 5 Standard+ : Partie fixe + création des tables acdi et rsa_um + stream (+)
+  - 6 Standard++ : Partie fixe + création des tables acdi et rsa_um + stream (++)
+
+
+**Principe du streaming :**
+Mise en chaîne de caractères de la succession d'actes CCAM au cours du RUM, par exemple, pour un RUM :
+` "ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"`
+
+La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélérée, comparée à une requête sur la large table acdi par une requête du type :
+
+`grepl("ZZQP004",rsa$actes)`  # toutes les lignes de RSA avec au moins un ZZQP004
+
+`e66 <- grepl('E66',das)|grepl('E66',dpdrum)`  # toutes les lignes de RSA avec un diagnostic E66
+
+Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les infos sur les séjours directement : nb séjours, journées, entrée / sortie (...) plutôt que d'avoir à utiliser et croiser les tables acdi, rsa_um avec rsa.
+
+
+## Examples
+```r
+   irsa(750712184,2015,12,'~/pathpath/', typi = 4) -> rsa15
+
+```
+

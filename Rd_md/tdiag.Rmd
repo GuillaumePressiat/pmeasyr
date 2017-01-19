@@ -1,0 +1,43 @@
+# ~ MCO - Tidy Diagnostics 
+
+## Description
+
+Restructurer les diagnostics
+
+## Usage
+```r
+tdiag(d, table = "rsa", include = T)
+
+```
+## Arguments
+ - d Objet S3 resultat de l'import pmeasyr (irsa, irum)
+ - table Type de table : "rsa", "rum"
+ - include booleen : defaut a T; T : restructure l'objet S3 (agglomere dp, dr, das et dad, par exemple)
+
+
+## Details
+
+On obtient une table contenant tous les diagnostics par séjour, sur le principe suivant :
+Une variable numérique indique la position des diagnostics
+- pour les rsa : 1 : DP du rsa, 2 : DR du rsa, 3 : DPUM, 4 : DRUM, 5 : DAS
+- pour les rum : 1 : DP du rum, 2 : DR du rum, 3 : DAS, 4 : DAD
+
+
+## Examples
+```r
+
+irsa(750712184, 2016, 8, '~/path/path', typi = 4) -> d1
+tdiag(d1) -> alldiag
+
+irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
+tdiag(d1, "rum") -> alldiag
+
+# avec include = T
+irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
+tdiag(d1, include = T) -> d1
+d1$diags
+d1$actes
+d1$dads
+
+```
+

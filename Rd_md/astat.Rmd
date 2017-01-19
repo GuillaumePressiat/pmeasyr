@@ -1,0 +1,25 @@
+# ~ *.zip - Liste et volume des fichiers d'une archive PMSI 
+
+## Description
+
+Pour lister sans dézipper les fichiers d'une archive
+
+## Usage
+```r
+astat(path, file, view = T)
+
+```
+## Arguments
+ - path Chemin d'acces  a l'archive
+ - file Nom du fichier archive
+ - view par defaut a T : affiche la liste avec `View()`, a F retourne la table affichee a T
+
+
+## Examples
+```r
+   liste <- astat(path = '~/Documents/R/sources/2016/',
+                  file = "750712184.2016.2.05042016093044.in.zip",
+                  view = F)
+
+```
+
