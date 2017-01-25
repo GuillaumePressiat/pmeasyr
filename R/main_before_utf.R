@@ -278,29 +278,8 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         ) %>% dplyr::select(-RUM)
     }
   }
-  if (annee==2012){
+  if (annee>=2012){
 
-    i <- function(annee,mois){
-
-      suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
-                                       readr::fwf_widths(af,an), col_types = at , na=character(), ...)) %>%
-        dplyr::mutate(NAS = paste(stringr::str_sub(NORSS,12,20),NAS))}
-  }
-  if (annee==2013){
-
-    i <- function(annee,mois){
-
-      suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
-                                       readr::fwf_widths(af,an), col_types = at , na=character(), ...) %>%
-                         dplyr::mutate(NAS = paste(stringr::str_sub(NORSS,12,20),NAS)))}
-  }
-  if (annee==2014){
-    i <- function(annee,mois){
-
-      suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
-                                       readr::fwf_widths(af,an), col_types = at , na=character(), ...))}
-  }
-  if (annee>=2015){
     i <- function(annee,mois){
       suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
                                        readr::fwf_widths(af,an), col_types = at , na=character(), ...))}
@@ -3887,13 +3866,11 @@ astat <- function(path,file, view=T){
 
 #' @export
 adezip2 <- function(path, file, liste, pathto=""){
-
+  liste <- unique(liste)
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
   if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir= pathto)}
   else{
 
-
-    liste[grepl("tra",liste)] <- "tra.txt"
     pat<- stringr::str_split(file,'\\.')
     cat('Dézippage archive\n',
         'Type     :',pat[[1]][5],'\n',
@@ -3906,6 +3883,17 @@ adezip2 <- function(path, file, liste, pathto=""){
         files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste,'.txt'), exdir= pathto)
     }
     if (pat[[1]][5] == "out"){
+      if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+        unzip(zipfile = paste0(path, file), list=T)$Name -> l
+        l[grepl('tra',l)] -> typtra
+        if (length(typtra) > 1){
+          liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+        }else{
+          one <- stringr::str_locate(typtra, 'tra')
+          stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+          liste <- c(liste[!grepl("tra",liste)], typtra)
+        }
+      }
       unzip(
         zipfile = paste0(path,'/',file),
         files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
@@ -3958,7 +3946,7 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
 
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
 
-  liste[grepl("tra",liste)] <- "tra.txt"
+  liste <- unique(liste)
   u <- list.files(path)
   u <- u[grepl(paste0(type,'.zip'),u)]
   u <- u[grepl(paste0(finess,'.',annee,'.',mois),u)]
@@ -3979,7 +3967,19 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
           'Période  :',paste(pat[[1]][2],paste0('M',pat[[1]][3])),'\n',
           'Fichiers :', liste,'\n')
       if (type=="out"){
-        unzip(
+        if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+          unzip(zipfile = paste0(path, file), list=T)$Name -> l
+          l[grepl('tra',l)] -> typtra
+          if (length(typtra) > 1){
+          liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+          }else{
+          one <- stringr::str_locate(typtra, 'tra')
+          stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+          liste <- c(liste[!grepl("tra",liste)], typtra)
+          }
+        }
+        
+          unzip(
           zipfile = paste0(path,'/',file),
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
           exdir= pathto)
@@ -4010,6 +4010,19 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
           'Période  :',paste(pat[[1]][2],paste0('M',pat[[1]][3])),'\n',
           'Fichiers :', liste,'\n')
       if (type=="out"){
+        if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+          unzip(zipfile = paste0(path, file), list=T)$Name -> l
+          l[grepl('tra',l)] -> typtra
+          if (length(typtra) > 1){
+            liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+          }else{
+            one <- stringr::str_locate(typtra, 'tra')
+            stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+            liste <- c(liste[!grepl("tra",liste)], typtra)
+          }
+        }
+        
+        
         unzip(
           zipfile = paste0(path,'/',file),
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
@@ -4059,7 +4072,7 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
 adezip3 <- function(finess, path, file, liste, pathto=""){
 
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
-
+  liste <- unique(liste)
   if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir = pathto)}
   else{
 
@@ -4078,6 +4091,17 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
         exdir = pathto)
     }
     if (pat[[1]][2]=="OUT"){
+      if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+        unzip(zipfile = paste0(path, file), list=T)$Name -> l
+        l[grepl('tra',l)] -> typtra
+        if (length(typtra) > 1){
+          liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+        }else{
+          one <- stringr::str_locate(typtra, 'tra')
+          stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+          liste <- c(liste[!grepl("tra",liste)], typtra)
+        }
+      }
       unzip(
         zipfile = paste0(path,'/',file),
         files = paste0(finess,'.',substr(pat[[1]][4],1,4),'.',as.numeric(substr(pat[[1]][4],5,7)),'.',liste), exdir= pathto)
@@ -4279,6 +4303,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
   former <- function(cla, col1){
     switch(cla,
            'c' = col1,
+           'trim' = col1 %>% stringr::str_trim(),
            'i' = col1 %>% as.integer(),
            'n' = (col1 %>% as.numeric() )/100)
   }

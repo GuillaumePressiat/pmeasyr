@@ -1,4 +1,4 @@
-# pmeasyr : import de données PMSI - présentation et installation 
+# pmeasyr : import de données PMSI 
 
 ***Guillaume Pressiat***
 
@@ -7,20 +7,21 @@
 *16 janvier 2017*
 
 
+# Présentation et installation du package
 
 ## Contexte
 
-Comment accéder aux données du Programme de Médicalisation des Systèmes d'Informations (PMSI) directement avec R ? Les données sont souvent traitées dans des logiciels propre au PMSI ou des outils statistiques / BDD du marché. Ces outils ne permettent pas de réaliser des traitements statistiques ou de l'infographie, les départements d'information médicale sont amenés à retraiter ces données dans R.
+Comment accéder aux données du Programme de Médicalisation des Systèmes d'Informations (PMSI) directement avec R ? Les données sont souvent traitées dans des logiciels propre au PMSI ou des outils statistiques / bases de données du marché. Ces outils ne permettent pas de réaliser des traitements statistiques ou de l'infographie, les départements d'information médicale sont amenés à retraiter ces données dans R.
 
-Quelles que soient les qualités reconnues de R (libre, évolutif), ces possibilités (visualisations, modèles statistiques, cartographies, ...), l'une des plus importantes de ses évolutions récentes est la possibilité de manipuler des bases de données de taille importante.
+Quelles que soient les qualités reconnues de R (libre, évolutif), ses possibilités (visualisations, modèles statistiques, cartographies, ...), l'une des plus importantes de ses évolutions récentes est la possibilité de manipuler des bases de données de taille importante.
 
-Le package *pmeasyr* s'inscrit dans cette veine : réaliser de façon autonome l'ensemble des traitements dans R. 
+Le package *pmeasyr* s'inscrit dans cette veine et permet de réaliser de façon autonome l'ensemble des traitements dans R. 
 
 ## Avantages de R
 
 ### Un flux de travail unique
 
-Cette direction que prend R permet un flux de travail unique, travailler le plus possible dans un seul logiciel : si tout le travail est réalisé dans un seul projet, dans un seul programme, sur un seul logiciel, la traçabilité, la reproductibilité et la mise à jour d'une étude est facilitée.
+Cette évolution de R permet de concilier ses multiples possibilités avec des bases de données de grande taille. En travailant avec R et seulement avec lui, on peut mettre en place un flux de travail unique : un seul projet, un seul programme, un seul logiciel. La traçabilité, la reproductibilité et la mise à jour d'une étude sont ainsi facilitées.
 
 Habituellement, le travail avec de multiples logiciels oblige à l'export/import de fichiers entre les différents logiciels, et chaque modification du début du flux de travail génère des fichiers exportés v1, v2, ... 
 
@@ -28,9 +29,9 @@ Avec un flux complet dans R, aucun export / import de fichiers n'est nécessaire
 
 ### Des outils performants
 
-L'engouement autour de R est lié au développement de packages intuitifs et performants : readr, dplyr, tidyr, magrittr, pour n'en citer que quelques uns. *pmeasyr* s'appuie sur ces packages pour proposer des imports de données rapides sur des fichiers de taille importante (l'entité juridique de l'AP-HP est prise en charge sans problème avec un ordinateur récent).
+L'engouement autour de R est lié au développement de packages intuitifs et performants : readr, dplyr, tidyr, magrittr, pour n'en citer que quelques-uns. *pmeasyr* s'appuie sur ces packages pour proposer des imports de données rapides sur des fichiers de taille importante (l'entité juridique de l'AP-HP est prise en charge sans problème avec un ordinateur récent).
 
-Dans le cas de *pmeasyr*, l'import de 100 000 rsa (partie fixe, parsing des passages unités médicales, des diagnostics associés et des actes) nécessite en moyenne 5 secondes avec un processeur i7 16Go de ram.
+Dans le cas de *pmeasyr*, l'import de 100 000 rsa (partie fixe, parsing des passages unités médicales, des diagnostics associés et des actes) nécessite en moyenne 5 secondes avec un processeur i7 -- 16Go de ram.
 
 ## Contenu du package
 

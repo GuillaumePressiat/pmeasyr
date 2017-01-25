@@ -29,7 +29,7 @@ Le nom des fonctions dont l'objectif est de manipuler les **a**rchives commence 
 |[adezip](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip.Rmd)    |~ *.zip - Dezippe des fichiers de larchive PMSI                                        |
 |[adezip2](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip2.Rmd)   |~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive|
 |[astat](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/astat.Rmd)     |~ *.zip - Liste et volume des fichiers d'une archive PMSI                              |
-|[adelete](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/astat.Rmd)   |~ *.zip - Suppression des fichiers en fin de traitement                                |
+|[adelete](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adelete.Rmd)   |~ *.zip - Suppression des fichiers en fin de traitement                                |
 
 ### adezip : dezipper
 
