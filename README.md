@@ -11,7 +11,7 @@
 
 ## Contexte
 
-Comment accéder aux données du Programme de Médicalisation des Systèmes d'Informations (PMSI) directement avec R ? Les données sont souvent traitées dans des logiciels propre au PMSI ou des outils statistiques / bases de données du marché. Ces outils ne permettent pas de réaliser des traitements statistiques ou de l'infographie, les départements d'information médicale sont amenés à retraiter ces données dans R.
+Comment accéder aux données du Programme de Médicalisation des Systèmes d'Informations (PMSI) directement avec R ? Les données sont souvent traitées dans des logiciels propres au PMSI ou des outils statistiques / bases de données du marché. Ces outils ne permettant pas de réaliser des traitements statistiques ou de l'infographie, les départements d'information médicale sont amenés à retraiter ces données dans R.
 
 Quelles que soient les qualités reconnues de R (libre, évolutif), ses possibilités (visualisations, modèles statistiques, cartographies, ...), l'une des plus importantes de ses évolutions récentes est la possibilité de manipuler des bases de données de taille importante.
 
@@ -32,6 +32,7 @@ Avec un flux complet dans R, aucun export / import de fichiers n'est nécessaire
 L'engouement autour de R est lié au développement de packages intuitifs et performants : readr, dplyr, tidyr, magrittr, pour n'en citer que quelques-uns. *pmeasyr* s'appuie sur ces packages pour proposer des imports de données rapides sur des fichiers de taille importante (l'entité juridique de l'AP-HP est prise en charge sans problème avec un ordinateur récent).
 
 Dans le cas de *pmeasyr*, l'import de 100 000 rsa (partie fixe, parsing des passages unités médicales, des diagnostics associés et des actes) nécessite en moyenne 5 secondes avec un processeur i7 -- 16Go de ram.
+
 
 ## Contenu du package
 
