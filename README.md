@@ -29,16 +29,16 @@ Avec un flux complet dans R, aucun export / import de fichiers n'est nécessaire
 
 ### R et le PMSI
 
-Utiliser R pour manipuler le recueil de l'activité hospitalière donne au PMSI la liberté offerte par ce logiciel : 
+Utiliser R pour manipuler le recueil de l'activité hospitalière donne au PMSI la liberté offerte par le logiciel : 
 
-   - les requêtes sur des diagnostics, des codes actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui créé ses propres programmes : ainsi le résultat ne dépend pas d'un tiers expert, l'utilisateur n'est pas ignorant de la méthode (le résultat compte, mais le chemin aussi)
-   - les données sont dans R : prêtes pour des modèles linéaires, logisitques, des classifications...
-   - la confrontation des données du in (reflet du codage des établissements) aux données du out (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](vignettes/vignette.Rmd)), cela peut permettre aux équipes DIM d'améliorer leur recueil
-   - le reporting de l'activité
+   - les requêtes sur des diagnostics, des codes actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui créé ses propres programmes : ainsi le résultat ne dépend pas d'un tiers expert, l'utilisateur est auteur de la méthode (le résultat compte, mais le chemin aussi)
+   - les données sont dans R : prêtes pour des modèles linéaires, logistiques, des classifications...
+   - la confrontation des données du in (reflet du codage des établissements) aux données du out (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](vignettes/vignette.Rmd#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil
+   - le reporting de l'activité en excel, pdf, word, html, ou en créant des applications (shiny)
    - l'utilisation des graphiques pour représenter des volumes d'activités et des cartographies interactives pour visualiser la localisation d'activités, de patientèles, et les flux de patients
    - le partage de projets Rstudio facilite et encourage les travaux en équipe.
    
-En dernier ressort, R travaillant en mémoire vive, les éxécutions de requêtes sont très rapides. 
+En dernier ressort, R travaillant en mémoire vive, les exécutions de requêtes sont très rapides. 
 
 ### Des outils performants
 
