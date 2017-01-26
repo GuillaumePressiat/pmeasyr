@@ -251,7 +251,7 @@ Les fonctions d'imports pour ces trois champs reposent sur le meme principe qu'e
 ### Dico
 
 ```{r eval = F}
-# Obtenir les noms, labels et type de variable (character, numeric, integer, date, ...)
+# Obtenir les noms, labels et types de variables (character, numeric, integer, date, ...)
 dico(rsa15$rsa)
 ```
 
