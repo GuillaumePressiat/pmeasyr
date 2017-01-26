@@ -36,7 +36,7 @@ Utiliser R pour manipuler le recueil de l'activité hospitalière donne au PMSI 
    - la confrontation des données du in (reflet du codage des établissements) aux données du out (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](vignettes/vignette.Rmd#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil
    - le reporting de l'activité en excel, pdf, word, html, ou en créant des applications (shiny)
    - l'utilisation des graphiques pour représenter des volumes d'activités et des cartographies interactives pour visualiser la localisation d'activités, de patientèles, et les flux de patients
-   - le partage de projets Rstudio facilite et encourage les travaux en équipe.
+   - le partage de projets RStudio facilite et encourage les travaux en équipe.
    
 En dernier ressort, R travaillant en mémoire vive, les exécutions de requêtes sont très rapides. 
 
