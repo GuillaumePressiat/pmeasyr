@@ -17,7 +17,7 @@ itra(finess, annee, mois, path, lib = T, champ = "mco", ...)
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}}
 
-\item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "psy"), par defaut "mco"}
+\item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"}
 
 \item{...}{parametres supplementaires a passer
 dans la fonction \code{readr::read_fwf()}, par exemple

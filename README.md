@@ -28,7 +28,7 @@ Avec un flux complet dans R, toute nouvelle modification est intégrée au proce
 
 L'utilisation de R confère aux données du PMSI la liberté proposée par le logiciel :
 
-   - les requêtes sur les diagnostics et les actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui crée ses propres programmes : ainsi le résultat ne dépend pas d'un tiers expert, l'utilisateur est auteur de la méthode (le résultat compte, mais le chemin aussi)
+   - les requêtes sur les diagnostics et les actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui crée ses propres programmes
    - les données sont dans R : prêtes pour des modèles linéaires, logistiques, des classifications...
    - la confrontation des données in\* (reflet du codage des établissements) aux données out\* (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](vignettes/vignette.Rmd#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil  
    - le reporting de l'activité en excel, pdf, word, html, ou en créant des applications (shiny)

@@ -189,12 +189,13 @@ Selon la nature des analyses a produire, plusieurs types d'imports sont possible
 
 ### TRA
 
-Le fichier TRA est un fichier du *out* qui permet de relier les donnees anonymes du *out* au donnees du *in*, il comprend un lien entre : 
+Le fichier TRA est un fichier du *out* qui permet de relier les donnees anonymes du *out* aux donnees du *in*, il comprend un lien entre : 
 
-  - MCO : cle_rsa, numero de rss, numero de sejour (nas)
-  - SSR : numero sequentiel du sejour + noseqrha et noseqrhs + numero de sejour
-  - PSY : numero sequentiel du sejour, numero de sequence, ipp et numero de sejour
-  - HAD : noseqsej, numero de sequence et sous-sequence et numero de sejour, numero de sequence et sous-sequence
+  - MCO : cle_rsa, numero de rss, numero de sejour (nas), date d'entree et date de sortie du sejour
+  - SSR : numero sequentiel du sejour + noseqrhs et numero de sejour + numero de semaine
+  - PSY RPSA : ipp, date d'entree et de fin du sejour, numero sequentiel du sejour, numero de sequence et numero de sejour, dates de debut et fin de sequence
+  - PSY R3A : ipp, date de l'acte, numero d'ordre, forme activité, um, nature et lieu de l'acte
+  - HAD : numero sequentiel de sejour, numero de sequence, sous-sequence et numero de sejour, dates de debut et fin des sequences et sous-sequences, dates d'entree et de sortie du sejour, modes d'entree sortie provenance destination
 
 
 | Type     |Import                              |
