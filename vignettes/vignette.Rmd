@@ -20,7 +20,7 @@ Cette partie du package facilite la manipulation des archives PMSI, fichiers de 
   - finess.annee.mois.date_et_heure_de_creation.in.zip
   - finess.annee.mois.date_et_heure_de_creation.out.zip
 
-Les fonctions permettent de dezipper les fichiers depuis R en ligne de commande, sans intervention manuelle de l'utilisateur. L'avantage est d'obtenir un processus ne relevant pas d'interventions externes au logiciel R (pour pouvoir garder trace des etapes, et faciliter la reproduction, tout est inscrit dans un programme, dan un flux de processus). Une fois que les traitements et analyses sur les fichiers sont faits, il est possible d'effacer les archives egalement en ligne de commande.
+Les fonctions permettent de dezipper les fichiers depuis R en ligne de commande, sans intervention manuelle de l'utilisateur. L'avantage est d'obtenir un processus ne relevant pas d'interventions externes au logiciel R (pour pouvoir garder trace des etapes, et faciliter la reproduction, tout est inscrit dans un programme, dans un flux de processus). Une fois que les traitements et analyses sur les fichiers sont faits, il est possible d'effacer les archives egalement en ligne de commande.
 
 Le nom des fonctions dont l'objectif est de manipuler les **a**rchives commence par **a**.
 
@@ -212,7 +212,7 @@ inner_tra(rsa15$rsa, tra) -> rsa15$rsa
 
 ### Champ HAD, SSR, PSY et RSF
 
-Pour ces trois champs, seules les donnees du out sont prises en charge par le package pour le moment.
+Pour ces quatre champs, seules les donnees du out sont prises en charge par le package pour le moment.
 Les fichiers tra sont egalement lus (ce qui permet de rattacher les informations du *out* au numeros des sejours locaux - du *in*).
 
 Les fonctions d'imports pour ces trois champs reposent sur le meme principe qu'en MCO.
