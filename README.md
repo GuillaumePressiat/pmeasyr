@@ -12,7 +12,7 @@
 
 Les données du Programme de Médicalisation des Systèmes d'Informations (PMSI) sont souvent traitées via des logiciels spécifiques au PMSI (ou des outils statistiques / bases de données du marché) ne permettant pas de réaliser des traitements statistiques et des infographies satisfaisantes. Les départements d'information médicale sont donc souvent amenés à retraiter ces données avec R.
 
-L'évolution récente de R a permis d'intégrer la manipulation de bases de données de taille importante. Le package *pmeasyr* s'inscrit dans cette veine et permet de réaliser de façon autonome l'ensemble des traitements (de l'import des données à leur analyse) avec R.
+L'évolution récente de R intègre la manipulation de bases de données de taille importante. Le package *pmeasyr* s'inscrit dans cette veine et permet de réaliser de façon autonome l'ensemble des traitements (de l'import des données à leur analyse) avec R.
 
 ## Avantages de R
 
@@ -28,7 +28,7 @@ Avec un flux complet dans R, toute nouvelle modification est intégrée au proce
 
 L'utilisation de R confère aux données du PMSI la liberté proposée par le logiciel :
 
-   - les requêtes sur les diagnostics et les actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui créé ses propres programmes : ainsi le résultat ne dépend pas d'un tiers expert, l'utilisateur est auteur de la méthode (le résultat compte, mais le chemin aussi)
+   - les requêtes sur les diagnostics et les actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui crée ses propres programmes : ainsi le résultat ne dépend pas d'un tiers expert, l'utilisateur est auteur de la méthode (le résultat compte, mais le chemin aussi)
    - les données sont dans R : prêtes pour des modèles linéaires, logistiques, des classifications...
    - la confrontation des données in\* (reflet du codage des établissements) aux données out\* (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](vignettes/vignette.Rmd#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil  
    - le reporting de l'activité en excel, pdf, word, html, ou en créant des applications (shiny)
@@ -55,7 +55,9 @@ Il est utilisé depuis un an à l'AP-HP pour des analyses d'activité et la desc
 
 ### Depuis github avec devtools
 
-```{r echo = T, eval = F} devtools::install_github('IM-APHP/pmeasyr') ``` 
+```{r echo = T, eval = F} 
+devtools::install_github('IM-APHP/pmeasyr')
+``` 
 
 Cette commande l'installation du package et de ses dépendances.
 
@@ -63,7 +65,9 @@ Cette commande l'installation du package et de ses dépendances.
 
 La vignette introductive du package donne des exemples de commandes pour les traitements des données du champ PMSI MCO.
 
-```{r echo = T, eval = F} browseVignettes('pmeasyr') ```
+```{r echo = T, eval = F}
+browseVignettes('pmeasyr')
+```
 
 Ou bien consulter la [vignette en ligne](vignettes/vignette.Rmd).
 
