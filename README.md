@@ -59,7 +59,7 @@ Il est utilisé depuis un an à l'AP-HP pour des analyses d'activité et la desc
 devtools::install_github('IM-APHP/pmeasyr')
 ``` 
 
-Cette commande l'installation du package et de ses dépendances.
+Cette commande lance l'installation du package et de ses dépendances.
 
 ## Pour commencer
 

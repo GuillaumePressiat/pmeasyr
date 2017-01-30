@@ -4184,23 +4184,18 @@ dico <- function(table){
 #' - pour les rum : 1 : DP du rum, 2 : DR du rum, 3 : DAS, 4 : DAD
 #'
 #' @param d Objet S3 resultat de l'import pmeasyr (irsa, irum)
-#' @param table Type de table : "rsa", "rum"
 #' @param include booleen : defaut a T; T : restructure l'objet S3 (agglomere dp, dr, das et dad, par exemple)
 #'
 #' @examples
 #' \dontrun{
-#' irsa(750712184, 2016, 8, '~/path/path', typi = 4) -> d1
-#' tdiag(d1) -> alldiag
-#'
-#' irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
-#' tdiag(d1, "rum") -> alldiag
-#'
 #' # avec include = T
 #' irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
-#' tdiag(d1, include = T) -> d1
+#' tdiag(d1) -> d1
 #' d1$diags
 #' d1$actes
 #' d1$dads
+#' irsa(750712184, 2016, 8, '~/path/path', typi = 4) -> d1
+#' tdiag(d1, include = F) -> alldiag
 #' }
 #'
 #' @author G. Pressiat
@@ -4208,9 +4203,9 @@ dico <- function(table){
 #' @seealso irsa, irum
 
 #' @export
-tdiag <- function (d, table = "rsa", include = T)
+tdiag <- function (d,  include = T)
 {
-  if (table == "rsa") {
+  if (names(d)[1] == "rsa") {
     temp <- d$rsa %>% dplyr::select(CLE_RSA, NSEQRUM = NOSEQRUM, DP, DR) %>%
       sjmisc::set_label(rep("", 4))
     e <- temp %>% tidyr::gather(position, diag, -CLE_RSA, - NSEQRUM,
@@ -4223,9 +4218,8 @@ tdiag <- function (d, table = "rsa", include = T)
     e <- temp %>% tidyr::gather(position, diag, -CLE_RSA, - NSEQRUM,
                                 na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
-    h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,
-                                                                                                         c(`1` = "DP", `2` = "DR", `3` = "DPUM", `4` = "DRUM",
-                                                                                                           `5` = "DAS")))))
+    h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DPUM", `4` = "DRUM",
+                                                                                                           `5` = "DAS"))))
     h <- h %>% sjmisc::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
                                    "Diagnostic"))
     if (include == F) {
@@ -4235,15 +4229,14 @@ tdiag <- function (d, table = "rsa", include = T)
       return(list(rsa = d$rsa, rsa_um = d$rsa_um, actes = d$actes, diags = h))
     }
   }
-  if (table == "rum") {
+  if (names(d)[1]  == "rum") {
     temp <- d$rum %>% dplyr::select(NAS,NORUM, DP, DR) %>% sjmisc::set_label(rep("",4))
     e <- temp %>% tidyr::gather(position, diag, -NAS,- NORUM, na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
     g <- d$das %>% dplyr::rename(diag = DAS) %>% dplyr::mutate(position = "DAS")
     g2 <- d$dad %>% dplyr::rename(diag = DAD) %>% dplyr::mutate(position = "DAD")
     h <- dplyr::bind_rows(list(f, g, g2)) %>%
-      dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,
-                    c(`1` = "DP", `2` = "DR", `3` = "DAS", `4`="DAD")))))
+      dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DAS", `4`="DAD"))))
 
     h <- h %>% sjmisc::set_label(c("N° administratif du séjour", "N° du RUM",
                                    "1:DP, 2:DR, 3:DAS, 4:DAD", "Diagnostic"))

@@ -4,12 +4,10 @@
 \alias{tdiag}
 \title{~ MCO - Tidy Diagnostics}
 \usage{
-tdiag(d, table = "rsa", include = T)
+tdiag(d, include = T)
 }
 \arguments{
 \item{d}{Objet S3 resultat de l'import pmeasyr (irsa, irum)}
-
-\item{table}{Type de table : "rsa", "rum"}
 
 \item{include}{booleen : defaut a T; T : restructure l'objet S3 (agglomere dp, dr, das et dad, par exemple)}
 }
@@ -24,18 +22,14 @@ Une variable numérique indique la position des diagnostics
 }
 \examples{
 \dontrun{
-irsa(750712184, 2016, 8, '~/path/path', typi = 4) -> d1
-tdiag(d1) -> alldiag
-
-irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
-tdiag(d1, "rum") -> alldiag
-
 # avec include = T
 irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
-tdiag(d1, include = T) -> d1
+tdiag(d1) -> d1
 d1$diags
 d1$actes
 d1$dads
+irsa(750712184, 2016, 8, '~/path/path', typi = 4) -> d1
+tdiag(d1, include = F) -> alldiag
 }
 
 }
