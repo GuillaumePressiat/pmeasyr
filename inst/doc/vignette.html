@@ -82,7 +82,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>finess.annee.mois.date_et_heure_de_creation.in.zip</li>
 <li>finess.annee.mois.date_et_heure_de_creation.out.zip</li>
 </ul>
-<p>Les fonctions permettent de dezipper les fichiers depuis R en ligne de commande, sans intervention manuelle de l’utilisateur. L’avantage est d’obtenir un processus ne relevant pas d’interventions externes au logiciel R (pour pouvoir garder trace des etapes, et faciliter la reproduction, tout est inscrit dans un programme, dan un flux de processus). Une fois que les traitements et analyses sur les fichiers sont faits, il est possible d’effacer les archives egalement en ligne de commande.</p>
+<p>Les fonctions permettent de dezipper les fichiers depuis R en ligne de commande, sans intervention manuelle de l’utilisateur. L’avantage est d’obtenir un processus ne relevant pas d’interventions externes au logiciel R (pour pouvoir garder trace des etapes, et faciliter la reproduction, tout est inscrit dans un programme, dans un flux de processus). Une fois que les traitements et analyses sur les fichiers sont faits, il est possible d’effacer les archives egalement en ligne de commande.</p>
 <p>Le nom des fonctions dont l’objectif est de manipuler les <strong>a</strong>rchives commence par <strong>a</strong>.</p>
 <table>
 <colgroup>
@@ -97,19 +97,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">adezip</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip.Rmd">adezip</a></td>
 <td align="left">~ *.zip - Dezippe des fichiers de larchive PMSI</td>
 </tr>
 <tr class="even">
-<td align="left">adezip2</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip2.Rmd">adezip2</a></td>
 <td align="left">~ *.zip - Dezippe des fichiers de l’archive PMSI, avec en parametre le nom de l’archive</td>
 </tr>
 <tr class="odd">
-<td align="left">astat</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/astat.Rmd">astat</a></td>
 <td align="left">~ *.zip - Liste et volume des fichiers d’une archive PMSI</td>
 </tr>
 <tr class="even">
-<td align="left">adelete</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adelete.Rmd">adelete</a></td>
 <td align="left">~ *.zip - Suppression des fichiers en fin de traitement</td>
 </tr>
 </tbody>
@@ -169,39 +169,39 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">irsa</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irsa.Rmd">irsa</a></td>
 <td align="left">~ MCO - Import des RSA</td>
 </tr>
 <tr class="even">
-<td align="left">irum</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irum.Rmd">irum</a></td>
 <td align="left">~ MCO - Import des RUM</td>
 </tr>
 <tr class="odd">
-<td align="left">idiap</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/idiap.Rmd">idiap</a></td>
 <td align="left">~ MCO - Import des DIAP</td>
 </tr>
 <tr class="even">
-<td align="left">idmi_mco</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/idmi_mco.Rmd">idmi_mco</a></td>
 <td align="left">~ MCO - Import des DMI</td>
 </tr>
 <tr class="odd">
-<td align="left">iium</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iium.Rmd">iium</a></td>
 <td align="left">~ MCO - Import des donnees UM</td>
 </tr>
 <tr class="even">
-<td align="left">ileg_mco</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ileg_mco.Rmd">ileg_mco</a></td>
 <td align="left">~ MCO - Import des erreurs Leg</td>
 </tr>
 <tr class="odd">
-<td align="left">imed_mco</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/imed_mco.Rmd">imed_mco</a></td>
 <td align="left">~ MCO - Import des Med</td>
 </tr>
 <tr class="even">
-<td align="left">ipo</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ipo.Rmd">ipo</a></td>
 <td align="left">~ MCO - Import des PO</td>
 </tr>
 <tr class="odd">
-<td align="left">iano_mco</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_mco.Rmd">iano_mco</a></td>
 <td align="left">~ MCO - Import des Anohosp</td>
 </tr>
 </tbody>
@@ -395,12 +395,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="tra" class="section level3">
 <h3>TRA</h3>
-<p>Le fichier TRA est un fichier du <em>out</em> qui permet de relier les donnees anonymes du <em>out</em> au donnees du <em>in</em>, il comprend un lien entre :</p>
+<p>Le fichier TRA est un fichier du <em>out</em> qui permet de relier les donnees anonymes du <em>out</em> aux donnees du <em>in</em>, il comprend un lien entre :</p>
 <ul>
-<li>MCO : cle_rsa, numero de rss, numero de sejour (nas)</li>
-<li>SSR : numero sequentiel du sejour + noseqrha et noseqrhs + numero de sejour</li>
-<li>PSY : numero sequentiel du sejour, numero de sequence, ipp et numero de sejour</li>
-<li>HAD : noseqsej, numero de sequence et sous-sequence et numero de sejour, numero de sequence et sous-sequence</li>
+<li>MCO : cle_rsa, numero de rss, numero de sejour (nas), date d’entree et date de sortie du sejour</li>
+<li>SSR : numero sequentiel du sejour + noseqrhs et numero de sejour + numero de semaine</li>
+<li>PSY RPSA : ipp, date d’entree et de fin du sejour, numero sequentiel du sejour, numero de sequence et numero de sejour, dates de debut et fin de sequence</li>
+<li>PSY R3A : ipp, date de l’acte, numero d’ordre, forme activité, um, nature et lieu de l’acte</li>
+<li>HAD : numero sequentiel de sejour, numero de sequence, sous-sequence et numero de sejour, dates de debut et fin des sequences et sous-sequences, dates d’entree et de sortie du sejour, modes d’entree sortie provenance destination</li>
 </ul>
 <table>
 <thead>
@@ -411,11 +412,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">itra</td>
+<td align="right"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/itra.Rmd">itra</a></td>
 <td align="left">~ TRA - Import du TRA</td>
 </tr>
 <tr class="even">
-<td align="right">inner_tra</td>
+<td align="right"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/inner_tra.Rmd">inner_tra</a></td>
 <td align="left">~ TRA - Ajout du TRA aux donnees Out</td>
 </tr>
 </tbody>
@@ -427,7 +428,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="champ-had-ssr-psy-et-rsf" class="section level3">
 <h3>Champ HAD, SSR, PSY et RSF</h3>
-<p>Pour ces trois champs, seules les donnees du out sont prises en charge par le package pour le moment. Les fichiers tra sont egalement lus (ce qui permet de rattacher les informations du <em>out</em> au numeros des sejours locaux - du <em>in</em>).</p>
+<p>Pour ces quatre champs, seules les donnees du out sont prises en charge par le package pour le moment. Les fichiers tra sont egalement lus (ce qui permet de rattacher les informations du <em>out</em> au numeros des sejours locaux - du <em>in</em>).</p>
 <p>Les fonctions d’imports pour ces trois champs reposent sur le meme principe qu’en MCO.</p>
 <div id="had" class="section level4">
 <h4>HAD</h4>
@@ -440,15 +441,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">iano_had</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_had.Rmd">iano_had</a></td>
 <td align="left">~ HAD - Import des Anohosp</td>
 </tr>
 <tr class="even">
-<td align="left">imed_had</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/imed_had.Rmd">imed_had</a></td>
 <td align="left">~ HAD - Import des Med</td>
 </tr>
 <tr class="odd">
-<td align="left">irapss</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irapss.Rmd">irapss</a></td>
 <td align="left">~ HAD - Import des RAPSS</td>
 </tr>
 </tbody>
@@ -465,15 +466,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">iano_ssr</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_ssr.Rmd">iano_ssr</a></td>
 <td align="left">~ SSR - Import des Anohosp</td>
 </tr>
 <tr class="even">
-<td align="left">irha</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irha.Rmd">irha</a></td>
 <td align="left">~ SSR - Import des RHA</td>
 </tr>
 <tr class="odd">
-<td align="left">issrha</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/issrha.Rmd">issrha</a></td>
 <td align="left">~ SSR - Import des SSRHA</td>
 </tr>
 </tbody>
@@ -490,15 +491,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">iano_psy</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_psy.Rmd">iano_psy</a></td>
 <td align="left">~ PSY - Import des Anohosp</td>
 </tr>
 <tr class="even">
-<td align="left">ir3a</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ir3a.Rmd">ir3a</a></td>
 <td align="left">~ PSY - Import des R3A</td>
 </tr>
 <tr class="odd">
-<td align="left">irpsa</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irpsa.Rmd">irpsa</a></td>
 <td align="left">~ PSY - Import des RPSA</td>
 </tr>
 </tbody>
@@ -515,11 +516,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">irafael</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irafael.Rmd">irafael</a></td>
 <td align="left">~ RSF - Import des RSFA / Rafael</td>
 </tr>
 <tr class="even">
-<td align="left">iano_rafael</td>
+<td align="left"><a href="https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_rafael.Rmd">iano_rafael</a></td>
 <td align="left">~ RSF - Import des RSFA / ANO</td>
 </tr>
 </tbody>
@@ -528,7 +529,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="dico" class="section level3">
 <h3>Dico</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Obtenir les noms, labels et type de variable (character, numeric, integer, date, ...)</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Obtenir les noms, labels et types de variables (character, numeric, integer, date, ...)</span>
 <span class="kw">dico</span>(rsa15$rsa)</code></pre></div>
 </div>
 <div id="tidy-diagnostics" class="section level3">
@@ -536,7 +537,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Les analyses sur les diagnostics CIM-10 sont parfois fastidieuses du fait des multiples positions de diagnostics : DP principal du sejour, DR principal du sejour, DPUM, DRUM, DAS. La fonction <em>tdiag</em> permet de rassembler tous les diagnostics dans une seule table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pour les objets rsa et rum du MCO</span>
 <span class="co"># Transbahuter tous les diagnostics dans une seule table</span>
-<span class="kw">tdiag</span>(rsa15, <span class="st">&quot;rsa&quot;</span>) -&gt;<span class="st"> </span>rsa15
+<span class="kw">tdiag</span>(rsa15) -&gt;<span class="st"> </span>rsa15
 <span class="kw">View</span>(rsa15$diags)
 <span class="co"># Tous les diagnostics sont dans une table, avec un numero selon leur position  </span>
 <span class="co"># 1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS</span></code></pre></div>
@@ -640,10 +641,6 @@ rsa15$diags %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span 
 <p>C’est le seul jeu de donnees inclus dans le package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Charger les formats des donnees</span>
 pmeasyr::formats</code></pre></div>
-<hr />
-<center>
-SIMAP / DOMU / AP-HP
-</center>
 </div>
 
 

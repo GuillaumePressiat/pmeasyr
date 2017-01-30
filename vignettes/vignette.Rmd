@@ -263,7 +263,7 @@ Les analyses sur les diagnostics CIM-10 sont parfois fastidieuses du fait des mu
 ```{r eval = F}
 # Pour les objets rsa et rum du MCO
 # Transbahuter tous les diagnostics dans une seule table
-tdiag(rsa15, "rsa") -> rsa15
+tdiag(rsa15) -> rsa15
 View(rsa15$diags)
 # Tous les diagnostics sont dans une table, avec un numero selon leur position  
 # 1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS
@@ -339,12 +339,4 @@ C'est le seul jeu de donnees inclus dans le package.
 # Charger les formats des donnees
 pmeasyr::formats
 ```
-
-
-------------
-
-<p align="center">
-  SIMAP / DOMU / AP-HP<br>
-  <img src="https://github.com/IM-APHP/pmeasyr/blob/master/logo.jpg" alt="AP-HP Logo" align ="center" style="width: 48"/>
-</p>
 

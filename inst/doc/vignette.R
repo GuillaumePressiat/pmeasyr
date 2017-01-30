@@ -63,13 +63,13 @@
 #  inner_tra(rsa15$rsa, tra) -> rsa15$rsa
 
 ## ----eval = F------------------------------------------------------------
-#  # Obtenir les noms, labels et type de variable (character, numeric, integer, date, ...)
+#  # Obtenir les noms, labels et types de variables (character, numeric, integer, date, ...)
 #  dico(rsa15$rsa)
 
 ## ----eval = F------------------------------------------------------------
 #  # Pour les objets rsa et rum du MCO
 #  # Transbahuter tous les diagnostics dans une seule table
-#  tdiag(rsa15, "rsa") -> rsa15
+#  tdiag(rsa15) -> rsa15
 #  View(rsa15$diags)
 #  # Tous les diagnostics sont dans une table, avec un numero selon leur position
 #  # 1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS

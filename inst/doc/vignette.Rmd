@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-<div style="color:#333399">
+
 Cette vignette documente les principes generaux pour l'utilisation du package *pmeasyr*.
 
 
@@ -20,16 +20,16 @@ Cette partie du package facilite la manipulation des archives PMSI, fichiers de 
   - finess.annee.mois.date_et_heure_de_creation.in.zip
   - finess.annee.mois.date_et_heure_de_creation.out.zip
 
-Les fonctions permettent de dezipper les fichiers depuis R en ligne de commande, sans intervention manuelle de l'utilisateur. L'avantage est d'obtenir un processus ne relevant pas d'interventions externes au logiciel R (pour pouvoir garder trace des etapes, et faciliter la reproduction, tout est inscrit dans un programme, dan un flux de processus). Une fois que les traitements et analyses sur les fichiers sont faits, il est possible d'effacer les archives egalement en ligne de commande.
+Les fonctions permettent de dezipper les fichiers depuis R en ligne de commande, sans intervention manuelle de l'utilisateur. L'avantage est d'obtenir un processus ne relevant pas d'interventions externes au logiciel R (pour pouvoir garder trace des etapes, et faciliter la reproduction, tout est inscrit dans un programme, dans un flux de processus). Une fois que les traitements et analyses sur les fichiers sont faits, il est possible d'effacer les archives egalement en ligne de commande.
 
 Le nom des fonctions dont l'objectif est de manipuler les **a**rchives commence par **a**.
 
 |Nom       |Fonction                                                                               |
 |:---------|:--------------------------------------------------------------------------------------|
-|adezip    |~ *.zip - Dezippe des fichiers de larchive PMSI                                        |
-|adezip2   |~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive|
-|astat     |~ *.zip - Liste et volume des fichiers d'une archive PMSI                              |
-|adelete   |~ *.zip - Suppression des fichiers en fin de traitement                                |
+|[adezip](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip.Rmd)    |~ *.zip - Dezippe des fichiers de larchive PMSI                                        |
+|[adezip2](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip2.Rmd)   |~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive|
+|[astat](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/astat.Rmd)     |~ *.zip - Liste et volume des fichiers d'une archive PMSI                              |
+|[adelete](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adelete.Rmd)   |~ *.zip - Suppression des fichiers en fin de traitement                                |
 
 ### adezip : dezipper
 
@@ -89,15 +89,15 @@ En MCO, SSR et HAD les fonctions permettent d'importer les fichiers aux formats 
 
 |Nom       |Fonction                           |
 |:---------|:----------------------------------|
-|irsa      |~ MCO - Import des RSA             |
-|irum      |~ MCO - Import des RUM             |
-|idiap     |~ MCO - Import des DIAP            |
-|idmi_mco  |~ MCO - Import des DMI             |
-|iium      |~ MCO - Import des donnees UM      |
-|ileg_mco  |~ MCO - Import des erreurs Leg     |
-|imed_mco  |~ MCO - Import des Med             |
-|ipo       |~ MCO - Import des PO              |
-|iano_mco  |~ MCO - Import des Anohosp         |
+|[irsa](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irsa.Rmd)      |~ MCO - Import des RSA             |
+|[irum](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irum.Rmd)      |~ MCO - Import des RUM             |
+|[idiap](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/idiap.Rmd)     |~ MCO - Import des DIAP            |
+|[idmi_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/idmi_mco.Rmd)  |~ MCO - Import des DMI             |
+|[iium](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iium.Rmd)      |~ MCO - Import des donnees UM      |
+|[ileg_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ileg_mco.Rmd)  |~ MCO - Import des erreurs Leg     |
+|[imed_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/imed_mco.Rmd)  |~ MCO - Import des Med             |
+|[ipo](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ipo.Rmd)       |~ MCO - Import des PO              |
+|[iano_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_mco.Rmd)  |~ MCO - Import des Anohosp         |
 
 Les donnees in / out sont prises en charge.
 
@@ -189,18 +189,19 @@ Selon la nature des analyses a produire, plusieurs types d'imports sont possible
 
 ### TRA
 
-Le fichier TRA est un fichier du *out* qui permet de relier les donnees anonymes du *out* au donnees du *in*, il comprend un lien entre : 
+Le fichier TRA est un fichier du *out* qui permet de relier les donnees anonymes du *out* aux donnees du *in*, il comprend un lien entre : 
 
-  - MCO : cle_rsa, numero de rss, numero de sejour (nas)
-  - SSR : numero sequentiel du sejour + noseqrha et noseqrhs + numero de sejour
-  - PSY : numero sequentiel du sejour, numero de sequence, ipp et numero de sejour
-  - HAD : noseqsej, numero de sequence et sous-sequence et numero de sejour, numero de sequence et sous-sequence
+  - MCO : cle_rsa, numero de rss, numero de sejour (nas), date d'entree et date de sortie du sejour
+  - SSR : numero sequentiel du sejour + noseqrhs et numero de sejour + numero de semaine
+  - PSY RPSA : ipp, date d'entree et de fin du sejour, numero sequentiel du sejour, numero de sequence et numero de sejour, dates de debut et fin de sequence
+  - PSY R3A : ipp, date de l'acte, numero d'ordre, forme activité, um, nature et lieu de l'acte
+  - HAD : numero sequentiel de sejour, numero de sequence, sous-sequence et numero de sejour, dates de debut et fin des sequences et sous-sequences, dates d'entree et de sortie du sejour, modes d'entree sortie provenance destination
 
 
 | Type     |Import                              |
 |---------:|:-----------------------------------|
-|itra      |~ TRA - Import du TRA               |
-|inner_tra |~ TRA - Ajout du TRA aux donnees Out|
+|[itra](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/itra.Rmd)      |~ TRA - Import du TRA               |
+|[inner_tra](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/inner_tra.Rmd) |~ TRA - Ajout du TRA aux donnees Out|
 
 
 ```{r eval = F}
@@ -212,7 +213,7 @@ inner_tra(rsa15$rsa, tra) -> rsa15$rsa
 
 ### Champ HAD, SSR, PSY et RSF
 
-Pour ces trois champs, seules les donnees du out sont prises en charge par le package pour le moment.
+Pour ces quatre champs, seules les donnees du out sont prises en charge par le package pour le moment.
 Les fichiers tra sont egalement lus (ce qui permet de rattacher les informations du *out* au numeros des sejours locaux - du *in*).
 
 Les fonctions d'imports pour ces trois champs reposent sur le meme principe qu'en MCO.
@@ -221,37 +222,37 @@ Les fonctions d'imports pour ces trois champs reposent sur le meme principe qu'e
 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|iano_had   |~ HAD - Import des Anohosp            |
-|imed_had   |~ HAD - Import des Med                |
-|irapss     |~ HAD - Import des RAPSS              |
+|[iano_had](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_had.Rmd)   |~ HAD - Import des Anohosp            |
+|[imed_had](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/imed_had.Rmd)   |~ HAD - Import des Med                |
+|[irapss](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irapss.Rmd)     |~ HAD - Import des RAPSS              |
 
 #### SSR
 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|iano_ssr   |~ SSR - Import des Anohosp            |
-|irha       |~ SSR - Import des RHA                |
-|issrha     |~ SSR - Import des SSRHA              |
+|[iano_ssr](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_ssr.Rmd)   |~ SSR - Import des Anohosp            |
+|[irha](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irha.Rmd)       |~ SSR - Import des RHA                |
+|[issrha](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/issrha.Rmd)     |~ SSR - Import des SSRHA              |
 
 
 #### PSY 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|iano_psy   |~ PSY - Import des Anohosp            |
-|ir3a       |~ PSY - Import des R3A                |
-|irpsa      |~ PSY - Import des RPSA               |
+|[iano_psy](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_psy.Rmd)   |~ PSY - Import des Anohosp            |
+|[ir3a](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ir3a.Rmd)       |~ PSY - Import des R3A                |
+|[irpsa](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irpsa.Rmd)      |~ PSY - Import des RPSA               |
 
 #### RSF
 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|irafael    |~ RSF - Import des RSFA / Rafael      |
-|iano_rafael|~ RSF - Import des RSFA / ANO         |
+|[irafael](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irafael.Rmd)    |~ RSF - Import des RSFA / Rafael      |
+|[iano_rafael](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_rafael.Rmd)|~ RSF - Import des RSFA / ANO         |
 
 ### Dico
 
 ```{r eval = F}
-# Obtenir les noms, labels et type de variable (character, numeric, integer, date, ...)
+# Obtenir les noms, labels et types de variables (character, numeric, integer, date, ...)
 dico(rsa15$rsa)
 ```
 
@@ -262,7 +263,7 @@ Les analyses sur les diagnostics CIM-10 sont parfois fastidieuses du fait des mu
 ```{r eval = F}
 # Pour les objets rsa et rum du MCO
 # Transbahuter tous les diagnostics dans une seule table
-tdiag(rsa15, "rsa") -> rsa15
+tdiag(rsa15) -> rsa15
 View(rsa15$diags)
 # Tous les diagnostics sont dans une table, avec un numero selon leur position  
 # 1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS
@@ -338,11 +339,4 @@ C'est le seul jeu de donnees inclus dans le package.
 # Charger les formats des donnees
 pmeasyr::formats
 ```
-
-
-------------
-
-<center>SIMAP / DOMU / AP-HP</center>
-<center><img src="logo.jpg" alt="AP-HP Logo" style="width: 200px;"/></center>
-</div>
 
