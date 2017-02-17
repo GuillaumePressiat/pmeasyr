@@ -4265,6 +4265,7 @@ tdiag <- function (d,  include = T)
 #' @examples
 #' \dontrun{
 #'    irafael(750712184,2015,12,'~/pathpath/') -> rsfa15
+#'    irafael(750712184,2015,12,'~/pathpath/', lister = 'C', lamda = T) -> rsfa14_lamda
 #' }
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
@@ -4347,19 +4348,19 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
   }
 
   
-  if (grep('A', lister)>0){rafael_A <- suppressWarnings(cutt('A', lib))}
+  if ('A' %in% lister){rafael_A <- suppressWarnings(cutt('A', lib))}
   r %>% dplyr::filter(substr(lon,typi_r,typi_r) != 'A') -> r
-  if (grep('B', lister)>0){rafael_B <- suppressWarnings(cutt('B', lib))}
+  if ('B' %in% lister){rafael_B <- suppressWarnings(cutt('B', lib))}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'B') -> r
-  if (grep('C', lister)>0){rafael_C <- suppressWarnings(cutt('C', lib))}
+  if ('C' %in% lister){rafael_C <- suppressWarnings(cutt('C', lib))}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'C') -> r
-  if (grep('M', lister)>0){rafael_M <- suppressWarnings(cutt('M', lib))}
+  if ('M' %in% lister){rafael_M <- suppressWarnings(cutt('M', lib))}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'M') -> r
-  if (grep('L', lister)>0){rafael_L <- suppressWarnings(cutt('L', lib))}
+  if ('L' %in% lister){rafael_L <- suppressWarnings(cutt('L', lib))}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'L') -> r
-  if (grep('P', lister)>0){rafael_P <- suppressWarnings(cutt('P', lib))}
+  if ('P' %in% lister){rafael_P <- suppressWarnings(cutt('P', lib))}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'H') -> r
-  if (grep('H', lister)>0){rafael_H <- suppressWarnings(cutt('H', lib))}
+  if ('H' %in% lister){rafael_H <- suppressWarnings(cutt('H', lib))}
   rm(r)
 
   deux<-Sys.time()
