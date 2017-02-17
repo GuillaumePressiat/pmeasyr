@@ -4255,9 +4255,11 @@ tdiag <- function (d,  include = T)
 ##############################################
 #' ~ RSF - Import des Rafael
 #'
-#' Import des Rafael
+#' Import des Rafael et des Rafael reprises
 #'
-#'
+#' Formats depuis 2012 pour les rsfa
+#' Formats depuis 2014 pour les rsfa-maj (reprise 2013)
+#' 
 #' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rafaels)
 #'
 #' @examples
@@ -4271,11 +4273,13 @@ tdiag <- function (d,  include = T)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package \code{sjmisc}
 #' @param stat avec stat = T, un tableau synthetise le nombre de lignes par type de rafael
+#' @param lister Liste des types d'enregistrements a importer
+#' @param lamda a TRUE, importe les fichiers \code{rsfa-maj} de reprise de l'annee passee
 #' @param ... Autres parametres a specifier \code{n_max = 1e3}, ...
 #' @author G. Pressiat
 #'
 #' @export
-irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
+irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, ...){
   if (annee<2011|annee>2016){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
@@ -4284,14 +4288,35 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
     return(NULL)}
   op <- options(digits.secs = 6)
   un<-Sys.time()
-  cat(paste("Import des RSFA / Rafael",annee,paste0("M",mois),"\n"))
-  cat(paste("L'objet retourné prendra la forme d'une classe S3.
+  
+  if (lamda == F){
+    cat(paste("Import des RSFA / Rafael", annee, paste0("M",mois),"\n"))
+    cat(paste("L'objet retourné prendra la forme d'une classe S3.
             $A pour les Rafael A, et B, C, ...\n"))
-  formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael", an == substr(annee,3,4))
-
-  r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa"),
-                       readr::fwf_widths(NA, 'lon'),
-                       col_types = readr::cols('c'),  ...)
+    
+    
+    formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael", an == substr(annee,3,4))
+    
+    r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa"),
+                         readr::fwf_widths(NA, 'lon'),
+                         col_types = readr::cols('c'),  ...)
+    typi_r <- 9
+    
+  }
+  if (lamda == T){
+    cat(paste("Import des rsfa-maj", annee, paste0("M",mois),"\n"))
+    cat(paste("L'objet retourné prendra la forme d'une classe S3.
+            $A pour les Rafael A, et B, C, ...\n"))
+    
+    
+    formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael-maj", an == substr(annee,3,4))
+    
+    r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa-maj"),
+                         readr::fwf_widths(NA, 'lon'),
+                         col_types = readr::cols('c'),  ...)
+    typi_r <- 27
+    
+  }
 
   former <- function(cla, col1){
     switch(cla,
@@ -4308,7 +4333,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
 
-    r %>% dplyr::filter(substr(lon,9,9) == typs) -> one
+    r %>% dplyr::filter(substr(lon,typi_r,typi_r) == typs) -> one
     for (i in 1:length(deb)){
       temp <- dplyr::as_data_frame(former(fa$cla[i], u(one$lon, i)))
       names(temp) <- fa$nom[i]
@@ -4321,19 +4346,20 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
     return(one)
   }
 
-  rafael_A <- suppressWarnings(cutt('A', lib))
-  r %>% dplyr::filter(substr(lon,9,9) != 'A') -> r
-  rafael_B <- suppressWarnings(cutt('B', lib))
-  r %>%  dplyr::filter(substr(lon,9,9) != 'B') -> r
-  rafael_C <- suppressWarnings(cutt('C', lib))
-  r %>%  dplyr::filter(substr(lon,9,9) != 'C') -> r
-  rafael_M <- suppressWarnings(cutt('M', lib))
-  r %>%  dplyr::filter(substr(lon,9,9) != 'M') -> r
-  rafael_L <- suppressWarnings(cutt('L', lib))
-  r %>%  dplyr::filter(substr(lon,9,9) != 'L') -> r
-  rafael_P <- suppressWarnings(cutt('P', lib))
-  r %>%  dplyr::filter(substr(lon,9,9) != 'H') -> r
-  rafael_H <- suppressWarnings(cutt('H', lib))
+  
+  if (grep('A', lister)>0){rafael_A <- suppressWarnings(cutt('A', lib))}
+  r %>% dplyr::filter(substr(lon,typi_r,typi_r) != 'A') -> r
+  if (grep('B', lister)>0){rafael_B <- suppressWarnings(cutt('B', lib))}
+  r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'B') -> r
+  if (grep('C', lister)>0){rafael_C <- suppressWarnings(cutt('C', lib))}
+  r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'C') -> r
+  if (grep('M', lister)>0){rafael_M <- suppressWarnings(cutt('M', lib))}
+  r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'M') -> r
+  if (grep('L', lister)>0){rafael_L <- suppressWarnings(cutt('L', lib))}
+  r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'L') -> r
+  if (grep('P', lister)>0){rafael_P <- suppressWarnings(cutt('P', lib))}
+  r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'H') -> r
+  if (grep('H', lister)>0){rafael_H <- suppressWarnings(cutt('H', lib))}
   rm(r)
 
   deux<-Sys.time()
@@ -4362,9 +4388,11 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
 
 #' ~ RSF - Import des Anohosp RSFA
 #'
-#' Import du fichier ANO RSF Out.
+#' Import du fichier ANO-ACE RSF Out ou le ano-ace-maj (reprise) 
 #'
-#' Formats depuis 2012 pris en charge
+#' Formats depuis 2012 pris en charge pour les ano-ace
+#' Formats depuis 2014 pris en charge pour les ano-ace-maj (reprise 2013)
+#' 
 #' Structure du nom du fichier attendu  :
 #' \emph{finess.annee.moisc.ano}
 #'
@@ -4374,6 +4402,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
+#' @param lamda a TRUE, importe le fichier ano-ace-maj
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
 #' dans la fonction \code{readr::read_fwf()}, par exemple
@@ -4383,7 +4412,8 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    iano_rafael(750712184,2015,12,'~/pathpath/') -> ano_out15
+#'    iano_rafael(750712184, 2015, 12,'~/pathpath/rsf') -> ano_out15
+#'    iano_rafael(750712184, 2015, 12,'~/pathpath/rsf', lamda = T) -> lamda_maj_ano_out14
 #' }
 #'
 #' @author G. Pressiat
@@ -4391,7 +4421,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, ...){
 #' @seealso irafael
 
 #' @export
-iano_rafael <- function(finess, annee, mois, path,  lib = T, ...){
+iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
   if (annee<2012|annee>2016){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
@@ -4399,9 +4429,13 @@ iano_rafael <- function(finess, annee, mois, path,  lib = T, ...){
     cat('Mois incorrect\n')
     return(NULL)}
 
-
+    if (lamda == F){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'rsf', table == 'rafael_ano', an == substr(as.character(annee),3,4))
-
+    }
+  if (lamda == T){
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'rsf', table == 'rafael_ano-maj', an == substr(as.character(annee),3,4))
+  }
+  
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -4433,13 +4467,22 @@ iano_rafael <- function(finess, annee, mois, path,  lib = T, ...){
       ),
       class = "col_spec"
     )
-    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace"),
+    if (lamda == F){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
       dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                     DTENT    = lubridate::dmy(DTENT),
                     cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
                              (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
-
+    }
+    if (lamda == T){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace-maj"),
+                                                 readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+      dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
+                    DTENT    = lubridate::dmy(DTENT),
+                    cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
+                             (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
+    }
+    
+    
 
   return(ano_i)
 }

@@ -4,7 +4,8 @@
 \alias{irafael}
 \title{~ RSF - Import des Rafael}
 \usage{
-irafael(finess, annee, mois, path, lib = T, stat = T, ...)
+irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
+  "C", "H", "L", "M", "P"), lamda = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -19,13 +20,21 @@ irafael(finess, annee, mois, path, lib = T, stat = T, ...)
 
 \item{stat}{avec stat = T, un tableau synthetise le nombre de lignes par type de rafael}
 
+\item{lister}{Liste des types d'enregistrements a importer}
+
+\item{lamda}{a TRUE, importe les fichiers \code{rsfa-maj} de reprise de l'annee passee}
+
 \item{...}{Autres parametres a specifier \code{n_max = 1e3}, ...}
 }
 \value{
 Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rafaels)
 }
 \description{
-Import des Rafael
+Import des Rafael et des Rafael reprises
+}
+\details{
+Formats depuis 2012 pour les rsfa
+Formats depuis 2014 pour les rsfa-maj (reprise 2013)
 }
 \examples{
 \dontrun{

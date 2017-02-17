@@ -4,7 +4,7 @@
 \alias{iano_rafael}
 \title{~ RSF - Import des Anohosp RSFA}
 \usage{
-iano_rafael(finess, annee, mois, path, lib = T, ...)
+iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -17,6 +17,8 @@ iano_rafael(finess, annee, mois, path, lib = T, ...)
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}}
 
+\item{lamda}{a TRUE, importe le fichier ano-ace-maj}
+
 \item{...}{parametres supplementaires a passer
 dans la fonction \code{readr::read_fwf()}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
@@ -25,10 +27,12 @@ dans la fonction \code{readr::read_fwf()}, par exemple
 Une table (data.frame ou tbl_df) qui contient les données Anohosp in / out
 }
 \description{
-Import du fichier ANO RSF Out.
+Import du fichier ANO-ACE RSF Out ou le ano-ace-maj (reprise)
 }
 \details{
-Formats depuis 2012 pris en charge
+Formats depuis 2012 pris en charge pour les ano-ace
+Formats depuis 2014 pris en charge pour les ano-ace-maj (reprise 2013)
+
 Structure du nom du fichier attendu  :
 \emph{finess.annee.moisc.ano}
 
@@ -36,7 +40,8 @@ Structure du nom du fichier attendu  :
 }
 \examples{
 \dontrun{
-   iano_rafael(750712184,2015,12,'~/pathpath/') -> ano_out15
+   iano_rafael(750712184, 2015, 12,'~/pathpath/rsf') -> ano_out15
+   iano_rafael(750712184, 2015, 12,'~/pathpath/rsf', lamda = T) -> lamda_maj_ano_out14
 }
 
 }
