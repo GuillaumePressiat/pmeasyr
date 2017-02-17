@@ -4348,19 +4348,19 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
   }
 
   
-  if ('A' %in% lister){rafael_A <- suppressWarnings(cutt('A', lib))}
+  if ('A' %in% lister){rafael_A <- suppressWarnings(cutt('A', lib))}else{rafael_A <- data.frame()}
   r %>% dplyr::filter(substr(lon,typi_r,typi_r) != 'A') -> r
-  if ('B' %in% lister){rafael_B <- suppressWarnings(cutt('B', lib))}
+  if ('B' %in% lister){rafael_B <- suppressWarnings(cutt('B', lib))}else{rafael_B <- data.frame()}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'B') -> r
-  if ('C' %in% lister){rafael_C <- suppressWarnings(cutt('C', lib))}
+  if ('C' %in% lister){rafael_C <- suppressWarnings(cutt('C', lib))}else{rafael_C <- data.frame()}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'C') -> r
-  if ('M' %in% lister){rafael_M <- suppressWarnings(cutt('M', lib))}
+  if ('M' %in% lister){rafael_M <- suppressWarnings(cutt('M', lib))}else{rafael_M <- data.frame()}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'M') -> r
-  if ('L' %in% lister){rafael_L <- suppressWarnings(cutt('L', lib))}
+  if ('L' %in% lister){rafael_L <- suppressWarnings(cutt('L', lib))}else{rafael_L <- data.frame()}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'L') -> r
-  if ('P' %in% lister){rafael_P <- suppressWarnings(cutt('P', lib))}
+  if ('P' %in% lister){rafael_P <- suppressWarnings(cutt('P', lib))}else{rafael_P <- data.frame()}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'H') -> r
-  if ('H' %in% lister){rafael_H <- suppressWarnings(cutt('H', lib))}
+  if ('H' %in% lister){rafael_H <- suppressWarnings(cutt('H', lib))}else{rafael_H <- data.frame()}
   rm(r)
 
   deux<-Sys.time()
