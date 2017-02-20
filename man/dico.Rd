@@ -10,7 +10,7 @@ dico(table)
 \item{table}{Table dont on veut le dictionnaire de variables}
 }
 \description{
-Obtenir le dictionnaire d'une table importée
+Obtenir le dictionnaire d'une table
 }
 \examples{
 \dontrun{

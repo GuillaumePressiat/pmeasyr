@@ -5,7 +5,7 @@
 
 #' ~ MCO - Import des RUM
 #'
-#' Import des données RUM. 4 types d'imports possibles.
+#' Import des RUM. 4 types d'imports possibles.
 #'
 #' Formats depuis 2011 pris en charge
 #'
@@ -562,7 +562,7 @@ class(rum_1) <- append(class(rum_1),"RUM")
 
 #' ~ MCO - Import des RSA
 #'
-#' Import des données RSA. 6 types d'imports possibles.
+#' Import des RSA. 6 types d'imports possibles.
 #'
 #' Formats depuis 2011 pris en charge
 #' Structure du nom du fichier attendu (sortie de Genrsa) :
@@ -3807,7 +3807,7 @@ iano_psy <- function(finess,annee,mois,path, lib=T, ...){
 
 #' ~ *.zip - Liste et volume des fichiers d'une archive PMSI
 #'
-#' Pour lister sans dézipper les fichiers d'une archive
+#' Pour lister sans dezipper les fichiers d'une archive
 #'
 #'
 #' @param path Chemin d'acces  a l'archive
@@ -3905,7 +3905,7 @@ adezip2 <- function(path, file, liste, pathto=""){
 
 #' ~ *.zip - Dezippe des fichiers de l'archive PMSI
 #'
-#' Dézipper une archive PMSI au besoin
+#' Dezipper une archive PMSI au besoin
 #'
 #'
 #' @param finess Finess du fichier a dezipper
@@ -4038,7 +4038,7 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
   }
 }
 
-#' ~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet, avec en parametre le nom de l'archive
+#' ~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet AP-HP, avec en parametre le nom de l'archive
 #'
 #' Version de la fonction \code{\link{adezip2}} pour des archives au format Intranet du DIM Siège de l'AP-HP,
 #' \url{http://dime.aphp.fr/}.
@@ -4112,7 +4112,7 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
 
 #' ~ *.zip - Suppression des fichiers en fin de traitement
 #'
-#' Supprime les fichiers de l'archive PMSI dézippés en début de traitement
+#' Supprime les fichiers de l'archive PMSI dezippes en début de traitement
 #'
 #'
 #' @param finess Finess du fichier a supprimer
@@ -4145,7 +4145,7 @@ adelete <- function(finess,annee,mois,path, liste, type){
 
 #' ~ Dico - Dictionnaire des tables
 #'
-#' Obtenir le dictionnaire d'une table importée
+#' Obtenir le dictionnaire d'une table
 #'
 #'
 #' @param table Table dont on veut le dictionnaire de variables
@@ -4270,7 +4270,7 @@ tdiag <- function (d,  include = T)
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
-#' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package \code{sjmisc}
 #' @param stat avec stat = T, un tableau synthetise le nombre de lignes par type de rafael
@@ -4400,7 +4400,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #' \strong{750712184.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
-#' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lamda a TRUE, importe le fichier ano-ace-maj

@@ -24,7 +24,7 @@ adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
 \item{recent}{par defaut a T, l'archive la plus recente sera utilisee, sinon propose a l'utilisateur de choisir quelle archive dezipper}
 }
 \description{
-Dézipper une archive PMSI au besoin
+Dezipper une archive PMSI au besoin
 }
 \examples{
 \dontrun{

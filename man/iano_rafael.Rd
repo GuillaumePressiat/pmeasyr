@@ -9,7 +9,7 @@ iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
 
-\item{annee}{Annee PMSI (nb) des données sur 4 caracteres (2016)}
+\item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
 
 \item{mois}{Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)}
 

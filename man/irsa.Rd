@@ -27,7 +27,7 @@ dans la fonction \code{readr::read_fwf()}, par exemple
 Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rsa, rsa_um, actes et das si import > 3)
 }
 \description{
-Import des données RSA. 6 types d'imports possibles.
+Import des RSA. 6 types d'imports possibles.
 }
 \details{
 Formats depuis 2011 pris en charge

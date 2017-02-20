@@ -12,7 +12,7 @@ irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
 
 \item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
 
-\item{mois}{Mois PMSI (nb) des données (janvier : 1, decembre : 12)}
+\item{mois}{Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)}
 
 \item{path}{Localisation du fichier de donnees}
 

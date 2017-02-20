@@ -27,7 +27,7 @@ dans la fonction \code{readr::read_fwf()}, par exemple
 Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées (rum, actes, das et dad si import 3 et 4)
 }
 \description{
-Import des données RUM. 4 types d'imports possibles.
+Import des RUM. 4 types d'imports possibles.
 }
 \details{
 Formats depuis 2011 pris en charge

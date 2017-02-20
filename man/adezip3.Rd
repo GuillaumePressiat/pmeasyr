@@ -2,7 +2,7 @@
 % Please edit documentation in R/main_before_utf.R
 \name{adezip3}
 \alias{adezip3}
-\title{~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet, avec en parametre le nom de l'archive}
+\title{~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet AP-HP, avec en parametre le nom de l'archive}
 \usage{
 adezip3(finess, path, file, liste, pathto = "")
 }
