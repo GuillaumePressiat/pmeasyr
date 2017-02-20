@@ -2849,7 +2849,7 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 
 #' ~ SSR - Import des RHA
 #'
-#' Import des données RHA
+#' Import des RHA
 #'
 #' Formats depuis 2011 pris en charge
 #'

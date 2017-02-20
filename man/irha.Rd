@@ -22,7 +22,7 @@ dans la fonction \code{readr::read_fwf()}, par exemple
 \code{n_max=10e3} pour lire les 1000 premieres lignes}
 }
 \description{
-Import des données RHA
+Import des RHA
 }
 \details{
 Formats depuis 2011 pris en charge
