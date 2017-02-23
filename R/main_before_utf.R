@@ -1880,7 +1880,7 @@ ileg_mco <- function(finess, annee, mois, path, reshape = F, ...){
   }
   CLE_RSA <- stringr::str_extract(leg_i, "[0-9]{10}")
   NBEG <- stringr::str_count(leg_i,"[A-Z]{1}[0-9]{2,3}")
-  legs <- flatten_chr(stringr::str_extract_all(leg_i,"[A-Z]{1}[0-9]{2,3}"))
+  legs <- purrr::flatten_chr(stringr::str_extract_all(leg_i,"[A-Z]{1}[0-9]{2,3}"))
   leg_i <- data.frame(finess,CLE_RSA,NBEG)
   leg_i <- as.data.frame(lapply(leg_i, rep, leg_i$NBEG))
   leg_i <- cbind(leg_i,annee,mois, EG = legs)
@@ -2842,6 +2842,58 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
   return(med_i)
 }
 
+#' ~ HAD - Import des erreurs Leg
+#'
+#' Import du fichier des erreurs de groupage Paprica
+#'
+#' Formats depuis 2011 pris en charge
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
+#' @param ... parametres supplementaires a passer
+#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
+#'
+#' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
+#'
+#' @examples
+#' \dontrun{
+#'    ileg_had(750712184,2015,12,'~/pathpath/') -> leg15
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso irum irsa
+
+#' @export
+ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
+  
+  leg_i <- readr::read_csv2(paste0(path,"/",finess,".",annee,".",mois,".leg"), 
+                            col_types = 
+                              readr::cols(FINESS = character(),
+                                   NOSEJHAD = character(),
+                                   MOIS = character(),
+                                   ANNEE = character(),
+                                   NOSEQ = character(),
+                                   NOSOUSSEQ = character(),
+                                   NBERR = integer(),
+                                   e = character()), ...)
+  
+  if (reshape==F){
+    extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+    leg_i$EG      <- extz(leg_i$e, "[A-Z]{1}[0-9]{2,3}")
+    return(leg_i)
+  }
+
+  legs <- purrr::flatten_chr(stringr::str_extract_all(leg_i$e,"[A-Z]{1}[0-9]{2,3}"))
+  leg_i1 <- dplyr::distinct(leg_i, FINESS, NOSEJHAD, MOIS, ANNEE, NOSEQ, NOUSOUSSEQ, NBERR)
+  leg_i <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR))
+  leg_i <- cbind(leg_i, EG = legs)
+  return(leg_i)
+}
 
 ##############################################
 ####################### SSR ##################
