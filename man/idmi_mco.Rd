@@ -4,7 +4,7 @@
 \alias{idmi_mco}
 \title{~ MCO - Import des DMI}
 \usage{
-idmi_mco(finess, annee, mois, path, typdmi = "out", lib = T, ...)
+idmi_mco(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}

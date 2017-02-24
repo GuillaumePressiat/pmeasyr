@@ -4,7 +4,7 @@
 \alias{idiap}
 \title{~ MCO - Import des DIAP}
 \usage{
-idiap(finess, annee, mois, path, typdiap = "out", lib = T, ...)
+idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}

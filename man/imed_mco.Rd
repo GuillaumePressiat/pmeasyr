@@ -4,7 +4,7 @@
 \alias{imed_mco}
 \title{~ MCO - Import des Med}
 \usage{
-imed_mco(finess, annee, mois, path, typmed = "out", lib = T, ...)
+imed_mco(finess, annee, mois, path, typmed = c("out", "in"), lib = T, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}

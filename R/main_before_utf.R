@@ -54,16 +54,16 @@
 #' @importFrom utils View data unzip
 #' @importFrom magrittr '%>%'
 #' @export
-irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
+irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
   if (!(typi %in% 0:4)){
-    cat("Type d'import incorrect : 0 ou 1, 2, 3 et 4\n")
-    return(NULL)}
+    stop("Type d'import incorrect : 0 ou 1, 2, 3 et 4\n")
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -553,10 +553,9 @@ class(rum_1) <- append(class(rum_1),"RUM")
                      Temps=c('Très Rapide','Rapide','Rapide','Long'),
                      `Temps rapporté`=c('= 1','* 5 (~)','* 4 (~)','* 7 (~)'))
 
-  cat(knitr::kable(typo),sep='\n')
+  cat(knitr::kable(typo), sep = "\n")
   n <- readline(prompt="Taper le type d'import voulu : ")
-  return(irum(finess,annee,mois,path,lib,n))
-
+  return(irum(finess,annee,mois,path,lib,n, ...))
 }
 
 
@@ -617,14 +616,14 @@ class(rum_1) <- append(class(rum_1),"RUM")
 #' @export
 irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
   if (!(typi %in% 0:6)){
-    cat("Type d'import incorrect : 0 ou 1, 2, 3, 4, 5 et 6\n")
-    return(NULL)}
+    stop("Type d'import incorrect : 0 ou 1, 2, 3, 4, 5 et 6\n")
+    }
 
 
   op <- options(digits.secs = 6)
@@ -1220,15 +1219,14 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
 #' @author G. Pressiat
 #'
 #' @seealso irum irsa ileg_mco iano_mco irha irapss irpsa ir3a
-
 #' @export
 itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -1358,16 +1356,17 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' @seealso irum irsa
 
 #' @export
-iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
+iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
+  typano <- match.arg(typano)
   if (!(typano %in% c('in', 'out'))){
-    cat('Paramètre typano incorrect')
-    return(NULL)}
+    stop('Paramètre typano incorrect')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -1569,16 +1568,17 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
 #' @seealso irum irsa
 
 #' @export
-imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
+imed_mco <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
+  typmed <- match.arg(typmed)
   if (!(typmed %in% c('in', 'out'))){
-    cat('Paramètre typmed incorrect')
-    return(NULL)}
+    stop('Paramètre typmed incorrect')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -1729,16 +1729,17 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
 #' @seealso irum irsa
 
 #' @export
-idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
+idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
+  typdmi <- match.arg(typdmi)
   if (!(typdmi %in% c('in', 'out'))){
-    cat('Paramètre typpo incorrect')
-    return(NULL)}
+    stop('Paramètre typdmi incorrect')
+    }
 
 
   op <- options(digits.secs = 6)
@@ -1996,16 +1997,17 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @seealso irum irsa
 
 #' @export
-ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
+ipo <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
+  typpo <- match.arg(typpo)
   if (!(typpo %in% c('in', 'out'))){
-    cat('Paramètre typpo incorrect')
-    return(NULL)}
+    stop('Paramètre typpo incorrect')
+    }
 
 
   op <- options(digits.secs = 6)
@@ -2134,16 +2136,17 @@ ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
 #' @seealso irum irsa
 
 #' @export
-idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
+idiap <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
+  typdiap <- match.arg(typdiap)
   if (!(typdiap %in% c('in', 'out'))){
-    cat('Paramètre typdiap incorrect')
-    return(NULL)}
+    stop('Paramètre typdiap incorrect')
+    }
 
 
   op <- options(digits.secs = 6)
@@ -2276,11 +2279,11 @@ idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
 #' @export
 iium <- function(finess, annee, mois, path, lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
 
   op <- options(digits.secs = 6)
@@ -2369,11 +2372,11 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
 #' @export
 irapss <- function(finess,annee,mois,path,lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -2684,11 +2687,11 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
 #' @export
 iano_had <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -2793,11 +2796,11 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
 #' @export
 imed_had <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -2923,11 +2926,11 @@ ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
 #' @export
 irha <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -3375,11 +3378,11 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
 #' @export
 iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -3485,11 +3488,11 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
 #' @export
 issrha <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -3572,11 +3575,11 @@ issrha <- function(finess, annee,mois, path, lib=T, ...){
 #' @export
 irpsa <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -3675,11 +3678,11 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
 #' @export
 ir3a <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -3775,11 +3778,11 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
 #' @export
 iano_psy <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -4334,11 +4337,12 @@ tdiag <- function (d,  include = T)
 #' @export
 irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
@@ -4476,11 +4480,11 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #' @export
 iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+    }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+    }
 
     if (lamda == F){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'rsf', table == 'rafael_ano', an == substr(as.character(annee),3,4))
@@ -4547,3 +4551,24 @@ iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
 #' @author G. Pressiat
 #' @keywords data
 NULL
+
+#' ~ Silence - import sans messages
+#'
+#' Fonction d'import silencieuse avec la fonction \code{purrr::quietly}
+#'
+#' @param fonction Fonction a modifier
+#'
+#' @return La fonction qui n'imprime rien dans la console
+#'
+#' @examples
+#' \dontrun{
+#'    silence(irsa()) -> rsa_silence
+#'    # Table RSA : 
+#'    rsa_silence(750712184, 2017, 1, '~/data/mco', typi = 1)$result$rsa -> rsa17
+#' }
+#'
+#' @author G. Pressiat
+#' @export 
+silence <- function(fonction) {
+  purrr::quietly(fonction)
+}
