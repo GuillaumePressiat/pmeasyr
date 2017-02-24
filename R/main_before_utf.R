@@ -55,7 +55,7 @@
 #' @importFrom magrittr '%>%'
 #' @export
 irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -616,7 +616,7 @@ class(rum_1) <- append(class(rum_1),"RUM")
 
 #' @export
 irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -1223,7 +1223,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
 
 #' @export
 itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -1359,7 +1359,7 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 
 #' @export
 iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -1570,7 +1570,7 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
 
 #' @export
 imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -1730,7 +1730,7 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
 
 #' @export
 idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -1997,7 +1997,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 
 #' @export
 ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -2135,7 +2135,7 @@ ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
 
 #' @export
 idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -2275,7 +2275,7 @@ idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
 
 #' @export
 iium <- function(finess, annee, mois, path, lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -2368,7 +2368,7 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
 
 #' @export
 irapss <- function(finess,annee,mois,path,lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -2683,7 +2683,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
 
 #' @export
 iano_had <- function(finess, annee,mois, path, lib=T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -2792,7 +2792,7 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
 
 #' @export
 imed_had <- function(finess, annee,mois, path, lib=T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
@@ -2846,16 +2846,12 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' Import du fichier des erreurs de groupage Paprica
 #'
-#' Formats depuis 2011 pris en charge
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
-#' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
-#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
 #'
@@ -2866,33 +2862,37 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
-
+#' @seealso irapss
 #' @export
 ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
   
-  leg_i <- readr::read_csv2(paste0(path,"/",finess,".",annee,".",mois,".leg"), 
-                            col_types = 
-                              readr::cols(FINESS = character(),
-                                   NOSEJHAD = character(),
-                                   MOIS = character(),
-                                   ANNEE = character(),
-                                   NOSEQ = character(),
-                                   NOSOUSSEQ = character(),
-                                   NBERR = integer(),
-                                   e = character()), ...)
+  leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
-  if (reshape==F){
-    extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-    leg_i$EG      <- extz(leg_i$e, "[A-Z]{1}[0-9]{2,3}")
-    return(leg_i)
+  extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+  
+  u <- stringr::str_split(leg_i, "\\;", simplify = T)
+  leg_i1 <- dplyr::data_frame(FINESS    = u[,1],
+                              MOIS      = u[,2],
+                              ANNEE     = u[,3],
+                              NOSEJHAD  = u[,4],
+                              NOSEQ     = u[,5],
+                              NOSOUSSEQ = u[,6],
+                              NBERR     = u[,7])
+  
+  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR))
+  legs <- u[,8:ncol(u)]
+  legs<- legs[legs != ""] 
+  leg_i1 <- cbind(leg_i1, EG = legs)
+  
+  if (reshape==T){
+    return(leg_i1)
   }
 
-  legs <- purrr::flatten_chr(stringr::str_extract_all(leg_i$e,"[A-Z]{1}[0-9]{2,3}"))
-  leg_i1 <- dplyr::distinct(leg_i, FINESS, NOSEJHAD, MOIS, ANNEE, NOSEQ, NOUSOUSSEQ, NBERR)
-  leg_i <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR))
-  leg_i <- cbind(leg_i, EG = legs)
-  return(leg_i)
+  leg_i1 %>% 
+    dplyr::group_by(FINESS, MOIS, ANNEE, NOSEJHAD, NOSEQ, NOSOUSSEQ, NBERR) %>%
+    dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
+  
+  return(leg_i1)
 }
 
 ##############################################
