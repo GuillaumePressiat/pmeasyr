@@ -4,7 +4,7 @@
 \alias{ipo}
 \title{~ MCO - Import des PO}
 \usage{
-ipo(finess, annee, mois, path, typpo = "out", lib = T, ...)
+ipo(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}

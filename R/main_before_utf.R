@@ -54,21 +54,21 @@
 #' @importFrom utils View data unzip
 #' @importFrom magrittr '%>%'
 #' @export
-irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
   if (!(typi %in% 0:4)){
-    cat("Type d'import incorrect : 0 ou 1, 2, 3 et 4\n")
-    return(NULL)}
-
+    stop("Type d'import incorrect : 0 ou 1, 2, 3 et 4\n")
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   # Import de la table
   cat(paste("Import des RUM",annee,paste0("M",mois),"\n"))
   cat(paste("L'objet retourné prendra la forme d'une classe S3.
@@ -76,11 +76,11 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
             $das pour accéder à la table DAS
             $dad pour accéder à la table DAD
             $actes pour accéder à la table ACTES\n\n"))
-
+  
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum", an == substr(annee,3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -105,16 +105,16 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
     ),
     class = "col_spec"
   )
-
+  
   pmeasyr::formats %>% dplyr::filter(table == "rum", substr(an,1,4) == as.character(annee)) -> rg
-
+  
   # regexpr et curseurs par version
   if (length(unique(rg$an)) == 1) {
     situation_al = 1
@@ -122,12 +122,12 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     zd <- rg$rg[rg$z == "zd"]
     zal <- rg$rg[rg$z == "zal"]
     zdad <- rg$rg[rg$z == "zdad"]
-
+    
     curs_al <- rg$curseur[rg$z == "zal"]
     curs_d <- rg$curseur[rg$z == "zd"]
     curs_dad <- rg$curseur[rg$z == "zdad"]
   } else  {
-
+    
     levan <- sort(unique(rg$an))
     vers <- substr(sort(unique(rg$an)),6,9)
     # Regpexpr
@@ -167,18 +167,18 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       curs_al <- unique(rg$curseur[rg$z == "zal"])
     }
   }
-
+  
   zad <- function(rum_i){
     if (situation_al == 1){
       rum_i %>% dplyr::mutate(
         ac = ifelse(NBACTE>0,stringr::str_sub(ZAD,curs_d*NBDAS+curs_dad*NBDAD+1,curs_d*NBDAS+curs_dad*NBDAD+curs_al*NBACTE),""),
         lactes = stringr::str_extract_all(ac,zal),
         actes = extz(ac,zac),
-
+        
         das_ = ifelse(NBDAS>0,stringr::str_sub(ZAD,1,curs_d*NBDAS),""),
         ldas= stringr::str_extract_all(das_,zd),
         das = extz(das_,zd),
-
+        
         dad_ = ifelse(NBDAD>0,stringr::str_sub(ZAD,curs_d*NBDAS+1,curs_d*NBDAD+curs_dad*NBDAS),""),
         ldad = stringr::str_extract_all(dad_,zdad),
         dad = extz(dad_,zdad)
@@ -192,11 +192,11 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                                                              curs_d*NBDAS+curs_dad*NBDAD+curs_al2*NBACTE)), ""),
         lactes = dplyr::if_else(NOVERG == vers[1], stringr::str_extract_all(ac,zal1),stringr::str_extract_all(ac,zal2)),
         actes = extz(ac,zac),
-
+        
         das_ = dplyr::if_else(NBDAS>0,stringr::str_sub(ZAD,1,curs_d*NBDAS),""),
         ldas= stringr::str_extract_all(das_,zd),
         das = extz(das_,zd),
-
+        
         dad_ = dplyr::if_else(NBDAD>0,stringr::str_sub(ZAD,curs_d*NBDAS+1,curs_dad*NBDAD+curs_d*NBDAS),""),
         ldad = stringr::str_extract_all(dad_,zdad),
         dad = extz(dad_,zdad)
@@ -209,10 +209,10 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         ac = ifelse(NBACTE>0,stringr::str_sub(ZAD,curs_d*NBDAS+curs_dad*NBDAD+1,
                                               curs_d*NBDAS+curs_dad*NBDAD+curs_al*NBACTE),""),
         lactes = stringr::str_extract_all(ac,zal),
-
+        
         das_ = ifelse(NBDAS>0,stringr::str_sub(ZAD,1,curs_d*NBDAS),""),
         ldas= stringr::str_extract_all(das_,zd),
-
+        
         dad_ = ifelse(NBDAD>0,stringr::str_sub(ZAD,8*NBDAS+1,8*NBDAD+8*NBDAS),""),
         ldad = stringr::str_extract_all(dad_,zdad)
       ) %>% dplyr::select(-ac,-das_,-dad_)
@@ -225,18 +225,18 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                            stringr::str_sub(ZAD,curs_d*NBDAS+curs_dad*NBDAD+1,
                                             curs_d*NBDAS+curs_dad*NBDAD+curs_al2*NBACTE), "")),
         lactes = dplyr::if_else(NOVERG == vers[1], stringr::str_extract_all(ac,zal1),stringr::str_extract_all(ac,zal2)),
-
+        
         das_ = dplyr::if_else(NBDAS>0,stringr::str_sub(ZAD,1,curs_d*NBDAS),""),
         ldas= stringr::str_extract_all(das_,zd),
-
+        
         dad_ = dplyr::if_else(NBDAD>0,stringr::str_sub(ZAD,curs_d*NBDAS+1,curs_dad*NBDAD+curs_d*NBDAS),""),
         ldad = stringr::str_extract_all(dad_,zdad)
       ) %>% dplyr::select(-ac,-das_,-dad_)
     }
   }
-
+  
   if (annee==2011){
-
+    
     i <- function(annee,mois){
       rum_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
                                readr::fwf_widths(c(2,6,1,3,NA),c("NOCLAS","CDGHM","Fil1","NOVERG","RUM")),
@@ -279,12 +279,12 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
   }
   if (annee>=2012){
-
+    
     i <- function(annee,mois){
       suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
                                        readr::fwf_widths(af,an), col_types = at , na=character(), ...))}
   }
-
+  
   former <- function(cla, col1){
     switch(cla,
            'trim' = col1 %>% stringr::str_trim(),
@@ -294,7 +294,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
            'n3'  = (col1 %>% as.numeric() )/1000,
            'dmy' = lubridate::dmy(col1))
   }
-
+  
   if (typi !=0){
     cat("Lecture du fichier / parsing fixe...\n")
     rum_i <- i(annee,mois) %>% dplyr::mutate(
@@ -305,10 +305,10 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       DR    = stringr::str_trim(DR))
   }
   if (typi== 1){
-
+    
     Fillers <- names(rum_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
-
+    
     rum_i <- rum_i[,!(names(rum_i) %in% Fillers)]
     # Libelles
     if (lib==T){
@@ -316,7 +316,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       v <- v[!is.na(v)]
       rum_i <- rum_i  %>% dplyr::select(-ZAD) %>%  sjmisc::set_label(v)
     }
-
+    
     rum_1 <- list(rum = rum_i )
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
@@ -332,7 +332,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                     dad = stringr::str_replace_all(dad, "\\s{1,},", ","))
     Fillers <- names(rum_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
-
+    
     rum_i <- rum_i[,!(names(rum_i) %in% Fillers)]
     if (lib==T){
       v <- libelles
@@ -348,7 +348,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   if (typi== 3){
     cat("Traitement | Parsing variable...\n")
     rum_i <- zad3(rum_i)
-
+    
     if (situation_al == 1){
       cat("Actes en ligne : ")
       un_i<-Sys.time()
@@ -376,7 +376,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
       actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
       fa1 <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum_actes",
-                                                an == paste0(substr(annee,3,4), '_',vers[1]))
+                                                 an == paste0(substr(annee,3,4), '_',vers[1]))
       deb1 <- fa1$position
       fin1 <- fa1$fin
       fa2 <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum_actes",
@@ -385,9 +385,9 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       fin2 <- fa2$fin
       u <- function( i, actes){
         as.vector(as.matrix(actes %>%
-                    dplyr::mutate(temp = dplyr::if_else(NOVERG == vers[1], stringr::str_sub(var, deb1[i], fin1[i]),
-                                                 stringr::str_sub(var, deb2[i], fin2[i]))) %>%
-          dplyr::select(temp)))}
+                              dplyr::mutate(temp = dplyr::if_else(NOVERG == vers[1], stringr::str_sub(var, deb1[i], fin1[i]),
+                                                                  stringr::str_sub(var, deb2[i], fin2[i]))) %>%
+                              dplyr::select(temp)))}
       for (i in 1:length(deb1)){
         temp <- dplyr::as_data_frame(former(fa1$type[i], u(i, actes)))
         names(temp) <- fa1$nom[i]
@@ -398,7 +398,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
       fa <- fa2
     }
-
+    
     cat("Das en ligne : ")
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rum_i$ldas) %>% stringr::str_trim()
@@ -407,7 +407,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAS)
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     cat("Dad en ligne : ")
     un_i<-Sys.time()
     dad <- purrr::flatten_chr(rum_i$ldad)
@@ -417,16 +417,16 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
-        actes %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
-        das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
-        dad %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
+      actes %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
+      das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
+      dad %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
     }
-
-
-
+    
+    
+    
     Fillers <- names(rum_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
-
+    
     rum_i <- rum_i[,!(names(rum_i) %in% Fillers)]
     # Libelles
     if (lib==T){
@@ -434,7 +434,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       v <- v[!is.na(v)]
       rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjmisc::set_label(v)
     }
-
+    
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
@@ -444,7 +444,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   if (typi== 4){
     cat("Traitement | Parsing variable...\n")
     rum_i <- zad(rum_i)
-
+    
     if (situation_al == 1){
       cat("Actes en ligne : ")
       un_i<-Sys.time()
@@ -494,7 +494,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
       fa <- fa2
     }
-
+    
     cat("Das en ligne : ")
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rum_i$ldas) %>% stringr::str_trim()
@@ -503,7 +503,7 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAS)
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     cat("Dad en ligne : ")
     un_i<-Sys.time()
     dad <- purrr::flatten_chr(rum_i$ldad)
@@ -514,19 +514,19 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
       actes %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
-    das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
-    dad %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
+      das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
+      dad %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
     }
-
-
+    
+    
     rum_i <- rum_i %>%
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","),
-             dad = stringr::str_replace_all(dad, "\\s{1,},", ","))
-
-
+                    dad = stringr::str_replace_all(dad, "\\s{1,},", ","))
+    
+    
     Fillers <- names(rum_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
-
+    
     rum_i <- rum_i[,!(names(rum_i) %in% Fillers)]
     # Libelles
     if (lib==T){
@@ -534,13 +534,13 @@ irum <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       v <- c(v[!is.na(v)],c("Stream Actes","Stream Das", "Stream Dad"))
       rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjmisc::set_label(v)
     }
-rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
-class(rum_1) <- append(class(rum_1),"RUM")
+    rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
+    class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
     cat(paste("MCO RUM Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     return(rum_1)
   }
-
+  
   cat("Quel type d'import ?\n")
   typo <- data.frame(Type=c(1,
                             2,
@@ -552,11 +552,10 @@ class(rum_1) <- append(class(rum_1),"RUM")
                               'Standard+ : Partie fixe + stream + table acdi '),
                      Temps=c('Très Rapide','Rapide','Rapide','Long'),
                      `Temps rapporté`=c('= 1','* 5 (~)','* 4 (~)','* 7 (~)'))
-
-  cat(knitr::kable(typo),sep='\n')
+  
+  cat(knitr::kable(typo), sep = "\n")
   n <- readline(prompt="Taper le type d'import voulu : ")
-  return(irum(finess,annee,mois,path,lib,n))
-
+  return(irum(finess,annee,mois,path,lib,n, ...))
 }
 
 
@@ -616,30 +615,30 @@ class(rum_1) <- append(class(rum_1),"RUM")
 
 #' @export
 irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
   if (!(typi %in% 0:6)){
-    cat("Type d'import incorrect : 0 ou 1, 2, 3, 4, 5 et 6\n")
-    return(NULL)}
-
-
+    stop("Type d'import incorrect : 0 ou 1, 2, 3, 4, 5 et 6\n")
+  }
+  
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
-
+  
+  
+  
   cat(paste("L'objet retourné prendra la forme d'une classe S3.
             $rsa pour accéder à la table RSA
             $rsa_um pour accéder à la table RSA_UM
             $das pour accéder à la table des DAS
             $actes pour accéder à la table des ACTES\n\n"))
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -664,7 +663,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -672,7 +671,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     class = "col_spec"
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-
+  
   former <- function(cla, col1){
     switch(cla,
            'trim' = col1 %>% stringr::str_trim(),
@@ -682,8 +681,8 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
            'n3'  = (col1 %>% as.numeric() )/1000,
            'dmy' = lubridate::dmy(col1))
   }
-
-
+  
+  
   if (typi !=0){
     cat('Lecture du fichier | Parsing partie fixe...\n')
     rsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsa"),
@@ -691,7 +690,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       dplyr::mutate(DP = stringr::str_trim(DP),
                     DR = stringr::str_trim(DR))
   }
-
+  
   if (typi== 1){
     deux<-Sys.time()
     cat(paste("MCO RSA Light",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
@@ -705,23 +704,23 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       v <- v[!is.na(v)]
       rsa_i <- rsa_i  %>% dplyr::select(-ZA) %>%  sjmisc::set_label(v)
     }
-
+    
     rsa_1 <- list(rsa = rsa_i)
     class(rsa_1) <- append(class(rsa_1),"RSA")
-
+    
     return(rsa_1)
   }
   pmeasyr::formats %>% dplyr::filter(table == "rsa" & an == as.integer(annee)) -> rg
-
+  
   zac = rg$rg[rg$z == 'zac']
   zd  = rg$rg[rg$z == 'zd']
   zum = rg$rg[rg$z == 'zum']
   zal = rg$rg[rg$z == 'zal']
-
+  
   cd = rg$curseur[rg$z == 'zd']
   cum = rg$curseur[rg$z == 'zum']
   cal = rg$curseur[rg$z == 'zal']
-
+  
   fzad <- function(rsa){
     if (as.integer(annee) > 2011){
       return(rsa %>% dplyr::mutate(
@@ -739,7 +738,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         ACTES   = ifelse(`NA`>0,stringr::str_sub(ZA,7*NB_RDTH+cum*NBRUM + cd*NDAS + 1,7*NB_RDTH + cum*NBRUM + cd*NDAS + cal*`NA`),"")))
     }
   }
-
+  
   if (typi == 2){
     cat('Import Light+ | Streaming des actes et das...\n')
     rsa_i <- fzad(rsa_i)
@@ -748,13 +747,13 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         actes  = extz(ACTES,zac),                   # Stream des actes
         das    = extz(DAS,zd)) %>%                   # Stream des das
       dplyr::select(-ZA,-ACTES,-RUMS,-DAS)
-
+    
     rsa_i <- rsa_i %>%
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","))
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
-
+    
     # Libelles
     if (lib==T){
       v <- libelles
@@ -767,23 +766,23 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       rsa_i <- rsa_i %>%  sjmisc::set_label(v)
     }
     rsa_1 <- list(rsa = rsa_i)
-
-
+    
+    
     class(rsa_1) <- append(class(rsa_1),"RSA")
-
+    
     deux<-Sys.time()
     cat(paste("MCO RSA Light+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-
+    
     return(rsa_1)
-
+    
   }
   fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rsa_um",  an == substr(annee,3,4))
   debum <- fa[fa$nom == "TYPAUT1",]$position
   finum <- fa[fa$nom == "TYPAUT1",]$fin
-
+  
   debdpdr <- fa[fa$nom == "DPUM",]$position
   findpdr <- fa[fa$nom == "DRUM",]$fin
-
+  
   if (typi == 3){
     cat('Import Light++ | Streaming des actes, das, typaut UM et DP/DR des UM...\n')
     rsa_i <- fzad(rsa_i)
@@ -799,17 +798,17 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                                function(y){toString(y)})),
         das    = extz(DAS,zd)) %>%                   # Stream des das
       dplyr::select(-ZA,-RUMS,-ACTES,-DAS,-lum)
-
+    
     rsa_i <- rsa_i %>%
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","),
-             dpdrum = stringr::str_replace_all(dpdrum, "\\s{1,},", ","))
-
+                    dpdrum = stringr::str_replace_all(dpdrum, "\\s{1,},", ","))
+    
     deux<-Sys.time()
-
+    
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
-
+    
     if (lib==T){
       v <- libelles
       if (annee==2011) {
@@ -820,30 +819,30 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       }
       rsa_i <- rsa_i %>%  sjmisc::set_label(v)
     }
-
+    
     rsa_1 <- list(rsa = rsa_i)
     class(rsa_1) <- append(class(rsa_1),"RSA")
-
+    
     cat(paste("MCO RSA Light++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     cat("La table rsa est dans l'environnement de travail\n")
-
-
+    
+    
     return(rsa_1)
   }
-
+  
   if (typi == 4){
-
-
+    
+    
     cat('Traitement | Parsing partie variable...\n')
-
+    
     rsa_i <- fzad(rsa_i)
-
+    
     rsa_i  <- rsa_i %>%
       dplyr::mutate(lactes = stringr::str_extract_all(ACTES,zal),           # Liste des actes
                     lum    = stringr::str_extract_all(RUMS,zum),           # Liste des UM
                     ldas   = stringr::str_extract_all(DAS,zd) ) %>%           # Liste de das
       dplyr::select(-ZA,-RUMS,-ACTES,-DAS)
-
+    
     cat("Passages UM en ligne : ")
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
@@ -870,7 +869,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     # das
     cat("Das en ligne : ")
     un_i<-Sys.time()
@@ -884,7 +883,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     # actes
     cat("Actes en ligne : ")
     un_i<-Sys.time()
@@ -905,18 +904,18 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     if (lib == T){
       actes %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
     }
-
+    
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     deux<-Sys.time()
-
+    
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
-
+    
     # Libelles
     rsa_i <- rsa_i %>% dplyr::select(-lactes, - lum, - ldas)
-
+    
     if (lib==T){
       v <- libelles
       if (annee==2011){
@@ -927,20 +926,20 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       }
       rsa_i <- rsa_i %>%  sjmisc::set_label(v)
     }
-
+    
     rsa_1 <- list(rsa = rsa_i,
                   actes = actes,
                   das = das,
                   rsa_um=rsa_um)
     class(rsa_1) <- append(class(rsa_1),"RSA")
     cat(paste("MCO RSA Standard",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-
+    
     return(rsa_1)
   }
   if (typi == 5){
     cat('Import standard+\n')
     cat('Traitement | Parsing partie variable...\n')
-
+    
     rsa_i <- fzad(rsa_i)
     rsa_i  <- rsa_i %>%
       dplyr::mutate(lactes = stringr::str_extract_all(ACTES,zal),           # Liste des actes
@@ -949,10 +948,10 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                     ldas   = stringr::str_extract_all(DAS,zd),            # Liste de das
                     das    = extz(DAS,zd)) %>%                       # Stream des das
       dplyr::select(-ZA,-RUMS,-ACTES,-DAS)
-
+    
     rsa_i <- rsa_i %>%
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","))
-
+    
     cat("Passages UM en ligne : ")
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
@@ -979,7 +978,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     # das
     cat("Das en ligne : ")
     un_i<-Sys.time()
@@ -993,7 +992,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     # actes
     cat("Actes en ligne : ")
     un_i<-Sys.time()
@@ -1014,23 +1013,23 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     if (lib == T){
       actes %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
     }
-
+    
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     deux<-Sys.time()
-
+    
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
-
+    
     # Libelles
-
+    
     deux<-Sys.time()
     rsa_i <- rsa_i %>% dplyr::select(-lactes,-lum,-ldas)
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
-
+    
     if (lib==T){
       v <- libelles
       if (annee==2011) {
@@ -1039,19 +1038,19 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       else{
         v <-  c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes", "Stream Das"))
       }
-
+      
       rsa_i <- rsa_i %>%  sjmisc::set_label(v)
     }
-
+    
     rsa_1 <- list(rsa = rsa_i , actes = actes, das = das, rsa_um=rsa_um)
     class(rsa_1) <- append(class(rsa_1),"RSA")
-
+    
     cat(paste("MCO RSA Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
-
-
+    
+    
     return(rsa_1)
-
+    
   }
   if (typi == 6){
     cat('Import standard++\n')
@@ -1072,11 +1071,11 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                     ldas   = stringr::str_extract_all(DAS,zd),            # Liste de das
                     das    = extz(DAS,zd)) %>%                       # Stream des das
       dplyr::select(-ZA,-RUMS,-ACTES,-DAS)
-
+    
     rsa_i <- rsa_i %>%
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","),
-             dpdrum = stringr::str_replace_all(dpdrum, "\\s{1,},", ","))
-
+                    dpdrum = stringr::str_replace_all(dpdrum, "\\s{1,},", ","))
+    
     cat("Passages UM en ligne : ")
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
@@ -1103,7 +1102,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     # das
     cat("Das en ligne : ")
     un_i<-Sys.time() %>% stringr::str_trim()
@@ -1117,7 +1116,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
-
+    
     # actes
     cat("Actes en ligne : ")
     un_i<-Sys.time()
@@ -1138,7 +1137,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     if (lib == T){
       actes %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
     }
-
+    
     deux_i<-Sys.time()
     cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     deux<-Sys.time()
@@ -1146,7 +1145,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
-
+    
     if (lib==T){
       v <- libelles
       if (annee==2011) {
@@ -1156,16 +1155,16 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         v <-  c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das"))
       }
       rsa_i <- rsa_i %>%  sjmisc::set_label(v)
-
+      
     }
-
+    
     rsa_1 <- list(rsa = rsa_i , actes = actes, das = das, rsa_um = rsa_um)
     class(rsa_1) <- append(class(rsa_1),"RSA")
-
+    
     cat(paste("MCO RSA Standard++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
-
-
+    
+    
     return(rsa_1)
   }
   cat("Quel type d'import ?\n")
@@ -1183,7 +1182,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                               'Standard++ : Partie fixe + création des tables acdi et rsa_um + stream (++)'),
                      Temps=c('Très Rapide','Rapide','Long','Rapide', 'Long','Long'),
                      `Temps rapporté`=c('= 1','* 4 (~)','* 9 (~)','* 4 (~)','* 6 (~)', '* 10 (~)'))
-
+  
   cat(knitr::kable(typo),sep='\n')
   n <- readline(prompt="Taper le type d'import voulu : ")
   return(irsa(finess,annee,mois,path,lib,n, ...))
@@ -1220,21 +1219,20 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
 #' @author G. Pressiat
 #'
 #' @seealso irum irsa ileg_mco iano_mco irha irapss irpsa ir3a
-
 #' @export
 itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
   if (!grepl("psy",champ)){
-  champ1 = champ
-  format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
+    champ1 = champ
+    format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
   } else {
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == "psy", table == champ1)
@@ -1263,14 +1261,14 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
     ),
     class = "col_spec"
   )
-
+  
   if (champ=="mco"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
@@ -1310,12 +1308,12 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
       dplyr::mutate(DTACTE  = lubridate::dmy(DTACTE),
                     DTACTE_2  = lubridate::dmy(DTACTE_2))
   }
-
+  
   if (lib==T & champ !="tra_psy_r3a"){
     v <- c(libelles, 'Établissement')
     return(tra_i  %>%  sjmisc::set_label(v))
   }
-
+  
   if (lib==T & champ =="tra_psy_r3a"){
     v <- libelles
     return(tra_i  %>%  sjmisc::set_label(v))
@@ -1358,25 +1356,26 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' @seealso irum irsa
 
 #' @export
-iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
+iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
+  typano <- match.arg(typano)
   if (!(typano %in% c('in', 'out'))){
-    cat('Paramètre typano incorrect')
-    return(NULL)}
-
+    stop('Paramètre typano incorrect')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   if (typano=="out"){
-
+    
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_ano', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -1401,7 +1400,7 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
@@ -1423,8 +1422,8 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
                                        MTRMBAMC = MTRMBAMC/100,
                                        TAUXRM   = TAUXRM  /100,
                                        MTMALPAR = MTMALPAR/100) )
-
-
+      
+      
     }
     if (2011<annee & annee<2013){
       suppressWarnings(ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
@@ -1440,7 +1439,7 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
                                        MTRMBAMC = MTRMBAMC/100,
                                        TAUXRM   = TAUXRM  /100,
                                        MTMALPAR = MTMALPAR/100) )
-
+      
     }
     if (annee == 2011){
       suppressWarnings( ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
@@ -1457,20 +1456,20 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
                                         MTMALPAR = MTMALPAR/100)
       )
     }
-
+    
     Fillers <- names(ano_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
     ano_i <- ano_i[,!(names(ano_i) %in% Fillers)]
-
+    
     if (lib==T){
       v <- c(libelles[!is.na(libelles)], "Chaînage Ok")
       ano_i <- ano_i  %>%  sjmisc::set_label(v)
     }
   }
-
+  
   if (typano=="in"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rum_ano', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -1495,15 +1494,15 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
       ),
       class = "col_spec"
     )
-
-
+    
+    
     if (2011<annee){
       ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...)  %>%
@@ -1530,13 +1529,13 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
     Fillers <- names(ano_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     ano_i <- ano_i[,!(names(ano_i) %in% Fillers)]
-
+    
     if (lib==T){
       v <- libelles[!is.na(libelles)]
       ano_i <- ano_i  %>%  sjmisc::set_label(v)
     }
   }
-
+  
   return(ano_i)
 }
 
@@ -1569,25 +1568,26 @@ iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
 #' @seealso irum irsa
 
 #' @export
-imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+imed_mco <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, ...){
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
+  typmed <- match.arg(typmed)
   if (!(typmed %in% c('in', 'out'))){
-    cat('Paramètre typmed incorrect')
-    return(NULL)}
-
+    stop('Paramètre typmed incorrect')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   if (typmed=="out"){
     # med_out
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_med', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -1612,20 +1612,20 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
       ),
       class = "col_spec"
     )
-
+    
     med_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(NBADM = NBADM/1000,
                     PRIX =  PRIX /1000)
-
-
+    
+    
     info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
     if (info$size >0 & !is.na(info$size)){
       med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
@@ -1634,7 +1634,7 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
                       PRIX =  PRIX /1000)
       med_i <- rbind(med_i,med_i2)
     }
-
+    
     info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medthrombo"))
     if (info$size >0 & !is.na(info$size)){
       med_i3<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medthrombo"),
@@ -1651,7 +1651,7 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
   }
   if (typmed=="in"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rum_med', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -1676,7 +1676,7 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
@@ -1697,7 +1697,7 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
     }
     return(med_i %>% dplyr::mutate(DTDISP = lubridate::dmy(DTDISP)) )
   }
-
+  
 }
 
 #' ~ MCO - Import des DMI
@@ -1729,25 +1729,26 @@ imed_mco <- function(finess, annee, mois, path, typmed = "out", lib = T, ...){
 #' @seealso irum irsa
 
 #' @export
-idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...){
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
+  typdmi <- match.arg(typdmi)
   if (!(typdmi %in% c('in', 'out'))){
-    cat('Paramètre typpo incorrect')
-    return(NULL)}
-
-
+    stop('Paramètre typdmi incorrect')
+  }
+  
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   if (typdmi=="out"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_dmi', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -1772,7 +1773,7 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
@@ -1782,8 +1783,8 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
     dmi_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".dmip"),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(PRIX   =  PRIX /1000)
-
-
+    
+    
     if (lib==T){
       v <- libelles
       dmi_i <- dmi_i  %>%  sjmisc::set_label(v)
@@ -1792,7 +1793,7 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
   }
   if (typdmi=="in"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rum_dmi', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -1817,7 +1818,7 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
@@ -1828,8 +1829,8 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(PRIX   =  PRIX /1000,
                     DTPOSE = lubridate::dmy(DTPOSE))
-
-
+    
+    
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
@@ -1867,9 +1868,9 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = "out", lib = T, ...){
 
 #' @export
 ileg_mco <- function(finess, annee, mois, path, reshape = F, ...){
-
+  
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"), ...)
-
+  
   if (reshape==F){
     CLE_RSA <- stringr::str_extract(leg_i, "[0-9]{10}")
     extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
@@ -1965,7 +1966,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
     print("Paramètre champ incorrect")
     return(NULL)
   }
-
+  
 }
 
 #' ~ MCO - Import des PO
@@ -1996,25 +1997,26 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @seealso irum irsa
 
 #' @export
-ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+ipo <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...){
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
+  typpo <- match.arg(typpo)
   if (!(typpo %in% c('in', 'out'))){
-    cat('Paramètre typpo incorrect')
-    return(NULL)}
-
-
+    stop('Paramètre typpo incorrect')
+  }
+  
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   if (typpo=="out"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_po', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -2039,18 +2041,18 @@ ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
       ),
       class = "col_spec"
     )
-
+    
     po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg"),
                           readr::fwf_widths(af,an), col_types =at, na=character(), ...)
-
-
+    
+    
     if (lib==T){
       v <- libelles
       po_i <- po_i  %>%  sjmisc::set_label(v)
@@ -2059,7 +2061,7 @@ ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
   }
   if (typpo=="in"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'ffc_in', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -2084,26 +2086,26 @@ ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
       ),
       class = "col_spec"
     )
-
+    
     po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg.txt"),
                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
-
-
+    
+    
     if (lib==T){
       v <- libelles
       po_i <- po_i  %>%  sjmisc::set_label(v)
     }
     return(po_i)
   }
-
+  
 }
 
 #' ~ MCO - Import des DIAP
@@ -2134,25 +2136,26 @@ ipo <- function(finess, annee, mois, path, typpo = "out", lib = T, ...){
 #' @seealso irum irsa
 
 #' @export
-idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+idiap <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...){
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
+  typdiap <- match.arg(typdiap)
   if (!(typdiap %in% c('in', 'out'))){
-    cat('Paramètre typdiap incorrect')
-    return(NULL)}
-
-
+    stop('Paramètre typdiap incorrect')
+  }
+  
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   if (typdiap=="out"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_diap', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -2177,18 +2180,18 @@ idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
       ),
       class = "col_spec"
     )
-
+    
     diap_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".diap"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...)
-
-
+    
+    
     if (lib==T){
       v <- libelles
       diap_i <- diap_i  %>%  sjmisc::set_label(v)
@@ -2197,7 +2200,7 @@ idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
   }
   if (typdiap=="in"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'ffc_in', an == substr(as.character(annee),3,4))
-
+    
     af <- format$longueur
     libelles <- format$libelle
     an <- format$nom
@@ -2222,27 +2225,27 @@ idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
       )
     }
     col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+    
     at <- structure(
       list(
         cols = col_types
       ),
       class = "col_spec"
     )
-
+    
     diap_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".diap.txt"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
-
-
+    
+    
     if (lib==T){
-
+      
       v <- libelles
       diap_i <- diap_i  %>%  sjmisc::set_label(v)
     }
     return(diap_i)
   }
-
+  
 }
 
 
@@ -2275,20 +2278,20 @@ idiap <- function(finess, annee, mois, path, typdiap = "out", lib = T, ...){
 
 #' @export
 iium <- function(finess, annee, mois, path, lib = T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
-
+    stop('Mois incorrect\n')
+  }
+  
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'um', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -2313,19 +2316,19 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
     ),
     class = "col_spec"
   )
-
+  
   ium_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ium"),
                          readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
     dplyr::mutate(DTEAUT = lubridate::dmy(DTEAUT))
-
-
+  
+  
   if (lib==T){
     v <- libelles
     ium_i <- ium_i  %>%  sjmisc::set_label(v)
@@ -2368,26 +2371,26 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
 
 #' @export
 irapss <- function(finess,annee,mois,path,lib = T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
-
+  
+  
   cat(paste("L'objet retourné prendra la forme d'une classe S3.
             $rapss pour accéder à la table RSA
             $acdi pour accéder à la table ACDI
             $ght pour accéder aux ght etb et paprica\n\n"))
-
-
-
+  
+  
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -2412,7 +2415,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -2420,24 +2423,24 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
     class = "col_spec"
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-
+  
   rapss_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rapss"),
                              readr::fwf_widths(af,an), col_types = at , na=character(),...)
-
-
-
+  
+  
+  
   if (annee==2011){
     zght <- ".{5}"
     zd   <- ".{1,6}"
     zA   <- ".{1,17}"
-
+    
     rapss_i <- rapss_i %>% dplyr::mutate(
       # Diagnostics et actes
       da       = ifelse(NBDA>0,stringr::str_sub(Z,1,NBDA*6),""),
       lda    = stringr::str_extract_all(da,zd),
       za       = ifelse(NBZA>0,stringr::str_sub(Z,1+NBDA*6,NBDA*6+NBZA*17),""),
       lactes    = stringr::str_extract_all(za,zA),
-
+      
       # groupage Etablissement
       NOVRPSS = stringr::str_sub(Z, 1+NBDA*6+NBZA*17, NBDA*6+NBZA*17+3),
       ETB_VCLASS = stringr::str_sub(Z, 1+NBDA*6+NBZA*17+3, NBDA*6+NBZA*17+3+2),
@@ -2446,7 +2449,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       ETB_NBGHT  = stringr::str_sub(Z, 1+NBDA*6+NBZA*17+3+2+3+4, NBDA*6+NBZA*17+3+2+3+4+1) %>% as.numeric(),
       etb_ght   = stringr::str_sub(Z, 1+NBDA*6+NBZA*17+13,NBDA*6+NBZA*17+13+5*ETB_NBGHT),
       letb_ght  = stringr::str_extract_all(etb_ght,zght),
-
+      
       # groupage Paprica
       PAPRICA_VCLASS = stringr::str_sub(Z, 1+NBDA*6+NBZA*17+13+5*ETB_NBGHT,NBDA*6+NBZA*17+13+5*ETB_NBGHT+2),
       PAPRICA_CDRETR = stringr::str_sub(Z, 1+NBDA*6+NBZA*17+13+5*ETB_NBGHT+2,NBDA*6+NBZA*17+13+5*ETB_NBGHT+2+3),
@@ -2456,12 +2459,12 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       lpap_ght  = stringr::str_extract_all(pap_ght,zght)
     )
   }
-
+  
   if (2011< annee & annee<=2014){
     zght <- ".{5}"
     zd   <- ".{1,6}"
     zA   <- ".{1,17}"
-
+    
     rapss_i <- rapss_i %>% dplyr::mutate(
       # Diagnostics et actes
       dmpp     = ifelse(NBDIAGMPP>0,stringr::str_sub(Z,1,NBDIAGMPP*6),""),
@@ -2472,7 +2475,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       lda    = stringr::str_extract_all(da,zd),
       za       = ifelse(NBZA>0,stringr::str_sub(Z,1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17),""),
       lactes    = stringr::str_extract_all(za,zA),
-
+      
       # groupage Etablissement
       NOVRPSS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+3),
       ETB_VCLASS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+3, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+3+2),
@@ -2481,7 +2484,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       ETB_NBGHT  = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+3+2+3+4, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+3+2+3+4+1) %>% as.numeric(),
       etb_ght   = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13+5*ETB_NBGHT),
       letb_ght  = stringr::str_extract_all(etb_ght,zght),
-
+      
       # groupage Paprica
       PAPRICA_VCLASS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13+5*ETB_NBGHT,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13+5*ETB_NBGHT+2),
       PAPRICA_CDRETR = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13+5*ETB_NBGHT+2,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13+5*ETB_NBGHT+2+3),
@@ -2490,14 +2493,14 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       pap_ght   = stringr::str_sub(Z,1+ NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13+5*ETB_NBGHT+10,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*17+13+5*ETB_NBGHT+10+PAPRICA_NBGHT*5),
       lpap_ght  = stringr::str_extract_all(pap_ght,zght)
     )
-
+    
   }
-
+  
   if (annee>2014){
     zght <- ".{5}"
     zd   <- ".{1,6}"
     zA   <- ".{1,19}"
-
+    
     rapss_i <- rapss_i %>% dplyr::mutate(
       DP = stringr::str_trim(DP),
       # Diagnostics et actes
@@ -2509,7 +2512,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       lda    = stringr::str_extract_all(da,zd),
       za       = ifelse(NBZA>0,stringr::str_sub(Z,1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19),""),
       lactes    = stringr::str_extract_all(za,zA),
-
+      
       # groupage Etablissement
       NOVRPSS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+3),
       ETB_VCLASS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+3, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+3+2),
@@ -2518,7 +2521,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       ETB_NBGHT  = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+3+2+3+4, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+3+2+3+4+1) %>% as.numeric(),
       etb_ght   = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+13,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+13+5*ETB_NBGHT),
       letb_ght  = stringr::str_extract_all(etb_ght,zght),
-
+      
       # groupage Paprica
       PAPRICA_VCLASS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+13+5*ETB_NBGHT,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+13+5*ETB_NBGHT+2),
       PAPRICA_CDRETR = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+13+5*ETB_NBGHT+2,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*19+13+5*ETB_NBGHT+2+3),
@@ -2528,7 +2531,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       lpap_ght  = stringr::str_extract_all(pap_ght,zght)
     )
   }
-
+  
   if (annee>2011){
     actes <- purrr::flatten_chr(rapss_i$lactes)
     df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBZA)
@@ -2542,30 +2545,30 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       EXTDOC = stringr::str_sub(ZACTES,16,16),
       NBEXEC = stringr::str_sub(ZACTES,17,18),
       INDVAL = stringr::str_sub(ZACTES,19,19))
-
+    
     da <- purrr::flatten_chr(rapss_i$lda)
     df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     da <- dplyr::mutate(da, CODE = 'DA') %>% dplyr::select(-NBDA)
-
+    
     dmpp <- purrr::flatten_chr(rapss_i$ldmpp)
     df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDIAGMPP)
     df <- as.data.frame(lapply(df, rep, df$NBDIAGMPP), stringsAsFactors = F) %>% dplyr::tbl_df()
     dmpp <- dplyr::bind_cols(df,data.frame(DMPP = stringr::str_trim(dmpp), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     dmpp <- dplyr::mutate(dmpp, CODE = 'DMPP') %>% dplyr::select(-NBDIAGMPP)
-
+    
     dmpa <- purrr::flatten_chr(rapss_i$ldmpa)
     df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDIAGMPA)
     df <- as.data.frame(lapply(df, rep, df$NBDIAGMPA), stringsAsFactors = F) %>% dplyr::tbl_df()
     dmpa <- dplyr::bind_cols(df,data.frame(DMPA = stringr::str_trim(dmpa), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     dmpa <- dplyr::mutate(dmpa, CODE = 'DMPA') %>% dplyr::select(-NBDIAGMPA)
-
+    
     acdi <- dplyr::bind_rows(actes,da,dmpp,dmpa) %>% dplyr::select(-ZACTES)
     rapss_i <- rapss_i %>% dplyr::select(-c(FILLER,Z,da,za,dmpp,dmpa,lda,ldmpp,ldmpa,lactes))
-
+    
   }
-
+  
   if (annee==2011){
     actes <- purrr::flatten_chr(rapss_i$lactes)
     df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBZA)
@@ -2579,17 +2582,17 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
       EXTDOC = stringr::str_sub(ZACTES,16,16),
       NBEXEC = stringr::str_sub(ZACTES,17,18),
       INDVAL = stringr::str_sub(ZACTES,19,19))
-
+    
     da <- purrr::flatten_chr(rapss_i$lda)
     df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     da <- dplyr::mutate(da, CODE = 'DA') %>% dplyr::select(-NBDA)
-
+    
     acdi <- dplyr::bind_rows(actes,da) %>% dplyr::select(-ZACTES)
     rapss_i <- rapss_i %>% dplyr::select(-c(Z,da,za,lda,lactes))
   }
-
+  
   etb_ght <- purrr::flatten_chr(rapss_i$letb_ght)
   df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NOVRPSS, VCLASS = ETB_VCLASS, CDRETR = ETB_CDRETR,
                                   GHPC = ETB_GHPC, NBGHT = ETB_NBGHT)
@@ -2599,7 +2602,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
                   NUMGHT = stringr::str_sub(etb_ght,1,2),
                   JOURSGHT = stringr::str_sub(etb_ght,3,5) %>% as.numeric() ) %>%
     dplyr::select(-etb_ght)
-
+  
   pap_ght <- purrr::flatten_chr(rapss_i$lpap_ght)
   df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,VCLASS=PAPRICA_VCLASS, CDRETR = PAPRICA_CDRETR, GHPC = PAPRICA_GHPC,
                                   NBGHT = PAPRICA_NBGHT )
@@ -2609,21 +2612,21 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
                   NUMGHT = stringr::str_sub(pap_ght,1,2),
                   JOURSGHT = stringr::str_sub(pap_ght,3,5) %>% as.numeric() ) %>%
     dplyr::select(-pap_ght)
-
+  
   ght <- dplyr::bind_rows(etb_ght,pap_ght)
-
+  
   rapss_i <- rapss_i %>% dplyr::select(-c(lpap_ght,letb_ght))
   rapss_i <- rapss_i %>% dplyr::select(- dplyr::starts_with("PAP"),- dplyr::starts_with("ETB"),-NOVRPSS)
   acdi[is.na(acdi)] <- ""
   rapss_i[is.na(rapss_i)] <- ""
   ght[is.na(ght)] <- ""
   if (lib==T){
-
+    
     ght <- ght %>% sjmisc::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
                                        'N° de version du RPSS','Version de classification',
                                        'Codes retours', 'Groupe homogène de prise en charge',
                                        'Nombre de GHT','Type de GHT', 'N° du GHT', 'Nombre de jours du GHT'))
-
+    
     if (annee==2011){
       acdi <- acdi %>% sjmisc::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
                                            'Type de code (A : Acte, DA : Diagnostic Associé)',
@@ -2636,19 +2639,19 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
                                            "Nombre d'exécécutions", "Indic Validité de l'acte","Diagnostic Associé", "Diagnostic MPP",
                                            "Diagnostic MPA"))
     }
-
+    
   }
-
+  
   Fillers <- names(rapss_i)
   Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
   rapss_i <- rapss_i[,!(names(rapss_i) %in% Fillers)]
-
+  
   if (lib==T){
     rapss_i <- rapss_i  %>% sjmisc::set_label(libelles[!is.na(libelles)])
   }
-    rapss_1 <- list(rapss = rapss_i, acdi = acdi, ght = ght)
+  rapss_1 <- list(rapss = rapss_i, acdi = acdi, ght = ght)
   return(rapss_1)
-
+  
 }
 
 #' ~ HAD - Import des Anohosp
@@ -2683,18 +2686,18 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
 
 #' @export
 iano_had <- function(finess, annee,mois, path, lib=T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -2719,7 +2722,7 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -2756,7 +2759,7 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
   }
   ano_i <- ano_i %>% sjmisc::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
-
+  
   return(ano_i)
 }
 
@@ -2792,18 +2795,18 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
 
 #' @export
 imed_had <- function(finess, annee,mois, path, lib=T, ...){
-  if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_med', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -2828,7 +2831,7 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -2846,16 +2849,12 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' Import du fichier des erreurs de groupage Paprica
 #'
-#' Formats depuis 2011 pris en charge
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
-#' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
-#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
 #'
@@ -2866,33 +2865,37 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
-
+#' @seealso irapss
 #' @export
 ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
   
-  leg_i <- readr::read_csv2(paste0(path,"/",finess,".",annee,".",mois,".leg"), 
-                            col_types = 
-                              readr::cols(FINESS = character(),
-                                   NOSEJHAD = character(),
-                                   MOIS = character(),
-                                   ANNEE = character(),
-                                   NOSEQ = character(),
-                                   NOSOUSSEQ = character(),
-                                   NBERR = integer(),
-                                   e = character()), ...)
+  leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
-  if (reshape==F){
-    extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-    leg_i$EG      <- extz(leg_i$e, "[A-Z]{1}[0-9]{2,3}")
-    return(leg_i)
+  extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+  
+  u <- stringr::str_split(leg_i, "\\;", simplify = T)
+  leg_i1 <- dplyr::data_frame(FINESS    = u[,1],
+                              MOIS      = u[,2],
+                              ANNEE     = u[,3],
+                              NOSEJHAD  = u[,4],
+                              NOSEQ     = u[,5],
+                              NOSOUSSEQ = u[,6],
+                              NBERR     = u[,7])
+  
+  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR))
+  legs <- u[,8:ncol(u)]
+  legs<- legs[legs != ""] 
+  leg_i1 <- cbind(leg_i1, EG = legs)
+  
+  if (reshape==T){
+    return(leg_i1)
   }
-
-  legs <- purrr::flatten_chr(stringr::str_extract_all(leg_i$e,"[A-Z]{1}[0-9]{2,3}"))
-  leg_i1 <- dplyr::distinct(leg_i, FINESS, NOSEJHAD, MOIS, ANNEE, NOSEQ, NOUSOUSSEQ, NBERR)
-  leg_i <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR))
-  leg_i <- cbind(leg_i, EG = legs)
-  return(leg_i)
+  
+  leg_i1 %>% 
+    dplyr::group_by(FINESS, MOIS, ANNEE, NOSEJHAD, NOSEQ, NOSOUSSEQ, NBERR) %>%
+    dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
+  
+  return(leg_i1)
 }
 
 ##############################################
@@ -2923,15 +2926,15 @@ ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
 #' @export
 irha <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rha', an == substr(as.character(annee),3,4))
   format$longueur[nrow(format)] <- NA
   af <- format$longueur
@@ -2958,7 +2961,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -2970,7 +2973,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
     dplyr::mutate(FPPC = stringr::str_trim(FPPC),
                   MMP = stringr::str_trim(MMP),
                   AE = stringr::str_trim(AE))
-
+  
   if (annee >  2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
@@ -2984,7 +2987,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     INDVAL = stringr::str_sub(ccam,19,19)
       ) %>% dplyr::select(-ccam)
     }
-
+    
     fzsarr <- function(csarr){
       dplyr::mutate(csarr,
                     CSARR       = stringr::str_sub(csarr,1,7),
@@ -3002,39 +3005,39 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     EXTDOCcsarr = stringr::str_sub(csarr,31,32)
       ) %>% dplyr::select(-csarr)
     }
-
+    
     zad <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,ZAD, NBDA, NBCSARR, NBCCAM) %>%
       dplyr::mutate(
-
+        
         da = ifelse(NBDA>0,stringr::str_sub(ZAD,1,6*NBDA),""),
         lda = stringr::str_extract_all(da,".{1,6}"),
-
+        
         csarr = ifelse(NBCSARR>0,stringr::str_sub(ZAD,6*NBDA+1,6*NBDA + 32*NBCSARR),""),
         lcsarr = stringr::str_extract_all(csarr, ".{1,32}"),
-
+        
         ccam = ifelse(NBCCAM>0,stringr::str_sub(ZAD,6*NBDA+1+32*NBCSARR,6*NBDA + 32*NBCSARR + 19*NBCCAM),""),
         lccam = stringr::str_extract_all(ccam, ".{1,19}")
       )
     da <- purrr::flatten_chr(zad$lda)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
-
+    
     csarr <- purrr::flatten_chr(zad$lcsarr)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCSARR)
     df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% dplyr::tbl_df()
     csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CSARR') %>% dplyr::select(-NBCSARR)
-
-
+    
+    
     ccam <- purrr::flatten_chr(zad$lccam)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
     df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
-
+    
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CCAM)","Diagnostic associé",
                    "Code CSARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
@@ -3042,7 +3045,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                    "Nb de réalisations","Acte compatible avec la semaine", "Délai depuis la date d'entrée dans l'UM",
                    "Nb réel de patients", "Nb d'intervenants","Extension documentaire CSARR", "Code CCAM", "Partie descriptive","Phase CCAM",
                    "Activité CCAM", "Extension documentaire CCAM")
-
+    
     acdi <- acdi %>% sjmisc::set_label(labelacdi)
   }
   if (annee == 2014){
@@ -3057,7 +3060,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
-
+    
     fzsarr <- function(csarr){
       dplyr::mutate(csarr,
                     CSARR       = stringr::str_sub(csarr,1,7),
@@ -3075,39 +3078,39 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     EXTDOCcsarr = stringr::str_sub(csarr,31,32)
       ) %>% dplyr::select(-csarr)
     }
-
+    
     zad <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,ZAD, NBDA, NBCSARR, NBCCAM) %>%
       dplyr::mutate(
-
+        
         da = ifelse(NBDA>0,stringr::str_sub(ZAD,1,6*NBDA),""),
         lda = stringr::str_extract_all(da,".{1,6}"),
-
+        
         csarr = ifelse(NBCSARR>0,stringr::str_sub(ZAD,6*NBDA+1,6*NBDA + 32*NBCSARR),""),
         lcsarr = stringr::str_extract_all(csarr, ".{1,32}"),
-
+        
         ccam = ifelse(NBCCAM>0,stringr::str_sub(ZAD,6*NBDA+1+32*NBCSARR,6*NBDA + 32*NBCSARR + 17*NBCCAM),""),
         lccam = stringr::str_extract_all(ccam, ".{1,17}")
       )
     da <- purrr::flatten_chr(zad$lda)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
-
+    
     csarr <- purrr::flatten_chr(zad$lcsarr)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCSARR)
     df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% dplyr::tbl_df()
     csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CSARR') %>% dplyr::select(-NBCSARR)
-
-
+    
+    
     ccam <- purrr::flatten_chr(zad$lccam)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
     df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
-
+    
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CCAM)","Diagnostic associé",
                    "Code CSARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
@@ -3115,9 +3118,9 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                    "Nb de réalisations","Acte compatible avec la semaine", "Délai depuis la date d'entrée dans l'UM",
                    "Nb réel de patients", "Nb d'intervenants","Extension documentaire CSARR", "Code CCAM", "Phase CCAM",
                    "Activité CCAM", "Extension documentaire CCAM")
-
+    
     acdi <- acdi %>% sjmisc::set_label(labelacdi)
-
+    
   }
   if (annee == 2013){
     fzacte <- function(ccam){
@@ -3131,7 +3134,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
-
+    
     fzsarr <- function(csarr){
       dplyr::mutate(csarr,
                     CSARR       = stringr::str_sub(csarr,1,7),
@@ -3149,49 +3152,49 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     DELAI       = stringr::str_sub(csarr,23,26)) %>%
         dplyr::select(-csarr)
     }
-
+    
     zad <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,ZAD, NBDA, NBCSARR, NBCCAM) %>%
       dplyr::mutate(
-
+        
         da = ifelse(NBDA>0,stringr::str_sub(ZAD,1,6*NBDA),""),
         lda = stringr::str_extract_all(da,".{1,6}"),
-
+        
         csarr = ifelse(NBCSARR>0,stringr::str_sub(ZAD,6*NBDA+1,6*NBDA + 26*NBCSARR),""),
         lcsarr = stringr::str_extract_all(csarr, ".{1,26}"),
-
+        
         ccam = ifelse(NBCCAM>0,stringr::str_sub(ZAD,6*NBDA+1+26*NBCSARR,6*NBDA + 26*NBCSARR + 17*NBCCAM),""),
         lccam = stringr::str_extract_all(ccam, ".{1,17}")
       )
-
+    
     da <- purrr::flatten_chr(zad$lda)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA')%>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
-
+    
     csarr <- purrr::flatten_chr(zad$lcsarr)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCSARR)
     df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% dplyr::tbl_df()
     csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBCSARR)
-
-
+    
+    
     ccam <- purrr::flatten_chr(zad$lccam)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
     df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
-
+    
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CDARR / CCAM)","Diagnostic associé",
                    "Code CSARR","Code CDARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
                    "Code modulateur patient n°2", "Code de l'intervenant", "Nb de patients en acte individuel",
                    "Nb de réalisations","Acte compatible avec la semaine", "Délai depuis la date d'entrée dans l'UM",
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
-
+    
     acdi <- acdi %>% sjmisc::set_label(labelacdi)
-
+    
   }
   if (annee == 2012){
     fzacte <- function(ccam){
@@ -3222,39 +3225,39 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     DELAI       = stringr::str_sub(csarr,23,26)) %>%
         dplyr::select(-csarr)
     }
-
+    
     zad <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,ZAD, NBDA, NBCDARR, NBCCAM) %>%
       dplyr::mutate(
-
+        
         da = ifelse(NBDA>0,stringr::str_sub(ZAD,1,6*NBDA),""),
         lda = stringr::str_extract_all(da,".{1,6}"),
-
+        
         csarr = ifelse(NBCDARR>0,stringr::str_sub(ZAD,6*NBDA+1,6*NBDA + 26*NBCDARR),""),
         lcsarr = stringr::str_extract_all(csarr, ".{1,26}"),
-
+        
         ccam = ifelse(NBCCAM>0,stringr::str_sub(ZAD,6*NBDA+1+26*NBCDARR,6*NBDA + 26*NBCDARR + 17*NBCCAM),""),
         lccam = stringr::str_extract_all(ccam, ".{1,17}")
       )
     da <- purrr::flatten_chr(zad$lda)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
-
+    
     csarr <- purrr::flatten_chr(zad$lcsarr)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCDARR)
     df <- as.data.frame(lapply(df, rep, df$NBCDARR), stringsAsFactors = F) %>% dplyr::tbl_df()
     csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) )%>% dplyr::tbl_df() %>% dplyr::select(-NBCDARR)
-
-
+    
+    
     ccam <- purrr::flatten_chr(zad$lccam)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
     df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
-
+    
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CDARR / CCAM)","Diagnostic associé",
                    "Code CSARR","Code CDARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
                    "Code modulateur patient n°2", "Code de l'intervenant", "Nb de patients en acte individuel",
@@ -3275,7 +3278,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
-
+    
     fzdarr <- function(cdarr){
       dplyr::mutate(cdarr,
                     CDINTER       = stringr::str_sub(cdarr,1,2),
@@ -3285,57 +3288,57 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
                     INDVAL      = stringr::str_sub(cdarr,9,9)) %>%
         dplyr::select(-cdarr)
     }
-
+    
     zad <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,ZAD, NBDA, NBCDARR, NBCCAM) %>%
       dplyr::mutate(
-
+        
         da = ifelse(NBDA>0,stringr::str_sub(ZAD,1,6*NBDA),""),
         lda = stringr::str_extract_all(da,".{1,6}"),
-
+        
         cdarr = ifelse(NBCDARR>0,stringr::str_sub(ZAD,6*NBDA+1,6*NBDA + 9*NBCDARR),""),
         lcdarr = stringr::str_extract_all(cdarr, ".{1,9}"),
-
+        
         ccam = ifelse(NBCCAM>0,stringr::str_sub(ZAD,6*NBDA+1+9*NBCDARR, 6*NBDA + 9*NBCDARR + 17*NBCCAM),""),
         lccam = stringr::str_extract_all(ccam, ".{1,17}")
       )
     da <- purrr::flatten_chr(zad$lda)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
-
+    
     cdarr <- purrr::flatten_chr(zad$lcdarr)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCDARR)
     df <- as.data.frame(lapply(df, rep, df$NBCDARR), stringsAsFactors = F) %>% dplyr::tbl_df()
     cdarr <- dplyr::bind_cols(df,data.frame(cdarr = cdarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CDARR') %>% dplyr::select(-NBCDARR)
-
-
+    
+    
     ccam <- purrr::flatten_chr(zad$lccam)
-
+    
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
     df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
-
+    
     acdi <-dplyr::bind_rows(da, fzdarr(cdarr), fzacte(ccam))
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CDARR / CCAM)","Diagnostic associé",
                    "Code de l'intervenant", "Code CDARR", "Nb de réalisations","Acte compatible avec la semaine",
                    "Délai depuis la date d'entrée dans l'UM",
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
-
+    
     acdi <- acdi %>% sjmisc::set_label(labelacdi)
-
+    
   }
-
-
+  
+  
   acdi[is.na(acdi)] <- ""
   acdi$NBEXEC <- acdi$NBEXEC  %>%  as.numeric()
   acdi$DELAI <- acdi$DELAI  %>%  as.numeric()
   if (annee>2014){acdi$NBPATREEL <- acdi$NBPATREEL  %>%  as.numeric()}
-
+  
   rha_i <- rha_i   %>% dplyr::select(-ZAD) %>% sjmisc::set_label(libelles[!is.na(libelles)])
-
+  
   rha_1 = list(rha = rha_i, acdi = acdi)
   deux <- Sys.time()
   cat("Données RHA importées en : ", deux-un, " secondes\n")
@@ -3375,17 +3378,17 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
 #' @export
 iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rha_ano', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -3410,14 +3413,14 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
     ),
     class = "col_spec"
   )
-
+  
   if (annee>2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
@@ -3448,7 +3451,7 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
   }
   ano_i <- ano_i %>% sjmisc::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("FIL"))
-
+  
   return(ano_i)
 }
 
@@ -3485,17 +3488,17 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
 #' @export
 issrha <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'ssrha', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -3520,18 +3523,18 @@ issrha <- function(finess, annee,mois, path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
     ),
     class = "col_spec"
   )
-
+  
   ssrha_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".sha"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) %>%
     sjmisc::set_label(libelles)
-
+  
   return(ssrha_i)
 }
 
@@ -3572,15 +3575,15 @@ issrha <- function(finess, annee,mois, path, lib=T, ...){
 #' @export
 irpsa <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'psy', table == 'rpsa', an == substr(as.character(annee),3,4))
   format$longueur[nrow(format)] <- NA
   af <- format$longueur
@@ -3607,7 +3610,7 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -3615,29 +3618,29 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
     class = "col_spec"
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-
+  
   suppressWarnings(rpsa_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rpsa"),
                                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)) %>%
     dplyr::mutate(DP = stringr::str_trim(DP))
-
+  
   zad <- rpsa_i %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
                                                                                lda = stringr::str_extract_all(da, '.{1,6}'))
-
+  
   da <- purrr::flatten_chr(zad$lda)
-
+  
   df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA)
   df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
   da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
-
-
+  
+  
   rpsa_i$ZAD[is.na(rpsa_i$ZAD)] <- ""
   rpsa_i <- rpsa_i %>% dplyr::mutate(das = extz(ZAD, ".{1,6}")) %>% dplyr::select(-ZAD)
   rpsa_i <- rpsa_i %>% sjmisc::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
-
+  
   da <- da %>% sjmisc::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                    'Diagnostics et facteurs associés'))
   rpsa_1 = list(rpsa = rpsa_i, das = da)
-
+  
   return(rpsa_1)
 }
 
@@ -3675,15 +3678,15 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
 #' @export
 ir3a <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'psy', table == 'r3a', an == substr(as.character(annee),3,4))
   format$longueur[nrow(format)] <- NA
   af <- format$longueur
@@ -3710,7 +3713,7 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -3718,28 +3721,28 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
     class = "col_spec"
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-
+  
   suppressWarnings(r3a_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".r3a"),
                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) %>%
     dplyr::mutate(DP = stringr::str_trim(DP))
-
+  
   zad <- r3a_i %>% dplyr::select(NOSEJPSY,NOORDR,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
                                                                               lda = stringr::str_extract_all(da, '.{1,6}'))
-
+  
   da <- purrr::flatten_chr(zad$lda)
-
+  
   df <- zad %>% dplyr::select(NOSEJPSY,NOORDR,NBDA)
   df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
   da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
-
-
+  
+  
   r3a_i$ZAD[is.na(r3a_i$ZAD)] <- ""
   r3a_i <- r3a_i %>% dplyr::mutate(das = extz(ZAD, ".{1,6}")) %>% dplyr::select(-ZAD)
   r3a_i <- r3a_i %>% sjmisc::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
-
+  
   da <- da %>% sjmisc::set_label(c('N° séquentiel de séjour',"N° d'ordre", 'Diagnostics et facteurs associés'))
   r3a_1 = list(r3a = r3a_i, das = da)
-
+  
   return(r3a_1)
 }
 
@@ -3775,17 +3778,17 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
 #' @export
 iano_psy <- function(finess,annee,mois,path, lib=T, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
-
+  
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'psy', table == 'rpsa_ano', an == substr(as.character(annee),3,4))
-
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -3810,7 +3813,7 @@ iano_psy <- function(finess,annee,mois,path, lib=T, ...){
     )
   }
   col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
+  
   at <- structure(
     list(
       cols = col_types
@@ -3818,7 +3821,7 @@ iano_psy <- function(finess,annee,mois,path, lib=T, ...){
     class = "col_spec"
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-
+  
   if (annee<=2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
@@ -3879,11 +3882,11 @@ iano_psy <- function(finess,annee,mois,path, lib=T, ...){
 
 #' @export
 astat <- function(path,file, view=T){
-
+  
   stat <- unzip(
     zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file), list=T) %>%
     dplyr::mutate(`Taille (Mo)` = round(Length/10e5,6)) %>% dplyr::select(-Length)
-
+  
   if (view==T){View(stat)}
   if (view==F){return(stat)}
 }
@@ -3922,7 +3925,7 @@ adezip2 <- function(path, file, liste, pathto=""){
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
   if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir= pathto)}
   else{
-
+    
     pat<- stringr::str_split(file,'\\.')
     cat('Dézippage archive\n',
         'Type     :',pat[[1]][5],'\n',
@@ -3994,10 +3997,10 @@ adezip2 <- function(path, file, liste, pathto=""){
 
 #' @export
 adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
-
-
+  
+  
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
-
+  
   liste <- unique(liste)
   u <- list.files(path)
   u <- u[grepl(paste0(type,'.zip'),u)]
@@ -4023,15 +4026,15 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
           unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/', file), list=T)$Name -> l
           l[grepl('tra',l)] -> typtra
           if (length(typtra) > 1){
-          liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+            liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
           }else{
-          one <- stringr::str_locate(typtra, 'tra')
-          stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
-          liste <- c(liste[!grepl("tra",liste)], typtra)
+            one <- stringr::str_locate(typtra, 'tra')
+            stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+            liste <- c(liste[!grepl("tra",liste)], typtra)
           }
         }
         
-          unzip(
+        unzip(
           zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
           exdir= pathto)
@@ -4042,9 +4045,9 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste,".txt"),
           exdir= pathto)
       }
-
+      
     }}
-
+  
   if (recent==F){
     lequel$Date.du.traitement <- lubridate::parse_date_time(lequel$Date.du.traitement,'%d%m%y%h%m%s')
     lequel$Quelle <- 1:nrow(lequel)
@@ -4122,13 +4125,13 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
 
 #' @export
 adezip3 <- function(finess, path, file, liste, pathto=""){
-
+  
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
   liste <- unique(liste)
   if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir = pathto)}
   else{
-
-
+    
+    
     liste[grepl("tra",liste)] <- "tra.txt"
     pat<- stringr::str_split(file,'\\_')
     cat('Dézippage archive\n',
@@ -4158,7 +4161,7 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
         zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
         files = paste0(finess,'.',substr(pat[[1]][4],1,4),'.',as.numeric(substr(pat[[1]][4],5,7)),'.',liste), exdir= pathto)
     }
-
+    
   }
 }
 
@@ -4271,7 +4274,7 @@ tdiag <- function (d,  include = T)
                                 na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
     h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DPUM", `4` = "DRUM",
-                                                                                                           `5` = "DAS"))))
+                                                                                                         `5` = "DAS"))))
     h <- h %>% sjmisc::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
                                    "Diagnostic"))
     if (include == F) {
@@ -4289,7 +4292,7 @@ tdiag <- function (d,  include = T)
     g2 <- d$dad %>% dplyr::rename(diag = DAD) %>% dplyr::mutate(position = "DAD")
     h <- dplyr::bind_rows(list(f, g, g2)) %>%
       dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DAS", `4`="DAD"))))
-
+    
     h <- h %>% sjmisc::set_label(c("N° administratif du séjour", "N° du RUM",
                                    "1:DP, 2:DR, 3:DAS, 4:DAD", "Diagnostic"))
     if (include == F) {
@@ -4334,18 +4337,19 @@ tdiag <- function (d,  include = T)
 #' @export
 irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, ...){
   if (annee<2011|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
+    stop('Mois incorrect\n')
+  }
+  
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
   if (lamda == F){
     cat(paste("Import des RSFA / Rafael", annee, paste0("M",mois),"\n"))
     cat(paste("L'objet retourné prendra la forme d'une classe S3.
-            $A pour les Rafael A, et B, C, ...\n"))
+              $A pour les Rafael A, et B, C, ...\n"))
     
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael", an == substr(annee,3,4))
@@ -4359,7 +4363,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
   if (lamda == T){
     cat(paste("Import des rsfa-maj", annee, paste0("M",mois),"\n"))
     cat(paste("L'objet retourné prendra la forme d'une classe S3.
-            $A pour les Rafael A, et B, C, ...\n"))
+              $A pour les Rafael A, et B, C, ...\n"))
     
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael-maj", an == substr(annee,3,4))
@@ -4370,7 +4374,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
     typi_r <- 27
     
   }
-
+  
   former <- function(cla, col1){
     switch(cla,
            'c' = col1,
@@ -4378,14 +4382,14 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
            'i' = col1 %>% as.integer(),
            'n' = (col1 %>% as.numeric() )/100)
   }
-
+  
   cutt <- function(typs, lib){
     fa <- formats %>% dplyr::filter(Typer == typs)
-
+    
     deb <- fa$position
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
-
+    
     r %>% dplyr::filter(substr(lon,typi_r,typi_r) == typs) -> one
     for (i in 1:length(deb)){
       temp <- dplyr::as_data_frame(former(fa$cla[i], u(one$lon, i)))
@@ -4398,7 +4402,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
     }
     return(one)
   }
-
+  
   
   if ('A' %in% lister){rafael_A <- suppressWarnings(cutt('A', lib))}else{rafael_A <- data.frame()}
   r %>% dplyr::filter(substr(lon,typi_r,typi_r) != 'A') -> r
@@ -4414,10 +4418,10 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'H') -> r
   if ('H' %in% lister){rafael_H <- suppressWarnings(cutt('H', lib))}else{rafael_H <- data.frame()}
   rm(r)
-
+  
   deux<-Sys.time()
   cat(paste("Rafaels",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-
+  
   if (stat == T){
     print(
       knitr::kable(dplyr::data_frame(Rafael = c('A', 'B', 'C', 'H', 'L', 'M',  'P'),
@@ -4436,7 +4440,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
               "L" = rafael_L,
               "M" = rafael_M,
               "P" = rafael_P))
-
+  
 }
 
 #' ~ RSF - Import des Anohosp RSFA
@@ -4476,67 +4480,67 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #' @export
 iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
   if (annee<2012|annee>2016){
-    cat('Année PMSI non prise en charge\n')
-    return(NULL)}
+    stop('Année PMSI non prise en charge\n')
+  }
   if (mois<1|mois>12){
-    cat('Mois incorrect\n')
-    return(NULL)}
-
-    if (lamda == F){
+    stop('Mois incorrect\n')
+  }
+  
+  if (lamda == F){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'rsf', table == 'rafael_ano', an == substr(as.character(annee),3,4))
-    }
+  }
   if (lamda == T){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'rsf', table == 'rafael_ano-maj', an == substr(as.character(annee),3,4))
   }
   
-    af <- format$longueur
-    libelles <- format$libelle
-    an <- format$nom
-    vec <- format$type
-    col_types <-  vec
-    is_character <- vapply(col_types, is.character, logical(1))
-    col_concise <- function(x) {
-      switch(x,
-             "_" = ,
-             "-" = readr::col_skip(),
-             "?" = readr::col_guess(),
-             c = readr::col_character(),
-             D = readr::col_date(),
-             d = readr::col_double(),
-             e = readr::col_euro_double(),
-             i = readr::col_integer(),
-             l = readr::col_logical(),
-             n = readr::col_number(),
-             T = readr::col_datetime(),
-             t = readr::col_time(),
-             stop("Unknown shortcut: ", x, call. = FALSE)
-      )
-    }
-    col_types[is_character] <- lapply(col_types[is_character], col_concise)
-
-    at <- structure(
-      list(
-        cols = col_types
-      ),
-      class = "col_spec"
+  af <- format$longueur
+  libelles <- format$libelle
+  an <- format$nom
+  vec <- format$type
+  col_types <-  vec
+  is_character <- vapply(col_types, is.character, logical(1))
+  col_concise <- function(x) {
+    switch(x,
+           "_" = ,
+           "-" = readr::col_skip(),
+           "?" = readr::col_guess(),
+           c = readr::col_character(),
+           D = readr::col_date(),
+           d = readr::col_double(),
+           e = readr::col_euro_double(),
+           i = readr::col_integer(),
+           l = readr::col_logical(),
+           n = readr::col_number(),
+           T = readr::col_datetime(),
+           t = readr::col_time(),
+           stop("Unknown shortcut: ", x, call. = FALSE)
     )
-    if (lamda == F){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
-      dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                    DTENT    = lubridate::dmy(DTENT),
-                    cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
-                             (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
-    }
-    if (lamda == T){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace-maj"),
-                                                 readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
-      dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                    DTENT    = lubridate::dmy(DTENT),
-                    cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
-                             (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
-    }
-    
-    
-
+  }
+  col_types[is_character] <- lapply(col_types[is_character], col_concise)
+  
+  at <- structure(
+    list(
+      cols = col_types
+    ),
+    class = "col_spec"
+  )
+  if (lamda == F){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace"),
+                                               readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
+                  DTENT    = lubridate::dmy(DTENT),
+                  cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
+                           (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
+  }
+  if (lamda == T){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace-maj"),
+                                               readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
+                  DTENT    = lubridate::dmy(DTENT),
+                  cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
+                           (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
+  }
+  
+  
+  
   return(ano_i)
 }
 
@@ -4547,3 +4551,24 @@ iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
 #' @author G. Pressiat
 #' @keywords data
 NULL
+
+#' ~ Silence - import sans messages
+#'
+#' Fonction d'import silencieuse avec la fonction \code{purrr::quietly}
+#'
+#' @param fonction Fonction a modifier
+#'
+#' @return La fonction qui n'imprime rien dans la console
+#'
+#' @examples
+#' \dontrun{
+#'    silence(irsa()) -> rsa_silence
+#'    # Table RSA : 
+#'    rsa_silence(750712184, 2017, 1, '~/data/mco', typi = 1)$result$rsa -> rsa17
+#' }
+#'
+#' @author G. Pressiat
+#' @export 
+silence <- function(fonction) {
+  purrr::quietly(fonction)
+}

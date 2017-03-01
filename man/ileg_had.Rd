@@ -16,19 +16,12 @@ ileg_had(finess, annee, mois, path, reshape = F, ...)
 \item{path}{Localisation du fichier de donnees}
 
 \item{reshape}{booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F}
-
-\item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une table (data.frame, tbl_df) contenant les erreurs Out.
 }
 \description{
 Import du fichier des erreurs de groupage Paprica
-}
-\details{
-Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
@@ -40,6 +33,6 @@ Formats depuis 2011 pris en charge
 G. Pressiat
 }
 \seealso{
-irum irsa
+irapss
 }
 

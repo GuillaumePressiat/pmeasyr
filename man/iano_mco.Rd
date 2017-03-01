@@ -4,7 +4,7 @@
 \alias{iano_mco}
 \title{~ MCO - Import des Anohosp}
 \usage{
-iano_mco(finess, annee, mois, path, typano = "out", lib = T, ...)
+iano_mco(finess, annee, mois, path, typano = c("out", "in"), lib = T, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
