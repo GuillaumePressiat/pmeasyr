@@ -1526,6 +1526,7 @@ iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T
           TAUXRM   = TAUXRM  /100,
           MTMAJPAR = MTMAJPAR/100)
     }
+    
     Fillers <- names(ano_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     ano_i <- ano_i[,!(names(ano_i) %in% Fillers)]
