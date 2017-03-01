@@ -1359,7 +1359,7 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 
 #' @export
 iano_mco <- function(finess, annee, mois, path, typano = "out", lib = T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     cat('Année PMSI non prise en charge\n')
     return(NULL)}
   if (mois<1|mois>12){
