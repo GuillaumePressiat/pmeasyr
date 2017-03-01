@@ -45,10 +45,9 @@ Structure du nom du fichier attendu  :
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irum irsa
 }
-
+\author{
+G. Pressiat
+}

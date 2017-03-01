@@ -60,10 +60,9 @@ La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélér
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irsa ileg_mco iano_mco
 }
-
+\author{
+G. Pressiat
+}

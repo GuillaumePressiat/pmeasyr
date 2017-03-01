@@ -46,10 +46,9 @@ Dezipper une archive PMSI au besoin
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 adezip2, astat, adelete
 }
-
+\author{
+G. Pressiat
+}

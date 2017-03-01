@@ -64,10 +64,9 @@ Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les info
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irum ileg_mco iano_mco
 }
-
+\author{
+G. Pressiat
+}

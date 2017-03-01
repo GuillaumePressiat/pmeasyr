@@ -40,10 +40,9 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irha, iano_ssr
 }
-
+\author{
+G. Pressiat
+}

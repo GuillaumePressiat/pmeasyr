@@ -42,10 +42,9 @@ Structure du nom du fichier attendu (sortie de Genrsa) :
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irum irsa ileg_mco iano_mco irha irapss irpsa ir3a
 }
-
+\author{
+G. Pressiat
+}

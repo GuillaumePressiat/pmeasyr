@@ -40,10 +40,9 @@ Structure du nom du fichier attendu (sortie de Paprica) :
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irapss
 }
-
+\author{
+G. Pressiat
+}

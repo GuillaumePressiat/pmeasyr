@@ -46,4 +46,3 @@ Formats depuis 2014 pour les rsfa-maj (reprise 2013)
 \author{
 G. Pressiat
 }
-

@@ -33,10 +33,9 @@ tdiag(d1, include = F) -> alldiag
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irsa, irum
 }
-
+\author{
+G. Pressiat
+}

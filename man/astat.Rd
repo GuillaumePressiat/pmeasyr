@@ -24,10 +24,9 @@ Pour lister sans dezipper les fichiers d'une archive
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 adezip,adezip2
 }
-
+\author{
+G. Pressiat
+}

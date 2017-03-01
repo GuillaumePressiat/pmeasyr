@@ -39,10 +39,9 @@ Formats depuis 2011 pris en charge
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irum irsa
 }
-
+\author{
+G. Pressiat
+}

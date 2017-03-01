@@ -35,10 +35,9 @@ Version de la fonction \code{\link{adezip2}} pour des archives au format Intrane
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 adezip2,adezip, astat, adelete
 }
-
+\author{
+G. Pressiat
+}

@@ -20,10 +20,9 @@ Obtenir le dictionnaire d'une table
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irsa, irum
 }
-
+\author{
+G. Pressiat
+}

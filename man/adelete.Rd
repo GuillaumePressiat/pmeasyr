@@ -28,10 +28,9 @@ Supprime les fichiers de l'archive PMSI dezippes en début de traitement
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 adezip,adezip2, astat
 }
-
+\author{
+G. Pressiat
+}

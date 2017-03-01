@@ -26,4 +26,3 @@ Fonction d'import silencieuse avec la fonction \code{purrr::quietly}
 \author{
 G. Pressiat
 }
-

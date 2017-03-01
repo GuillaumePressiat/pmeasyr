@@ -11,4 +11,3 @@ Table des formats
 G. Pressiat
 }
 \keyword{data}
-

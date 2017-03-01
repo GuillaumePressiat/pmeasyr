@@ -32,10 +32,9 @@ Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'ar
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 adezip, astat, adelete
 }
-
+\author{
+G. Pressiat
+}

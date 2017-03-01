@@ -38,10 +38,9 @@ Structure du nom du fichier attendu (sortie de Paprica) :
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 iano_had
 }
-
+\author{
+G. Pressiat
+}

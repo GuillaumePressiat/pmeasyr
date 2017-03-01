@@ -40,10 +40,9 @@ Structure du nom du fichier attendu (sortie de Pivoine) :
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irpsa
 }
-
+\author{
+G. Pressiat
+}

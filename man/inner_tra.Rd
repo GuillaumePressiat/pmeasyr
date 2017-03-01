@@ -29,10 +29,9 @@ Ajout du TRA par dplyr::inner_join
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irum irsa imed irpsa irha irapss
 }
-
+\author{
+G. Pressiat
+}

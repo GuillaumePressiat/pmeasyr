@@ -38,10 +38,9 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irpsa
 }
-
+\author{
+G. Pressiat
+}

@@ -29,10 +29,9 @@ Import du fichier des erreurs de groupage Paprica
 }
 
 }
-\author{
-G. Pressiat
-}
 \seealso{
 irapss
 }
-
+\author{
+G. Pressiat
+}
