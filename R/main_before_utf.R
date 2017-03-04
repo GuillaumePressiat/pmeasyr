@@ -24,7 +24,7 @@
 #'
 #' \strong{Principe du streaming :}
 #' Mise en chaîne de caractères de la succession d'actes CCAM au cours du RUM, par exemple, pour un RUM :
-#' \code{"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"}
+#' \samp{"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"}
 #'
 #' La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélérée, comparée à une requête sur la large table acdi par une requête du type :
 #'
@@ -35,26 +35,26 @@
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
-#' @param typi Type d'import, par defaut a 0 : propose a l'utilisateur de choisir au lancement
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param typi Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées (rum, actes, das et dad si import 3 et 4)
 #'
 #' @examples
 #' \dontrun{
-#'    irum(750712184,2015,12,'~/pathpath/', typi = 1) -> rum15
+#'    irum(750712184,2015,12,'~/Documents/data/mco', typi = 1) -> rum15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irsa ileg_mco iano_mco
+#' @seealso \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}
 #' @importFrom utils View data unzip
 #' @importFrom magrittr '%>%'
 #' @export
-irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
+irum <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -65,18 +65,18 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
     stop("Type d'import incorrect : 0 ou 1, 2, 3 et 4\n")
   }
   
-  op <- options(digits.secs = 6)
+  #op <- options(digits.secs = 6)
   un<-Sys.time()
   
   
   # Import de la table
-  cat(paste("Import des RUM",annee,paste0("M",mois),"\n"))
-  cat(paste("L'objet retourné prendra la forme d'une classe S3.
-            $rum pour accéder à la table RUM
-            $das pour accéder à la table DAS
-            $dad pour accéder à la table DAD
-            $actes pour accéder à la table ACTES\n\n"))
-  
+  # cat(paste("Import des RUM",annee,paste0("M",mois),"\n"))
+  # cat(paste("L'objet retourné prendra la forme d'une classe S3.
+  #           $rum pour accéder à la table RUM
+  #           $das pour accéder à la table DAS
+  #           $dad pour accéder à la table DAD
+  #           $actes pour accéder à la table ACTES\n\n"))
+
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
   format <- pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum", an == substr(annee,3,4))
@@ -296,7 +296,7 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
   }
   
   if (typi !=0){
-    cat("Lecture du fichier / parsing fixe...\n")
+    #cat("Lecture du fichier / parsing fixe...\n")
     rum_i <- i(annee,mois) %>% dplyr::mutate(
       DTNAIS=lubridate::dmy(DTNAIS),
       D8EEUE=lubridate::dmy(D8EEUE),
@@ -320,12 +320,12 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
     rum_1 <- list(rum = rum_i )
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
-    cat(paste("MCO RUM XLight",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-    cat("(Seule la partie fixe du RUM a été chargée)\n")
+    #cat(paste("MCO RUM XLight",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat("(Seule la partie fixe du RUM a été chargée)\n")
     return(rum_1)
   }
   if (typi== 2){
-    cat("Traitement | Parsing variable...\n")
+    #cat("Traitement | Parsing variable...\n")
     rum_i <- zad(rum_i) %>% dplyr::select(-lactes,-ldas,-ldad,-ZAD )
     rum_i <- rum_i %>%
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","),
@@ -342,15 +342,15 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
     rum_1 <- list(rum = rum_i)
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
-    cat(paste("MCO RUM Light",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat(paste("MCO RUM Light",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     return(rum_1)
   }
   if (typi== 3){
-    cat("Traitement | Parsing variable...\n")
+    #cat("Traitement | Parsing variable...\n")
     rum_i <- zad3(rum_i)
     
     if (situation_al == 1){
-      cat("Actes en ligne : ")
+      #cat("Actes en ligne : ")
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM, NBACTE)
@@ -367,9 +367,9 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
       }
       actes %>% dplyr::select(-var, - NBACTE) -> actes
       deux_i<-Sys.time()
-      cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+      #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     } else {
-      cat("Actes en ligne : ")
+      #cat("Actes en ligne : ")
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM, NOVERG, NBACTE)
@@ -395,27 +395,27 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
       }
       actes %>% dplyr::select(-var, - NBACTE, - NOVERG) -> actes
       deux_i<-Sys.time()
-      cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+      #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
       fa <- fa2
     }
     
-    cat("Das en ligne : ")
+    #cat("Das en ligne : ")
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rum_i$ldas) %>% stringr::str_trim()
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAS)
     df <- as.data.frame(lapply(df, rep, df$NBDAS), stringsAsFactors = F) %>% dplyr::tbl_df()
     das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAS)
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
-    cat("Dad en ligne : ")
+    #cat("Dad en ligne : ")
     un_i<-Sys.time()
     dad <- purrr::flatten_chr(rum_i$ldad)
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAD)
     df <- as.data.frame(lapply(df, rep, df$NBDAD), stringsAsFactors = F) %>% dplyr::tbl_df()
     dad <- dplyr::bind_cols(df,data.frame(DAD = stringr::str_trim(dad), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAD)
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
       actes %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
       das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
@@ -438,15 +438,15 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
-    cat(paste("MCO RUM Standard",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat(paste("MCO RUM Standard",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     return(rum_1)
   }
   if (typi== 4){
-    cat("Traitement | Parsing variable...\n")
+    #cat("Traitement | Parsing variable...\n")
     rum_i <- zad(rum_i)
     
     if (situation_al == 1){
-      cat("Actes en ligne : ")
+      #cat("Actes en ligne : ")
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM, NBACTE)
@@ -463,9 +463,9 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
       }
       actes %>% dplyr::select(-var, - NBACTE) -> actes
       deux_i<-Sys.time()
-      cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+      #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     } else {
-      cat("Actes en ligne : ")
+      #cat("Actes en ligne : ")
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM,  NOVERG, NBACTE)
@@ -491,27 +491,27 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
       }
       actes %>% dplyr::select(-var, -NBACTE, - NOVERG) -> actes
       deux_i<-Sys.time()
-      cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+      #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
       fa <- fa2
     }
     
-    cat("Das en ligne : ")
+    #cat("Das en ligne : ")
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rum_i$ldas) %>% stringr::str_trim()
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAS)
     df <- as.data.frame(lapply(df, rep, df$NBDAS), stringsAsFactors = F) %>% dplyr::tbl_df()
     das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAS)
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
-    cat("Dad en ligne : ")
+    #cat("Dad en ligne : ")
     un_i<-Sys.time()
     dad <- purrr::flatten_chr(rum_i$ldad)
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAD)
     df <- as.data.frame(lapply(df, rep, df$NBDAD), stringsAsFactors = F) %>% dplyr::tbl_df()
     dad <- dplyr::bind_cols(df,data.frame(DAD = stringr::str_trim(dad), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAD)
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
       actes %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
       das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
@@ -537,7 +537,7 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
-    cat(paste("MCO RUM Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat(paste("MCO RUM Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     return(rum_1)
   }
   
@@ -582,7 +582,7 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
 #'
 #' \strong{Principe du streaming :}
 #' Mise en chaîne de caractères de la succession d'actes CCAM au cours du RUM, par exemple, pour un RUM :
-#' \code{"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"}
+#' \samp{"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"}
 #'
 #' La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélérée, comparée à une requête sur la large table acdi par une requête du type :
 #'
@@ -596,25 +596,25 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 0, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
-#' @param typi Type d'import, par defaut a 0 : propose a l'utilisateur de choisir au lancement
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param typi Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rsa, rsa_um, actes et das si import > 3)
 #'
 #' @examples
 #' \dontrun{
-#'    irsa(750712184,2015,12,'~/pathpath/', typi = 4) -> rsa15
+#'    irsa(750712184,2015,12,'~/Documents/data/mco') -> rsa15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum ileg_mco iano_mco
+#' @seealso \code{\link{irum}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}
 
 #' @export
-irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
+irsa <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -626,17 +626,17 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   }
   
   
-  op <- options(digits.secs = 6)
+  #op <- options(digits.secs = 6)
   un<-Sys.time()
   
   
   
-  cat(paste("L'objet retourné prendra la forme d'une classe S3.
-            $rsa pour accéder à la table RSA
-            $rsa_um pour accéder à la table RSA_UM
-            $das pour accéder à la table des DAS
-            $actes pour accéder à la table des ACTES\n\n"))
-  
+  # cat(paste("L'objet retourné prendra la forme d'une classe S3.
+  #           $rsa pour accéder à la table RSA
+  #           $rsa_um pour accéder à la table RSA_UM
+  #           $das pour accéder à la table des DAS
+  #           $actes pour accéder à la table des ACTES\n\n"))
+
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa', an == substr(as.character(annee),3,4))
   
   af <- format$longueur
@@ -684,7 +684,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   
   
   if (typi !=0){
-    cat('Lecture du fichier | Parsing partie fixe...\n')
+    #cat('Lecture du fichier | Parsing partie fixe...\n')
     rsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsa"),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ... ) %>%
       dplyr::mutate(DP = stringr::str_trim(DP),
@@ -693,8 +693,8 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   
   if (typi== 1){
     deux<-Sys.time()
-    cat(paste("MCO RSA Light",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-    cat("(Seule la partie fixe du RSA a été chargée)\n")
+    #cat(paste("MCO RSA Light",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat("(Seule la partie fixe du RSA a été chargée)\n")
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
     rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
@@ -740,7 +740,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   }
   
   if (typi == 2){
-    cat('Import Light+ | Streaming des actes et das...\n')
+    #cat('Import Light+ | Streaming des actes et das...\n')
     rsa_i <- fzad(rsa_i)
     rsa_i  <- rsa_i %>%
       dplyr::mutate(
@@ -771,7 +771,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     class(rsa_1) <- append(class(rsa_1),"RSA")
     
     deux<-Sys.time()
-    cat(paste("MCO RSA Light+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+   #cat(paste("MCO RSA Light+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     
     return(rsa_1)
     
@@ -784,7 +784,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   findpdr <- fa[fa$nom == "DRUM",]$fin
   
   if (typi == 3){
-    cat('Import Light++ | Streaming des actes, das, typaut UM et DP/DR des UM...\n')
+    #cat('Import Light++ | Streaming des actes, das, typaut UM et DP/DR des UM...\n')
     rsa_i <- fzad(rsa_i)
     rsa_i  <- rsa_i %>%
       dplyr::mutate(
@@ -823,8 +823,8 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     rsa_1 <- list(rsa = rsa_i)
     class(rsa_1) <- append(class(rsa_1),"RSA")
     
-    cat(paste("MCO RSA Light++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-    cat("La table rsa est dans l'environnement de travail\n")
+    #cat(paste("MCO RSA Light++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat("La table rsa est dans l'environnement de travail\n")
     
     
     return(rsa_1)
@@ -833,7 +833,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
   if (typi == 4){
     
     
-    cat('Traitement | Parsing partie variable...\n')
+    #cat('Traitement | Parsing partie variable...\n')
     
     rsa_i <- fzad(rsa_i)
     
@@ -843,7 +843,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                     ldas   = stringr::str_extract_all(DAS,zd) ) %>%           # Liste de das
       dplyr::select(-ZA,-RUMS,-ACTES,-DAS)
     
-    cat("Passages UM en ligne : ")
+    #cat("Passages UM en ligne : ")
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
     df <- rsa_i %>% dplyr::select(CLE_RSA,NBRUM)
@@ -868,10 +868,10 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         rsa_um %>% sjmisc::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
     }
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
     # das
-    cat("Das en ligne : ")
+    #cat("Das en ligne : ")
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rsa_i$ldas) %>% stringr::str_trim()
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBDIAGAS)
@@ -882,10 +882,10 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       das %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
     }
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
     # actes
-    cat("Actes en ligne : ")
+    #cat("Actes en ligne : ")
     un_i<-Sys.time()
     actes <- purrr::flatten_chr(rsa_i$lactes)
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBACTE)
@@ -906,7 +906,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     deux<-Sys.time()
     
     Fillers <- names(rsa_i)
@@ -932,13 +932,13 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
                   das = das,
                   rsa_um=rsa_um)
     class(rsa_1) <- append(class(rsa_1),"RSA")
-    cat(paste("MCO RSA Standard",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat(paste("MCO RSA Standard",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     
     return(rsa_1)
   }
   if (typi == 5){
-    cat('Import standard+\n')
-    cat('Traitement | Parsing partie variable...\n')
+    #cat('Import standard+\n')
+    #cat('Traitement | Parsing partie variable...\n')
     
     rsa_i <- fzad(rsa_i)
     rsa_i  <- rsa_i %>%
@@ -952,7 +952,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     rsa_i <- rsa_i %>%
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","))
     
-    cat("Passages UM en ligne : ")
+    #cat("Passages UM en ligne : ")
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
     df <- rsa_i %>% dplyr::select(CLE_RSA,NBRUM)
@@ -977,10 +977,10 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         rsa_um %>% sjmisc::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
     }
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
     # das
-    cat("Das en ligne : ")
+    #cat("Das en ligne : ")
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rsa_i$ldas) %>% stringr::str_trim()
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBDIAGAS)
@@ -991,10 +991,10 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       das %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
     }
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
     # actes
-    cat("Actes en ligne : ")
+    #cat("Actes en ligne : ")
     un_i<-Sys.time()
     actes <- purrr::flatten_chr(rsa_i$lactes)
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBACTE)
@@ -1015,7 +1015,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     deux<-Sys.time()
     
     Fillers <- names(rsa_i)
@@ -1045,16 +1045,16 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     rsa_1 <- list(rsa = rsa_i , actes = actes, das = das, rsa_um=rsa_um)
     class(rsa_1) <- append(class(rsa_1),"RSA")
     
-    cat(paste("MCO RSA Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-    cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
+    #cat(paste("MCO RSA Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
     
     
     return(rsa_1)
     
   }
   if (typi == 6){
-    cat('Import standard++\n')
-    cat('Traitement | Parsing partie variable...\n')
+    #cat('Import standard++\n')
+    #cat('Traitement | Parsing partie variable...\n')
     rsa_i <- fzad(rsa_i)
     rsa_i  <- rsa_i %>%
       dplyr::mutate(lactes = stringr::str_extract_all(ACTES,zal),           # Liste des actes
@@ -1076,7 +1076,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","),
                     dpdrum = stringr::str_replace_all(dpdrum, "\\s{1,},", ","))
     
-    cat("Passages UM en ligne : ")
+    #cat("Passages UM en ligne : ")
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
     df <- rsa_i %>% dplyr::select(CLE_RSA,NBRUM)
@@ -1101,10 +1101,10 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
         rsa_um %>% sjmisc::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
     }
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
     # das
-    cat("Das en ligne : ")
+    #cat("Das en ligne : ")
     un_i<-Sys.time() %>% stringr::str_trim()
     das <- purrr::flatten_chr(rsa_i$ldas)
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBDIAGAS)
@@ -1115,10 +1115,10 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
       das %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
     }
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
     # actes
-    cat("Actes en ligne : ")
+    #cat("Actes en ligne : ")
     un_i<-Sys.time()
     actes <- purrr::flatten_chr(rsa_i$lactes)
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBACTE)
@@ -1139,7 +1139,7 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     }
     
     deux_i<-Sys.time()
-    cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
+    #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     deux<-Sys.time()
     rsa_i <- rsa_i %>% dplyr::select(-lactes,-lum,-ldas)
     Fillers <- names(rsa_i)
@@ -1161,8 +1161,8 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
     rsa_1 <- list(rsa = rsa_i , actes = actes, das = das, rsa_um = rsa_um)
     class(rsa_1) <- append(class(rsa_1),"RSA")
     
-    cat(paste("MCO RSA Standard++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-    cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
+    #cat(paste("MCO RSA Standard++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+    #cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
     
     
     return(rsa_1)
@@ -1203,22 +1203,22 @@ irsa <- function(finess,annee,mois,path,lib = T,typi = 0, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param champ Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame ou tbl_df) qui contient : - Clé RSA - NORSS - Numéro de ligne du fichier RSS d'origine (rss.ini) - NAS - Date d'entrée du séjour - GHM groupage du RSS (origine) - Date de sortie du séjour
 #'
 #' @examples
 #' \dontrun{
-#'    itra(750712184,2015,12,'~/pathpath/') -> tra15
+#'    itra(750712184,2015,12,'~/Documents/data/champ_pmsi') -> tra15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa ileg_mco iano_mco irha irapss irpsa ir3a
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}
 #' @export
 itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
   if (annee<2011|annee>2017){
@@ -1338,22 +1338,22 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typano Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame ou tbl_df) qui contient les données Anohosp in / out
 #'
 #' @examples
 #' \dontrun{
-#'    iano_mco(750712184,2015,12,'~/pathpath/') -> ano_out15
-#'    iano_mco(750712184,2015,12,'~/pathpath/', typano = "in") -> ano_in15
+#'    iano_mco(750712184,2015,12,'~/Documents/data/mco') -> ano_out15
+#'    iano_mco(750712184,2015,12,'~/Documents/data/mco', typano = "in") -> ano_in15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}
 
 #' @export
 iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, ...){
@@ -1551,22 +1551,22 @@ iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typmed Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les médicaments In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : T2A 06 - ATU 09 - THROMBO 10
 #'
 #' @examples
 #' \dontrun{
-#'    imed_mco(750712184,2015,12,'~/pathpath/') -> med_out15
-#'    imed_mco(750712184,2015,12,'~/pathpath/', typmed = "in") -> med_in15
+#'    imed_mco(750712184,2015,12,'~/Documents/data/mco') -> med_out15
+#'    imed_mco(750712184,2015,12,'~/Documents/data/mco', typmed = "in") -> med_in15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}
 
 #' @export
 imed_mco <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, ...){
@@ -1712,22 +1712,22 @@ imed_mco <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typdmi Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : T2A 06 - ATU 09 - THROMBO 10
 #'
 #' @examples
 #' \dontrun{
-#'    idmi_mco(750712184,2015,12,'~/pathpath/') -> dmi_out15
-#'    idmi_mco(750712184,2015,12,'~/pathpath/', typdmi = "in") -> dmi_in15
+#'    idmi_mco(750712184,2015,12,'~/Documents/data/mco') -> dmi_out15
+#'    idmi_mco(750712184,2015,12,'~/Documents/data/mco', typdmi = "in") -> dmi_in15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}
 
 #' @export
 idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...){
@@ -1843,7 +1843,7 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T
 
 #' ~ MCO - Import des erreurs Leg
 #'
-#' Import du fichier des erreurs de groupage Genrsa
+#' Import de la liste d'erreurs de génération Genrsa
 #'
 #' Formats depuis 2011 pris en charge
 #'
@@ -1853,40 +1853,48 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
 #'
 #' @examples
 #' \dontrun{
-#'    ileg_mco(750712184,2015,12,'~/pathpath/') -> leg15
+#'    ileg_mco(750712184,2015,12,'~/Documents/data/mco') -> leg15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}
 
 #' @export
 ileg_mco <- function(finess, annee, mois, path, reshape = F, ...){
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"), ...)
   
-  if (reshape==F){
-    CLE_RSA <- stringr::str_extract(leg_i, "[0-9]{10}")
-    extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-    NBEG <- stringr::str_count(leg_i,"[A-Z]{1}[0-9]{2,3}")
-    EG      <- extz(leg_i, "[A-Z]{1}[0-9]{2,3}")
-    leg_i <- data.frame(finess,annee,mois, CLE_RSA,NBEG, EG)
-    return(leg_i)
+  extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+  
+  u <- stringr::str_split(leg_i, "\\;", simplify = T)
+  leg_i1 <- dplyr::data_frame(FINESS    = u[,1],
+                              MOIS      = u[,2],
+                              ANNEE     = u[,3],
+                              CLE_RSA   = u[,4],
+                              NBERR     = u[,5] %>% as.integer())
+  
+  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  legs <- u[,6:ncol(u)]
+  legs<- legs[legs != ""] 
+  leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
+  
+  if (reshape==T){
+    return(leg_i1)
   }
-  CLE_RSA <- stringr::str_extract(leg_i, "[0-9]{10}")
-  NBEG <- stringr::str_count(leg_i,"[A-Z]{1}[0-9]{2,3}")
-  legs <- purrr::flatten_chr(stringr::str_extract_all(leg_i,"[A-Z]{1}[0-9]{2,3}"))
-  leg_i <- data.frame(finess,CLE_RSA,NBEG)
-  leg_i <- as.data.frame(lapply(leg_i, rep, leg_i$NBEG))
-  leg_i <- cbind(leg_i,annee,mois, EG = legs)
-  return(leg_i)
+  
+  leg_i1 %>% 
+    dplyr::group_by(FINESS, MOIS, ANNEE, CLE_RSA, NBERR) %>%
+    dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
+  return(dplyr::ungroup(leg_i1))
+  
 }
 
 
@@ -1904,14 +1912,14 @@ ileg_mco <- function(finess, annee, mois, path, reshape = F, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    med <- imed_mco(750712184,2015,12,"~/pathpath/","out")
-#'    tra <- itra(750712184,2015,12,"~/pathpath/")
+#'    med <- imed_mco(750712184,2015,12,"~/Documents/data/mco","out")
+#'    tra <- itra(750712184,2015,12,"~/Documents/data/mco")
 #'    med <- inner_tra(med,tra)
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa imed irpsa irha irapss
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}, \code{\link{imed_mco}}, \code{\link{irpsa}}, \code{\link{irha}}, \code{\link{irapss}}
 
 #' @export
 inner_tra <- function(table, tra, sel = 1, champ = "mco"){
@@ -1981,21 +1989,21 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typpo Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les prélèvements d'organes In ou Out.
 #'
 #' @examples
 #' \dontrun{
-#'    po <- ipo(750712184,2015,12,"~/pathpath/")
+#'    po <- ipo(750712184,2015,12,"~/Documents/data/mco")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}
 
 #' @export
 ipo <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...){
@@ -2120,21 +2128,21 @@ ipo <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typdiap Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les dialyses péritonéales In ou Out.
 #'
 #' @examples
 #' \dontrun{
-#'    po <- idiap(750712184,2015,12,"~/pathpath/")
+#'    po <- idiap(750712184,2015,12,"~/Documents/data/mco")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irum irsa
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}
 
 #' @export
 idiap <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...){
@@ -2261,21 +2269,21 @@ idiap <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, 
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires à passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les informations structures du Out.
 #'
 #' @examples
 #' \dontrun{
-#'    um <- iium(750712184,2015,12,"~/pathpath/")
+#'    um <- iium(750712184,2015,12,"~/Documents/data/mco")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irsa
+#' @seealso \code{\link{irsa}}
 
 #' @export
 iium <- function(finess, annee, mois, path, lib = T, ...){
@@ -2356,19 +2364,19 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées (rapss, acdi, ght).
 #'
 #' @examples
 #' \dontrun{
-#'    um <- iium(750712184,2015,12,"~/pathpath/")
+#'    um <- iium(750712184,2015,12,"~/Documents/data/had")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso iano_had
+#' @seealso \code{\link{iano_had}}, \code{\link{ileg_had}}
 
 #' @export
 irapss <- function(finess,annee,mois,path,lib = T, ...){
@@ -2383,10 +2391,10 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
   un<-Sys.time()
   
   
-  cat(paste("L'objet retourné prendra la forme d'une classe S3.
-            $rapss pour accéder à la table RSA
-            $acdi pour accéder à la table ACDI
-            $ght pour accéder aux ght etb et paprica\n\n"))
+  # cat(paste("L'objet retourné prendra la forme d'une classe S3.
+  #           $rapss pour accéder à la table RSA
+  #           $acdi pour accéder à la table ACDI
+  #           $ght pour accéder aux ght etb et paprica\n\n"))
   
   
   
@@ -2669,21 +2677,21 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les données Anohosp HAD du Out.
 #'
 #' @examples
 #' \dontrun{
-#'    anoh <- iano_had(750712184,2015,12,"~/pathpath/")
+#'    anoh <- iano_had(750712184,2015,12,"~/Documents/data/had")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irapss
+#' @seealso \code{\link{irapss}}
 
 #' @export
 iano_had <- function(finess, annee,mois, path, lib=T, ...){
@@ -2778,21 +2786,21 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les données médicaments HAD du Out.
 #'
 #' @examples
 #' \dontrun{
-#'    medh <- imed_had(750712184,2015,12,"~/pathpath/")
+#'    medh <- imed_had(750712184,2015,12,"~/Documents/data/had")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irapss
+#' @seealso \code{\link{irapss}}
 
 #' @export
 imed_had <- function(finess, annee,mois, path, lib=T, ...){
@@ -2848,7 +2856,7 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 
 #' ~ HAD - Import des erreurs Leg
 #'
-#' Import du fichier des erreurs de groupage Paprica
+#' Import de la liste d'erreurs de génération Paprica
 #'
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
@@ -2861,12 +2869,12 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    ileg_had(750712184,2015,12,'~/pathpath/') -> leg15
+#'    ileg_had(750712184,2015,12,'~/Documents/data/had') -> leg15
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irapss
+#' @seealso \code{\link{irapss}}
 #' @export
 ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
   
@@ -2875,18 +2883,18 @@ ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
   u <- stringr::str_split(leg_i, "\\;", simplify = T)
-  leg_i1 <- dplyr::data_frame(FINESS    = u[,1],
-                              MOIS      = u[,2],
-                              ANNEE     = u[,3],
-                              NOSEJHAD  = u[,4],
-                              NOSEQ     = u[,5],
-                              NOSOUSSEQ = u[,6],
-                              NBERR     = u[,7])
+  leg_i1 <- dplyr::data_frame(FINESS    = u[,1] %>% as.character(),
+                              MOIS      = u[,2] %>% as.character(),
+                              ANNEE     = u[,3] %>% as.character(),
+                              NOSEJHAD  = u[,4] %>% as.character(),
+                              NOSEQ     = u[,5] %>% as.character(),
+                              NOSOUSSEQ = u[,6] %>% as.character(),
+                              NBERR     = u[,7] %>% as.integer())
   
-  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR))
+  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
   legs <- u[,8:ncol(u)]
   legs<- legs[legs != ""] 
-  leg_i1 <- cbind(leg_i1, EG = legs)
+  leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
   
   if (reshape==T){
     return(leg_i1)
@@ -2896,7 +2904,7 @@ ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
     dplyr::group_by(FINESS, MOIS, ANNEE, NOSEJHAD, NOSEQ, NOSOUSSEQ, NBERR) %>%
     dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
   
-  return(leg_i1)
+  return(dplyr::ungroup(leg_i1))
 }
 
 ##############################################
@@ -2915,14 +2923,14 @@ ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param path Chemin d'acces au fichier .rha
 #' @param lib Attribution de libelles aux colonnes
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max=10e3} pour lire les 1000 premieres lignes
 #'
 #' @examples
 #' \dontrun{
 #'    irha(750712184,2015,12,'pathpath/') -> rha15
 #' }
-#' @seealso iano_rha
+#' @seealso \code{\link{iano_ssr}}, \code{\link{ileg_ssr}}
 #'
 #' @export
 irha <- function(finess,annee,mois,path, lib=T, ...){
@@ -3342,7 +3350,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
   
   rha_1 = list(rha = rha_i, acdi = acdi)
   deux <- Sys.time()
-  cat("Données RHA importées en : ", deux-un, " secondes\n")
+  #cat("Données RHA importées en : ", deux-un, " secondes\n")
   return(rha_1)
 }
 
@@ -3360,21 +3368,21 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... paramètres supplementaires à passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes, \code{progress = F, skip =...}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les données Anohosp SSR du Out.
 #'
 #' @examples
 #' \dontrun{
-#'    anoh <- iano_ssr(750712184,2015,12,"~/pathpath/")
+#'    anoh <- iano_ssr(750712184,2015,12,"~/Documents/data/ssr")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irha
+#' @seealso \code{\link{irha}}
 
 #' @export
 iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
@@ -3472,19 +3480,19 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles a la table : T
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les données SHA.
 #'
 #' @examples
 #' \dontrun{
-#'    sha <- issrha(750712184,2015,12,"~/pathpath/")
+#'    sha <- issrha(750712184,2015,12,"~/Documents/data/ssr")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irha, iano_ssr
+#' @seealso \code{\link{irha}}, \code{\link{ileg_ssr}}, \code{\link{iano_ssr}}
 
 #' @export
 issrha <- function(finess, annee,mois, path, lib=T, ...){
@@ -3539,6 +3547,59 @@ issrha <- function(finess, annee,mois, path, lib=T, ...){
   return(ssrha_i)
 }
 
+#' ~ SSR - Import des erreurs Leg
+#'
+#' Import de la liste d'erreurs de génération Genrha
+#'
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
+#'
+#' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
+#'
+#' @examples
+#' \dontrun{
+#'    ileg_had(750712184,2015,12,'~/Documents/data/ssr') -> leg15
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{irha}}, \code{\link{issrha}}
+#' @export
+ileg_ssr <- function(finess, annee, mois, path, reshape = F, ...){
+  
+  leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
+  
+  extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+  
+  u <- stringr::str_split(leg_i, "\\;", simplify = T)
+  leg_i1 <- dplyr::data_frame(FINESS    = u[,1] %>% as.character(),
+                              MOIS      = u[,2] %>% as.character(),
+                              ANNEE     = u[,3] %>% as.character(),
+                              NOSEQSEJ  = u[,4] %>% as.character(),
+                              NOSEQRHS  = u[,5] %>% as.character(),
+                              NBERR     = u[,6] %>% as.integer())
+  
+  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  legs <- u[,7:ncol(u)]
+  legs<- legs[legs != ""] 
+  leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
+  
+  if (reshape==T){
+    return(leg_i1)
+  }
+  
+  leg_i1 %>% 
+    dplyr::group_by(FINESS, MOIS, ANNEE, NOSEQSEJ, NOSEQRHS, NBERR) %>%
+    dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
+  
+  return(dplyr::ungroup(leg_i1))
+}
+
+
 ##############################################
 ####################### PSY ##################
 ##############################################
@@ -3557,21 +3618,21 @@ issrha <- function(finess, annee,mois, path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les données RPSA.
 #'
 #' @examples
 #' \dontrun{
-#'    rpsa <- irpsa(750712184,2015,12,"~/pathpath/")
+#'    rpsa <- irpsa(750712184,2015,12,"~/Documents/data/psy")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso ir3a
+#' @seealso \code{\link{ir3a}}
 
 #' @export
 irpsa <- function(finess,annee,mois,path, lib=T, ...){
@@ -3660,21 +3721,21 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les données R3A.
 #'
 #' @examples
 #' \dontrun{
-#'    r3a <- ir3a(750712184,2015,12,"~/pathpath/")
+#'    r3a <- ir3a(750712184,2015,12,"~/Documents/data/psy")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irpsa
+#' @seealso \code{\link{irpsa}}
 
 #' @export
 ir3a <- function(finess,annee,mois,path, lib=T, ...){
@@ -3762,19 +3823,19 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame, tbl_df) contenant les données Anohosp SSR du Out.
 #'
 #' @examples
 #' \dontrun{
-#'    anoh <- iano_psy(750712184,2015,12,"~/pathpath/")
+#'    anoh <- iano_psy(750712184,2015,12,"~/Documents/data/psy")
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irpsa
+#' @seealso \code{\link{irpsa}}
 
 #' @export
 iano_psy <- function(finess,annee,mois,path, lib=T, ...){
@@ -3879,7 +3940,7 @@ iano_psy <- function(finess,annee,mois,path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip,adezip2
+#' @seealso \code{\link{adezip}}, \code{\link{adezip2}}
 
 #' @export
 astat <- function(path,file, view=T){
@@ -3918,7 +3979,7 @@ astat <- function(path,file, view=T){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip, astat, adelete
+#' @seealso \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 
 #' @export
 adezip2 <- function(path, file, liste, pathto=""){
@@ -3994,7 +4055,7 @@ adezip2 <- function(path, file, liste, pathto=""){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip2, astat, adelete
+#' @seealso \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}}
 
 #' @export
 adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
@@ -4102,10 +4163,9 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
 #'
 #' @param finess Finess du fichier a dezipper
 #' @param path Chemin d'acces au fichier
-#' @param file Nom de l'archive zip (ex: MCO_IN_00000_201603.zip)
+#' @param file Nom de l'archive zip (ex: \samp{MCO_IN_00000_201603.zip})
 #' @param liste des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dézippe la totalite de l'archive
-
-#' @param pathto Chemin où déposer les fichiers dézippés, par défaut à "", les fichiers sont mis là où se trouve l'archive
+#' @param pathto Chemin ou deposer les fichiers dezippes, par defaut à "", les fichiers sont mis la ou se trouve l'archive
 #'
 #' @examples
 #' \dontrun{
@@ -4122,7 +4182,7 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip2,adezip, astat, adelete
+#' @seealso \code{\link{adezip2}}, \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 
 #' @export
 adezip3 <- function(finess, path, file, liste, pathto=""){
@@ -4185,7 +4245,7 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip,adezip2, astat
+#' @seealso \code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}}
 
 #' @export
 adelete <- function(finess,annee,mois,path, liste, type){
@@ -4215,7 +4275,7 @@ adelete <- function(finess,annee,mois,path, liste, type){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irsa, irum
+#' @seealso \code{\link{irsa}}, \code{\link{irum}}
 
 #' @export
 dico <- function(table){
@@ -4256,7 +4316,7 @@ dico <- function(table){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irsa, irum
+#' @seealso \code{\link{irsa}}, \code{\link{irum}}
 
 #' @export
 tdiag <- function (d,  include = T)
@@ -4320,8 +4380,8 @@ tdiag <- function (d,  include = T)
 #'
 #' @examples
 #' \dontrun{
-#'    irafael(750712184,2015,12,'~/pathpath/') -> rsfa15
-#'    irafael(750712184,2015,12,'~/pathpath/', lister = 'C', lamda = T) -> rsfa14_lamda
+#'    irafael(750712184,2015,12,'~/Documents/data/rsf') -> rsfa15
+#'    irafael(750712184,2015,12,'~/Documents/data/rsf', lister = 'C', lamda = T) -> rsfa14_lamda
 #' }
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
@@ -4335,6 +4395,7 @@ tdiag <- function (d,  include = T)
 #' @param ... Autres parametres a specifier \code{n_max = 1e3}, ...
 #' @author G. Pressiat
 #'
+#' @seealso \code{\link{irafael}}
 #' @export
 irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, ...){
   if (annee<2011|annee>2016){
@@ -4348,9 +4409,9 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
   un<-Sys.time()
   
   if (lamda == F){
-    cat(paste("Import des RSFA / Rafael", annee, paste0("M",mois),"\n"))
-    cat(paste("L'objet retourné prendra la forme d'une classe S3.
-              $A pour les Rafael A, et B, C, ...\n"))
+    # cat(paste("Import des RSFA / Rafael", annee, paste0("M",mois),"\n"))
+    # cat(paste("L'objet retourné prendra la forme d'une classe S3.
+    #           $A pour les Rafael A, et B, C, ...\n"))
     
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael", an == substr(annee,3,4))
@@ -4362,10 +4423,10 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
     
   }
   if (lamda == T){
-    cat(paste("Import des rsfa-maj", annee, paste0("M",mois),"\n"))
-    cat(paste("L'objet retourné prendra la forme d'une classe S3.
-              $A pour les Rafael A, et B, C, ...\n"))
-    
+    # cat(paste("Import des rsfa-maj", annee, paste0("M",mois),"\n"))
+    # cat(paste("L'objet retourné prendra la forme d'une classe S3.
+    #           $A pour les Rafael A, et B, C, ...\n"))
+    # 
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael-maj", an == substr(annee,3,4))
     
@@ -4421,7 +4482,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
   rm(r)
   
   deux<-Sys.time()
-  cat(paste("Rafaels",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
+  #at(paste("Rafaels",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
   
   if (stat == T){
     print(
@@ -4461,22 +4522,22 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lamda a TRUE, importe le fichier ano-ace-maj
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param ... parametres supplementaires a passer
-#' dans la fonction \code{readr::read_fwf()}, par exemple
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
 #' @return Une table (data.frame ou tbl_df) qui contient les données Anohosp in / out
 #'
 #' @examples
 #' \dontrun{
-#'    iano_rafael(750712184, 2015, 12,'~/pathpath/rsf') -> ano_out15
-#'    iano_rafael(750712184, 2015, 12,'~/pathpath/rsf', lamda = T) -> lamda_maj_ano_out14
+#'    iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf') -> ano_out15
+#'    iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf', lamda = T) -> lamda_maj_ano_out14
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso irafael
+#' @seealso \code{\link{irafael}}
 
 #' @export
 iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
@@ -4552,24 +4613,3 @@ iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
 #' @author G. Pressiat
 #' @keywords data
 NULL
-
-#' ~ Silence - import sans messages
-#'
-#' Fonction d'import silencieuse avec la fonction \code{purrr::quietly}
-#'
-#' @param fonction Fonction a modifier
-#'
-#' @return La fonction qui n'imprime rien dans la console
-#'
-#' @examples
-#' \dontrun{
-#'    silence(irsa()) -> rsa_silence
-#'    # Table RSA : 
-#'    rsa_silence(750712184, 2017, 1, '~/data/mco', typi = 1)$result$rsa -> rsa17
-#' }
-#'
-#' @author G. Pressiat
-#' @export 
-silence <- function(fonction) {
-  purrr::quietly(fonction)
-}

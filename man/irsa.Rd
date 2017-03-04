@@ -4,7 +4,7 @@
 \alias{irsa}
 \title{~ MCO - Import des RSA}
 \usage{
-irsa(finess, annee, mois, path, lib = T, typi = 0, ...)
+irsa(finess, annee, mois, path, lib = T, typi = 4, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -15,12 +15,12 @@ irsa(finess, annee, mois, path, lib = T, typi = 0, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
-\item{typi}{Type d'import, par defaut a 0 : propose a l'utilisateur de choisir au lancement}
+\item{typi}{Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
@@ -48,7 +48,7 @@ Types d'imports :
 
 \strong{Principe du streaming :}
 Mise en chaîne de caractères de la succession d'actes CCAM au cours du RUM, par exemple, pour un RUM :
-\code{"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"}
+\samp{"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"}
 
 La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélérée, comparée à une requête sur la large table acdi par une requête du type :
 
@@ -60,12 +60,12 @@ Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les info
 }
 \examples{
 \dontrun{
-   irsa(750712184,2015,12,'~/pathpath/', typi = 4) -> rsa15
+   irsa(750712184,2015,12,'~/Documents/data/mco') -> rsa15
 }
 
 }
 \seealso{
-irum ileg_mco iano_mco
+\code{\link{irum}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}
 }
 \author{
 G. Pressiat

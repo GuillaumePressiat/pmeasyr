@@ -18,26 +18,26 @@ ileg_mco(finess, annee, mois, path, reshape = F, ...)
 \item{reshape}{booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une table (data.frame, tbl_df) contenant les erreurs Out.
 }
 \description{
-Import du fichier des erreurs de groupage Genrsa
+Import de la liste d'erreurs de génération Genrsa
 }
 \details{
 Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   ileg_mco(750712184,2015,12,'~/pathpath/') -> leg15
+   ileg_mco(750712184,2015,12,'~/Documents/data/mco') -> leg15
 }
 
 }
 \seealso{
-irum irsa
+\code{\link{irum}}, \code{\link{irsa}}
 }
 \author{
 G. Pressiat

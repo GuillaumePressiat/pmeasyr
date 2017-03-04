@@ -15,12 +15,12 @@ itra(finess, annee, mois, path, lib = T, champ = "mco", ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
 \item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
@@ -38,12 +38,12 @@ Structure du nom du fichier attendu (sortie de Genrsa) :
 }
 \examples{
 \dontrun{
-   itra(750712184,2015,12,'~/pathpath/') -> tra15
+   itra(750712184,2015,12,'~/Documents/data/champ_pmsi') -> tra15
 }
 
 }
 \seealso{
-irum irsa ileg_mco iano_mco irha irapss irpsa ir3a
+\code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}
 }
 \author{
 G. Pressiat

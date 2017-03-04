@@ -15,10 +15,10 @@ irpsa(finess, annee, mois, path, lib = T, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
@@ -36,12 +36,12 @@ Structure du nom du fichier attendu (sortie de Pivoine) :
 }
 \examples{
 \dontrun{
-   rpsa <- irpsa(750712184,2015,12,"~/pathpath/")
+   rpsa <- irpsa(750712184,2015,12,"~/Documents/data/psy")
 }
 
 }
 \seealso{
-ir3a
+\code{\link{ir3a}}
 }
 \author{
 G. Pressiat

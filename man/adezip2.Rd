@@ -33,7 +33,7 @@ Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'ar
 
 }
 \seealso{
-adezip, astat, adelete
+\code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 }
 \author{
 G. Pressiat

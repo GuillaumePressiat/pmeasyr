@@ -18,7 +18,7 @@ issrha(finess, annee, mois, path, lib = T, ...)
 \item{lib}{Ajout des libelles a la table : T}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
@@ -36,12 +36,12 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 }
 \examples{
 \dontrun{
-   sha <- issrha(750712184,2015,12,"~/pathpath/")
+   sha <- issrha(750712184,2015,12,"~/Documents/data/ssr")
 }
 
 }
 \seealso{
-irha, iano_ssr
+\code{\link{irha}}, \code{\link{ileg_ssr}}, \code{\link{iano_ssr}}
 }
 \author{
 G. Pressiat

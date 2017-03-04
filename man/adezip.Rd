@@ -47,7 +47,7 @@ Dezipper une archive PMSI au besoin
 
 }
 \seealso{
-adezip2, astat, adelete
+\code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}}
 }
 \author{
 G. Pressiat

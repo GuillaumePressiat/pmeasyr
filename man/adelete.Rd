@@ -29,7 +29,7 @@ Supprime les fichiers de l'archive PMSI dezippes en début de traitement
 
 }
 \seealso{
-adezip,adezip2, astat
+\code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}}
 }
 \author{
 G. Pressiat

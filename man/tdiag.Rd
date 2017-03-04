@@ -34,7 +34,7 @@ tdiag(d1, include = F) -> alldiag
 
 }
 \seealso{
-irsa, irum
+\code{\link{irsa}}, \code{\link{irum}}
 }
 \author{
 G. Pressiat

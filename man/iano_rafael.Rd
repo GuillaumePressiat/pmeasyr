@@ -15,12 +15,12 @@ iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
 \item{lamda}{a TRUE, importe le fichier ano-ace-maj}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
@@ -40,13 +40,13 @@ Structure du nom du fichier attendu  :
 }
 \examples{
 \dontrun{
-   iano_rafael(750712184, 2015, 12,'~/pathpath/rsf') -> ano_out15
-   iano_rafael(750712184, 2015, 12,'~/pathpath/rsf', lamda = T) -> lamda_maj_ano_out14
+   iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf') -> ano_out15
+   iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf', lamda = T) -> lamda_maj_ano_out14
 }
 
 }
 \seealso{
-irafael
+\code{\link{irafael}}
 }
 \author{
 G. Pressiat

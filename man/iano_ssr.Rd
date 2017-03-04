@@ -15,10 +15,10 @@ iano_ssr(finess, annee, mois, path, lib = T, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a TRUE ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
 \item{...}{paramètres supplementaires à passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes, \code{progress = F, skip =...}}
 }
 \value{
@@ -36,12 +36,12 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 }
 \examples{
 \dontrun{
-   anoh <- iano_ssr(750712184,2015,12,"~/pathpath/")
+   anoh <- iano_ssr(750712184,2015,12,"~/Documents/data/ssr")
 }
 
 }
 \seealso{
-irha
+\code{\link{irha}}
 }
 \author{
 G. Pressiat

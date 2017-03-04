@@ -21,7 +21,7 @@ Obtenir le dictionnaire d'une table
 
 }
 \seealso{
-irsa, irum
+\code{\link{irsa}}, \code{\link{irum}}
 }
 \author{
 G. Pressiat

@@ -16,7 +16,7 @@ irapss(finess, annee, mois, path, lib = T, ...)
 \item{path}{Localisation du fichier de donnees}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
@@ -34,12 +34,12 @@ Structure du nom du fichier attendu (sortie de Paprica) :
 }
 \examples{
 \dontrun{
-   um <- iium(750712184,2015,12,"~/pathpath/")
+   um <- iium(750712184,2015,12,"~/Documents/data/had")
 }
 
 }
 \seealso{
-iano_had
+\code{\link{iano_had}}, \code{\link{ileg_had}}
 }
 \author{
 G. Pressiat

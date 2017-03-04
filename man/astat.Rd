@@ -25,7 +25,7 @@ Pour lister sans dezipper les fichiers d'une archive
 
 }
 \seealso{
-adezip,adezip2
+\code{\link{adezip}}, \code{\link{adezip2}}
 }
 \author{
 G. Pressiat

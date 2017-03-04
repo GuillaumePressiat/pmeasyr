@@ -18,7 +18,7 @@ irha(finess, annee, mois, path, lib = T, ...)
 \item{lib}{Attribution de libelles aux colonnes}
 
 \item{...}{parametres supplementaires a passer
-dans la fonction \code{readr::read_fwf()}, par exemple
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max=10e3} pour lire les 1000 premieres lignes}
 }
 \description{
@@ -33,5 +33,5 @@ Formats depuis 2011 pris en charge
 }
 }
 \seealso{
-iano_rha
+\code{\link{iano_ssr}}, \code{\link{ileg_ssr}}
 }

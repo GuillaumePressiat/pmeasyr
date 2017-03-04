@@ -23,14 +23,14 @@ Ajout du TRA par dplyr::inner_join
 }
 \examples{
 \dontrun{
-   med <- imed_mco(750712184,2015,12,"~/pathpath/","out")
-   tra <- itra(750712184,2015,12,"~/pathpath/")
+   med <- imed_mco(750712184,2015,12,"~/Documents/data/mco","out")
+   tra <- itra(750712184,2015,12,"~/Documents/data/mco")
    med <- inner_tra(med,tra)
 }
 
 }
 \seealso{
-irum irsa imed irpsa irha irapss
+\code{\link{irum}}, \code{\link{irsa}}, \code{\link{imed_mco}}, \code{\link{irpsa}}, \code{\link{irha}}, \code{\link{irapss}}
 }
 \author{
 G. Pressiat

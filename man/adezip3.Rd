@@ -11,11 +11,11 @@ adezip3(finess, path, file, liste, pathto = "")
 
 \item{path}{Chemin d'acces au fichier}
 
-\item{file}{Nom de l'archive zip (ex: MCO_IN_00000_201603.zip)}
+\item{file}{Nom de l'archive zip (ex: \samp{MCO_IN_00000_201603.zip})}
 
 \item{liste}{des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dézippe la totalite de l'archive}
 
-\item{pathto}{Chemin où déposer les fichiers dézippés, par défaut à "", les fichiers sont mis là où se trouve l'archive}
+\item{pathto}{Chemin ou deposer les fichiers dezippes, par defaut à "", les fichiers sont mis la ou se trouve l'archive}
 }
 \description{
 Version de la fonction \code{\link{adezip2}} pour des archives au format Intranet du DIM Siège de l'AP-HP,
@@ -36,7 +36,7 @@ Version de la fonction \code{\link{adezip2}} pour des archives au format Intrane
 
 }
 \seealso{
-adezip2,adezip, astat, adelete
+\code{\link{adezip2}}, \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 }
 \author{
 G. Pressiat
