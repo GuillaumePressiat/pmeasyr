@@ -653,7 +653,7 @@ irsa <- function(...){
 
 
 
-#' @usage irsa(params)
+
 
 #' @export
 irsa.pm_param <- function(params){
@@ -665,7 +665,7 @@ irsa.pm_param <- function(params){
 }
 
 
-#' @usage irsa(liste)
+
 #' @export
 irsa.list <- function(l){
   .params <- l
@@ -1293,7 +1293,7 @@ itra <- function(...){
 
 
 
-#' @usage itra(params)
+
 
 #' @export
 itra.pm_param <- function(params){
@@ -1305,7 +1305,7 @@ itra.pm_param <- function(params){
 }
 
 
-#' @usage itra(liste)
+
 #' @export
 itra.list <- function(l){
   .params <- l
@@ -1461,7 +1461,7 @@ iano_mco <- function( ...){
 
 
 
-#' @usage iano_mco(params)
+
 
 #' @export
 iano_mco.pm_param <- function(params){
@@ -1473,7 +1473,7 @@ iano_mco.pm_param <- function(params){
 }
 
 
-#' @usage iano_mco(liste)
+
 #' @export
 iano_mco.list <- function(l){
   .params <- l
@@ -1707,7 +1707,7 @@ imed_mco <- function(...){
 }
 
 
-#' @usage imed_mco(params)
+
 
 #' @export
 imed_mco.pm_param <- function(params){
@@ -1719,7 +1719,7 @@ imed_mco.pm_param <- function(params){
 }
 
 
-#' @usage imed_mco(liste)
+
 #' @export
 imed_mco.list <- function(l){
   .params <- l
@@ -1897,9 +1897,6 @@ idmi_mco <- function(...){
 }
 
 
-
-#' @usage idmi_mco(params)
-
 #' @export
 idmi_mco.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -1910,7 +1907,6 @@ idmi_mco.pm_param <- function(params){
 }
 
 
-#' @usage idmi_mco(liste)
 #' @export
 idmi_mco.list <- function(l){
   .params <- l
@@ -2067,9 +2063,6 @@ ileg_mco <- function(...){
 }
 
 
-
-#' @usage ileg_mco(params)
-
 #' @export
 ileg_mco.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -2080,7 +2073,6 @@ ileg_mco.pm_param <- function(params){
 }
 
 
-#' @usage ileg_mco(liste)
 
 #' @export
 ileg_mco.list <- function(l){
@@ -2238,9 +2230,6 @@ idiap <- function(...){
 }
 
 
-
-#' @usage idiap(params)
-
 #' @export
 idiap.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -2251,7 +2240,6 @@ idiap.pm_param <- function(params){
 }
 
 
-#' @usage idiap(liste)
 #' @export
 idiap.list <- function(l){
   .params <- l
@@ -2411,9 +2399,6 @@ iium <- function(...){
 }
 
 
-
-#' @usage iium(params)
-
 #' @export
 iium.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -2423,8 +2408,6 @@ iium.pm_param <- function(params){
   do.call(iium.default, param2)
 }
 
-
-#' @usage iium(liste)
 #' @export
 iium.list <- function(l){
   .params <- l
@@ -2528,9 +2511,6 @@ ipo <- function( ...){
 }
 
 
-
-#' @usage ipo(params)
-
 #' @export
 ipo.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -2541,7 +2521,6 @@ ipo.pm_param <- function(params){
 }
 
 
-#' @usage ipo(liste)
 #' @export
 ipo.list <- function(l){
   .params <- l
@@ -2708,9 +2687,6 @@ irapss <- function(...){
 }
 
 
-
-#' @usage irapss(params)
-
 #' @export
 irapss.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -2721,7 +2697,6 @@ irapss.pm_param <- function(params){
 }
 
 
-#' @usage irapss(liste)
 #' @export
 irapss.list <- function(l){
   .params <- l
@@ -3055,9 +3030,6 @@ iano_had <- function(...){
 }
 
 
-
-#' @usage iano_had(params)
-
 #' @export
 iano_had.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -3068,7 +3040,6 @@ iano_had.pm_param <- function(params){
 }
 
 
-#' @usage iano_had(liste)
 #' @export
 iano_had.list <- function(l){
   .params <- l
@@ -3196,9 +3167,6 @@ imed_had <- function(...){
 }
 
 
-
-#' @usage imed_had(params)
-
 #' @export
 imed_had.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -3208,8 +3176,6 @@ imed_had.pm_param <- function(params){
   do.call(imed_had.default, param2)
 }
 
-
-#' @usage imed_had(liste)
 #' @export
 imed_had.list <- function(l){
   .params <- l
@@ -3302,9 +3268,6 @@ ileg_had <- function(...){
 }
 
 
-
-#' @usage ileg_had(params)
-
 #' @export
 ileg_had.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -3314,8 +3277,6 @@ ileg_had.pm_param <- function(params){
   do.call(ileg_had.default, param2)
 }
 
-
-#' @usage ileg_had(liste)
 #' @export
 ileg_had.list <- function(l){
   .params <- l
@@ -3391,9 +3352,6 @@ irha <- function(...){
 }
 
 
-
-#' @usage irha(params)
-
 #' @export
 irha.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -3403,8 +3361,6 @@ irha.pm_param <- function(params){
   do.call(irha.default, param2)
 }
 
-
-#' @usage irha(liste)
 #' @export
 irha.list <- function(l){
   .params <- l
@@ -4060,9 +4016,6 @@ ileg_ssr <- function(...){
 }
 
 
-
-#' @usage ileg_ssr(params)
-
 #' @export
 ileg_ssr.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -4072,8 +4025,6 @@ ileg_ssr.pm_param <- function(params){
   do.call(ileg_ssr.default, param2)
 }
 
-
-#' @usage ileg_ssr(liste)
 #' @export
 ileg_ssr.list <- function(l){
   .params <- l
@@ -4581,9 +4532,6 @@ adezip <- function(...){
 }
 
 
-
-#' @usage adezip(params)
-
 #' @export
 adezip.pm_param <- function(params){
   noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
@@ -4592,8 +4540,6 @@ adezip.pm_param <- function(params){
   do.call(adezip.default, param2)
 }
 
-
-#' @usage adezip(liste)
 #' @export
 adezip.list <- function(l){
   .params <- l
@@ -4801,9 +4747,6 @@ adelete <- function(...){
 }
 
 
-
-#' @usage adelete(params)
-
 #' @export
 adelete.pm_param <- function(params){
   noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', autres)
@@ -4812,8 +4755,6 @@ adelete.pm_param <- function(params){
   do.call(adelete.default, param2)
 }
 
-
-#' @usage adelete(liste)
 #' @export
 adelete.list <- function(l){
   .params <- l
