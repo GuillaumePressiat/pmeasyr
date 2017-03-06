@@ -7,10 +7,6 @@
 idmi_mco(...)
 }
 \arguments{
-\item{...}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
-
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
 
 \item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
@@ -22,6 +18,10 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \item{typdmi}{Type de donnees In / Out}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
+
+\item{~...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une table (data.frame, tbl_df) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : T2A 06 - ATU 09 - THROMBO 10

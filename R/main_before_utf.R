@@ -37,7 +37,7 @@
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param typi Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement
-#' @param ...   parametres supplementaires a passer
+#' @param ~...   parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -62,7 +62,7 @@ irum <- function(...){
 }
 
 
-#' @usage irum(params)
+
 #' @export
 irum.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -73,7 +73,7 @@ irum.pm_param <- function(params){
 }
 
 
-#' @usage irum(liste)
+
 #' @export
 irum.list <- function(l){
   .params <- l
@@ -629,7 +629,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param typi Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1268,7 +1268,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param champ Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1436,7 +1436,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' @param path Localisation du fichier de donnees
 #' @param typano Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1681,7 +1681,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
 #' @param path Localisation du fichier de donnees
 #' @param typmed Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1875,7 +1875,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
 #' @param path Localisation du fichier de donnees
 #' @param typdmi Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2044,7 +2044,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2216,7 +2216,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @param path Localisation du fichier de donnees
 #' @param typdiap Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2388,7 +2388,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires à passer
+#' @param ~... parametres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2507,7 +2507,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, ...){
 #' @param path Localisation du fichier de donnees
 #' @param typpo Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ...   parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #' @return Une table (data.frame, tibble) contenant les prélèvements d'organes In ou Out.
@@ -2685,7 +2685,7 @@ if (typpo=="in"){
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3032,7 +3032,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3173,7 +3173,7 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3373,7 +3373,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param mois Mois de la periode (du fichier Out)
 #' @param path Chemin d'acces au fichier .rha
 #' @param lib Attribution de libelles aux colonnes
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max=10e3} pour lire les 1000 premieres lignes
 #'
@@ -3852,7 +3852,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... paramètres supplementaires à passer
+#' @param ~... paramètres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes, \code{progress = F, skip =...}
 #'
@@ -3962,7 +3962,7 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles a la table : T
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4135,7 +4135,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4238,7 +4238,7 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4338,7 +4338,7 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4968,7 +4968,7 @@ tdiag <- function (d,  include = T)
 #' @param stat avec stat = T, un tableau synthetise le nombre de lignes par type de rafael
 #' @param lister Liste des types d'enregistrements a importer
 #' @param lamda a TRUE, importe les fichiers \code{rsfa-maj} de reprise de l'annee passee
-#' @param ... Autres parametres a specifier \code{n_max = 1e3}, ...
+#' @param ~... Autres parametres a specifier \code{n_max = 1e3}, ...
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irafael}}
@@ -5099,7 +5099,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #' @param path Localisation du fichier de donnees
 #' @param lamda a TRUE, importe le fichier ano-ace-maj
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'

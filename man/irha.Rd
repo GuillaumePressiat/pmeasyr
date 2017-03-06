@@ -7,10 +7,6 @@
 irha(finess, annee, mois, path, lib = T, ...)
 }
 \arguments{
-\item{...}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max=10e3} pour lire les 1000 premieres lignes}
-
 \item{finess}{Finess du fichier Out de GENRHA a integrer}
 
 \item{annee}{Annee de la periode (du fichier Out)}
@@ -20,6 +16,10 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \item{path}{Chemin d'acces au fichier .rha}
 
 \item{lib}{Attribution de libelles aux colonnes}
+
+\item{~...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max=10e3} pour lire les 1000 premieres lignes}
 }
 \description{
 Import des RHA

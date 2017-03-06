@@ -7,10 +7,6 @@
 irapss(finess, annee, mois, path, lib = T, ...)
 }
 \arguments{
-\item{...}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
-
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
 
 \item{annee}{Annee PMSI (nb) des données sur 4 caracteres (2016)}
@@ -18,6 +14,10 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \item{mois}{Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)}
 
 \item{path}{Localisation du fichier de donnees}
+
+\item{~...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées (rapss, acdi, ght).

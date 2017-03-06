@@ -15,7 +15,7 @@ iano_psy(finess, annee, mois, path, lib = T, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{...}{parametres supplementaires a passer
+\item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }

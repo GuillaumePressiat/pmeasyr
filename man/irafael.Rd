@@ -24,7 +24,7 @@ irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
 
 \item{lamda}{a TRUE, importe les fichiers \code{rsfa-maj} de reprise de l'annee passee}
 
-\item{...}{Autres parametres a specifier \code{n_max = 1e3}, ...}
+\item{~...}{Autres parametres a specifier \code{n_max = 1e3}, ...}
 }
 \value{
 Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rafaels)
