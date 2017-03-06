@@ -15,9 +15,9 @@ iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
-
 \item{lamda}{a TRUE, importe le fichier ano-ace-maj}
+
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
@@ -46,7 +46,8 @@ Structure du nom du fichier attendu  :
 
 }
 \seealso{
-\code{\link{irafael}}
+\code{\link{irafael}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

@@ -41,7 +41,8 @@ Structure du nom du fichier attendu (sortie de Pivoine) :
 
 }
 \seealso{
-\code{\link{ir3a}}
+\code{\link{ir3a}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

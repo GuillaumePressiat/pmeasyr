@@ -41,7 +41,8 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 
 }
 \seealso{
-\code{\link{irha}}, \code{\link{ileg_ssr}}, \code{\link{iano_ssr}}
+\code{\link{irha}}, \code{\link{ileg_ssr}}, \code{\link{iano_ssr}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

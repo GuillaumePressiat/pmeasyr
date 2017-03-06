@@ -3821,10 +3821,39 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irha}}
+#' @seealso \code{\link{irha}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' 
+#' @usage iano_ssr(finess, annee, mois, path, lib = T, ...)
+#' @export iano_ssr
+#' @export
+iano_ssr <- function(...){
+  UseMethod('iano_ssr')
+}
+
+
 
 #' @export
-iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
+iano_ssr.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_ssr.default, param2)
+}
+
+#' @export
+iano_ssr.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_ssr.default, param2)
+}
+
+#' @export
+iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee<2011|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }
@@ -3931,10 +3960,38 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irha}}, \code{\link{ileg_ssr}}, \code{\link{iano_ssr}}
+#' @seealso \code{\link{irha}}, \code{\link{ileg_ssr}}, \code{\link{iano_ssr}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage issrha(finess, annee, mois, path, lib = T, ...)
+#' @export issrha
+#' @export
+issrha <- function(...){
+  UseMethod('issrha')
+}
+
+
 
 #' @export
-issrha <- function(finess, annee,mois, path, lib=T, ...){
+issrha.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(issrha.default, param2)
+}
+
+#' @export
+issrha.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(issrha.default, param2)
+}
+
+#' @export
+issrha.default <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4099,10 +4156,38 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{ir3a}}
+#' @seealso \code{\link{ir3a}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage irpsa(finess, annee, mois, path, lib = T, ...) 
+#' @export irpsa
+#' @export
+irpsa <- function(...){
+  UseMethod('irpsa')
+}
+
+
 
 #' @export
-irpsa <- function(finess,annee,mois,path, lib=T, ...){
+irpsa.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irpsa.default, param2)
+}
+
+#' @export
+irpsa.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irpsa.default, param2)
+}
+
+#' @export
+irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee<2012|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4202,10 +4287,38 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irpsa}}
+#' @seealso \code{\link{irpsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage ir3a(finess, annee, mois, path, lib = T, ...)
+#' @export ir3a
+#' @export
+ir3a <- function(...){
+  UseMethod('ir3a')
+}
+
+
 
 #' @export
-ir3a <- function(finess,annee,mois,path, lib=T, ...){
+ir3a.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ir3a.default, param2)
+}
+
+#' @export
+ir3a.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ir3a.default, param2)
+}
+
+#' @export
+ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee<2012|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4302,10 +4415,38 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irpsa}}
+#' @seealso \code{\link{irpsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage iano_psy(finess, annee, mois, path, lib = T, ...)
+#' @export iano_psy
+#' @export
+iano_psy <- function(...){
+  UseMethod('iano_psy')
+}
+
+
 
 #' @export
-iano_psy <- function(finess,annee,mois,path, lib=T, ...){
+iano_psy.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_psy.default, param2)
+}
+
+#' @export
+iano_psy.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_psy.default, param2)
+}
+
+#' @export
+iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee<2012|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4912,9 +5053,39 @@ tdiag <- function (d,  include = T)
 #' @param ~... Autres parametres a specifier \code{n_max = 1e3}, ...
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irafael}}
+#' @seealso \code{\link{iano_rafael}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
+#' "C", "H", "L", "M", "P"), lamda = F, ...)
+#' @export irafael
 #' @export
-irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, ...){
+irafael <- function(...){
+  UseMethod('irafael')
+}
+
+
+
+#' @export
+irafael.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib','stat', 'lister', 'lamda', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irafael.default, param2)
+}
+
+#' @export
+irafael.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib','stat', 'lister', 'lamda', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irafael.default, param2)
+}
+
+#' @export
+irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, ...){
   if (annee<2011|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }
@@ -5054,10 +5225,38 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irafael}}
+#' @seealso \code{\link{irafael}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
+#' @export iano_rafael
+#' @export
+iano_rafael <- function(...){
+  UseMethod('iano_rafael')
+}
+
+
 
 #' @export
-iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
+iano_rafael.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', 'lamda', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_rafael.default, param2)
+}
+
+#' @export
+iano_rafael.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', 'lamda', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_rafael.default, param2)
+}
+
+#' @export
+iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
   if (annee<2012|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }

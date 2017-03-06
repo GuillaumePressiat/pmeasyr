@@ -39,7 +39,8 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 
 }
 \seealso{
-\code{\link{irpsa}}
+\code{\link{irpsa}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

@@ -5,7 +5,7 @@
 \title{~ RSF - Import des Rafael}
 \usage{
 irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
-  "C", "H", "L", "M", "P"), lamda = F, ...)
+"C", "H", "L", "M", "P"), lamda = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -44,7 +44,8 @@ Formats depuis 2014 pour les rsfa-maj (reprise 2013)
 
 }
 \seealso{
-\code{\link{irafael}}
+\code{\link{iano_rafael}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat
