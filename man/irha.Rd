@@ -2,17 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{irha}
 \alias{irha}
-\alias{irha.pm_param}
-\alias{irha.list}
 \title{~ SSR - Import des RHA}
 \usage{
 irha(finess, annee, mois, path, lib = T, ...)
-
-irha(params)
-
-irha(liste)
 }
 \arguments{
+\item{...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max=10e3} pour lire les 1000 premieres lignes}
+
 \item{finess}{Finess du fichier Out de GENRHA a integrer}
 
 \item{annee}{Annee de la periode (du fichier Out)}
@@ -22,10 +20,6 @@ irha(liste)
 \item{path}{Chemin d'acces au fichier .rha}
 
 \item{lib}{Attribution de libelles aux colonnes}
-
-\item{*Autres*}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max=10e3} pour lire les 1000 premieres lignes}
 }
 \description{
 Import des RHA

@@ -2,17 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{imed_had}
 \alias{imed_had}
-\alias{imed_had.pm_param}
-\alias{imed_had.list}
 \title{~ HAD - Import des Med}
 \usage{
 imed_had(finess, annee, mois, path, lib = T, ...)
-
-imed_had(params)
-
-imed_had(liste)
 }
 \arguments{
+\item{...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
+
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
 
 \item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
@@ -22,10 +20,6 @@ imed_had(liste)
 \item{path}{Localisation du fichier de donnees}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
-
-\item{*Autres*}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une table (data.frame, tbl_df) contenant les données médicaments HAD du Out.

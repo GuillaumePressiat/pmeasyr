@@ -37,7 +37,7 @@
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param typi Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement
-#' @param *Autres*   parametres supplementaires a passer
+#' @param ...   parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -60,9 +60,9 @@
 irum <- function(...){
   UseMethod('irum')
 }
-#' @rdname irum
-#' @usage irum(params)
 
+
+#' @usage irum(params)
 #' @export
 irum.pm_param <- function(params){
   autres <- c('n_max', 'skip', 'progress')
@@ -72,7 +72,7 @@ irum.pm_param <- function(params){
   do.call(irum.default, param2)
 }
 
-#' @rdname irum
+
 #' @usage irum(liste)
 #' @export
 irum.list <- function(l){
@@ -629,7 +629,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param typi Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -652,7 +652,7 @@ irsa <- function(...){
 }
 
 
-#' @rdname irsa
+
 #' @usage irsa(params)
 
 #' @export
@@ -664,7 +664,7 @@ irsa.pm_param <- function(params){
   do.call(irsa.default, param2)
 }
 
-#' @rdname irsa
+
 #' @usage irsa(liste)
 #' @export
 irsa.list <- function(l){
@@ -1268,7 +1268,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param champ Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1292,7 +1292,7 @@ itra <- function(...){
 }
 
 
-#' @rdname itra
+
 #' @usage itra(params)
 
 #' @export
@@ -1304,7 +1304,7 @@ itra.pm_param <- function(params){
   do.call(itra.default, param2)
 }
 
-#' @rdname itra
+
 #' @usage itra(liste)
 #' @export
 itra.list <- function(l){
@@ -1436,7 +1436,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' @param path Localisation du fichier de donnees
 #' @param typano Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1460,7 +1460,7 @@ iano_mco <- function( ...){
 }
 
 
-#' @rdname iano_mco
+
 #' @usage iano_mco(params)
 
 #' @export
@@ -1472,7 +1472,7 @@ iano_mco.pm_param <- function(params){
   do.call(iano_mco.default, param2)
 }
 
-#' @rdname iano_mco
+
 #' @usage iano_mco(liste)
 #' @export
 iano_mco.list <- function(l){
@@ -1681,7 +1681,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
 #' @param path Localisation du fichier de donnees
 #' @param typmed Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1706,7 +1706,7 @@ imed_mco <- function(...){
   UseMethod('imed_mco')
 }
 
-#' @rdname imed_mco
+
 #' @usage imed_mco(params)
 
 #' @export
@@ -1718,7 +1718,7 @@ imed_mco.pm_param <- function(params){
   do.call(imed_mco.default, param2)
 }
 
-#' @rdname imed_mco
+
 #' @usage imed_mco(liste)
 #' @export
 imed_mco.list <- function(l){
@@ -1875,7 +1875,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
 #' @param path Localisation du fichier de donnees
 #' @param typdmi Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1897,7 +1897,7 @@ idmi_mco <- function(...){
 }
 
 
-#' @rdname idmi_mco
+
 #' @usage idmi_mco(params)
 
 #' @export
@@ -1909,7 +1909,7 @@ idmi_mco.pm_param <- function(params){
   do.call(idmi_mcoo.default, param2)
 }
 
-#' @rdname idmi_mco
+
 #' @usage idmi_mco(liste)
 #' @export
 idmi_mco.list <- function(l){
@@ -2044,7 +2044,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2067,7 +2067,7 @@ ileg_mco <- function(...){
 }
 
 
-#' @rdname ileg_mco
+
 #' @usage ileg_mco(params)
 
 #' @export
@@ -2079,7 +2079,7 @@ ileg_mco.pm_param <- function(params){
   do.call(ileg_mco.default, param2)
 }
 
-#' @rdname ileg_mco
+
 #' @usage ileg_mco(liste)
 
 #' @export
@@ -2216,7 +2216,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @param path Localisation du fichier de donnees
 #' @param typdiap Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2238,7 +2238,7 @@ idiap <- function(...){
 }
 
 
-#' @rdname idiap
+
 #' @usage idiap(params)
 
 #' @export
@@ -2250,7 +2250,7 @@ idiap.pm_param <- function(params){
   do.call(idiap.default, param2)
 }
 
-#' @rdname idiap
+
 #' @usage idiap(liste)
 #' @export
 idiap.list <- function(l){
@@ -2411,7 +2411,7 @@ iium <- function(...){
 }
 
 
-#' @rdname iium
+
 #' @usage iium(params)
 
 #' @export
@@ -2423,7 +2423,7 @@ iium.pm_param <- function(params){
   do.call(iium.default, param2)
 }
 
-#' @rdname iium
+
 #' @usage iium(liste)
 #' @export
 iium.list <- function(l){
@@ -2507,7 +2507,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, ...){
 #' @param path Localisation du fichier de donnees
 #' @param typpo Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres*   parametres supplementaires a passer
+#' @param ...   parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #' @return Une table (data.frame, tibble) contenant les prélèvements d'organes In ou Out.
@@ -2528,7 +2528,7 @@ ipo <- function( ...){
 }
 
 
-#' @rdname ipo
+
 #' @usage ipo(params)
 
 #' @export
@@ -2540,7 +2540,7 @@ ipo.pm_param <- function(params){
   do.call(ipo.default, param2)
 }
 
-#' @rdname ipo
+
 #' @usage ipo(liste)
 #' @export
 ipo.list <- function(l){
@@ -2685,7 +2685,7 @@ if (typpo=="in"){
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2708,7 +2708,7 @@ irapss <- function(...){
 }
 
 
-#' @rdname irapss
+
 #' @usage irapss(params)
 
 #' @export
@@ -2720,7 +2720,7 @@ irapss.pm_param <- function(params){
   do.call(irapss.default, param2)
 }
 
-#' @rdname irapss
+
 #' @usage irapss(liste)
 #' @export
 irapss.list <- function(l){
@@ -3032,7 +3032,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3055,7 +3055,7 @@ iano_had <- function(...){
 }
 
 
-#' @rdname iano_had
+
 #' @usage iano_had(params)
 
 #' @export
@@ -3067,7 +3067,7 @@ iano_had.pm_param <- function(params){
   do.call(iano_had.default, param2)
 }
 
-#' @rdname iano_had
+
 #' @usage iano_had(liste)
 #' @export
 iano_had.list <- function(l){
@@ -3173,7 +3173,7 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3196,7 +3196,7 @@ imed_had <- function(...){
 }
 
 
-#' @rdname imed_had
+
 #' @usage imed_had(params)
 
 #' @export
@@ -3208,7 +3208,7 @@ imed_had.pm_param <- function(params){
   do.call(imed_had.default, param2)
 }
 
-#' @rdname imed_had
+
 #' @usage imed_had(liste)
 #' @export
 imed_had.list <- function(l){
@@ -3302,7 +3302,7 @@ ileg_had <- function(...){
 }
 
 
-#' @rdname ileg_had
+
 #' @usage ileg_had(params)
 
 #' @export
@@ -3314,7 +3314,7 @@ ileg_had.pm_param <- function(params){
   do.call(ileg_had.default, param2)
 }
 
-#' @rdname ileg_had
+
 #' @usage ileg_had(liste)
 #' @export
 ileg_had.list <- function(l){
@@ -3373,7 +3373,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param mois Mois de la periode (du fichier Out)
 #' @param path Chemin d'acces au fichier .rha
 #' @param lib Attribution de libelles aux colonnes
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max=10e3} pour lire les 1000 premieres lignes
 #'
@@ -3391,7 +3391,7 @@ irha <- function(...){
 }
 
 
-#' @rdname irha
+
 #' @usage irha(params)
 
 #' @export
@@ -3403,7 +3403,7 @@ irha.pm_param <- function(params){
   do.call(irha.default, param2)
 }
 
-#' @rdname irha
+
 #' @usage irha(liste)
 #' @export
 irha.list <- function(l){
@@ -3962,7 +3962,7 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles a la table : T
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4060,7 +4060,7 @@ ileg_ssr <- function(...){
 }
 
 
-#' @rdname ileg_ssr
+
 #' @usage ileg_ssr(params)
 
 #' @export
@@ -4072,7 +4072,7 @@ ileg_ssr.pm_param <- function(params){
   do.call(ileg_ssr.default, param2)
 }
 
-#' @rdname ileg_ssr
+
 #' @usage ileg_ssr(liste)
 #' @export
 ileg_ssr.list <- function(l){
@@ -4135,7 +4135,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4238,7 +4238,7 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4338,7 +4338,7 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4581,7 +4581,7 @@ adezip <- function(...){
 }
 
 
-#' @rdname adezip
+
 #' @usage adezip(params)
 
 #' @export
@@ -4592,7 +4592,7 @@ adezip.pm_param <- function(params){
   do.call(adezip.default, param2)
 }
 
-#' @rdname adezip
+
 #' @usage adezip(liste)
 #' @export
 adezip.list <- function(l){
@@ -4801,7 +4801,7 @@ adelete <- function(...){
 }
 
 
-#' @rdname adelete
+
 #' @usage adelete(params)
 
 #' @export
@@ -4812,7 +4812,7 @@ adelete.pm_param <- function(params){
   do.call(adelete.default, param2)
 }
 
-#' @rdname adelete
+
 #' @usage adelete(liste)
 #' @export
 adelete.list <- function(l){
@@ -5099,7 +5099,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #' @param path Localisation du fichier de donnees
 #' @param lamda a TRUE, importe le fichier ano-ace-maj
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param *Autres* parametres supplementaires a passer
+#' @param ... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -5192,7 +5192,7 @@ NULL
 
 
 
-#' Noyau de parametres
+#' ~ par - Noyau de parametres
 #' 
 #' Définir un noyau de paramètres
 #' 

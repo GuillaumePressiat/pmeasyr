@@ -2,7 +2,7 @@
 % Please edit documentation in R/main_before_utf.R
 \name{noyau_pmeasyr}
 \alias{noyau_pmeasyr}
-\title{Noyau de parametres}
+\title{~ par - Noyau de parametres}
 \usage{
 noyau_pmeasyr(...)
 }

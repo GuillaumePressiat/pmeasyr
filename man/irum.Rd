@@ -2,17 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{irum}
 \alias{irum}
-\alias{irum.pm_param}
-\alias{irum.list}
 \title{~ MCO - Import des RUM}
 \usage{
 irum(finess, annee, mois, path, lib = T, typi = 3, ...)
-
-irum(params)
-
-irum(liste)
 }
 \arguments{
+\item{...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
+
 \item{finess}{Finess du In a importer : dans le nom du fichier}
 
 \item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
@@ -24,10 +22,6 @@ irum(liste)
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
 \item{typi}{Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement}
-
-\item{*Autres*}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une classe S3 contenant les tables (data.frame, tibble) importées (rum, actes, das et dad si import 3 et 4)

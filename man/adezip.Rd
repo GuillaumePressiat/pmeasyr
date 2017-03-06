@@ -2,15 +2,9 @@
 % Please edit documentation in R/main_before_utf.R
 \name{adezip}
 \alias{adezip}
-\alias{adezip.pm_param}
-\alias{adezip.list}
 \title{~ *.zip - Dezippe des fichiers de l'archive PMSI}
 \usage{
 adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
-
-adezip(params)
-
-adezip(liste)
 }
 \arguments{
 \item{finess}{Finess du fichier a dezipper}

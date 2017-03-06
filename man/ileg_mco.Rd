@@ -2,17 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{ileg_mco}
 \alias{ileg_mco}
-\alias{ileg_mco.pm_param}
-\alias{ileg_mco.list}
 \title{~ MCO - Import des erreurs Leg}
 \usage{
 ileg_mco(finess, annee, mois, path, reshape = F, ...)
-
-ileg_mco(params)
-
-ileg_mco(liste)
 }
 \arguments{
+\item{...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
+
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
 
 \item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
@@ -22,10 +20,6 @@ ileg_mco(liste)
 \item{path}{Localisation du fichier de donnees}
 
 \item{reshape}{booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F}
-
-\item{*Autres*}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une table (data.frame, tbl_df) contenant les erreurs Out.

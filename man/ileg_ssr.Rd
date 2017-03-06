@@ -2,15 +2,9 @@
 % Please edit documentation in R/main_before_utf.R
 \name{ileg_ssr}
 \alias{ileg_ssr}
-\alias{ileg_ssr.pm_param}
-\alias{ileg_ssr.list}
 \title{~ SSR - Import des erreurs Leg}
 \usage{
 ileg_ssr(finess, annee, mois, path, reshape = F, ...)
-
-ileg_ssr(params)
-
-ileg_ssr(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}

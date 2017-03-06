@@ -2,15 +2,9 @@
 % Please edit documentation in R/main_before_utf.R
 \name{adelete}
 \alias{adelete}
-\alias{adelete.pm_param}
-\alias{adelete.list}
 \title{~ *.zip - Suppression des fichiers en fin de traitement}
 \usage{
 adelete(finess, annee, mois, path, liste, type)
-
-adelete(params)
-
-adelete(liste)
 }
 \arguments{
 \item{finess}{Finess du fichier a supprimer}

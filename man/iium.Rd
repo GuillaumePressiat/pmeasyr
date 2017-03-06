@@ -2,15 +2,9 @@
 % Please edit documentation in R/main_before_utf.R
 \name{iium}
 \alias{iium}
-\alias{iium.pm_param}
-\alias{iium.list}
 \title{~ MCO - Import des donnees UM du Out}
 \usage{
 iium(finess, annee, mois, path, lib = T, ...)
-
-iium(params)
-
-iium(liste)
 }
 \arguments{
 \item{...}{parametres supplementaires à passer

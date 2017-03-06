@@ -2,17 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{itra}
 \alias{itra}
-\alias{itra.pm_param}
-\alias{itra.list}
 \title{~ TRA - Import du TRA}
 \usage{
 irum(finess, annee, mois, path, lib = T, champ = "mco")
-
-itra(params)
-
-itra(liste)
 }
 \arguments{
+\item{...}{parametres supplementaires a passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}}
+
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
 
 \item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
@@ -24,10 +22,6 @@ itra(liste)
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
 \item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"}
-
-\item{*Autres*}{parametres supplementaires a passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une table (data.frame ou tbl_df) qui contient : - Clé RSA - NORSS - Numéro de ligne du fichier RSS d'origine (rss.ini) - NAS - Date d'entrée du séjour - GHM groupage du RSS (origine) - Date de sortie du séjour

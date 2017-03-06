@@ -2,15 +2,9 @@
 % Please edit documentation in R/main_before_utf.R
 \name{ileg_had}
 \alias{ileg_had}
-\alias{ileg_had.pm_param}
-\alias{ileg_had.list}
 \title{~ HAD - Import des erreurs Leg}
 \usage{
 ileg_had(finess, annee, mois, path, reshape = F, ...)
-
-ileg_had(params)
-
-ileg_had(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
