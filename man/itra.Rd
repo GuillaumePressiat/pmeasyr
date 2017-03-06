@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{itra}
 \alias{itra}
+\alias{itra.pm_param}
+\alias{itra.list}
 \title{~ TRA - Import du TRA}
 \usage{
-itra(finess, annee, mois, path, lib = T, champ = "mco", ...)
+irum(finess, annee, mois, path, lib = T, champ = "mco")
+
+itra(params)
+
+itra(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -19,7 +25,7 @@ itra(finess, annee, mois, path, lib = T, champ = "mco", ...)
 
 \item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"}
 
-\item{...}{parametres supplementaires a passer
+\item{*Autres*}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}}
 }
@@ -43,7 +49,8 @@ Structure du nom du fichier attendu (sortie de Genrsa) :
 
 }
 \seealso{
-\code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}
+\code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}, 
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{ileg_mco}
 \alias{ileg_mco}
+\alias{ileg_mco.pm_param}
+\alias{ileg_mco.list}
 \title{~ MCO - Import des erreurs Leg}
 \usage{
 ileg_mco(finess, annee, mois, path, reshape = F, ...)
+
+ileg_mco(params)
+
+ileg_mco(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -17,7 +23,7 @@ ileg_mco(finess, annee, mois, path, reshape = F, ...)
 
 \item{reshape}{booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F}
 
-\item{...}{parametres supplementaires a passer
+\item{*Autres*}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
@@ -37,7 +43,8 @@ Formats depuis 2011 pris en charge
 
 }
 \seealso{
-\code{\link{irum}}, \code{\link{irsa}}
+\code{\link{irum}}, \code{\link{irsa}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

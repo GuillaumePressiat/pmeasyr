@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{ileg_ssr}
 \alias{ileg_ssr}
+\alias{ileg_ssr.pm_param}
+\alias{ileg_ssr.list}
 \title{~ SSR - Import des erreurs Leg}
 \usage{
 ileg_ssr(finess, annee, mois, path, reshape = F, ...)
+
+ileg_ssr(params)
+
+ileg_ssr(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -30,7 +36,8 @@ Import de la liste d'erreurs de génération Genrha
 
 }
 \seealso{
-\code{\link{irha}}, \code{\link{issrha}}
+\code{\link{irha}}, \code{\link{issrha}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

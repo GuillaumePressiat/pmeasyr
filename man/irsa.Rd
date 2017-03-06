@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{irsa}
 \alias{irsa}
+\alias{irsa.pm_param}
+\alias{irsa.list}
 \title{~ MCO - Import des RSA}
 \usage{
 irsa(finess, annee, mois, path, lib = T, typi = 4, ...)
+
+irsa(params)
+
+irsa(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -19,7 +25,7 @@ irsa(finess, annee, mois, path, lib = T, typi = 4, ...)
 
 \item{typi}{Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement}
 
-\item{...}{parametres supplementaires a passer
+\item{*Autres*}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
@@ -65,7 +71,8 @@ Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les info
 
 }
 \seealso{
-\code{\link{irum}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}
+\code{\link{irum}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

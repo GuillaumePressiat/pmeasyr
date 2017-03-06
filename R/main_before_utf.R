@@ -37,11 +37,11 @@
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param typi Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement
-#' @param ... parametres supplementaires a passer
+#' @param *Autres*   parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées (rum, actes, das et dad si import 3 et 4)
+#' @return Une classe S3 contenant les tables (data.frame, tibble) importées (rum, actes, das et dad si import 3 et 4)
 #'
 #' @examples
 #' \dontrun{
@@ -50,11 +50,42 @@
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}
+#' @seealso \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 #' @importFrom utils View data unzip
 #' @importFrom magrittr '%>%'
+#' @export irum
+#' @usage irum(finess, annee, mois, path, lib = T, typi = 3, ...)
 #' @export
-irum <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
+irum <- function(...){
+  UseMethod('irum')
+}
+#' @rdname irum
+#' @usage irum(params)
+
+#' @export
+irum.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irum.default, param2)
+}
+
+#' @rdname irum
+#' @usage irum(liste)
+#' @export
+irum.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irum.default, param2)
+}
+
+#' @export
+irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -598,7 +629,7 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param typi Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -611,10 +642,42 @@ irum <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irum}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}
+#' @seealso \code{\link{irum}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage irsa(finess, annee, mois, path, lib = T, typi = 4, ...)
+#' @export irsa
+#' @export
+irsa <- function(...){
+  UseMethod('irsa')
+}
+
+
+#' @rdname irsa
+#' @usage irsa(params)
 
 #' @export
-irsa <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
+irsa.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irsa.default, param2)
+}
+
+#' @rdname irsa
+#' @usage irsa(liste)
+#' @export
+irsa.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irsa.default, param2)
+}
+
+#' @export
+irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1205,7 +1268,7 @@ irsa <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
 #' @param champ Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1218,9 +1281,43 @@ irsa <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}
+#' @usage irum(finess, annee, mois, path, lib = T, champ = "mco")
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}, 
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+
+#' @export itra
 #' @export
-itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
+itra <- function(...){
+  UseMethod('itra')
+}
+
+
+#' @rdname itra
+#' @usage itra(params)
+
+#' @export
+itra.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'champ', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(itra.default, param2)
+}
+
+#' @rdname itra
+#' @usage itra(liste)
+#' @export
+itra.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'champ', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(itra.default, param2)
+}
+
+#' @export
+itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1339,7 +1436,7 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' @param path Localisation du fichier de donnees
 #' @param typano Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1353,10 +1450,42 @@ itra <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irum}}, \code{\link{irsa}}
+#' @seealso \code{\link{irum}}, \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @export iano_mco
+#' @usage iano_mco(finess, annee, mois, path, lib = T, typano = "out")
+#' @export
+iano_mco <- function( ...){
+  UseMethod('iano_mco')
+}
+
+
+#' @rdname iano_mco
+#' @usage iano_mco(params)
 
 #' @export
-iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, ...){
+iano_mco.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typano', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_mco.default, param2)
+}
+
+#' @rdname iano_mco
+#' @usage iano_mco(liste)
+#' @export
+iano_mco.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typano', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_mco.default, param2)
+}
+
+#' @export
+iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1552,11 +1681,13 @@ iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T
 #' @param path Localisation du fichier de donnees
 #' @param typmed Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les médicaments In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : T2A 06 - ATU 09 - THROMBO 10
+#' @return Une table (data.frame, tibble) contenant les médicaments In ou Out 
+#' (T2A, ATU et thrombo selon l'existence des fichiers : si le fichier n'existe pas, pas de donnée importée). 
+#' Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : T2A 06 - ATU 09 - THROMBO 10
 #'
 #' @examples
 #' \dontrun{
@@ -1566,10 +1697,41 @@ iano_mco <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irum}}, \code{\link{irsa}}
+#' @usage imed_mco(finess, annee, mois, path, lib = T, typmed = c('out', 'in'))
+#' @seealso \code{\link{irum}}, \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @export imed_mco
+#' @export
+imed_mco <- function(...){
+  UseMethod('imed_mco')
+}
+
+#' @rdname imed_mco
+#' @usage imed_mco(params)
 
 #' @export
-imed_mco <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, ...){
+imed_mco.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typmed', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(imed_mco.default, param2)
+}
+
+#' @rdname imed_mco
+#' @usage imed_mco(liste)
+#' @export
+imed_mco.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typmed', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(imed_mco.default, param2)
+}
+
+#' @export
+imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1713,7 +1875,7 @@ imed_mco <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T
 #' @param path Localisation du fichier de donnees
 #' @param typdmi Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1728,9 +1890,39 @@ imed_mco <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irum}}, \code{\link{irsa}}
+#' @export idmi_mco
+#' @export
+idmi_mco <- function(...){
+  UseMethod('idmi_mco')
+}
+
+
+#' @rdname idmi_mco
+#' @usage idmi_mco(params)
 
 #' @export
-idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...){
+idmi_mco.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typdmi', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(idmi_mcoo.default, param2)
+}
+
+#' @rdname idmi_mco
+#' @usage idmi_mco(liste)
+#' @export
+idmi_mco.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typdmi', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(idmi_mco.default, param2)
+}
+
+#' @export
+idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1743,7 +1935,7 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T
   }
   
   
-  op <- options(digits.secs = 6)
+  #op <- options(digits.secs = 6)
   un<-Sys.time()
   
   
@@ -1852,7 +2044,7 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -1865,10 +2057,43 @@ idmi_mco <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irum}}, \code{\link{irsa}}
+#' @seealso \code{\link{irum}}, \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @export ileg_mco
+#' @usage ileg_mco(finess, annee, mois, path, reshape = F, ...)
+#' @export
+ileg_mco <- function(...){
+  UseMethod('ileg_mco')
+}
+
+
+#' @rdname ileg_mco
+#' @usage ileg_mco(params)
 
 #' @export
-ileg_mco <- function(finess, annee, mois, path, reshape = F, ...){
+ileg_mco.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ileg_mco.default, param2)
+}
+
+#' @rdname ileg_mco
+#' @usage ileg_mco(liste)
+
+#' @export
+ileg_mco.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ileg_mco.default, param2)
+}
+
+#' @export
+ileg_mco.default <- function(finess, annee, mois, path, reshape = F, ...){
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"), ...)
   
@@ -1978,144 +2203,6 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
   
 }
 
-#' ~ MCO - Import des PO
-#'
-#' Imports des fichiers PO In / Out
-#'
-#' Formats depuis 2011 pris en charge
-#'
-#' @param finess Finess du Out a importer : dans le nom du fichier
-#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
-#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
-#' @param path Localisation du fichier de donnees
-#' @param typpo Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
-#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
-#'
-#' @return Une table (data.frame, tbl_df) contenant les prélèvements d'organes In ou Out.
-#'
-#' @examples
-#' \dontrun{
-#'    po <- ipo(750712184,2015,12,"~/Documents/data/mco")
-#' }
-#'
-#' @author G. Pressiat
-#'
-#' @seealso \code{\link{irum}}, \code{\link{irsa}}
-
-#' @export
-ipo <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...){
-  if (annee<2011|annee>2017){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
-  typpo <- match.arg(typpo)
-  if (!(typpo %in% c('in', 'out'))){
-    stop('Paramètre typpo incorrect')
-  }
-  
-  
-  op <- options(digits.secs = 6)
-  un<-Sys.time()
-  
-  
-  if (typpo=="out"){
-    format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_po', an == substr(as.character(annee),3,4))
-    
-    af <- format$longueur
-    libelles <- format$libelle
-    an <- format$nom
-    vec <- format$type
-    col_types <-  vec
-    is_character <- vapply(col_types, is.character, logical(1))
-    col_concise <- function(x) {
-      switch(x,
-             "_" = ,
-             "-" = readr::col_skip(),
-             "?" = readr::col_guess(),
-             c = readr::col_character(),
-             D = readr::col_date(),
-             d = readr::col_double(),
-             e = readr::col_euro_double(),
-             i = readr::col_integer(),
-             l = readr::col_logical(),
-             n = readr::col_number(),
-             T = readr::col_datetime(),
-             t = readr::col_time(),
-             stop("Unknown shortcut: ", x, call. = FALSE)
-      )
-    }
-    col_types[is_character] <- lapply(col_types[is_character], col_concise)
-    
-    at <- structure(
-      list(
-        cols = col_types
-      ),
-      class = "col_spec"
-    )
-    
-    po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg"),
-                          readr::fwf_widths(af,an), col_types =at, na=character(), ...)
-    
-    
-    if (lib==T){
-      v <- libelles
-      po_i <- po_i  %>%  sjmisc::set_label(v)
-    }
-    return(po_i)
-  }
-  if (typpo=="in"){
-    format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'ffc_in', an == substr(as.character(annee),3,4))
-    
-    af <- format$longueur
-    libelles <- format$libelle
-    an <- format$nom
-    vec <- format$type
-    col_types <-  vec
-    is_character <- vapply(col_types, is.character, logical(1))
-    col_concise <- function(x) {
-      switch(x,
-             "_" = ,
-             "-" = readr::col_skip(),
-             "?" = readr::col_guess(),
-             c = readr::col_character(),
-             D = readr::col_date(),
-             d = readr::col_double(),
-             e = readr::col_euro_double(),
-             i = readr::col_integer(),
-             l = readr::col_logical(),
-             n = readr::col_number(),
-             T = readr::col_datetime(),
-             t = readr::col_time(),
-             stop("Unknown shortcut: ", x, call. = FALSE)
-      )
-    }
-    col_types[is_character] <- lapply(col_types[is_character], col_concise)
-    
-    at <- structure(
-      list(
-        cols = col_types
-      ),
-      class = "col_spec"
-    )
-    
-    po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg.txt"),
-                          readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
-      dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
-    
-    
-    if (lib==T){
-      v <- libelles
-      po_i <- po_i  %>%  sjmisc::set_label(v)
-    }
-    return(po_i)
-  }
-  
-}
 
 #' ~ MCO - Import des DIAP
 #'
@@ -2129,7 +2216,7 @@ ipo <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
 #' @param path Localisation du fichier de donnees
 #' @param typdiap Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2137,15 +2224,46 @@ ipo <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
 #'
 #' @examples
 #' \dontrun{
-#'    po <- idiap(750712184,2015,12,"~/Documents/data/mco")
+#'    idiap <- idiap(750712184,2015,12,"~/Documents/data/mco")
 #' }
 #'
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irum}}, \code{\link{irsa}}
+#' @usage idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...)
+#' @export idiap
+#' @export
+idiap <- function(...){
+  UseMethod('idiap')
+}
+
+
+#' @rdname idiap
+#' @usage idiap(params)
 
 #' @export
-idiap <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...){
+idiap.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typdiap', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(idiap.default, param2)
+}
+
+#' @rdname idiap
+#' @usage idiap(liste)
+#' @export
+idiap.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typdiap', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(idiap.default, param2)
+}
+
+#' @export
+idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2158,7 +2276,7 @@ idiap <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, 
   }
   
   
-  op <- options(digits.secs = 6)
+  #op <- options(digits.secs = 6)
   un<-Sys.time()
   
   
@@ -2283,10 +2401,42 @@ idiap <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, 
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irsa}}
+#' @seealso \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage iium(finess, annee, mois, path, lib = T, ...)
+#' @export iium
+#' @export
+iium <- function(...){
+  UseMethod('iium')
+}
+
+
+#' @rdname iium
+#' @usage iium(params)
 
 #' @export
-iium <- function(finess, annee, mois, path, lib = T, ...){
+iium.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iium.default, param2)
+}
+
+#' @rdname iium
+#' @usage iium(liste)
+#' @export
+iium.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iium.default, param2)
+}
+
+#' @export
+iium.default <- function(finess, annee, mois, path, lib = T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2345,6 +2495,178 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
   return(ium_i)
 }
 
+#' ~ MCO - Import des PO
+#'
+#' Imports des fichiers PO In / Out
+#'
+#' Formats depuis 2011 pris en charge
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param typpo Type de donnees In / Out
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param *Autres*   parametres supplementaires a passer
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
+#' @return Une table (data.frame, tibble) contenant les prélèvements d'organes In ou Out.
+#'
+#' @examples
+#' \dontrun{
+#'    po <- ipo(750712184,2015,12,"~/Documents/data/mco")
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{irum}}, \code{\link{irsa}}, utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage ipo(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
+#' @export ipo
+#' @export
+ipo <- function( ...){
+  UseMethod('ipo')
+}
+
+
+#' @rdname ipo
+#' @usage ipo(params)
+
+#' @export
+ipo.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typpo', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ipo.default, param2)
+}
+
+#' @rdname ipo
+#' @usage ipo(liste)
+#' @export
+ipo.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'typpo', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ipo.default, param2)
+}
+
+#' @export
+ipo.default <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...){
+if (annee<2011|annee>2017){
+  stop('Année PMSI non prise en charge\n')
+}
+if (mois<1|mois>12){
+  stop('Mois incorrect\n')
+}
+typpo <- match.arg(typpo)
+if (!(typpo %in% c('in', 'out'))){
+  stop('Paramètre typpo incorrect')
+}
+
+
+#op <- options(digits.secs = 6)
+un<-Sys.time()
+
+
+if (typpo=="out"){
+  format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_po', an == substr(as.character(annee),3,4))
+  
+  af <- format$longueur
+  libelles <- format$libelle
+  an <- format$nom
+  vec <- format$type
+  col_types <-  vec
+  is_character <- vapply(col_types, is.character, logical(1))
+  col_concise <- function(x) {
+    switch(x,
+           "_" = ,
+           "-" = readr::col_skip(),
+           "?" = readr::col_guess(),
+           c = readr::col_character(),
+           D = readr::col_date(),
+           d = readr::col_double(),
+           e = readr::col_euro_double(),
+           i = readr::col_integer(),
+           l = readr::col_logical(),
+           n = readr::col_number(),
+           T = readr::col_datetime(),
+           t = readr::col_time(),
+           stop("Unknown shortcut: ", x, call. = FALSE)
+    )
+  }
+  col_types[is_character] <- lapply(col_types[is_character], col_concise)
+  
+  at <- structure(
+    list(
+      cols = col_types
+    ),
+    class = "col_spec"
+  )
+  
+  po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg"),
+                        readr::fwf_widths(af,an), col_types =at, na=character(), ...)
+  
+  
+  if (lib==T){
+    v <- libelles
+    po_i <- po_i  %>%  sjmisc::set_label(v)
+  }
+  return(po_i)
+}
+if (typpo=="in"){
+  format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'ffc_in', an == substr(as.character(annee),3,4))
+  
+  af <- format$longueur
+  libelles <- format$libelle
+  an <- format$nom
+  vec <- format$type
+  col_types <-  vec
+  is_character <- vapply(col_types, is.character, logical(1))
+  col_concise <- function(x) {
+    switch(x,
+           "_" = ,
+           "-" = readr::col_skip(),
+           "?" = readr::col_guess(),
+           c = readr::col_character(),
+           D = readr::col_date(),
+           d = readr::col_double(),
+           e = readr::col_euro_double(),
+           i = readr::col_integer(),
+           l = readr::col_logical(),
+           n = readr::col_number(),
+           T = readr::col_datetime(),
+           t = readr::col_time(),
+           stop("Unknown shortcut: ", x, call. = FALSE)
+    )
+  }
+  col_types[is_character] <- lapply(col_types[is_character], col_concise)
+  
+  at <- structure(
+    list(
+      cols = col_types
+    ),
+    class = "col_spec"
+  )
+  
+  po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg.txt"),
+                        readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+    dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
+  
+  
+  if (lib==T){
+    v <- libelles
+    po_i <- po_i  %>%  sjmisc::set_label(v)
+  }
+  return(po_i)
+}
+
+}
+
+
+
+
 ##############################################
 ####################### HAD ##################
 ##############################################
@@ -2363,7 +2685,7 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2376,10 +2698,42 @@ iium <- function(finess, annee, mois, path, lib = T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{iano_had}}, \code{\link{ileg_had}}
+#' @seealso \code{\link{iano_had}}, \code{\link{ileg_had}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage irapss(finess, annee, mois, path, lib = T, ...)
+#' @export irapss
+#' @export
+irapss <- function(...){
+  UseMethod('irapss')
+}
+
+
+#' @rdname irapss
+#' @usage irapss(params)
 
 #' @export
-irapss <- function(finess,annee,mois,path,lib = T, ...){
+irapss.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irapss.default, param2)
+}
+
+#' @rdname irapss
+#' @usage irapss(liste)
+#' @export
+irapss.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irapss.default, param2)
+}
+
+#' @export
+irapss.default <- function(finess, annee, mois, path, lib = T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2678,7 +3032,7 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2691,10 +3045,42 @@ irapss <- function(finess,annee,mois,path,lib = T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irapss}}
+#' @seealso \code{\link{irapss}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage iano_had(finess, annee, mois, path, lib = T, ...)
+#' @export iano_had
+#' @export
+iano_had <- function(...){
+  UseMethod('iano_had')
+}
+
+
+#' @rdname iano_had
+#' @usage iano_had(params)
 
 #' @export
-iano_had <- function(finess, annee,mois, path, lib=T, ...){
+iano_had.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_had.default, param2)
+}
+
+#' @rdname iano_had
+#' @usage iano_had(liste)
+#' @export
+iano_had.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(iano_had.default, param2)
+}
+
+#' @export
+iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2787,7 +3173,7 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -2801,9 +3187,41 @@ iano_had <- function(finess, annee,mois, path, lib=T, ...){
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irapss}}
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage imed_had(finess, annee, mois, path, lib = T, ...)
+#' @export imed_had
+#' @export
+imed_had <- function(...){
+  UseMethod('imed_had')
+}
+
+
+#' @rdname imed_had
+#' @usage imed_had(params)
 
 #' @export
-imed_had <- function(finess, annee,mois, path, lib=T, ...){
+imed_had.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(imed_had.default, param2)
+}
+
+#' @rdname imed_had
+#' @usage imed_had(liste)
+#' @export
+imed_had.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(imed_had.default, param2)
+}
+
+#' @export
+imed_had.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2874,9 +3292,42 @@ imed_had <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irapss}}
+#' @seealso \code{\link{irapss}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage ileg_had(finess, annee, mois, path, reshape = F, ...)
+#' @export ileg_had
 #' @export
-ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
+ileg_had <- function(...){
+  UseMethod('ileg_had')
+}
+
+
+#' @rdname ileg_had
+#' @usage ileg_had(params)
+
+#' @export
+ileg_had.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ileg_had.default, param2)
+}
+
+#' @rdname ileg_had
+#' @usage ileg_had(liste)
+#' @export
+ileg_had.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ileg_had.default, param2)
+}
+
+#' @export
+ileg_had.default <- function(finess, annee, mois, path, reshape = F, ...){
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
@@ -2922,7 +3373,7 @@ ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param mois Mois de la periode (du fichier Out)
 #' @param path Chemin d'acces au fichier .rha
 #' @param lib Attribution de libelles aux colonnes
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max=10e3} pour lire les 1000 premieres lignes
 #'
@@ -2930,10 +3381,42 @@ ileg_had <- function(finess, annee, mois, path, reshape = F, ...){
 #' \dontrun{
 #'    irha(750712184,2015,12,'pathpath/') -> rha15
 #' }
-#' @seealso \code{\link{iano_ssr}}, \code{\link{ileg_ssr}}
-#'
+#' @seealso \code{\link{iano_ssr}}, \code{\link{ileg_ssr}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage irha(finess, annee, mois, path, lib = T, ...)
+#' @export irha
 #' @export
-irha <- function(finess,annee,mois,path, lib=T, ...){
+irha <- function(...){
+  UseMethod('irha')
+}
+
+
+#' @rdname irha
+#' @usage irha(params)
+
+#' @export
+irha.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irha.default, param2)
+}
+
+#' @rdname irha
+#' @usage irha(liste)
+#' @export
+irha.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(irha.default, param2)
+}
+
+#' @export
+irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee<2011|annee>2016){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2941,7 +3424,7 @@ irha <- function(finess,annee,mois,path, lib=T, ...){
     stop('Mois incorrect\n')
   }
   
-  op <- options(digits.secs = 6)
+  #op <- options(digits.secs = 6)
   un<-Sys.time()
   
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rha', an == substr(as.character(annee),3,4))
@@ -3479,7 +3962,7 @@ iano_ssr <- function(finess, annee,mois, path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles a la table : T
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3567,9 +4050,42 @@ issrha <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irha}}, \code{\link{issrha}}
+#' @seealso \code{\link{irha}}, \code{\link{issrha}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage ileg_ssr(finess, annee, mois, path, reshape = F, ...)
+#' @export ileg_ssr
 #' @export
-ileg_ssr <- function(finess, annee, mois, path, reshape = F, ...){
+ileg_ssr <- function(...){
+  UseMethod('ileg_ssr')
+}
+
+
+#' @rdname ileg_ssr
+#' @usage ileg_ssr(params)
+
+#' @export
+ileg_ssr.pm_param <- function(params){
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ileg_ssr.default, param2)
+}
+
+#' @rdname ileg_ssr
+#' @usage ileg_ssr(liste)
+#' @export
+ileg_ssr.list <- function(l){
+  .params <- l
+  autres <- c('n_max', 'skip', 'progress')
+  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(ileg_ssr.default, param2)
+}
+
+#' @export
+ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
@@ -3619,7 +4135,7 @@ ileg_ssr <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3722,7 +4238,7 @@ irpsa <- function(finess,annee,mois,path, lib=T, ...){
 #' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -3822,7 +4338,7 @@ ir3a <- function(finess,annee,mois,path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4055,10 +4571,40 @@ adezip2 <- function(path, file, liste, pathto=""){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}}
+#' @seealso \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
+#' @export adezip
+#' @export
+adezip <- function(...){
+  UseMethod('adezip')
+}
+
+
+#' @rdname adezip
+#' @usage adezip(params)
 
 #' @export
-adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
+adezip.pm_param <- function(params){
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adezip.default, param2)
+}
+
+#' @rdname adezip
+#' @usage adezip(liste)
+#' @export
+adezip.list <- function(l){
+  .params <- l
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adezip.default, param2)
+}
+
+#' @export
+adezip.default <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
   
   
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
@@ -4245,10 +4791,40 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}}
+#' @seealso \code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage adelete(finess, annee, mois, path, liste, type)
+#' @export adelete
+#' @export
+adelete <- function(...){
+  UseMethod('adelete')
+}
+
+
+#' @rdname adelete
+#' @usage adelete(params)
 
 #' @export
-adelete <- function(finess,annee,mois,path, liste, type){
+adelete.pm_param <- function(params){
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', autres)
+  param2 <- params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adelete.default, param2)
+}
+
+#' @rdname adelete
+#' @usage adelete(liste)
+#' @export
+adelete.list <- function(l){
+  .params <- l
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', autres)
+  param2 <- .params[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adelete.default, param2)
+}
+
+#' @export
+adelete.default <- function(finess,annee,mois,path, liste, type){
   liste[grepl("tra",liste)] <- "tra.txt"
   if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste,".txt"))}
   if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste))}
@@ -4523,7 +5099,7 @@ irafael <- function(finess,annee,mois,path,lib = T, stat = T, lister = c('A', 'B
 #' @param path Localisation du fichier de donnees
 #' @param lamda a TRUE, importe le fichier ano-ace-maj
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
-#' @param ... parametres supplementaires a passer
+#' @param *Autres* parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
@@ -4613,3 +5189,49 @@ iano_rafael <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
 #' @author G. Pressiat
 #' @keywords data
 NULL
+
+
+
+#' Noyau de parametres
+#' 
+#' Définir un noyau de paramètres
+#' 
+#' Voir exemple
+#' 
+#' @exportClass pm_param
+#' @author G. Pressiat
+#' 
+#' @examples
+#' \dontrun{
+#' library(magrittr)
+#' 
+#' p <- noyau_pmeasyr(
+#' finess = '750712184',
+#' annee  = 2016,
+#' mois   = 12,
+#' path   = '~/Documents/data/mco'
+#' )
+#' 
+#' c(p, type = "out", liste = "") %>% adezip()
+#' 
+#' p %>% irsa()     -> rsa
+#' p %>% iano_mco() -> ano
+#' p %>% ipo()      -> po
+#' 
+#' c(p, type = "in", liste = "") %>% adezip()
+#' p %>% irum()     -> rum
+#' 
+#' # Modifier le type d'import :
+#' c(p, typi = 6) %>% irsa() -> rsa
+#' 
+#' }
+#' 
+#' @export 
+noyau_pmeasyr <- function(...){
+  params <- list(...)
+  #attr(params, "class") <- "list"
+  class(params) <- append(class(params),"pm_param")
+  return(params)
+}
+
+

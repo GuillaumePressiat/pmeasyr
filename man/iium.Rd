@@ -2,11 +2,21 @@
 % Please edit documentation in R/main_before_utf.R
 \name{iium}
 \alias{iium}
+\alias{iium.pm_param}
+\alias{iium.list}
 \title{~ MCO - Import des donnees UM du Out}
 \usage{
 iium(finess, annee, mois, path, lib = T, ...)
+
+iium(params)
+
+iium(liste)
 }
 \arguments{
+\item{...}{parametres supplementaires à passer
+dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
+
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
 
 \item{annee}{Annee PMSI (nb) des donnees sur 4 caracteres (2016)}
@@ -16,10 +26,6 @@ iium(finess, annee, mois, path, lib = T, ...)
 \item{path}{Localisation du fichier de donnees}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
-
-\item{...}{parametres supplementaires à passer
-dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-\code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
 Une table (data.frame, tbl_df) contenant les informations structures du Out.
@@ -37,7 +43,8 @@ Formats depuis 2011 pris en charge
 
 }
 \seealso{
-\code{\link{irsa}}
+\code{\link{irsa}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

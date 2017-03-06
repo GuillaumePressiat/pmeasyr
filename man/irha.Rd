@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{irha}
 \alias{irha}
+\alias{irha.pm_param}
+\alias{irha.list}
 \title{~ SSR - Import des RHA}
 \usage{
 irha(finess, annee, mois, path, lib = T, ...)
+
+irha(params)
+
+irha(liste)
 }
 \arguments{
 \item{finess}{Finess du fichier Out de GENRHA a integrer}
@@ -17,7 +23,7 @@ irha(finess, annee, mois, path, lib = T, ...)
 
 \item{lib}{Attribution de libelles aux colonnes}
 
-\item{...}{parametres supplementaires a passer
+\item{*Autres*}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max=10e3} pour lire les 1000 premieres lignes}
 }
@@ -33,5 +39,6 @@ Formats depuis 2011 pris en charge
 }
 }
 \seealso{
-\code{\link{iano_ssr}}, \code{\link{ileg_ssr}}
+\code{\link{iano_ssr}}, \code{\link{ileg_ssr}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }

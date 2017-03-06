@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{idmi_mco}
 \alias{idmi_mco}
+\alias{idmi_mco.pm_param}
+\alias{idmi_mco.list}
 \title{~ MCO - Import des DMI}
 \usage{
-idmi_mco(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...)
+idmi_mco(...)
+
+idmi_mco(params)
+
+idmi_mco(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -19,7 +25,7 @@ idmi_mco(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...)
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
-\item{...}{parametres supplementaires a passer
+\item{*Autres*}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }

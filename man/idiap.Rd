@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{idiap}
 \alias{idiap}
+\alias{idiap.pm_param}
+\alias{idiap.list}
 \title{~ MCO - Import des DIAP}
 \usage{
 idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...)
+
+idiap(params)
+
+idiap(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -19,7 +25,7 @@ idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...)
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
 
-\item{...}{parametres supplementaires a passer
+\item{*Autres*}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
@@ -34,7 +40,7 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   po <- idiap(750712184,2015,12,"~/Documents/data/mco")
+   idiap <- idiap(750712184,2015,12,"~/Documents/data/mco")
 }
 
 }

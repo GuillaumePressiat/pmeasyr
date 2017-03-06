@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{ileg_had}
 \alias{ileg_had}
+\alias{ileg_had.pm_param}
+\alias{ileg_had.list}
 \title{~ HAD - Import des erreurs Leg}
 \usage{
 ileg_had(finess, annee, mois, path, reshape = F, ...)
+
+ileg_had(params)
+
+ileg_had(liste)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -30,7 +36,8 @@ Import de la liste d'erreurs de génération Paprica
 
 }
 \seealso{
-\code{\link{irapss}}
+\code{\link{irapss}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

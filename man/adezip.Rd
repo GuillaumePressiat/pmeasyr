@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{adezip}
 \alias{adezip}
+\alias{adezip.pm_param}
+\alias{adezip.list}
 \title{~ *.zip - Dezippe des fichiers de l'archive PMSI}
 \usage{
 adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
+
+adezip(params)
+
+adezip(liste)
 }
 \arguments{
 \item{finess}{Finess du fichier a dezipper}
@@ -17,11 +23,11 @@ adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
 
 \item{liste}{des fichiers à dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive}
 
-\item{pathto}{par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)}
-
 \item{type}{Type de l'archive : in / out}
 
 \item{recent}{par defaut a T, l'archive la plus recente sera utilisee, sinon propose a l'utilisateur de choisir quelle archive dezipper}
+
+\item{pathto}{par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)}
 }
 \description{
 Dezipper une archive PMSI au besoin
@@ -47,7 +53,8 @@ Dezipper une archive PMSI au besoin
 
 }
 \seealso{
-\code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}}
+\code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

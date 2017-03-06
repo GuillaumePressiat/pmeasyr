@@ -2,9 +2,15 @@
 % Please edit documentation in R/main_before_utf.R
 \name{adelete}
 \alias{adelete}
+\alias{adelete.pm_param}
+\alias{adelete.list}
 \title{~ *.zip - Suppression des fichiers en fin de traitement}
 \usage{
 adelete(finess, annee, mois, path, liste, type)
+
+adelete(params)
+
+adelete(liste)
 }
 \arguments{
 \item{finess}{Finess du fichier a supprimer}
@@ -29,7 +35,8 @@ Supprime les fichiers de l'archive PMSI dezippes en début de traitement
 
 }
 \seealso{
-\code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}}
+\code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat
