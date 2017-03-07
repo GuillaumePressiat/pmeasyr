@@ -6,7 +6,7 @@ Dézipper une archive PMSI au besoin
 
 ## Usage
 ```r
-adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
+adezip(finess, annee, mois, path, liste = "", pathto = "", type, recent = T)
 
 ```
 ## Arguments

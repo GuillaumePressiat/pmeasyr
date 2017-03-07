@@ -6,7 +6,7 @@ Supprime les fichiers de l'archive PMSI dézippés en début de traitement
 
 ## Usage
 ```r
-adelete(finess, annee, mois, path, liste, type)
+adelete(finess, annee, mois, path, liste = "", type)
 
 ```
 ## Arguments
@@ -14,7 +14,7 @@ adelete(finess, annee, mois, path, liste, type)
  - annee Annee du fichier
  - mois Mois du fichier
  - path Chemin d'acces aux fichiers
- - liste Liste des fichiers a effacer
+ - liste Liste des fichiers a effacer, si liste = "", dezippe la totalite de l'archive
  - type Type de fichier In / Out
 
 

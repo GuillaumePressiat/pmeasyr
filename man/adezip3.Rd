@@ -4,7 +4,7 @@
 \alias{adezip3}
 \title{~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet AP-HP, avec en parametre le nom de l'archive}
 \usage{
-adezip3(finess, path, file, liste, pathto = "")
+adezip3(finess, path, file, liste = "", pathto = "")
 }
 \arguments{
 \item{finess}{Finess du fichier a dezipper}

@@ -15,9 +15,9 @@ adelete(finess, annee, mois, path, liste, type)
 
 \item{path}{Chemin d'acces aux fichiers}
 
-\item{liste}{Liste des fichiers a effacer}
+\item{liste}{Liste des fichiers a effacer : par defaut a "", efface tous les \code{fichiers finess.annee.mois.}}
 
-\item{type}{Type de fichier In / Out}
+\item{type}{Type de fichier In / Out : par defaut a "", efface tous les fichiers \code{finess.annee.mois.}}
 }
 \description{
 Supprime les fichiers de l'archive PMSI dezippes en début de traitement
@@ -25,6 +25,8 @@ Supprime les fichiers de l'archive PMSI dezippes en début de traitement
 \examples{
 \dontrun{
    adelete(750712184,2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
+   
+   adelete(750712184,2016,2, path = '~/Exemple')
 }
 
 }

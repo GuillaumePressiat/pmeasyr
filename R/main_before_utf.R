@@ -4590,7 +4590,7 @@ astat <- function(path,file, view=T){
 #' @seealso \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 
 #' @export
-adezip2 <- function(path, file, liste, pathto=""){
+adezip2 <- function(path, file, liste = "", pathto=""){
   liste <- unique(liste)
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
   if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir= pathto)}
@@ -4691,7 +4691,7 @@ adezip.list <- function(l){
 }
 
 #' @export
-adezip.default <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
+adezip.default <- function(finess, annee, mois, path, liste = "", pathto="",type, recent=T){
   
   
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
@@ -4797,7 +4797,7 @@ adezip.default <- function(finess, annee, mois, path, liste, pathto="",type, rec
 #' @param finess Finess du fichier a dezipper
 #' @param path Chemin d'acces au fichier
 #' @param file Nom de l'archive zip (ex: \samp{MCO_IN_00000_201603.zip})
-#' @param liste des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dézippe la totalite de l'archive
+#' @param liste des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive
 #' @param pathto Chemin ou deposer les fichiers dezippes, par defaut à "", les fichiers sont mis la ou se trouve l'archive
 #'
 #' @examples
@@ -4818,7 +4818,7 @@ adezip.default <- function(finess, annee, mois, path, liste, pathto="",type, rec
 #' @seealso \code{\link{adezip2}}, \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 
 #' @export
-adezip3 <- function(finess, path, file, liste, pathto=""){
+adezip3 <- function(finess, path, file, liste = "", pathto=""){
   
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
   liste <- unique(liste)
@@ -4868,12 +4868,14 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
 #' @param annee Annee du fichier
 #' @param mois Mois du fichier
 #' @param path Chemin d'acces aux fichiers
-#' @param liste Liste des fichiers a effacer
-#' @param type Type de fichier In / Out
+#' @param liste Liste des fichiers a effacer : par defaut a "", efface tous les \code{fichiers finess.annee.mois.}
+#' @param type Type de fichier In / Out : par defaut a "", efface tous les fichiers \code{finess.annee.mois.}
 #'
 #' @examples
 #' \dontrun{
 #'    adelete(750712184,2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
+#'    
+#'    adelete(750712184,2016,2, path = '~/Exemple')
 #' }
 #'
 #' @author G. Pressiat
@@ -4890,7 +4892,7 @@ adelete <- function(...){
 
 #' @export
 adelete.pm_param <- function(params){
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', autres)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
   param2 <- params[noms]
   param2 <- param2[!is.na(names(param2))]
   do.call(adelete.default, param2)
@@ -4899,15 +4901,26 @@ adelete.pm_param <- function(params){
 #' @export
 adelete.list <- function(l){
   .params <- l
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', autres)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
   param2 <- .params[noms]
   param2 <- param2[!is.na(names(param2))]
   do.call(adelete.default, param2)
 }
 
 #' @export
-adelete.default <- function(finess,annee,mois,path, liste, type){
+adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
+  
+  if (type == "" & liste == ""){
+    liste <- list.files(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)))
+    liste <- liste[grepl(paste0(finess,'.',annee,'.',mois,'.'), liste) & !grepl('\\.zip', liste)]
+    if (length(liste) == 0){stop('Aucun fichier correspondant.')}
+    file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',liste))
+    return(TRUE)
+  }
+  
+  if ((type != "" & liste == "" )||( type == "" & liste != "")){stop("Type et liste doivent etre vides ensemble ou precises ensemble.")}
   liste[grepl("tra",liste)] <- "tra.txt"
+  
   if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste,".txt"))}
   if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste))}
 }
