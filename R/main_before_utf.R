@@ -3373,7 +3373,7 @@ irha.list <- function(l){
 
 #' @export
 irha.default <- function(finess, annee, mois, path, lib=T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -3784,6 +3784,10 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   acdi$NBEXEC <- acdi$NBEXEC  %>%  as.numeric()
   acdi$DELAI <- acdi$DELAI  %>%  as.numeric()
   if (annee>2014){acdi$NBPATREEL <- acdi$NBPATREEL  %>%  as.numeric()}
+  Fillers <- names(rha_i)
+  Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
+  
+  rha_i <- rha_i[,!(names(rha_i) %in% Fillers)]
   
   rha_i <- rha_i   %>% dplyr::select(-ZAD) %>% sjmisc::set_label(libelles[!is.na(libelles)])
   
@@ -3854,7 +3858,7 @@ iano_ssr.list <- function(l){
 
 #' @export
 iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){

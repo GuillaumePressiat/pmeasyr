@@ -29,7 +29,7 @@ p <- noyau_pmeasyr(
 ## 2 - Dezipper
 
 ```{r eval = F}
-# Ajouter des paramètres au noyau de parametres façon pipe
+# Ajouter des paramètres au noyau de parametres facon pipe
 `%P%` <- function(p, x){c(p,x)}
 
 # Tout dezipper
@@ -82,7 +82,7 @@ names(liste_tables_mco_out) <- substr(names(liste_tables_mco_out),2, nchar(names
 ## 4 - Sauvegarde (~ library Rds)
 
 ```{r eval = F}
-# Coller des chaines de caracteres faon pipe
+# Coller des chaines de caracteres facon pipe
 `%+%` <- function(x,y){paste0(x,y)}
 
 dir.create('~/Documents/data/mco/tables')
