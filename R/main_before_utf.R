@@ -52,7 +52,7 @@
 #'
 #' @seealso \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @importFrom utils View data unzip
+#' @importFrom utils View data unzip modifyList
 #' @importFrom magrittr '%>%'
 #' @export irum
 #' @usage irum(finess, annee, mois, path, lib = T, typi = 3, ...)
@@ -64,23 +64,19 @@ irum <- function(...){
 
 
 #' @export
-irum.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+irum.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(irum.default, param2)
 }
 
 
 
 #' @export
-irum.list <- function(l){
+irum.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(irum.default, param2)
 }
 
@@ -656,23 +652,19 @@ irsa <- function(...){
 
 
 #' @export
-irsa.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+irsa.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(irsa.default, param2)
 }
 
 
 
 #' @export
-irsa.list <- function(l){
+irsa.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typi', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(irsa.default, param2)
 }
 
@@ -1296,23 +1288,19 @@ itra <- function(...){
 
 
 #' @export
-itra.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'champ', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+itra.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(itra.default, param2)
 }
 
 
 
 #' @export
-itra.list <- function(l){
+itra.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'champ', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(itra.default, param2)
 }
 
@@ -1464,23 +1452,19 @@ iano_mco <- function( ...){
 
 
 #' @export
-iano_mco.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typano', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+iano_mco.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(iano_mco.default, param2)
 }
 
 
 
 #' @export
-iano_mco.list <- function(l){
+iano_mco.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typano', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(iano_mco.default, param2)
 }
 
@@ -1710,23 +1694,19 @@ imed_mco <- function(...){
 
 
 #' @export
-imed_mco.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typmed', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+imed_mco.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(imed_mco.default, param2)
 }
 
 
 
 #' @export
-imed_mco.list <- function(l){
+imed_mco.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typmed', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(imed_mco.default, param2)
 }
 
@@ -1898,22 +1878,18 @@ idmi_mco <- function(...){
 
 
 #' @export
-idmi_mco.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typdmi', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+idmi_mco.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(idmi_mcoo.default, param2)
 }
 
 
 #' @export
-idmi_mco.list <- function(l){
+idmi_mco.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typdmi', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(idmi_mco.default, param2)
 }
 
@@ -2064,23 +2040,19 @@ ileg_mco <- function(...){
 
 
 #' @export
-ileg_mco.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+ileg_mco.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(ileg_mco.default, param2)
 }
 
 
 
 #' @export
-ileg_mco.list <- function(l){
+ileg_mco.list <- function(l , ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(ileg_mco.default, param2)
 }
 
@@ -2231,22 +2203,18 @@ idiap <- function(...){
 
 
 #' @export
-idiap.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typdiap', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+idiap.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(idiap.default, param2)
 }
 
 
 #' @export
-idiap.list <- function(l){
+idiap.list <- function(l , ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typdiap', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(idiap.default, param2)
 }
 
@@ -2400,21 +2368,17 @@ iium <- function(...){
 
 
 #' @export
-iium.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+iium.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(iium.default, param2)
 }
 
 #' @export
-iium.list <- function(l){
+iium.list <- function(l , ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(iium.default, param2)
 }
 
@@ -2512,22 +2476,18 @@ ipo <- function( ...){
 
 
 #' @export
-ipo.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typpo', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+ipo.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(ipo.default, param2)
 }
 
 
 #' @export
-ipo.list <- function(l){
+ipo.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'typpo', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(ipo.default, param2)
 }
 
@@ -2688,22 +2648,18 @@ irapss <- function(...){
 
 
 #' @export
-irapss.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+irapss.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(irapss.default, param2)
 }
 
 
 #' @export
-irapss.list <- function(l){
+irapss.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(irapss.default, param2)
 }
 
@@ -3031,22 +2987,18 @@ iano_had <- function(...){
 
 
 #' @export
-iano_had.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+iano_had.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(iano_had.default, param2)
 }
 
 
 #' @export
-iano_had.list <- function(l){
+iano_had.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(iano_had.default, param2)
 }
 
@@ -3168,21 +3120,17 @@ imed_had <- function(...){
 
 
 #' @export
-imed_had.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+imed_had.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(imed_had.default, param2)
 }
 
 #' @export
-imed_had.list <- function(l){
+imed_had.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(imed_had.default, param2)
 }
 
@@ -3269,21 +3217,17 @@ ileg_had <- function(...){
 
 
 #' @export
-ileg_had.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+ileg_had.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(ileg_had.default, param2)
 }
 
 #' @export
-ileg_had.list <- function(l){
+ileg_had.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(ileg_had.default, param2)
 }
 
@@ -3353,21 +3297,17 @@ irha <- function(...){
 
 
 #' @export
-irha.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+irha.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(irha.default, param2)
 }
 
 #' @export
-irha.list <- function(l){
+irha.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(irha.default, param2)
 }
 
@@ -3838,21 +3778,17 @@ iano_ssr <- function(...){
 
 
 #' @export
-iano_ssr.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+iano_ssr.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(iano_ssr.default, param2)
 }
 
 #' @export
-iano_ssr.list <- function(l){
+iano_ssr.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(iano_ssr.default, param2)
 }
 
@@ -3976,21 +3912,17 @@ issrha <- function(...){
 
 
 #' @export
-issrha.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+issrha.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(issrha.default, param2)
 }
 
 #' @export
-issrha.list <- function(l){
+issrha.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(issrha.default, param2)
 }
 
@@ -4078,21 +4010,17 @@ ileg_ssr <- function(...){
 
 
 #' @export
-ileg_ssr.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+ileg_ssr.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(ileg_ssr.default, param2)
 }
 
 #' @export
-ileg_ssr.list <- function(l){
+ileg_ssr.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'reshape', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(ileg_ssr.default, param2)
 }
 
@@ -4172,21 +4100,17 @@ irpsa <- function(...){
 
 
 #' @export
-irpsa.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+irpsa.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(irpsa.default, param2)
 }
 
 #' @export
-irpsa.list <- function(l){
+irpsa.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(irpsa.default, param2)
 }
 
@@ -4303,21 +4227,17 @@ ir3a <- function(...){
 
 
 #' @export
-ir3a.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+ir3a.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(ir3a.default, param2)
 }
 
 #' @export
-ir3a.list <- function(l){
+ir3a.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(ir3a.default, param2)
 }
 
@@ -4431,21 +4351,17 @@ iano_psy <- function(...){
 
 
 #' @export
-iano_psy.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+iano_psy.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(iano_psy.default, param2)
 }
 
 #' @export
-iano_psy.list <- function(l){
+iano_psy.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(iano_psy.default, param2)
 }
 
@@ -4678,10 +4594,9 @@ adezip <- function(...){
 
 
 #' @export
-adezip.pm_param <- function(params){
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+adezip.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(adezip.default, param2)
 }
 
@@ -4895,10 +4810,9 @@ adelete <- function(...){
 
 
 #' @export
-adelete.pm_param <- function(params){
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+adelete.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(adelete.default, param2)
 }
 
@@ -5083,21 +4997,17 @@ irafael <- function(...){
 
 
 #' @export
-irafael.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib','stat', 'lister', 'lamda', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+irafael.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(irafael.default, param2)
 }
 
 #' @export
-irafael.list <- function(l){
+irafael.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib','stat', 'lister', 'lamda', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(irafael.default, param2)
 }
 
@@ -5254,21 +5164,17 @@ iano_rafael <- function(...){
 
 
 #' @export
-iano_rafael.pm_param <- function(params){
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', 'lamda', autres)
-  param2 <- params[noms]
-  param2 <- param2[!is.na(names(param2))]
+iano_rafael.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
   do.call(iano_rafael.default, param2)
 }
 
 #' @export
-iano_rafael.list <- function(l){
+iano_rafael.list <- function(l, ...){
   .params <- l
-  autres <- c('n_max', 'skip', 'progress')
-  noms <- c('finess', 'annee', 'mois', 'path', 'lib', 'lamda', autres)
-  param2 <- .params[noms]
-  param2 <- param2[!is.na(names(param2))]
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
   do.call(iano_rafael.default, param2)
 }
 
