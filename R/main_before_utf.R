@@ -4594,23 +4594,28 @@ adezip <- function(...){
 
 
 #' @export
-adezip.pm_param <- function(params, ...){
+adezip.pm_param <- function(.params, ...){
   new_par <- list(...)
-  param2 <- utils::modifyList(params, new_par)
-  do.call(adezip.default, param2)
-}
-
-#' @export
-adezip.list <- function(l){
-  .params <- l
   noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
-  param2 <- .params[noms]
+  param2 <- utils::modifyList(.params, new_par)
+  param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
   do.call(adezip.default, param2)
 }
 
 #' @export
-adezip.default <- function(finess, annee, mois, path, liste = "", pathto="",type, recent=T){
+adezip.list <- function(l, ...){
+  .params <- l
+  new_par <- list(...) 
+  param2 <- utils::modifyList(.params, new_par)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
+  param2 <- param2[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adezip.default, param2)
+}
+
+#' @export
+adezip.default <- function(finess, annee, mois, path, liste = "", pathto="", type, recent=T){
   
   
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
@@ -4810,17 +4815,23 @@ adelete <- function(...){
 
 
 #' @export
-adelete.pm_param <- function(params, ...){
+adelete.pm_param <- function(.params, ...){
+  .params <- l
   new_par <- list(...)
-  param2 <- utils::modifyList(params, new_par)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
+  param2 <- utils::modifyList(.params, new_par)
+  param2 <- param2[noms]
+  param2 <- param2[!is.na(names(param2))]
   do.call(adelete.default, param2)
 }
 
 #' @export
-adelete.list <- function(l){
+adelete.list <- function(l, ...){
   .params <- l
+  new_par <- list(...)
   noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
-  param2 <- .params[noms]
+  param2 <- utils::modifyList(.params, new_par)
+  param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
   do.call(adelete.default, param2)
 }
