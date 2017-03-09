@@ -13,7 +13,7 @@ adezip3(finess, path, file, liste = "", pathto = "")
 
 \item{file}{Nom de l'archive zip (ex: \samp{MCO_IN_00000_201603.zip})}
 
-\item{liste}{des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dézippe la totalite de l'archive}
+\item{liste}{des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive}
 
 \item{pathto}{Chemin ou deposer les fichiers dezippes, par defaut à "", les fichiers sont mis la ou se trouve l'archive}
 }

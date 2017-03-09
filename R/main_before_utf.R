@@ -3891,7 +3891,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données SHA.
+#' @return Une table (data.frame, tbl_df) contenant les données SHA, et a partir de 2017 une liste de deux tables (sha et gme)
 #'
 #' @examples
 #' \dontrun{
@@ -3928,7 +3928,7 @@ issrha.list <- function(l, ...){
 
 #' @export
 issrha.default <- function(finess, annee,mois, path, lib=T, ...){
-  if (annee<2011|annee>2016){
+  if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -3972,9 +3972,28 @@ issrha.default <- function(finess, annee,mois, path, lib=T, ...){
     class = "col_spec"
   )
   
+
   ssrha_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".sha"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) %>%
     sjmisc::set_label(libelles)
+
+  if (annee > 2016){
+    zac  <- ssrha_i %>% dplyr::select(NBZGP, ZGP)
+    fixe <- ssrha_i %>% dplyr::select(NOFINESS, NOSEQSEJ, NBZGP)
+    zac1 <- purrr::flatten_chr(stringr::str_extract_all(zac$ZGP, '.{1,13}'))
+    fixe <- as.data.frame(lapply(fixe, rep, fixe$NBZGP), stringsAsFactors = F)
+    gp <- data.frame(zac1 = as.character(zac1), stringsAsFactors = F)
+    gp <- dplyr::mutate(gp, 
+                        GME = stringr::str_sub(zac1, 1, 6),
+                        GMT = stringr::str_sub(zac1, 7, 10),
+                        NJ = stringr::str_sub(zac1, 11, 13) %>% as.integer()) %>%
+      dplyr::select(-zac1)
+    
+    
+    gp <- sjmisc::set_label(gp, c("GME", "GMT", "Nombre de jours de présence"))
+    gp <- dplyr::bind_cols(fixe, gp) 
+    return(list(ssrha = ssrha_i, gme = gp))
+  }
   
   return(ssrha_i)
 }
