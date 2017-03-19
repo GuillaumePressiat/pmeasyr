@@ -2,9 +2,12 @@
 % Please edit documentation in R/main_before_utf.R
 \name{noyau_pmeasyr}
 \alias{noyau_pmeasyr}
+\alias{print.pm_param}
 \title{~ par - Noyau de parametres}
 \usage{
 noyau_pmeasyr(...)
+
+\method{print}{pm_param}(p)
 }
 \description{
 Définir un noyau de paramètres
@@ -35,6 +38,9 @@ p \%>\% irum()     -> rum
 # Modifier le type d'import :
 c(p, typi = 6) \%>\% irsa() -> rsa
 
+# Pour visualiser p : 
+p
+print(p)
 }
 
 }

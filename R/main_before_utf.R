@@ -5317,14 +5317,31 @@ NULL
 #' # Modifier le type d'import :
 #' c(p, typi = 6) %>% irsa() -> rsa
 #' 
+#' # Pour visualiser p : 
+#' p
+#' print(p)
 #' }
 #' 
 #' @export 
 noyau_pmeasyr <- function(...){
   params <- list(...)
   #attr(params, "class") <- "list"
-  class(params) <- append(class(params),"pm_param")
+  attr(params, "class") <- "pm_param"
+  #class(params) <- append(class(params),"pm_param")
   return(params)
 }
 
+#' @rdname noyau_pmeasyr
+#' @export 
+print.pm_param <- function(p){
+  i <- unlist(p) %>% 
+    t() %>% 
+    as.data.frame(stringsAsFactors=F)  %>% 
+    tidyr::gather("parametre", "valeur")
+  a <- as.character(knitr::kable(i))
+  a <- paste0('', a)
+  a <- c('*** Noyau de param pmeasyr ***\n', a)
+  cat(a, sep="\n")
+
+}
 
