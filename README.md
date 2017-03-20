@@ -71,6 +71,10 @@ browseVignettes('pmeasyr')
 
 Ou bien consulter la [vignette en ligne](vignettes/vignette.Rmd).
 
+## Pour poursuivre
+
+Une [page github](https://guillaumepressiat.github.io/) rassemble toutes les informations autour du package : la documentation, des exemples ainsi que la présentation et le suivi des évolutions avec la partie [bloc-notes](https://guillaumepressiat.github.io/blog/).
+
 ------------
 
 
