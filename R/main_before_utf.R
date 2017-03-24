@@ -2335,7 +2335,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
 
 #' ~ MCO - Import des donnees UM du Out
 #'
-#' Imports du fichier IUM
+#' Imports du fichier IUM MCO
 #'
 #' Formats depuis 2011 pris en charge
 #'
@@ -3183,6 +3183,16 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, ...){
                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
     dplyr::mutate(NBADM = NBADM/1000,
                   PRIX  = PRIX /1000) %>% sjmisc::set_label(libelles)
+  
+  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
+  if (info$size >0 & !is.na(info$size)){
+    med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
+                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+      dplyr::mutate(NBADM = NBADM/1000,
+                    PRIX =  PRIX /1000) %>% sjmisc::set_label(libelles)
+    med_i <- rbind(med_i,med_i2)
+  }
+  
   return(med_i)
 }
 
@@ -4072,6 +4082,238 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
     dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
   
   return(dplyr::ungroup(leg_i1))
+}
+
+#' ~ SSR - Import des Med
+#'
+#' Imports du fichier Med Out
+#'
+#' Formats depuis 2011 pris en charge
+#' Structure du nom du fichier attendu (sortie de Genrha) :
+#' \emph{finess.annee.moisc.med}
+#'
+#' \strong{750712184.2017.2.med}
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param ~... parametres supplementaires a passer
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
+#'
+#' @return Une table (data.frame, tbl_df) contenant les données médicaments SSR du Out.
+#'
+#' @examples
+#' \dontrun{
+#'    meds <- imed_ssr(750712184,2015,12,"~/Documents/data/ssr")
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{irapss}}
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage imed_ssr(finess, annee, mois, path, lib = T, ...)
+#' @export imed_ssr
+#' @export
+imed_ssr <- function(...){
+  UseMethod('imed_ssr')
+}
+
+
+#' @export
+imed_ssr.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
+  do.call(imed_ssr.default, param2)
+}
+
+#' @export
+imed_ssr.list <- function(l, ...){
+  .params <- l
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
+  do.call(imed_ssr.default, param2)
+}
+
+#' @export
+imed_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
+  if (annee<2011|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
+  if (mois<1|mois>12){
+    stop('Mois incorrect\n')
+  }
+  
+  op <- options(digits.secs = 6)
+  un<-Sys.time()
+  
+  format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rha_med', an == substr(as.character(annee),3,4))
+  
+  af <- format$longueur
+  libelles <- format$libelle
+  an <- format$nom
+  vec <- format$type
+  col_types <-  vec
+  is_character <- vapply(col_types, is.character, logical(1))
+  col_concise <- function(x) {
+    switch(x,
+           "_" = ,
+           "-" = readr::col_skip(),
+           "?" = readr::col_guess(),
+           c = readr::col_character(),
+           D = readr::col_date(),
+           d = readr::col_double(),
+           e = readr::col_euro_double(),
+           i = readr::col_integer(),
+           l = readr::col_logical(),
+           n = readr::col_number(),
+           T = readr::col_datetime(),
+           t = readr::col_time(),
+           stop("Unknown shortcut: ", x, call. = FALSE)
+    )
+  }
+  col_types[is_character] <- lapply(col_types[is_character], col_concise)
+  
+  at <- structure(
+    list(
+      cols = col_types
+    ),
+    class = "col_spec"
+  )
+  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".med"))
+  if (info$size >0 & !is.na(info$size)){
+  med_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
+                           readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+    dplyr::mutate(NBADM = NBADM/1000,
+                  PRIX  = PRIX /1000) %>% sjmisc::set_label(libelles)
+  }
+  else {
+    med_i <- dplyr::tbl_df(data.frame())
+    }
+  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
+  if (info$size >0 & !is.na(info$size)){
+    med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
+                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+      dplyr::mutate(NBADM = NBADM/1000,
+                    PRIX =  PRIX /1000) %>% sjmisc::set_label(libelles)
+    med_i <- rbind(med_i,med_i2)
+  }
+  
+  Fillers <- names(med_i)
+  Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
+  med_i <- med_i[,!(names(med_i) %in% Fillers)]
+  
+  return(med_i)
+}
+
+#' ~ SSR - Import des donnees UM du Out
+#'
+#' Imports du fichier IUM SSR
+#'
+#' Formats depuis 2013 pris en charge
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param ~... parametres supplementaires à passer
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
+#'
+#' @return Une table (data.frame, tbl_df) contenant les informations structures du Out.
+#'
+#' @examples
+#' \dontrun{
+#'    um <- iium_ssr(750712184,2015,12,"~/Documents/data/ssr")
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage iium_ssr(finess, annee, mois, path, lib = T, ...)
+#' @export iium_ssr
+#' @export
+iium_ssr <- function(...){
+  UseMethod('iium_ssr')
+}
+
+
+#' @export
+iium_ssr.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
+  do.call(iium_ssr.default, param2)
+}
+
+#' @export
+iium_ssr.list <- function(l , ...){
+  .params <- l
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
+  do.call(iium_ssr.default, param2)
+}
+
+#' @export
+iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
+  if (annee<2013|annee>2017){
+    stop('Année PMSI non prise en charge\n')
+  }
+  if (mois<1|mois>12){
+    stop('Mois incorrect\n')
+  }
+  
+  
+  op <- options(digits.secs = 6)
+  un<-Sys.time()
+  
+  
+  format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rha_um', an == substr(as.character(annee),3,4))
+  
+  af <- format$longueur
+  libelles <- format$libelle
+  an <- format$nom
+  vec <- format$type
+  col_types <-  vec
+  is_character <- vapply(col_types, is.character, logical(1))
+  col_concise <- function(x) {
+    switch(x,
+           "_" = ,
+           "-" = readr::col_skip(),
+           "?" = readr::col_guess(),
+           c = readr::col_character(),
+           D = readr::col_date(),
+           d = readr::col_double(),
+           e = readr::col_euro_double(),
+           i = readr::col_integer(),
+           l = readr::col_logical(),
+           n = readr::col_number(),
+           T = readr::col_datetime(),
+           t = readr::col_time(),
+           stop("Unknown shortcut: ", x, call. = FALSE)
+    )
+  }
+  col_types[is_character] <- lapply(col_types[is_character], col_concise)
+  
+  at <- structure(
+    list(
+      cols = col_types
+    ),
+    class = "col_spec"
+  )
+  
+  ium_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ium"),
+                         readr::fwf_widths(af,an), col_types =at, na=character(), ...)
+  
+  
+  if (lib==T){
+    v <- libelles
+    ium_i <- ium_i  %>%  sjmisc::set_label(v)
+  }
+  return(ium_i)
 }
 
 
