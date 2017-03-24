@@ -5587,3 +5587,108 @@ print.pm_param <- function(p){
 
 }
 
+##############################################
+####################### LABELS ###############
+##############################################
+
+
+
+
+#' ~ Labels pour le PMSI
+#'
+#' Attribuer des libelles aux colonnes PMSI
+#'
+#' @param col Colonne à laquelle attribuer le libellé
+#' @param Mode_entree  '6' : 'Mutation'
+#' @param Mode_sortie  '9' : 'Décès'
+#' @param Provenance  '1' : 'MCO'
+#' @param Destination  '6' : 'HAD'
+#' @param Sexe  '2' : 'Femme'
+#'
+#' @return Un vecteur caractère ou facteur
+#'
+#' @examples
+#' \dontrun{
+#'    labeleasier(rsa$rsa$SEXE, Sexe = T, F)
+#'    labeleasier(rsa$rsa$DEST, Destination = T, F)
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @import forcats
+#' @export
+labeleasier <- function(col,
+                        Mode_entree = F,
+                        Mode_sortie = F,
+                        Provenance = F,
+                        Destination = F,
+                        Sexe = F,
+                        facteur = F){
+  
+  choix = c(Mode_entree,
+            Mode_sortie,
+            Provenance,
+            Destination,
+            Sexe)
+  
+  noms <- c('Mode_entree',
+            'Mode_sortie',
+            'Provenance',
+            'Destination',
+            'Sexe')
+  
+  if (sum( choix) != 1){
+    stop("Un et un seul format doit être spécifié par TRUE en paramètre")}
+  quoi <- noms[which(choix==T)]
+  
+  r <- suppressWarnings(switch(quoi,
+                               "Mode_entree" = forcats::fct_recode(col,
+                                                                   "PIE"        = "0",
+                                                                   "Mutation"   = "6",
+                                                                   "Transfert"  = "7",
+                                                                   "Domicile"   = "8",
+                                                                   "Inconnu"    = ''),
+                               
+                               "Mode_sortie" = forcats::fct_recode(col,
+                                                                   "Mutation"  = "6",
+                                                                   "Transfert" = "7",
+                                                                   "Domicile"  = "8",
+                                                                   "Décès"     = "9",
+                                                                   "Inconnu"    = ''),
+                               
+                               "Provenance"    = forcats::fct_recode(col,
+                                                                     "MCO"       = "1",
+                                                                     "SSR"       = "2",
+                                                                     "SLD"       = "3",
+                                                                     "PSY"       = "4",
+                                                                     "SAU"       = "5",
+                                                                     "HAD"       = "6",
+                                                                     "ESMS"      = "7",
+                                                                     "SIAD"      = "8",
+                                                                     "Inconnu"    = ''
+                               ),
+                               
+                               "Destination"    = forcats::fct_recode(col,
+                                                                      "MCO"       = "1",
+                                                                      "SSR"       = "2",
+                                                                      "SLD"       = "3",
+                                                                      "PSY"       = "4",
+                                                                      "SAU"       = "5",
+                                                                      "HAD"       = "6",
+                                                                      "ESMS"      = "7",
+                                                                      "SIAD"      = "8",
+                                                                      "Inconnu"    = ''
+                               ),
+                               
+                               "Sexe"    = forcats::fct_recode(col,
+                                                               "Homme"      = "1",
+                                                               "Femme"      = "2",
+                                                               "Inconnu"    = "9",
+                                                               "Inconnu"    = '0',
+                                                               "Inconnu"    = ''
+                               )))
+  if (facteur == T){return(r)}else{return(as.character(r))}
+  
+}
+
+

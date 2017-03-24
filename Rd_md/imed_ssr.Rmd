@@ -2,7 +2,7 @@
 
 ## Description
 
-Import des fichiers MED In ou Out.
+Import des fichiers MED du Out.
 
 ## Usage
 ```r
