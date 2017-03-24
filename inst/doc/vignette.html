@@ -548,6 +548,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Obtenir les noms, labels et types de variables (character, numeric, integer, date, ...)</span>
 <span class="kw">dico</span>(rsa15$rsa)</code></pre></div>
 </div>
+<div id="labels" class="section level3">
+<h3>Labels</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Obtenir le libelle d'une variable du PMSI</span>
+<span class="kw">labeleasier</span>(rsa15$rsa$SEXE, <span class="dt">Sexe =</span> T)
+<span class="kw">labeleasier</span>(rsa15$rsa$ECHPMSI, <span class="dt">Mode_entree =</span> T)</code></pre></div>
+</div>
 <div id="tidy-diagnostics" class="section level3">
 <h3>Tidy diagnostics</h3>
 <p>Les analyses sur les diagnostics CIM-10 sont parfois fastidieuses du fait des multiples positions de diagnostics : DP principal du sejour, DR principal du sejour, DPUM, DRUM, DAS. La fonction <em>tdiag</em> permet de rassembler tous les diagnostics dans une seule table.</p>

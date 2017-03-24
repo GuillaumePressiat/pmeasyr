@@ -67,6 +67,11 @@
 #  dico(rsa15$rsa)
 
 ## ----eval = F------------------------------------------------------------
+#  # Obtenir le libelle d'une variable du PMSI
+#  labeleasier(rsa15$rsa$SEXE, Sexe = T)
+#  labeleasier(rsa15$rsa$ECHPMSI, Mode_entree = T)
+
+## ----eval = F------------------------------------------------------------
 #  # Pour les objets rsa et rum du MCO
 #  # Transbahuter tous les diagnostics dans une seule table
 #  tdiag(rsa15) -> rsa15
