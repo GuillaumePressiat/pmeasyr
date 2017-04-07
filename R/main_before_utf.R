@@ -3377,7 +3377,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
       dplyr::mutate(ccam,
                     DELAI  = stringr::str_sub(ccam,1,4),
                     CDCCAM = stringr::str_sub(ccam,5,11),
-                    DESCRI = stringr::str_sub(ccam, 12,13),
+                    DESCRI = stringr::str_sub(ccam, 12,13) %>% stringr::str_trim(),
                     PHASE  = stringr::str_sub(ccam,14,14),
                     ACT    = stringr::str_sub(ccam,15,15),
                     EXTDOC = stringr::str_sub(ccam,16,16),
@@ -3494,7 +3494,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
@@ -3569,7 +3569,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA')%>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
@@ -3641,7 +3641,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
@@ -3704,7 +3704,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA)
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
     
     cdarr <- purrr::flatten_chr(zad$lcdarr)
     
@@ -5224,6 +5224,26 @@ tdiag <- function (d,  include = T)
       return(list(rum = d$rum, actes = d$actes, diags = h))
     }
   }
+  if (names(d)[1] == "rha") {
+    temp <- d$rha %>% dplyr::select(NOSEQSEJ, NOSEQRHS, MMP, FFPC, AE) %>%
+      sjmisc::set_label(rep("", 5))
+    e <- temp %>% tidyr::gather(position, diag, -NOSEQSEJ, - NOSEQRHS,
+                                na.rm = T)
+    f <- e %>% dplyr::filter(diag != "")
+    g <- d$acdi  %>% dplyr::filter(CODE == 'DA') %>% dplyr::select(NOSEQSEJ,NOSEQRHS,diag = DA) %>% dplyr::mutate(position = "DA")
+    h <- dplyr::bind_rows(f, g)
+    h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "MMP", `2` = "FFPC", `3` = "AE", `4` = "DA"))))
+    
+    h <- h %>% sjmisc::set_label(c("N° séquentiel du séjour", "N° séquentiel du RHS","1:MMP, 2:FFPC, 3:AE, 4:DA",
+                                   "Diagnostic"))
+    if (include == F) {
+      return(h)
+    }
+    else {
+      return(list(rha = d$rha, acdi = d$acdi, diags = h))
+    }
+  }
+
 }
 
 
