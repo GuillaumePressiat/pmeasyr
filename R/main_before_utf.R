@@ -4504,7 +4504,7 @@ ir3a.list <- function(l, ...){
 
 #' @export
 ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
-  if (annee<2012|annee>2016){
+  if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -4628,7 +4628,7 @@ iano_psy.list <- function(l, ...){
 
 #' @export
 iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
-  if (annee<2012|annee>2016){
+  if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
