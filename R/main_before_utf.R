@@ -5225,16 +5225,16 @@ tdiag <- function (d,  include = T)
     }
   }
   if (names(d)[1] == "rha") {
-    temp <- d$rha %>% dplyr::select(NOSEQSEJ, NOSEQRHS, MMP, FFPC, AE) %>%
+    temp <- d$rha %>% dplyr::select(NOSEQSEJ, NOSEQRHS, MMP, FPPC, AE) %>%
       sjmisc::set_label(rep("", 5))
     e <- temp %>% tidyr::gather(position, diag, -NOSEQSEJ, - NOSEQRHS,
                                 na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
     g <- d$acdi  %>% dplyr::filter(CODE == 'DA') %>% dplyr::select(NOSEQSEJ,NOSEQRHS,diag = DA) %>% dplyr::mutate(position = "DA")
     h <- dplyr::bind_rows(f, g)
-    h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "MMP", `2` = "FFPC", `3` = "AE", `4` = "DA"))))
+    h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "MMP", `2` = "FPPC", `3` = "AE", `4` = "DA"))))
     
-    h <- h %>% sjmisc::set_label(c("N° séquentiel du séjour", "N° séquentiel du RHS","1:MMP, 2:FFPC, 3:AE, 4:DA",
+    h <- h %>% sjmisc::set_label(c("N° séquentiel du séjour", "N° séquentiel du RHS","1:MMP, 2:FPPC, 3:AE, 4:DA",
                                    "Diagnostic"))
     if (include == F) {
       return(h)
