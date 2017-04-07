@@ -5327,8 +5327,9 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
     r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa"),
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
-    typi_r <- 9
     
+    typi_r <- 9
+    if (annee == 2017){typi_r <- 11}
   }
   if (lamda == T){
     # cat(paste("Import des rsfa-maj", annee, paste0("M",mois),"\n"))
