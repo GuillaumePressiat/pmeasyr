@@ -3421,7 +3421,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
@@ -3494,7 +3494,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
@@ -3569,7 +3569,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA')%>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
@@ -3641,7 +3641,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
@@ -3704,7 +3704,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
-      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% mutate(DA = stringr::str_trim(DA))
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     cdarr <- purrr::flatten_chr(zad$lcdarr)
     
