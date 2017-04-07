@@ -5151,7 +5151,7 @@ dico <- function(table){
 ####################### Tidy #################
 ##############################################
 
-#' ~ MCO - Tidy Diagnostics
+#' ~ Tidy - Tidy Diagnostics
 #'
 #' Restructurer les diagnostics
 #'
@@ -5159,8 +5159,9 @@ dico <- function(table){
 #' Une variable numérique indique la position des diagnostics
 #' - pour les rsa : 1 : DP du rsa, 2 : DR du rsa, 3 : DPUM, 4 : DRUM, 5 : DAS
 #' - pour les rum : 1 : DP du rum, 2 : DR du rum, 3 : DAS, 4 : DAD
-#'
-#' @param d Objet S3 resultat de l'import pmeasyr (irsa, irum)
+#' - pour les rha : 1 : MMP du rha, 2 : FPPC du rha, 3 : AE, 4 : DA
+#' 
+#' @param d Objet S3 resultat de l'import pmeasyr (irsa, irum, irha)
 #' @param include booleen : defaut a T; T : restructure l'objet S3 (agglomere dp, dr, das et dad, par exemple)
 #'
 #' @examples
@@ -5177,7 +5178,7 @@ dico <- function(table){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{irsa}}, \code{\link{irum}}
+#' @seealso \code{\link{irsa}}, \code{\link{irum}}, \code{\link{irha}}
 
 #' @export
 tdiag <- function (d,  include = T)

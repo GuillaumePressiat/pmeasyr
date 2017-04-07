@@ -1,4 +1,4 @@
-# ~ MCO - Tidy Diagnostics 
+# ~ Tidy - Tidy Diagnostics 
 
 ## Description
 
@@ -10,7 +10,7 @@ tdiag(d, table = "rsa", include = T)
 
 ```
 ## Arguments
- - d Objet S3 resultat de l'import pmeasyr (irsa, irum)
+ - d Objet S3 resultat de l'import pmeasyr (irsa, irum, irha)
  - include booleen : defaut a T; T : restructure l'objet S3 (agglomere dp, dr, das et dad, par exemple)
 
 
@@ -20,7 +20,7 @@ On obtient une table contenant tous les diagnostics par séjour, sur le principe
 Une variable numérique indique la position des diagnostics
 - pour les rsa : 1 : DP du rsa, 2 : DR du rsa, 3 : DPUM, 4 : DRUM, 5 : DAS
 - pour les rum : 1 : DP du rum, 2 : DR du rum, 3 : DAS, 4 : DAD
-
+- pour les rha : 1 : MMP du rha, 2 : FPPC du rha, 3 : AE, 4 : DA
 
 ## Examples
 ```r
