@@ -6,7 +6,8 @@ Import des Rafael
 
 ## Usage
 ```r
-irafael(finess, annee, mois, path, lib = T, stat = T, ...)
+irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
+"C", "H", "L", "M", "P"), lamda = F, ...)
 
 ```
 ## Arguments
@@ -16,12 +17,14 @@ irafael(finess, annee, mois, path, lib = T, stat = T, ...)
  - path Localisation du fichier de donnees
  - lib Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package `sjmisc`
  - stat avec stat = T, un tableau synthetise le nombre de lignes par type de rafael
+ - lister Liste des types d'enregistrements a importer
+ - lamda a TRUE, importe les fichiers `rsfa-maj` de reprise de l'annee passee
  - ... Autres parametres a specifier `n_max = 1e3`, ...
 
 
 ## Examples
 ```r
    irafael(750712184,2015,12,'~/pathpath/') -> rsfa15
-
+   irafael(750712184,2015,12,'~/Documents/data/rsf', lister = 'C', lamda = T) -> rsfa14_lamda
 ```
 
