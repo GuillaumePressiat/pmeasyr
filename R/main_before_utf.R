@@ -5329,7 +5329,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
                          col_types = readr::cols('c'),  ...)
     
     typi_r <- 9
-    if (annee == 2017){typi_r <- 11}
+    if (annee > 2016){typi_r <- 11}
   }
   if (lamda == T){
     # cat(paste("Import des rsfa-maj", annee, paste0("M",mois),"\n"))
@@ -5343,7 +5343,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
     typi_r <- 27
-    
+    if (annee > 2017){typi_r <- 29}
   }
   
   former <- function(cla, col1){
@@ -5474,7 +5474,7 @@ iano_rafael.list <- function(l, ...){
 
 #' @export
 iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
-  if (annee<2012|annee>2016){
+  if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
