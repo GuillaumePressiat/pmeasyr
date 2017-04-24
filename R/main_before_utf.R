@@ -5077,7 +5077,6 @@ adelete <- function(...){
 
 #' @export
 adelete.pm_param <- function(.params, ...){
-  .params <- l
   new_par <- list(...)
   noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
   param2 <- utils::modifyList(.params, new_par)
