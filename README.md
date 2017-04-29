@@ -6,7 +6,9 @@
 
 *16 janvier 2017*
 
-Un [livret numérique en ligne](https://guillaumepressiat.github.io/pmeasyr/) présente les fonctionnement du package et donne des exemples de codes (imports, requêtes, analyses) pour se familiariser à son utilisation.
+Un [livret numérique en ligne](https://guillaumepressiat.github.io/pmeasyr/) présente le fonctionnement du package et donne des exemples de codes (imports, requêtes, analyses) pour se familiariser à son utilisation.
+
+Une [page github](https://guillaumepressiat.github.io/) rassemble toutes les informations autour du package : la documentation, des exemples ainsi que la présentation et le suivi des évolutions avec la partie [bloc-notes](https://guillaumepressiat.github.io/blog/).
 
 ## Contexte
 
