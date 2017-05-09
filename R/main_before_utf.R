@@ -3375,13 +3375,13 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee >  2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1,4),
+                    DELAI  = stringr::str_sub(ccam,1,4) %>% as.integer(),
                     CDCCAM = stringr::str_sub(ccam,5,11),
                     DESCRI = stringr::str_sub(ccam, 12,13) %>% stringr::str_trim(),
                     PHASE  = stringr::str_sub(ccam,14,14),
                     ACT    = stringr::str_sub(ccam,15,15),
                     EXTDOC = stringr::str_sub(ccam,16,16),
-                    NBEXEC = stringr::str_sub(ccam,17,18),
+                    NBEXEC = stringr::str_sub(ccam,17,18) %>% as.integer(),
                     INDVAL = stringr::str_sub(ccam,19,19)
       ) %>% dplyr::select(-ccam)
     }
@@ -3449,12 +3449,12 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4),
+                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16),
+                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
@@ -3523,12 +3523,12 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2013){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4),
+                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16),
+                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
@@ -3597,12 +3597,12 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2012){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4),
+                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16),
+                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
@@ -3667,12 +3667,12 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2011){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4),
+                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16),
+                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
@@ -4377,7 +4377,7 @@ irpsa.list <- function(l, ...){
 
 #' @export
 irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
-  if (annee<2012|annee>2016){
+  if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -4426,10 +4426,12 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
                                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)) %>%
     dplyr::mutate(DP = stringr::str_trim(DP))
   
-  zad <- rpsa_i %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
-                                                                               lda = stringr::str_extract_all(da, '.{1,6}'))
   
-  da <- purrr::flatten_chr(zad$lda)
+  if (annee < 2017){
+    zad <- rpsa_i %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
+                                                                                 lda = stringr::str_extract_all(da, '.{1,6}'))
+    
+  da <- purrr::flatten_chr(zad$lda) %>% stringr::str_trim()
   
   df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA)
   df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
@@ -4443,7 +4445,55 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
   da <- da %>% sjmisc::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                    'Diagnostics et facteurs associés'))
   rpsa_1 = list(rpsa = rpsa_i, das = da)
-  
+  }
+  if (annee > 2016){
+    rpsa_i <- rpsa_i %>%  
+      dplyr::mutate(da  = ifelse(NBDA>0,stringr::str_sub(ZAD,1, NBDA*6),""),
+                    lda = stringr::str_extract_all(da, '.{1,6}'),
+                    actes = ifelse(NBZA>0,stringr::str_sub(ZAD,NBDA*6+1,1+ NBDA*6 + NBZA*17),""),
+                    lactes = stringr::str_extract_all(actes, '.{1,17}'))
+    
+    zad <- rpsa_i
+    da <- purrr::flatten_chr(zad$lda) %>% stringr::str_trim()
+    
+    df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA)
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
+    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
+    
+    actes <- purrr::flatten_chr(zad$lactes)
+    
+    df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBZA)
+    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
+    actes <- dplyr::bind_cols(df,data.frame(ACTES = stringr::str_trim(actes), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBZA)
+    
+    fzacte <- function(actes){
+      dplyr::mutate(actes,
+                    DELAI  = stringr::str_sub(ACTES,1,3) %>% as.integer(),
+                    CDCCAM = stringr::str_sub(ACTES,4,10),
+                    DESCRI = stringr::str_sub(ACTES,11,12) %>% stringr::str_trim(),
+                    PHASE  = stringr::str_sub(ACTES,13,13),
+                    ACT    = stringr::str_sub(ACTES,14,14),
+                    EXTDOC = stringr::str_sub(ACTES,15,15),
+                    NBEXEC = stringr::str_sub(ACTES,16,17)
+      ) %>% dplyr::select(-ACTES)
+    }
+    
+    fzacte(actes) -> actes
+    rpsa_i$ZAD[is.na(rpsa_i$ZAD)] <- ""
+    rpsa_i <- rpsa_i %>% dplyr::mutate(das = extz(da, ".{1,6}"), 
+                                       actes = extz(actes, "[A-Z]{4}[0-9]{3}")) %>% dplyr::select(-ZAD, -da, -lactes, -lda)
+    libelles[is.na(libelles)] <- ""
+    rpsa_i <- rpsa_i %>% sjmisc::set_label(c(libelles[-length(libelles)], "Stream actes","Stream DA ou facteurs associés"))
+    
+    da <- da %>% sjmisc::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+                                     'Diagnostics et facteurs associés'))
+    
+    actes <- actes %>% sjmisc::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+                                     "Délai depuis la date d'entrée", "Code CCAM",
+                                     "Extension PMSI", "Code de la phase", "Code de l'activité", "Extension documentaire", "Nombre de réalisations"))
+    
+    rpsa_1 = list(rpsa = rpsa_i, das = da, actes = actes)
+  }
   return(rpsa_1)
 }
 
