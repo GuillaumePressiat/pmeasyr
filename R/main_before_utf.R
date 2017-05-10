@@ -4464,7 +4464,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
     
     df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBZA)
     df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    actes <- dplyr::bind_cols(df,data.frame(ACTES = stringr::str_trim(actes), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBZA)
+    actes <- dplyr::bind_cols(df,data.frame(ACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBZA)
     
     fzacte <- function(actes){
       dplyr::mutate(actes,
@@ -4474,7 +4474,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
                     PHASE  = stringr::str_sub(ACTES,13,13),
                     ACT    = stringr::str_sub(ACTES,14,14),
                     EXTDOC = stringr::str_sub(ACTES,15,15),
-                    NBEXEC = stringr::str_sub(ACTES,16,17)
+                    NBEXEC = stringr::str_sub(ACTES,16,17) %>% as.integer()
       ) %>% dplyr::select(-ACTES)
     }
     
