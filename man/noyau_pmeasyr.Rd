@@ -23,20 +23,22 @@ p <- noyau_pmeasyr(
 finess = '750712184',
 annee  = 2016,
 mois   = 12,
-path   = '~/Documents/data/mco'
+path   = '~/Documents/data/mco',
+progress = F
 )
 
-c(p, type = "out", liste = "") \%>\% adezip()
+p \%>\% adezip(type = "out", liste = "")
 
 p \%>\% irsa()     -> rsa
 p \%>\% iano_mco() -> ano
 p \%>\% ipo()      -> po
 
-c(p, type = "in", liste = "") \%>\% adezip()
+adezip(type = "in", liste = "")
+ 
 p \%>\% irum()     -> rum
 
 # Modifier le type d'import :
-c(p, typi = 6) \%>\% irsa() -> rsa
+irsa(p, typi = 6) -> rsa
 
 # Pour visualiser p : 
 p
