@@ -3375,7 +3375,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee >  2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1,4) %>% as.integer(),
+                    DELAI  = stringr::str_sub(ccam,1,4),
                     CDCCAM = stringr::str_sub(ccam,5,11),
                     DESCRI = stringr::str_sub(ccam, 12,13) %>% stringr::str_trim(),
                     PHASE  = stringr::str_sub(ccam,14,14),
@@ -3449,7 +3449,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
+                    DELAI  = stringr::str_sub(ccam,1 , 4),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
@@ -3523,7 +3523,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2013){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
+                    DELAI  = stringr::str_sub(ccam,1 , 4),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
@@ -3597,7 +3597,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2012){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
+                    DELAI  = stringr::str_sub(ccam,1 , 4),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
@@ -3667,7 +3667,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   if (annee == 2011){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DELAI  = stringr::str_sub(ccam,1 , 4) %>% as.integer(),
+                    DELAI  = stringr::str_sub(ccam,1 , 4),
                     CDCCAM = stringr::str_sub(ccam,5 ,11),
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
@@ -5615,20 +5615,22 @@ NULL
 #' finess = '750712184',
 #' annee  = 2016,
 #' mois   = 12,
-#' path   = '~/Documents/data/mco'
+#' path   = '~/Documents/data/mco',
+#' progress = F
 #' )
 #' 
-#' c(p, type = "out", liste = "") %>% adezip()
+#' p %>% adezip(type = "out", liste = "")
 #' 
 #' p %>% irsa()     -> rsa
 #' p %>% iano_mco() -> ano
 #' p %>% ipo()      -> po
 #' 
-#' c(p, type = "in", liste = "") %>% adezip()
+#' adezip(type = "in", liste = "")
+#'  
 #' p %>% irum()     -> rum
 #' 
 #' # Modifier le type d'import :
-#' c(p, typi = 6) %>% irsa() -> rsa
+#' irsa(p, typi = 6) -> rsa
 #' 
 #' # Pour visualiser p : 
 #' p
