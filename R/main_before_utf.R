@@ -3381,7 +3381,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                     PHASE  = stringr::str_sub(ccam,14,14),
                     ACT    = stringr::str_sub(ccam,15,15),
                     EXTDOC = stringr::str_sub(ccam,16,16),
-                    NBEXEC = stringr::str_sub(ccam,17,18) %>% as.integer(),
+                    NBEXEC = stringr::str_sub(ccam,17,18),
                     INDVAL = stringr::str_sub(ccam,19,19)
       ) %>% dplyr::select(-ccam)
     }
@@ -3454,7 +3454,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
+                    NBEXEC = stringr::str_sub(ccam,15,16),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
@@ -3528,7 +3528,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
+                    NBEXEC = stringr::str_sub(ccam,15,16),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
@@ -3602,7 +3602,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
+                    NBEXEC = stringr::str_sub(ccam,15,16),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
@@ -3672,7 +3672,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                     PHASE  = stringr::str_sub(ccam,12,12),
                     ACT    = stringr::str_sub(ccam,13,13),
                     EXTDOC = stringr::str_sub(ccam,14,14),
-                    NBEXEC = stringr::str_sub(ccam,15,16) %>% as.integer(),
+                    NBEXEC = stringr::str_sub(ccam,15,16),
                     INDVAL = stringr::str_sub(ccam,17,17)
       ) %>% dplyr::select(-ccam)
     }
