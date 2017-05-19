@@ -1160,8 +1160,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     
     # das
     #cat("Das en ligne : ")
-    un_i<-Sys.time() %>% stringr::str_trim()
-    das <- purrr::flatten_chr(rsa_i$ldas)
+    un_i<-Sys.time()
+    das <- purrr::flatten_chr(rsa_i$ldas) %>% stringr::str_trim()
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBDIAGAS)
     df <- as.data.frame(lapply(df, rep, df$NBDIAGAS), stringsAsFactors = F) %>% dplyr::tbl_df()
     das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% dplyr::tbl_df()
