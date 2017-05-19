@@ -1273,7 +1273,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #'
 #' @author G. Pressiat
 #'
-#' @usage irum(finess, annee, mois, path, lib = T, champ = "mco")
+#' @usage itra(finess, annee, mois, path, lib = T, champ = "mco")
 #' @seealso \code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}, 
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 

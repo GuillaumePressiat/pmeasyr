@@ -4,7 +4,7 @@
 \alias{itra}
 \title{~ TRA - Import du TRA}
 \usage{
-irum(finess, annee, mois, path, lib = T, champ = "mco")
+itra(finess, annee, mois, path, lib = T, champ = "mco")
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
