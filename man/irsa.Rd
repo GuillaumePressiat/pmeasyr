@@ -15,7 +15,7 @@ irsa(finess, annee, mois, path, lib = T, typi = 4, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
 
 \item{typi}{Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement}
 

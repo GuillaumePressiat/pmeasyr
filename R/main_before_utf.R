@@ -35,7 +35,7 @@
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param typi Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement
 #' @param ~...   parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
@@ -341,7 +341,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rum_i <- rum_i  %>% dplyr::select(-ZAD) %>%  sjmisc::set_label(v)
+      rum_i <- rum_i  %>% dplyr::select(-ZAD) %>%  sjlabelled::set_label(v)
     }
     
     rum_1 <- list(rum = rum_i )
@@ -364,7 +364,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     if (lib==T){
       v <- libelles
       v <- c(v[!is.na(v)],c("Stream Actes","Stream Das", "Stream Dad"))
-      rum_i <- rum_i %>%  sjmisc::set_label(v)
+      rum_i <- rum_i %>%  sjlabelled::set_label(v)
     }
     rum_1 <- list(rum = rum_i)
     class(rum_1) <- append(class(rum_1),"RUM")
@@ -444,9 +444,9 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
-      actes %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
-      das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
-      dad %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
+      actes %>% sjlabelled::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
+      das %>% sjlabelled::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
+      dad %>% sjlabelled::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
     }
     
     
@@ -459,7 +459,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjmisc::set_label(v)
+      rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjlabelled::set_label(v)
     }
     
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
@@ -540,9 +540,9 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
-      actes %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
-      das %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
-      dad %>% sjmisc::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
+      actes %>% sjlabelled::set_label(c('N° administratif du séjour','N° du RUM', fa$libelle)) -> actes
+      das %>% sjlabelled::set_label(c('N° administratif du séjour','N° du RUM', 'Diagnostic associé')) -> das
+      dad %>% sjlabelled::set_label(c('N° administratif du séjour','N° du RUM', 'Donnée à visée documentaire')) -> dad
     }
     
     
@@ -559,7 +559,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     if (lib==T){
       v <- libelles
       v <- c(v[!is.na(v)],c("Stream Actes","Stream Das", "Stream Dad"))
-      rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjmisc::set_label(v)
+      rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjlabelled::set_label(v)
     }
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
@@ -623,7 +623,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param typi Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
@@ -757,7 +757,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rsa_i <- rsa_i  %>% dplyr::select(-ZA) %>%  sjmisc::set_label(v)
+      rsa_i <- rsa_i  %>% dplyr::select(-ZA) %>%  sjlabelled::set_label(v)
     }
     
     rsa_1 <- list(rsa = rsa_i)
@@ -818,7 +818,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
       else {
         v <- c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes", "Stream Das"))
       }
-      rsa_i <- rsa_i %>%  sjmisc::set_label(v)
+      rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
     }
     rsa_1 <- list(rsa = rsa_i)
     
@@ -872,7 +872,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
       else{
         v <-   c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das"))
       }
-      rsa_i <- rsa_i %>%  sjmisc::set_label(v)
+      rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
     }
     
     rsa_1 <- list(rsa = rsa_i)
@@ -918,9 +918,9 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     rsa_um %>% dplyr::select(-var, -NBRUM) -> rsa_um
     if (lib == T){
       if (as.integer(annee) <= 2012){
-        rsa_um %>% sjmisc::set_label(c('Clé RSA','N° Séquentiel du RUM', fa$libelle)) -> rsa_um}
+        rsa_um %>% sjlabelled::set_label(c('Clé RSA','N° Séquentiel du RUM', fa$libelle)) -> rsa_um}
       else
-        rsa_um %>% sjmisc::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
+        rsa_um %>% sjlabelled::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
     }
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
@@ -934,7 +934,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% dplyr::tbl_df()
     das <- das %>% dplyr::select(-NBDIAGAS)
     if (lib == T){
-      das %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
+      das %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
     }
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
@@ -957,7 +957,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     }
     actes %>% dplyr::select(-var, -NBACTE) -> actes
     if (lib == T){
-      actes %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
+      actes %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
     }
     
     deux_i<-Sys.time()
@@ -979,7 +979,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
       else {
         v <- c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies"))
       }
-      rsa_i <- rsa_i %>%  sjmisc::set_label(v)
+      rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
     }
     
     rsa_1 <- list(rsa = rsa_i,
@@ -1027,9 +1027,9 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     rsa_um %>% dplyr::select(-var, -NBRUM) -> rsa_um
     if (lib == T){
       if (as.integer(annee) <= 2012){
-        rsa_um %>% sjmisc::set_label(c('Clé RSA','N° Séquentiel du RUM', fa$libelle)) -> rsa_um}
+        rsa_um %>% sjlabelled::set_label(c('Clé RSA','N° Séquentiel du RUM', fa$libelle)) -> rsa_um}
       else
-        rsa_um %>% sjmisc::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
+        rsa_um %>% sjlabelled::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
     }
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
@@ -1043,7 +1043,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% dplyr::tbl_df()
     das <- das %>% dplyr::select(-NBDIAGAS)
     if (lib == T){
-      das %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
+      das %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
     }
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
@@ -1066,7 +1066,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     }
     actes %>% dplyr::select(-var, -NBACTE) -> actes
     if (lib == T){
-      actes %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
+      actes %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
     }
     
     deux_i<-Sys.time()
@@ -1094,7 +1094,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
         v <-  c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes", "Stream Das"))
       }
       
-      rsa_i <- rsa_i %>%  sjmisc::set_label(v)
+      rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
     }
     
     rsa_1 <- list(rsa = rsa_i , actes = actes, das = das, rsa_um=rsa_um)
@@ -1151,9 +1151,9 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     rsa_um %>% dplyr::select(-var, -NBRUM) -> rsa_um
     if (lib == T){
       if (as.integer(annee) <= 2012){
-        rsa_um %>% sjmisc::set_label(c('Clé RSA','N° Séquentiel du RUM', fa$libelle)) -> rsa_um}
+        rsa_um %>% sjlabelled::set_label(c('Clé RSA','N° Séquentiel du RUM', fa$libelle)) -> rsa_um}
       else
-        rsa_um %>% sjmisc::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
+        rsa_um %>% sjlabelled::set_label(c('Clé RSA', fa$libelle)) -> rsa_um
     }
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
@@ -1167,7 +1167,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% dplyr::tbl_df()
     das <- das %>% dplyr::select(-NBDIAGAS)
     if (lib == T){
-      das %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
+      das %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
     }
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
@@ -1190,7 +1190,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     }
     actes %>% dplyr::select(-var, -NBACTE) -> actes
     if (lib == T){
-      actes %>% sjmisc::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
+      actes %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM', fa$libelle)) -> actes
     }
     
     deux_i<-Sys.time()
@@ -1209,7 +1209,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
       else{
         v <-  c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das"))
       }
-      rsa_i <- rsa_i %>%  sjmisc::set_label(v)
+      rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
       
     }
     
@@ -1258,7 +1258,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param champ Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
@@ -1396,14 +1396,15 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
   
   if (lib==T & champ !="tra_psy_r3a"){
     v <- c(libelles, 'Établissement')
-    return(tra_i  %>%  sjmisc::set_label(v))
+    return(tra_i  %>%  sjlabelled::set_label(v))
   }
   
   if (lib==T & champ =="tra_psy_r3a"){
     v <- libelles
-    return(tra_i  %>%  sjmisc::set_label(v))
+    return(tra_i  %>%  sjlabelled::set_label(v))
   }
-  return(NULL)
+  
+  return(tra_i)
 }
 
 #' ~ MCO - Import des Anohosp
@@ -1423,7 +1424,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typano Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -1576,7 +1577,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
     
     if (lib==T){
       v <- c(libelles[!is.na(libelles)], "Chaînage Ok")
-      ano_i <- ano_i  %>%  sjmisc::set_label(v)
+      ano_i <- ano_i  %>%  sjlabelled::set_label(v)
     }
   }
   
@@ -1646,7 +1647,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
     
     if (lib==T){
       v <- libelles[!is.na(libelles)]
-      ano_i <- ano_i  %>%  sjmisc::set_label(v)
+      ano_i <- ano_i  %>%  sjlabelled::set_label(v)
     }
   }
   
@@ -1664,7 +1665,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typmed Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -1788,7 +1789,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     }
     if (lib==T){
       v <- libelles
-      med_i <- med_i  %>%  sjmisc::set_label(v)
+      med_i <- med_i  %>%  sjlabelled::set_label(v)
     }
     return( med_i  )
   }
@@ -1836,7 +1837,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     if (lib==T){
       v <- libelles
       v<- v[!is.na(v)]
-      med_i <- med_i %>% dplyr::select(-Fil1) %>%  sjmisc::set_label(v)
+      med_i <- med_i %>% dplyr::select(-Fil1) %>%  sjlabelled::set_label(v)
     }
     return(med_i %>% dplyr::mutate(DTDISP = lubridate::dmy(DTDISP)) )
   }
@@ -1854,7 +1855,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typdmi Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -1952,7 +1953,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
     
     if (lib==T){
       v <- libelles
-      dmi_i <- dmi_i  %>%  sjmisc::set_label(v)
+      dmi_i <- dmi_i  %>%  sjlabelled::set_label(v)
     }
     return(dmi_i)
   }
@@ -1999,7 +2000,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      dmi_i <- dmi_i  %>% dplyr::select(-Fil1,-Fil2) %>%  sjmisc::set_label(v)
+      dmi_i <- dmi_i  %>% dplyr::select(-Fil1,-Fil2) %>%  sjlabelled::set_label(v)
     }
     return(dmi_i)
   }
@@ -2179,7 +2180,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typdiap Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2277,7 +2278,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
     
     if (lib==T){
       v <- libelles
-      diap_i <- diap_i  %>%  sjmisc::set_label(v)
+      diap_i <- diap_i  %>%  sjlabelled::set_label(v)
     }
     return(diap_i)
   }
@@ -2324,7 +2325,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
     if (lib==T){
       
       v <- libelles
-      diap_i <- diap_i  %>%  sjmisc::set_label(v)
+      diap_i <- diap_i  %>%  sjlabelled::set_label(v)
     }
     return(diap_i)
   }
@@ -2343,7 +2344,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2437,7 +2438,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, ...){
   
   if (lib==T){
     v <- libelles
-    ium_i <- ium_i  %>%  sjmisc::set_label(v)
+    ium_i <- ium_i  %>%  sjlabelled::set_label(v)
   }
   return(ium_i)
 }
@@ -2453,7 +2454,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, ...){
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param typpo Type de donnees In / Out
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2550,7 +2551,7 @@ if (typpo=="out"){
   
   if (lib==T){
     v <- libelles
-    po_i <- po_i  %>%  sjmisc::set_label(v)
+    po_i <- po_i  %>%  sjlabelled::set_label(v)
   }
   return(po_i)
 }
@@ -2596,7 +2597,7 @@ if (typpo=="in"){
   
   if (lib==T){
     v <- libelles
-    po_i <- po_i  %>%  sjmisc::set_label(v)
+    po_i <- po_i  %>%  sjlabelled::set_label(v)
   }
   return(po_i)
 }
@@ -2916,18 +2917,18 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
   ght[is.na(ght)] <- ""
   if (lib==T){
     
-    ght <- ght %>% sjmisc::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
+    ght <- ght %>% sjlabelled::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
                                        'N° de version du RPSS','Version de classification',
                                        'Codes retours', 'Groupe homogène de prise en charge',
                                        'Nombre de GHT','Type de GHT', 'N° du GHT', 'Nombre de jours du GHT'))
     
     if (annee==2011){
-      acdi <- acdi %>% sjmisc::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
+      acdi <- acdi %>% sjlabelled::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
                                            'Type de code (A : Acte, DA : Diagnostic Associé)',
                                            "Délai depuis la date d'entrée","Code CCAM","Phase", "Activité", "Extension documentaire",
                                            "Nombre d'exécécutions", "Indic Validité de l'acte","Diagnostic Associé"))
     }else{
-      acdi <- acdi %>% sjmisc::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
+      acdi <- acdi %>% sjlabelled::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
                                            'Type de code (A : Acte, DA : Diagnostic Associé, DMPP : Diagnostic Mode principal, DMPA : Diagnostic Mode associé)',
                                            "Délai depuis la date d'entrée","Code CCAM","Phase", "Activité", "Extension documentaire",
                                            "Nombre d'exécécutions", "Indic Validité de l'acte","Diagnostic Associé", "Diagnostic MPP",
@@ -2941,7 +2942,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
   rapss_i <- rapss_i[,!(names(rapss_i) %in% Fillers)]
   
   if (lib==T){
-    rapss_i <- rapss_i  %>% sjmisc::set_label(libelles[!is.na(libelles)])
+    rapss_i <- rapss_i  %>% sjlabelled::set_label(libelles[!is.na(libelles)])
   }
   rapss_1 <- list(rapss = rapss_i, acdi = acdi, ght = ght)
   return(rapss_1)
@@ -2962,7 +2963,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -3075,7 +3076,7 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
                     MTRMBAMC = MTRMBAMC/100,
                     TAUXRM   = TAUXRM  /100)
   }
-  ano_i <- ano_i %>% sjmisc::set_label(c(libelles,'Chaînage Ok'))
+  ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
   
   return(ano_i)
@@ -3095,7 +3096,7 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -3182,14 +3183,14 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, ...){
   med_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
     dplyr::mutate(NBADM = NBADM/1000,
-                  PRIX  = PRIX /1000) %>% sjmisc::set_label(libelles)
+                  PRIX  = PRIX /1000) %>% sjlabelled::set_label(libelles)
   
   info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
   if (info$size >0 & !is.na(info$size)){
     med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(NBADM = NBADM/1000,
-                    PRIX =  PRIX /1000) %>% sjmisc::set_label(libelles)
+                    PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
     med_i <- rbind(med_i,med_i2)
   }
   
@@ -3444,7 +3445,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                    "Nb réel de patients", "Nb d'intervenants","Extension documentaire CSARR", "Code CCAM", "Partie descriptive","Phase CCAM",
                    "Activité CCAM", "Extension documentaire CCAM")
     
-    acdi <- acdi %>% sjmisc::set_label(labelacdi)
+    acdi <- acdi %>% sjlabelled::set_label(labelacdi)
   }
   if (annee == 2014){
     fzacte <- function(ccam){
@@ -3517,7 +3518,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                    "Nb réel de patients", "Nb d'intervenants","Extension documentaire CSARR", "Code CCAM", "Phase CCAM",
                    "Activité CCAM", "Extension documentaire CCAM")
     
-    acdi <- acdi %>% sjmisc::set_label(labelacdi)
+    acdi <- acdi %>% sjlabelled::set_label(labelacdi)
     
   }
   if (annee == 2013){
@@ -3591,7 +3592,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                    "Nb de réalisations","Acte compatible avec la semaine", "Délai depuis la date d'entrée dans l'UM",
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
     
-    acdi <- acdi %>% sjmisc::set_label(labelacdi)
+    acdi <- acdi %>% sjlabelled::set_label(labelacdi)
     
   }
   if (annee == 2012){
@@ -3662,7 +3663,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                    "Nb de réalisations","Acte compatible avec la semaine", "Délai depuis la date d'entrée dans l'UM",
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
     acdi <- dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
-    acdi <- acdi %>% sjmisc::set_label(labelacdi)
+    acdi <- acdi %>% sjlabelled::set_label(labelacdi)
   }
   if (annee == 2011){
     fzacte <- function(ccam){
@@ -3725,7 +3726,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
                    "Délai depuis la date d'entrée dans l'UM",
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
     
-    acdi <- acdi %>% sjmisc::set_label(labelacdi)
+    acdi <- acdi %>% sjlabelled::set_label(labelacdi)
     
   }
   
@@ -3739,7 +3740,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   
   rha_i <- rha_i[,!(names(rha_i) %in% Fillers)]
   
-  rha_i <- rha_i   %>% dplyr::select(-ZAD) %>% sjmisc::set_label(libelles[!is.na(libelles)])
+  rha_i <- rha_i   %>% dplyr::select(-ZAD) %>% sjlabelled::set_label(libelles[!is.na(libelles)])
   
   rha_1 = list(rha = rha_i, acdi = acdi)
   deux <- Sys.time()
@@ -3761,7 +3762,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... paramètres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes, \code{progress = F, skip =...}
@@ -3876,7 +3877,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
                     MTBASERM = MTBASERM/100,
                     TAUXRM   = TAUXRM  /100)
   }
-  ano_i <- ano_i %>% sjmisc::set_label(c(libelles,'Chaînage Ok'))
+  ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("FIL"))
   
   return(ano_i)
@@ -3985,7 +3986,7 @@ issrha.default <- function(finess, annee,mois, path, lib=T, ...){
 
   ssrha_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".sha"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) %>%
-    sjmisc::set_label(libelles)
+    sjlabelled::set_label(libelles)
 
   if (annee > 2016){
     zac  <- ssrha_i %>% dplyr::select(NBZGP, ZGP)
@@ -4000,7 +4001,7 @@ issrha.default <- function(finess, annee,mois, path, lib=T, ...){
       dplyr::select(-zac1)
     
     
-    gp <- sjmisc::set_label(gp, c("GME", "GMT", "Nombre de jours de présence"))
+    gp <- sjlabelled::set_label(gp, c("GME", "GMT", "Nombre de jours de présence"))
     gp <- dplyr::bind_cols(fixe, gp) 
     return(list(ssrha = ssrha_i, gme = gp))
   }
@@ -4098,7 +4099,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4187,7 +4188,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
   med_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
     dplyr::mutate(NBADM = NBADM/1000,
-                  PRIX  = PRIX /1000) %>% sjmisc::set_label(libelles)
+                  PRIX  = PRIX /1000) %>% sjlabelled::set_label(libelles)
   }
   else {
     med_i <- dplyr::tbl_df(data.frame())
@@ -4197,7 +4198,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
     med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(NBADM = NBADM/1000,
-                    PRIX =  PRIX /1000) %>% sjmisc::set_label(libelles)
+                    PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
     med_i <- rbind(med_i,med_i2)
   }
   
@@ -4218,7 +4219,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4311,7 +4312,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
   
   if (lib==T){
     v <- libelles
-    ium_i <- ium_i  %>%  sjmisc::set_label(v)
+    ium_i <- ium_i  %>%  sjlabelled::set_label(v)
   }
   return(ium_i)
 }
@@ -4335,7 +4336,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4440,9 +4441,9 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
   
   rpsa_i$ZAD[is.na(rpsa_i$ZAD)] <- ""
   rpsa_i <- rpsa_i %>% dplyr::mutate(das = extz(ZAD, ".{1,6}")) %>% dplyr::select(-ZAD)
-  rpsa_i <- rpsa_i %>% sjmisc::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
+  rpsa_i <- rpsa_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
   
-  da <- da %>% sjmisc::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+  da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                    'Diagnostics et facteurs associés'))
   rpsa_1 = list(rpsa = rpsa_i, das = da)
   }
@@ -4483,12 +4484,12 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
     rpsa_i <- rpsa_i %>% dplyr::mutate(das = extz(da, ".{1,6}"), 
                                        actes = extz(actes, "[A-Z]{4}[0-9]{3}")) %>% dplyr::select(-ZAD, -da, -lactes, -lda)
     libelles[is.na(libelles)] <- ""
-    rpsa_i <- rpsa_i %>% sjmisc::set_label(c(libelles[-length(libelles)], "Stream actes","Stream DA ou facteurs associés"))
+    rpsa_i <- rpsa_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream actes","Stream DA ou facteurs associés"))
     
-    da <- da %>% sjmisc::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+    da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                      'Diagnostics et facteurs associés'))
     
-    actes <- actes %>% sjmisc::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+    actes <- actes %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                      "Délai depuis la date d'entrée", "Code CCAM",
                                      "Extension PMSI", "Code de la phase", "Code de l'activité", "Extension documentaire", "Nombre de réalisations"))
     
@@ -4512,7 +4513,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4615,9 +4616,9 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
   
   r3a_i$ZAD[is.na(r3a_i$ZAD)] <- ""
   r3a_i <- r3a_i %>% dplyr::mutate(das = extz(ZAD, ".{1,6}")) %>% dplyr::select(-ZAD)
-  r3a_i <- r3a_i %>% sjmisc::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
+  r3a_i <- r3a_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
   
-  da <- da %>% sjmisc::set_label(c('N° séquentiel de séjour',"N° d'ordre", 'Diagnostics et facteurs associés'))
+  da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour',"N° d'ordre", 'Diagnostics et facteurs associés'))
   r3a_1 = list(r3a = r3a_i, das = da)
   
   return(r3a_1)
@@ -4752,7 +4753,7 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
                     MTRMBAMC = MTRMBAMC/100,
                     TAUXRM   = TAUXRM  /100)
   }
-  ano_i <- ano_i %>% sjmisc::set_label(c(libelles,'Chaînage Ok'))
+  ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
   return(ano_i)
 }
@@ -5191,9 +5192,9 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
 dico <- function(table){
   dplyr::data_frame(
     nom   = names(table),
-    label = sjmisc::get_label(table),
+    label = sjlabelled::get_label(table),
     type  = sapply(table, class)
-  ) %>% sjmisc::set_label(c("Nom de la variable","Libellé, de la variable", "Type"))
+  ) %>% sjlabelled::set_label(c("Nom de la variable","Libellé, de la variable", "Type"))
 }
 
 ##############################################
@@ -5234,20 +5235,20 @@ tdiag <- function (d,  include = T)
 {
   if (names(d)[1] == "rsa") {
     temp <- d$rsa %>% dplyr::select(CLE_RSA, NSEQRUM = NOSEQRUM, DP, DR) %>%
-      sjmisc::set_label(rep("", 4))
+      sjlabelled::set_label(rep("", 4))
     e <- temp %>% tidyr::gather(position, diag, -CLE_RSA, - NSEQRUM,
                                 na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
     g <- d$das  %>% dplyr::select(CLE_RSA,NSEQRUM,diag = DAS) %>% dplyr::mutate(position = "DAS")
     h <- dplyr::bind_rows(f, g)
     temp <- d$rsa_um %>% dplyr::select(CLE_RSA, NSEQRUM, DPUM, DRUM) %>%
-      sjmisc::set_label(rep("", 4))
+      sjlabelled::set_label(rep("", 4))
     e <- temp %>% tidyr::gather(position, diag, -CLE_RSA, - NSEQRUM,
                                 na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
     h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DPUM", `4` = "DRUM",
                                                                                                          `5` = "DAS"))))
-    h <- h %>% sjmisc::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
+    h <- h %>% sjlabelled::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
                                    "Diagnostic"))
     if (include == F) {
       return(h)
@@ -5257,7 +5258,7 @@ tdiag <- function (d,  include = T)
     }
   }
   if (names(d)[1]  == "rum") {
-    temp <- d$rum %>% dplyr::select(NAS,NORUM, DP, DR) %>% sjmisc::set_label(rep("",4))
+    temp <- d$rum %>% dplyr::select(NAS,NORUM, DP, DR) %>% sjlabelled::set_label(rep("",4))
     e <- temp %>% tidyr::gather(position, diag, -NAS,- NORUM, na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
     g <- d$das %>% dplyr::rename(diag = DAS) %>% dplyr::mutate(position = "DAS")
@@ -5265,7 +5266,7 @@ tdiag <- function (d,  include = T)
     h <- dplyr::bind_rows(list(f, g, g2)) %>%
       dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DAS", `4`="DAD"))))
     
-    h <- h %>% sjmisc::set_label(c("N° administratif du séjour", "N° du RUM",
+    h <- h %>% sjlabelled::set_label(c("N° administratif du séjour", "N° du RUM",
                                    "1:DP, 2:DR, 3:DAS, 4:DAD", "Diagnostic"))
     if (include == F) {
       return(h)
@@ -5276,7 +5277,7 @@ tdiag <- function (d,  include = T)
   }
   if (names(d)[1] == "rha") {
     temp <- d$rha %>% dplyr::select(NOSEQSEJ, NOSEQRHS, MMP, FPPC, AE) %>%
-      sjmisc::set_label(rep("", 5))
+      sjlabelled::set_label(rep("", 5))
     e <- temp %>% tidyr::gather(position, diag, -NOSEQSEJ, - NOSEQRHS,
                                 na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
@@ -5284,7 +5285,7 @@ tdiag <- function (d,  include = T)
     h <- dplyr::bind_rows(f, g)
     h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "MMP", `2` = "FPPC", `3` = "AE", `4` = "DA"))))
     
-    h <- h %>% sjmisc::set_label(c("N° séquentiel du séjour", "N° séquentiel du RHS","1:MMP, 2:FPPC, 3:AE, 4:DA",
+    h <- h %>% sjlabelled::set_label(c("N° séquentiel du séjour", "N° séquentiel du RHS","1:MMP, 2:FPPC, 3:AE, 4:DA",
                                    "Diagnostic"))
     if (include == F) {
       return(h)
@@ -5319,7 +5320,7 @@ tdiag <- function (d,  include = T)
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param lib Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package \code{sjlabelled}
 #' @param stat avec stat = T, un tableau synthetise le nombre de lignes par type de rafael
 #' @param lister Liste des types d'enregistrements a importer
 #' @param lamda a TRUE, importe les fichiers \code{rsfa-maj} de reprise de l'annee passee
@@ -5418,7 +5419,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
     }
     one %>% dplyr::select(-lon) -> one
     if (lib == T){
-      one %>% sjmisc::set_label(fa$libelle) -> one
+      one %>% sjlabelled::set_label(fa$libelle) -> one
     }
     return(one)
   }
@@ -5480,7 +5481,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lamda a TRUE, importe le fichier ano-ace-maj
-#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -5573,14 +5574,14 @@ iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, 
     dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                   DTENT    = lubridate::dmy(DTENT),
                   cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
-                           (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
+                           (CRDENTR=='0') ==5)) %>% sjlabelled::set_label(c(libelles, 'Chaînage Ok'))
   }
   if (lamda == T){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace-maj"),
                                                readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
     dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                   DTENT    = lubridate::dmy(DTENT),
                   cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
-                           (CRDENTR=='0') ==5)) %>% sjmisc::set_label(c(libelles, 'Chaînage Ok'))
+                           (CRDENTR=='0') ==5)) %>% sjlabelled::set_label(c(libelles, 'Chaînage Ok'))
   }
   
   

@@ -17,7 +17,7 @@ idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...)
 
 \item{typdiap}{Type de donnees In / Out}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

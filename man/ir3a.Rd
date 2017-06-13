@@ -15,7 +15,7 @@ ir3a(finess, annee, mois, path, lib = T, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

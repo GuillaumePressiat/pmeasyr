@@ -16,7 +16,7 @@ irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par défaut a TRUE ; necessite le package \code{sjlabelled}}
 
 \item{stat}{avec stat = T, un tableau synthetise le nombre de lignes par type de rafael}
 

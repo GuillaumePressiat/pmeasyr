@@ -12,7 +12,7 @@ Imports:
     magrittr,
     forcats,
     purrr,
-    sjmisc,
+    sjlabelled,
     knitr
 Author: Guillaume Pressiat
 Maintainer: Guillaume Pressiat <guillaume.pressiat@aphp.fr>

@@ -15,7 +15,7 @@ itra(finess, annee, mois, path, lib = T, champ = "mco")
 
 \item{path}{Localisation du fichier de donnees}
 
-\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjmisc}}
+\item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
 
 \item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"}
 
