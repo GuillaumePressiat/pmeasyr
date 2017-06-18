@@ -58,7 +58,7 @@
 #' @usage irum(finess, annee, mois, path, lib = T, typi = 3, ...)
 #' @export
 irum <- function(...){
-  UseMethod('irum')
+  UseMethod("irum")
 }
 
 
@@ -82,17 +82,17 @@ irum.list <- function(l, ...){
 
 #' @export
 irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
-  if (annee<2011|annee>2017){
-    stop('Année PMSI non prise en charge\n')
+  if (annee < 2011 | annee > 2017){
+    stop("Année PMSI non prise en charge\n")
   }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
+  if (mois < 1 | mois > 12){
+    stop("Mois incorrect\n")
   }
   if (!(typi %in% 0:4)){
     stop("Type d'import incorrect : 0 ou 1, 2, 3 et 4\n")
   }
   
-  #op <- options(digits.secs = 6)
+  # op <- options(digits.secs = 6)
   un<-Sys.time()
   
   
@@ -105,9 +105,9 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
   #           $actes pour accéder à la table ACTES\n\n"))
 
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
-  
+
   format <- pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum", an == substr(annee,3,4))
-  
+
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
