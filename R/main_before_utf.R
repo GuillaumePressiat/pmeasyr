@@ -3297,6 +3297,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' \dontrun{
 #'    irha(750712184,2015,12,'pathpath/') -> rha15
 #' }
+#' @author G. Pressiat
 #' @seealso \code{\link{iano_ssr}}, \code{\link{ileg_ssr}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 #' @usage irha(finess, annee, mois, path, lib = T, ...)
