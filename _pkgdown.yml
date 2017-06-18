@@ -7,7 +7,7 @@ reference:
   - title: Gestion des archives
     contents:
     - starts_with("a")
-  - title: Imports des données
+  - title: Import des données
     contents:
     - starts_with("i")
   - title: Formats et labels
