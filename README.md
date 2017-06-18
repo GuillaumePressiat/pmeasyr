@@ -57,7 +57,7 @@ Il est utilisé depuis un an à l'AP-HP pour des analyses d'activité et la desc
 
 ### Depuis github avec devtools
 
-```{r echo = T, eval = F} 
+```
 devtools::install_github('IM-APHP/pmeasyr')
 ``` 
 
@@ -67,7 +67,7 @@ Cette commande lance l'installation du package et de ses dépendances.
 
 La vignette introductive du package donne des exemples de commandes pour les traitements des données du champ PMSI MCO.
 
-```{r echo = T, eval = F}
+```
 browseVignettes('pmeasyr')
 ```
 
@@ -84,3 +84,4 @@ Une [page github](https://guillaumepressiat.github.io/) rassemble toutes les inf
   SIMAP / DOMU / AP-HP<br>
   <img src="https://github.com/IM-APHP/pmeasyr/blob/master/logo.jpg" alt="AP-HP Logo" align ="center" style="width: 48"/>
 </p>
+
