@@ -28,17 +28,17 @@ Dezipper une archive PMSI au besoin
 }
 \examples{
 \dontrun{
-     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
             liste = 'med',
             pathto = "~/Exemple",
             type = "out")
 
-     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
             liste = c('med','rapss', 'ano'),
             pathto = "~/Exemple",
             type = "in")
 
-     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
             liste = c('rss', 'ano'),
             pathto = "~/Exemple",
             type = "in",

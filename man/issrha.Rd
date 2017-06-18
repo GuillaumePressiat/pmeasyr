@@ -36,7 +36,7 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 }
 \examples{
 \dontrun{
-   sha <- issrha(750712184,2015,12,"~/Documents/data/ssr")
+   sha <- issrha('750712184',2015,12,"~/Documents/data/ssr")
 }
 
 }

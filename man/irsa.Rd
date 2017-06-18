@@ -60,7 +60,7 @@ Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les info
 }
 \examples{
 \dontrun{
-   irsa(750712184,2015,12,'~/Documents/data/mco') -> rsa15
+   irsa('750712184',2015,12,'~/Documents/data/mco') -> rsa15
 }
 
 }

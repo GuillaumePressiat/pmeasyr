@@ -34,8 +34,8 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   idmi_mco(750712184,2015,12,'~/Documents/data/mco') -> dmi_out15
-   idmi_mco(750712184,2015,12,'~/Documents/data/mco', typdmi = "in") -> dmi_in15
+   idmi_mco('750712184',2015,12,'~/Documents/data/mco') -> dmi_out15
+   idmi_mco('750712184',2015,12,'~/Documents/data/mco', typdmi = "in") -> dmi_in15
 }
 
 }

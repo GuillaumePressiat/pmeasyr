@@ -36,7 +36,7 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 }
 \examples{
 \dontrun{
-   meds <- imed_ssr(750712184,2015,12,"~/Documents/data/ssr")
+   meds <- imed_ssr('750712184',2015,12,"~/Documents/data/ssr")
 }
 
 }

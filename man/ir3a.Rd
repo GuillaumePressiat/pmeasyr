@@ -36,7 +36,7 @@ Structure du nom du fichier attendu (sortie de Pivoine) :
 }
 \examples{
 \dontrun{
-   r3a <- ir3a(750712184,2015,12,"~/Documents/data/psy")
+   r3a <- ir3a('750712184',2015,12,"~/Documents/data/psy")
 }
 
 }

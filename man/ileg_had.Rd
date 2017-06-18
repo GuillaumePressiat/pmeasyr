@@ -25,7 +25,7 @@ Import de la liste d'erreurs de génération Paprica
 }
 \examples{
 \dontrun{
-   ileg_had(750712184,2015,12,'~/Documents/data/had') -> leg15
+   ileg_had('750712184',2015,12,'~/Documents/data/had') -> leg15
 }
 
 }

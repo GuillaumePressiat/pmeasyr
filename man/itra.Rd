@@ -38,7 +38,7 @@ Structure du nom du fichier attendu (sortie de Genrsa) :
 }
 \examples{
 \dontrun{
-   itra(750712184,2015,12,'~/Documents/data/champ_pmsi') -> tra15
+   itra('750712184',2015,12,'~/Documents/data/champ_pmsi') -> tra15
 }
 
 }

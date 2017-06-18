@@ -40,8 +40,8 @@ Structure du nom du fichier attendu  :
 }
 \examples{
 \dontrun{
-   iano_mco(750712184,2015,12,'~/Documents/data/mco') -> ano_out15
-   iano_mco(750712184,2015,12,'~/Documents/data/mco', typano = "in") -> ano_in15
+   iano_mco('750712184',2015,12,'~/Documents/data/mco') -> ano_out15
+   iano_mco('750712184',2015,12,'~/Documents/data/mco', typano = "in") -> ano_in15
 }
 
 }
