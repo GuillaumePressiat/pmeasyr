@@ -19,7 +19,7 @@ Pour lister sans dezipper les fichiers d'une archive
 \examples{
 \dontrun{
    liste <- astat(path = '~/Documents/R/sources/2016/',
-                  file = "750712184.2016.2.05042016093044.in.zip",
+                  file = "'750712184'.2016.2.05042016093044.in.zip",
                   view = F)
 }
 

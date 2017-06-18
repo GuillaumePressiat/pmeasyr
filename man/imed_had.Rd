@@ -32,7 +32,7 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Paprica) :
 \emph{finess.annee.moisc.med}
 
-\strong{750712184.2016.2.med}
+\strong{'750712184'.2016.2.med}
 }
 \examples{
 \dontrun{

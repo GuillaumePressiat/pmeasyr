@@ -30,7 +30,7 @@ Formats depuis 2012 pris en charge
 Structure du nom du fichier attendu (sortie de Genrha) :
 \emph{finess.annee.moisc.ano}
 
-\strong{750712184.2016.2.ano}
+\strong{'750712184'.2016.2.ano}
 }
 \examples{
 \dontrun{

@@ -32,7 +32,7 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Genrha) :
 \emph{finess.annee.moisc.sha}
 
-\strong{750712184.2016.2.sha}
+\strong{'750712184'.2016.2.sha}
 }
 \examples{
 \dontrun{

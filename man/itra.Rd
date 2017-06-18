@@ -34,7 +34,7 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Genrsa) :
 \emph{finess.annee.moisc.tra}
 
-\strong{750712184.2016.2.tra}
+\strong{'750712184'.2016.2.tra}
 }
 \examples{
 \dontrun{

@@ -12,7 +12,7 @@
 #' Structure du nom du fichier attendu (entrée pour Genrsa) :
 #' \emph{finess.annee.moisc.rum}
 #'
-#' \strong{750712184.2016.2.rum}
+#' \strong{'750712184'.2016.2.rum}
 #'
 #' Types d'imports :
 #' \tabular{ll}{
@@ -594,7 +594,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #' Structure du nom du fichier attendu (sortie de Genrsa) :
 #' \emph{finess.annee.moisc.rsa}
 #'
-#' \strong{750712184.2016.2.rsa}
+#' \strong{'750712184'.2016.2.rsa}
 #'
 #' Types d'imports :
 #' \tabular{ll}{
@@ -1251,7 +1251,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #' Structure du nom du fichier attendu (sortie de Genrsa) :
 #' \emph{finess.annee.moisc.tra}
 #'
-#' \strong{750712184.2016.2.tra}
+#' \strong{'750712184'.2016.2.tra}
 #'
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
@@ -1416,8 +1416,8 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' \emph{finess.annee.moisc.ano}
 #' \emph{finess.annee.moisc.ano.txt}
 #'
-#' \strong{750712184.2016.2.ano}
-#' \strong{750712184.2016.2.ano.txt}
+#' \strong{'750712184'.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano.txt}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
@@ -2619,7 +2619,7 @@ if (typpo=="in"){
 #' Structure du nom du fichier attendu (sortie de Paprica) :
 #' \emph{finess.annee.moisc.rapss}
 #'
-#' \strong{750712184.2016.2.rapss}
+#' \strong{'750712184'.2016.2.rapss}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
@@ -2957,7 +2957,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
 #' Structure du nom du fichier attendu (sortie de Paprica) :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -3090,7 +3090,7 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Paprica) :
 #' \emph{finess.annee.moisc.med}
 #'
-#' \strong{750712184.2016.2.med}
+#' \strong{'750712184'.2016.2.med}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -3757,7 +3757,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -3892,7 +3892,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.sha}
 #'
-#' \strong{750712184.2016.2.sha}
+#' \strong{'750712184'.2016.2.sha}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4094,7 +4094,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.med}
 #'
-#' \strong{750712184.2017.2.med}
+#' \strong{'750712184'.2017.2.med}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4331,7 +4331,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
 #' Structure du nom du fichier attendu (sortie de Pivoine) :
 #' \emph{finess.annee.moisc.rpsa}
 #'
-#' \strong{750712184.2016.2.rpsa}
+#' \strong{'750712184'.2016.2.rpsa}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4508,7 +4508,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Pivoine) :
 #' \emph{finess.annee.moisc.r3a}
 #'
-#' \strong{750712184.2016.3.r3a}
+#' \strong{'750712184'.2016.3.r3a}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4633,7 +4633,7 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4775,7 +4775,7 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
 #' @examples
 #' \dontrun{
 #'    liste <- astat(path = '~/Documents/R/sources/2016/',
-#'                   file = "750712184.2016.2.05042016093044.in.zip",
+#'                   file = "'750712184'.2016.2.05042016093044.in.zip",
 #'                   view = F)
 #' }
 #'
@@ -4800,7 +4800,7 @@ astat <- function(path,file, view=T){
 #'
 #'
 #' @param path Chemin d'acces a l'archive
-#' @param file Nom de l'archive zip (ex: \code{750712184.2016.2.05042016093044.in.zip})
+#' @param file Nom de l'archive zip (ex: \code{'750712184'.2016.2.05042016093044.in.zip})
 #' @param liste Liste des fichiers a dezipper parmi l'archive ; si \code{liste = ""}, dezippe la totalite de l'archive
 #' @param pathto Chemin ou deposer les fichiers dezippes, par defaut a "", les fichiers sont mis la ou se trouve l'archive
 #'
@@ -4808,12 +4808,12 @@ astat <- function(path,file, view=T){
 #' \dontrun{
 #'    # Fichier ano
 #'      adezip2(path = '~/Documents/R/sources/2011/',
-#'              file = '750712184.2011.12.27012012141857.in.zip',
+#'              file = ''750712184'.2011.12.27012012141857.in.zip',
 #'              liste = 'ano')
 #'
 #'    # Totalité de l'archive
 #'      adezip2(path = '~/Documents/R/sources/2011/',
-#'              file = '750712184.2011.12.27012012141857.in.zip',
+#'              file = ''750712184'.2011.12.27012012141857.in.zip',
 #'              liste = '')
 
 #' }
@@ -5475,7 +5475,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
 #' Structure du nom du fichier attendu  :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -5614,7 +5614,7 @@ NULL
 #' library(magrittr)
 #' 
 #' p <- noyau_pmeasyr(
-#' finess = '750712184',
+#' finess = ''750712184'',
 #' annee  = 2016,
 #' mois   = 12,
 #' path   = '~/Documents/data/mco',

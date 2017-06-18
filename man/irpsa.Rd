@@ -32,7 +32,7 @@ Formats depuis 2012 pris en charge
 Structure du nom du fichier attendu (sortie de Pivoine) :
 \emph{finess.annee.moisc.rpsa}
 
-\strong{750712184.2016.2.rpsa}
+\strong{'750712184'.2016.2.rpsa}
 }
 \examples{
 \dontrun{

@@ -34,7 +34,7 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Genrsa) :
 \emph{finess.annee.moisc.rsa}
 
-\strong{750712184.2016.2.rsa}
+\strong{'750712184'.2016.2.rsa}
 
 Types d'imports :
 \tabular{ll}{

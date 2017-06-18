@@ -35,7 +35,7 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (entrée pour Genrsa) :
 \emph{finess.annee.moisc.rum}
 
-\strong{750712184.2016.2.rum}
+\strong{'750712184'.2016.2.rum}
 
 Types d'imports :
 \tabular{ll}{
