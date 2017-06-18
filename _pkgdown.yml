@@ -1,8 +1,16 @@
 url: https://im-aphp.github.io/pmeasyr/
 
 template:
-  bootswatch: united
+  bootswatch: cerulean
 
-right:
-    - icon: fa-github fa-lg
-      href: https://github.com/IM-APHP/pmeasyr
+navbar:
+  title: pmeasyr
+  type: default
+  left:
+  - text: References / Fonctions
+    href: reference/index.html
+  - text: Articles / Vignettes
+    href: articles/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/IM-APHP/pmeasyr
