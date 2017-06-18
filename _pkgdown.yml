@@ -1,13 +1,31 @@
 url: https://im-aphp.github.io/pmeasyr/
 
-template:
-  bootswatch: cerulean
-
+templates:
+  params:
+    bootswatch: cerulean
+reference:
+  - title: Gestion des archives
+    contents:
+    - starts_with("a")
+  - title: Imports des données
+    contents:
+    - starts_with("i")
+  - title: Formats et labels
+    contents:
+    - formats
+    - labeleasier
+  - title: Noyau de paramètres
+    contents:
+    - noyau_pmeasyr
+  - title: Autres
+    contents:
+    - tdiag
+    
 navbar:
   title: pmeasyr
   type: default
   left:
-  - text: References / Fonctions
+  - text: Références / Fonctions
     href: reference/index.html
   - text: Articles / Vignettes
     href: articles/index.html
