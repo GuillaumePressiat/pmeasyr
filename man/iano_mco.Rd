@@ -35,8 +35,8 @@ Structure du nom du fichier attendu  :
 \emph{finess.annee.moisc.ano}
 \emph{finess.annee.moisc.ano.txt}
 
-\strong{'750712184'.2016.2.ano}
-\strong{'750712184'.2016.2.ano.txt}
+\strong{750712184.2016.2.ano}
+\strong{750712184.2016.2.ano.txt}
 }
 \examples{
 \dontrun{

@@ -28,7 +28,7 @@ irum('750712184', 2016, 8, '~/path/path', typi = 3) -> d1
 tdiag(d1) -> d1
 d1$diags
 d1$actes
-d1$dads
+d1$dad
 irsa('750712184', 2016, 8, '~/path/path', typi = 4) -> d1
 tdiag(d1, include = F) -> alldiag
 }

@@ -169,12 +169,12 @@ p %&gt;%<span class="st">  </span><span class="kw"><a href="../reference/adelete
 <div id="relire-les-tables-sauvegardees-en-rds" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relire-les-tables-sauvegardees-en-rds" class="anchor"></a>6 - Relire les tables sauvegardees en rds</h2>
-<p>Avec le noyau de parametres <code>p</code> defini tout en haut de cette page, on a les elements necessaires pour reconstruire le nom du fichier : <code>750100042.2015.12.out.rds</code> :</p>
+<p>Avec le noyau de parametres <code>p</code> defini tout en haut de cette page, on a les elements necessaires pour reconstruire le nom du fichier : <code>750100042.2015.12.out.Rds</code> :</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Coller des chaines de caracteres faon pipe</span>
 <span class="st">`</span><span class="dt">%+%</span><span class="st">`</span> &lt;-<span class="st"> </span>function(x,y){<span class="kw">paste0</span>(x,y)}
 
-<span class="co"># Le fichier se nomme : 750100042.2015.12.out.rds</span>
-nom &lt;-<span class="st"> </span>p$finess %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$annee %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$mois %+%<span class="st"> '.'</span> %+%<span class="st"> 'out'</span> %+%<span class="st"> '.'</span> %+%<span class="st"> 'rds'</span>
+<span class="co"># Le fichier se nomme : 750100042.2015.12.out.Rds</span>
+nom &lt;-<span class="st"> </span>p$finess %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$annee %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$mois %+%<span class="st"> '.'</span> %+%<span class="st"> 'out'</span> %+%<span class="st"> '.'</span> %+%<span class="st"> 'Rds'</span>
 <span class="kw">readRDS</span>(p$path %+%<span class="st"> '/tables/'</span> %+%<span class="st"> </span>nom) -&gt;<span class="st"> </span>mydata
 
 <span class="kw">View</span>(mydata$rsa$rsa)

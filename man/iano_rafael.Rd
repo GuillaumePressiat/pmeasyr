@@ -36,7 +36,7 @@ Formats depuis 2014 pris en charge pour les ano-ace-maj (reprise 2013)
 Structure du nom du fichier attendu  :
 \emph{finess.annee.moisc.ano}
 
-\strong{'750712184'.2016.2.ano}
+\strong{750712184.2016.2.ano}
 }
 \examples{
 \dontrun{

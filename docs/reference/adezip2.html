@@ -90,7 +90,7 @@
     </tr>
     <tr>
       <th>file</th>
-      <td><p>Nom de l'archive zip (ex: <code>'750712184'.2016.2.05042016093044.in.zip</code>)</p></td>
+      <td><p>Nom de l'archive zip (ex: <code>750712184.2016.2.05042016093044.in.zip</code>)</p></td>
     </tr>
     <tr>
       <th>liste</th>
@@ -108,22 +108,17 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>not_run({
-     # Fichier ano
-       adezip2(path = '~/Documents/R/sources/2011/',
-               file = ''750712184'.2011.12.27012012141857.in.zip',
-               liste = 'ano')
-  
-     # Totalité de l'archive
-       adezip2(path = '~/Documents/R/sources/2011/',
-               file = ''750712184'.2011.12.27012012141857.in.zip',
-               liste = '')
-})
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+     <span class='co'># Fichier ano</span>
+       <span class='fu'>adezip2</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>'~/Documents/R/sources/2011/'</span>,
+               <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>'750712184.2011.12.27012012141857.in.zip'</span>,
+               <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'ano'</span>)
 
-</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:4:25: unexpected numeric constant</span>
-#&gt; <span class='error'>3:        adezip2(path = '~/Documents/R/sources/2011/',</span>
-#&gt; <span class='error'>4:                file = ''750712184</span>
-#&gt; <span class='error'>                           ^</span></div></pre>
+     <span class='co'># Totalité de l'archive</span>
+       <span class='fu'>adezip2</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>'~/Documents/R/sources/2011/'</span>,
+               <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>'750712184.2011.12.27012012141857.in.zip'</span>,
+               <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>''</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
