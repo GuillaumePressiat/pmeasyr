@@ -38,8 +38,8 @@ Formats depuis 2014 pour les rsfa-maj (reprise 2013)
 }
 \examples{
 \dontrun{
-   irafael(750712184,2015,12,'~/Documents/data/rsf') -> rsfa15
-   irafael(750712184,2015,12,'~/Documents/data/rsf', lister = 'C', lamda = T) -> rsfa14_lamda
+   irafael('750712184',2015,12,'~/Documents/data/rsf') -> rsfa15
+   irafael('750712184',2015,12,'~/Documents/data/rsf', lister = 'C', lamda = T) -> rsfa14_lamda
 }
 
 }

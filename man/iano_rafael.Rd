@@ -36,12 +36,12 @@ Formats depuis 2014 pris en charge pour les ano-ace-maj (reprise 2013)
 Structure du nom du fichier attendu  :
 \emph{finess.annee.moisc.ano}
 
-\strong{750712184.2016.2.ano}
+\strong{'750712184'.2016.2.ano}
 }
 \examples{
 \dontrun{
-   iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf') -> ano_out15
-   iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf', lamda = T) -> lamda_maj_ano_out14
+   iano_rafael('750712184', 2015, 12,'~/Documents/data/rsf') -> ano_out15
+   iano_rafael('750712184', 2015, 12,'~/Documents/data/rsf', lamda = T) -> lamda_maj_ano_out14
 }
 
 }

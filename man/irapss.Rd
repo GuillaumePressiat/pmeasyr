@@ -30,11 +30,11 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Paprica) :
 \emph{finess.annee.moisc.rapss}
 
-\strong{750712184.2016.2.rapss}
+\strong{'750712184'.2016.2.rapss}
 }
 \examples{
 \dontrun{
-   um <- iium(750712184,2015,12,"~/Documents/data/had")
+   um <- iium('750712184',2015,12,"~/Documents/data/had")
 }
 
 }

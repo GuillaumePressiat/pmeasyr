@@ -9,7 +9,7 @@ adezip2(path, file, liste = "", pathto = "")
 \arguments{
 \item{path}{Chemin d'acces a l'archive}
 
-\item{file}{Nom de l'archive zip (ex: \code{750712184.2016.2.05042016093044.in.zip})}
+\item{file}{Nom de l'archive zip (ex: \code{'750712184'.2016.2.05042016093044.in.zip})}
 
 \item{liste}{Liste des fichiers a dezipper parmi l'archive ; si \code{liste = ""}, dezippe la totalite de l'archive}
 
@@ -22,12 +22,12 @@ Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'ar
 \dontrun{
    # Fichier ano
      adezip2(path = '~/Documents/R/sources/2011/',
-             file = '750712184.2011.12.27012012141857.in.zip',
+             file = ''750712184'.2011.12.27012012141857.in.zip',
              liste = 'ano')
 
    # Totalité de l'archive
      adezip2(path = '~/Documents/R/sources/2011/',
-             file = '750712184.2011.12.27012012141857.in.zip',
+             file = ''750712184'.2011.12.27012012141857.in.zip',
              liste = '')
 }
 

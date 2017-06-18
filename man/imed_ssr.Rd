@@ -32,11 +32,11 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Genrha) :
 \emph{finess.annee.moisc.med}
 
-\strong{750712184.2017.2.med}
+\strong{'750712184'.2017.2.med}
 }
 \examples{
 \dontrun{
-   meds <- imed_ssr(750712184,2015,12,"~/Documents/data/ssr")
+   meds <- imed_ssr('750712184',2015,12,"~/Documents/data/ssr")
 }
 
 }

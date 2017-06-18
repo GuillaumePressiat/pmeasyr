@@ -35,7 +35,7 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (entrée pour Genrsa) :
 \emph{finess.annee.moisc.rum}
 
-\strong{750712184.2016.2.rum}
+\strong{'750712184'.2016.2.rum}
 
 Types d'imports :
 \tabular{ll}{
@@ -56,7 +56,7 @@ La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélér
 }
 \examples{
 \dontrun{
-   irum(750712184,2015,12,'~/Documents/data/mco', typi = 1) -> rum15
+   irum('750712184',2015,12,'~/Documents/data/mco', typi = 1) -> rum15
 }
 
 }

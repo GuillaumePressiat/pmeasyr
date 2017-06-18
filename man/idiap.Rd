@@ -34,7 +34,7 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   idiap <- idiap(750712184,2015,12,"~/Documents/data/mco")
+   idiap <- idiap('750712184',2015,12,"~/Documents/data/mco")
 }
 
 }

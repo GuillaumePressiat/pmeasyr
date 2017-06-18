@@ -32,11 +32,11 @@ Formats depuis 2012 pris en charge
 Structure du nom du fichier attendu (sortie de Pivoine) :
 \emph{finess.annee.moisc.r3a}
 
-\strong{750712184.2016.3.r3a}
+\strong{'750712184'.2016.3.r3a}
 }
 \examples{
 \dontrun{
-   r3a <- ir3a(750712184,2015,12,"~/Documents/data/psy")
+   r3a <- ir3a('750712184',2015,12,"~/Documents/data/psy")
 }
 
 }

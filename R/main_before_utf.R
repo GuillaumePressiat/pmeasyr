@@ -12,7 +12,7 @@
 #' Structure du nom du fichier attendu (entrée pour Genrsa) :
 #' \emph{finess.annee.moisc.rum}
 #'
-#' \strong{750712184.2016.2.rum}
+#' \strong{'750712184'.2016.2.rum}
 #'
 #' Types d'imports :
 #' \tabular{ll}{
@@ -45,7 +45,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'    irum(750712184,2015,12,'~/Documents/data/mco', typi = 1) -> rum15
+#'    irum('750712184',2015,12,'~/Documents/data/mco', typi = 1) -> rum15
 #' }
 #'
 #' @author G. Pressiat
@@ -594,7 +594,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #' Structure du nom du fichier attendu (sortie de Genrsa) :
 #' \emph{finess.annee.moisc.rsa}
 #'
-#' \strong{750712184.2016.2.rsa}
+#' \strong{'750712184'.2016.2.rsa}
 #'
 #' Types d'imports :
 #' \tabular{ll}{
@@ -633,7 +633,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    irsa(750712184,2015,12,'~/Documents/data/mco') -> rsa15
+#'    irsa('750712184',2015,12,'~/Documents/data/mco') -> rsa15
 #' }
 #'
 #' @author G. Pressiat
@@ -1251,7 +1251,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #' Structure du nom du fichier attendu (sortie de Genrsa) :
 #' \emph{finess.annee.moisc.tra}
 #'
-#' \strong{750712184.2016.2.tra}
+#' \strong{'750712184'.2016.2.tra}
 #'
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
@@ -1268,7 +1268,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    itra(750712184,2015,12,'~/Documents/data/champ_pmsi') -> tra15
+#'    itra('750712184',2015,12,'~/Documents/data/champ_pmsi') -> tra15
 #' }
 #'
 #' @author G. Pressiat
@@ -1416,8 +1416,8 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #' \emph{finess.annee.moisc.ano}
 #' \emph{finess.annee.moisc.ano.txt}
 #'
-#' \strong{750712184.2016.2.ano}
-#' \strong{750712184.2016.2.ano.txt}
+#' \strong{'750712184'.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano.txt}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
@@ -1433,8 +1433,8 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
 #'
 #' @examples
 #' \dontrun{
-#'    iano_mco(750712184,2015,12,'~/Documents/data/mco') -> ano_out15
-#'    iano_mco(750712184,2015,12,'~/Documents/data/mco', typano = "in") -> ano_in15
+#'    iano_mco('750712184',2015,12,'~/Documents/data/mco') -> ano_out15
+#'    iano_mco('750712184',2015,12,'~/Documents/data/mco', typano = "in") -> ano_in15
 #' }
 #'
 #' @author G. Pressiat
@@ -1676,8 +1676,8 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
 #'
 #' @examples
 #' \dontrun{
-#'    imed_mco(750712184,2015,12,'~/Documents/data/mco') -> med_out15
-#'    imed_mco(750712184,2015,12,'~/Documents/data/mco', typmed = "in") -> med_in15
+#'    imed_mco('750712184',2015,12,'~/Documents/data/mco') -> med_out15
+#'    imed_mco('750712184',2015,12,'~/Documents/data/mco', typmed = "in") -> med_in15
 #' }
 #'
 #' @author G. Pressiat
@@ -1864,8 +1864,8 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
 #'
 #' @examples
 #' \dontrun{
-#'    idmi_mco(750712184,2015,12,'~/Documents/data/mco') -> dmi_out15
-#'    idmi_mco(750712184,2015,12,'~/Documents/data/mco', typdmi = "in") -> dmi_in15
+#'    idmi_mco('750712184',2015,12,'~/Documents/data/mco') -> dmi_out15
+#'    idmi_mco('750712184',2015,12,'~/Documents/data/mco', typdmi = "in") -> dmi_in15
 #' }
 #'
 #' @author G. Pressiat
@@ -2025,7 +2025,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #'
 #' @examples
 #' \dontrun{
-#'    ileg_mco(750712184,2015,12,'~/Documents/data/mco') -> leg15
+#'    ileg_mco('750712184',2015,12,'~/Documents/data/mco') -> leg15
 #' }
 #'
 #' @author G. Pressiat
@@ -2102,8 +2102,8 @@ ileg_mco.default <- function(finess, annee, mois, path, reshape = F, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    med <- imed_mco(750712184,2015,12,"~/Documents/data/mco","out")
-#'    tra <- itra(750712184,2015,12,"~/Documents/data/mco")
+#'    med <- imed_mco('750712184',2015,12,"~/Documents/data/mco","out")
+#'    tra <- itra('750712184',2015,12,"~/Documents/data/mco")
 #'    med <- inner_tra(med,tra)
 #' }
 #'
@@ -2189,7 +2189,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #'
 #' @examples
 #' \dontrun{
-#'    idiap <- idiap(750712184,2015,12,"~/Documents/data/mco")
+#'    idiap <- idiap('750712184',2015,12,"~/Documents/data/mco")
 #' }
 #'
 #' @author G. Pressiat
@@ -2353,7 +2353,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
 #'
 #' @examples
 #' \dontrun{
-#'    um <- iium(750712184,2015,12,"~/Documents/data/mco")
+#'    um <- iium('750712184',2015,12,"~/Documents/data/mco")
 #' }
 #'
 #' @author G. Pressiat
@@ -2462,7 +2462,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    po <- ipo(750712184,2015,12,"~/Documents/data/mco")
+#'    po <- ipo('750712184',2015,12,"~/Documents/data/mco")
 #' }
 #'
 #' @author G. Pressiat
@@ -2619,7 +2619,7 @@ if (typpo=="in"){
 #' Structure du nom du fichier attendu (sortie de Paprica) :
 #' \emph{finess.annee.moisc.rapss}
 #'
-#' \strong{750712184.2016.2.rapss}
+#' \strong{'750712184'.2016.2.rapss}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
@@ -2633,7 +2633,7 @@ if (typpo=="in"){
 #'
 #' @examples
 #' \dontrun{
-#'    um <- iium(750712184,2015,12,"~/Documents/data/had")
+#'    um <- iium('750712184',2015,12,"~/Documents/data/had")
 #' }
 #'
 #' @author G. Pressiat
@@ -2957,7 +2957,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
 #' Structure du nom du fichier attendu (sortie de Paprica) :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -2972,7 +2972,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    anoh <- iano_had(750712184,2015,12,"~/Documents/data/had")
+#'    anoh <- iano_had('750712184',2015,12,"~/Documents/data/had")
 #' }
 #'
 #' @author G. Pressiat
@@ -3090,7 +3090,7 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Paprica) :
 #' \emph{finess.annee.moisc.med}
 #'
-#' \strong{750712184.2016.2.med}
+#' \strong{'750712184'.2016.2.med}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -3105,7 +3105,7 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    medh <- imed_had(750712184,2015,12,"~/Documents/data/had")
+#'    medh <- imed_had('750712184',2015,12,"~/Documents/data/had")
 #' }
 #'
 #' @author G. Pressiat
@@ -3212,7 +3212,7 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    ileg_had(750712184,2015,12,'~/Documents/data/had') -> leg15
+#'    ileg_had('750712184',2015,12,'~/Documents/data/had') -> leg15
 #' }
 #'
 #' @author G. Pressiat
@@ -3295,7 +3295,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    irha(750712184,2015,12,'pathpath/') -> rha15
+#'    irha('750712184',2015,12,'pathpath/') -> rha15
 #' }
 #' @author G. Pressiat
 #' @seealso \code{\link{iano_ssr}}, \code{\link{ileg_ssr}},
@@ -3757,7 +3757,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -3772,7 +3772,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    anoh <- iano_ssr(750712184,2015,12,"~/Documents/data/ssr")
+#'    anoh <- iano_ssr('750712184',2015,12,"~/Documents/data/ssr")
 #' }
 #'
 #' @author G. Pressiat
@@ -3892,7 +3892,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.sha}
 #'
-#' \strong{750712184.2016.2.sha}
+#' \strong{'750712184'.2016.2.sha}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -3907,7 +3907,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    sha <- issrha(750712184,2015,12,"~/Documents/data/ssr")
+#'    sha <- issrha('750712184',2015,12,"~/Documents/data/ssr")
 #' }
 #'
 #' @author G. Pressiat
@@ -4025,7 +4025,7 @@ issrha.default <- function(finess, annee,mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    ileg_had(750712184,2015,12,'~/Documents/data/ssr') -> leg15
+#'    ileg_had('750712184',2015,12,'~/Documents/data/ssr') -> leg15
 #' }
 #'
 #' @author G. Pressiat
@@ -4094,7 +4094,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.med}
 #'
-#' \strong{750712184.2017.2.med}
+#' \strong{'750712184'.2017.2.med}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4109,7 +4109,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    meds <- imed_ssr(750712184,2015,12,"~/Documents/data/ssr")
+#'    meds <- imed_ssr('750712184',2015,12,"~/Documents/data/ssr")
 #' }
 #'
 #' @author G. Pressiat
@@ -4229,7 +4229,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    um <- iium_ssr(750712184,2015,12,"~/Documents/data/ssr")
+#'    um <- iium_ssr('750712184',2015,12,"~/Documents/data/ssr")
 #' }
 #'
 #' @author G. Pressiat
@@ -4331,7 +4331,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
 #' Structure du nom du fichier attendu (sortie de Pivoine) :
 #' \emph{finess.annee.moisc.rpsa}
 #'
-#' \strong{750712184.2016.2.rpsa}
+#' \strong{'750712184'.2016.2.rpsa}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4346,7 +4346,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    rpsa <- irpsa(750712184,2015,12,"~/Documents/data/psy")
+#'    rpsa <- irpsa('750712184',2015,12,"~/Documents/data/psy")
 #' }
 #'
 #' @author G. Pressiat
@@ -4508,7 +4508,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Pivoine) :
 #' \emph{finess.annee.moisc.r3a}
 #'
-#' \strong{750712184.2016.3.r3a}
+#' \strong{'750712184'.2016.3.r3a}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4523,7 +4523,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    r3a <- ir3a(750712184,2015,12,"~/Documents/data/psy")
+#'    r3a <- ir3a('750712184',2015,12,"~/Documents/data/psy")
 #' }
 #'
 #' @author G. Pressiat
@@ -4633,7 +4633,7 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
 #' Structure du nom du fichier attendu (sortie de Genrha) :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -4647,7 +4647,7 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
 #'
 #' @examples
 #' \dontrun{
-#'    anoh <- iano_psy(750712184,2015,12,"~/Documents/data/psy")
+#'    anoh <- iano_psy('750712184',2015,12,"~/Documents/data/psy")
 #' }
 #'
 #' @author G. Pressiat
@@ -4775,7 +4775,7 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
 #' @examples
 #' \dontrun{
 #'    liste <- astat(path = '~/Documents/R/sources/2016/',
-#'                   file = "750712184.2016.2.05042016093044.in.zip",
+#'                   file = "'750712184'.2016.2.05042016093044.in.zip",
 #'                   view = F)
 #' }
 #'
@@ -4800,7 +4800,7 @@ astat <- function(path,file, view=T){
 #'
 #'
 #' @param path Chemin d'acces a l'archive
-#' @param file Nom de l'archive zip (ex: \code{750712184.2016.2.05042016093044.in.zip})
+#' @param file Nom de l'archive zip (ex: \code{'750712184'.2016.2.05042016093044.in.zip})
 #' @param liste Liste des fichiers a dezipper parmi l'archive ; si \code{liste = ""}, dezippe la totalite de l'archive
 #' @param pathto Chemin ou deposer les fichiers dezippes, par defaut a "", les fichiers sont mis la ou se trouve l'archive
 #'
@@ -4808,12 +4808,12 @@ astat <- function(path,file, view=T){
 #' \dontrun{
 #'    # Fichier ano
 #'      adezip2(path = '~/Documents/R/sources/2011/',
-#'              file = '750712184.2011.12.27012012141857.in.zip',
+#'              file = ''750712184'.2011.12.27012012141857.in.zip',
 #'              liste = 'ano')
 #'
 #'    # Totalité de l'archive
 #'      adezip2(path = '~/Documents/R/sources/2011/',
-#'              file = '750712184.2011.12.27012012141857.in.zip',
+#'              file = ''750712184'.2011.12.27012012141857.in.zip',
 #'              liste = '')
 
 #' }
@@ -4877,17 +4877,17 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #'
 #' @examples
 #' \dontrun{
-#'      adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
 #'             liste = 'med',
 #'             pathto = "~/Exemple",
 #'             type = "out")
 #'
-#'      adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
 #'             liste = c('med','rapss', 'ano'),
 #'             pathto = "~/Exemple",
 #'             type = "in")
 #'
-#'      adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
 #'             liste = c('rss', 'ano'),
 #'             pathto = "~/Exemple",
 #'             type = "in",
@@ -5110,9 +5110,9 @@ adezip3 <- function(finess, path, file, liste = "", pathto=""){
 #'
 #' @examples
 #' \dontrun{
-#'    adelete(750712184,2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
+#'    adelete('750712184',2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
 #'    
-#'    adelete(750712184,2016,2, path = '~/Exemple')
+#'    adelete('750712184',2016,2, path = '~/Exemple')
 #' }
 #'
 #' @author G. Pressiat
@@ -5181,7 +5181,7 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
 #' @examples
 #' \dontrun{
 #' # N'importer qu'une ligne du fichier :
-#'    irsa(750712184, 2016, 8, '~/path/path', typi= 1, n_max = 1) -> import
+#'    irsa('750712184', 2016, 8, '~/path/path', typi= 1, n_max = 1) -> import
 #'    dico(import$rsa)
 #' }
 #'
@@ -5218,12 +5218,12 @@ dico <- function(table){
 #' @examples
 #' \dontrun{
 #' # avec include = T
-#' irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
+#' irum('750712184', 2016, 8, '~/path/path', typi = 3) -> d1
 #' tdiag(d1) -> d1
 #' d1$diags
 #' d1$actes
 #' d1$dads
-#' irsa(750712184, 2016, 8, '~/path/path', typi = 4) -> d1
+#' irsa('750712184', 2016, 8, '~/path/path', typi = 4) -> d1
 #' tdiag(d1, include = F) -> alldiag
 #' }
 #'
@@ -5313,8 +5313,8 @@ tdiag <- function (d,  include = T)
 #'
 #' @examples
 #' \dontrun{
-#'    irafael(750712184,2015,12,'~/Documents/data/rsf') -> rsfa15
-#'    irafael(750712184,2015,12,'~/Documents/data/rsf', lister = 'C', lamda = T) -> rsfa14_lamda
+#'    irafael('750712184',2015,12,'~/Documents/data/rsf') -> rsfa15
+#'    irafael('750712184',2015,12,'~/Documents/data/rsf', lister = 'C', lamda = T) -> rsfa14_lamda
 #' }
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
@@ -5475,7 +5475,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
 #' Structure du nom du fichier attendu  :
 #' \emph{finess.annee.moisc.ano}
 #'
-#' \strong{750712184.2016.2.ano}
+#' \strong{'750712184'.2016.2.ano}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -5491,8 +5491,8 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
 #'
 #' @examples
 #' \dontrun{
-#'    iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf') -> ano_out15
-#'    iano_rafael(750712184, 2015, 12,'~/Documents/data/rsf', lamda = T) -> lamda_maj_ano_out14
+#'    iano_rafael('750712184', 2015, 12,'~/Documents/data/rsf') -> ano_out15
+#'    iano_rafael('750712184', 2015, 12,'~/Documents/data/rsf', lamda = T) -> lamda_maj_ano_out14
 #' }
 #'
 #' @author G. Pressiat
@@ -5614,7 +5614,7 @@ NULL
 #' library(magrittr)
 #' 
 #' p <- noyau_pmeasyr(
-#' finess = '750712184',
+#' finess = ''750712184'',
 #' annee  = 2016,
 #' mois   = 12,
 #' path   = '~/Documents/data/mco',

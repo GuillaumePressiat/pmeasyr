@@ -35,13 +35,13 @@ Structure du nom du fichier attendu  :
 \emph{finess.annee.moisc.ano}
 \emph{finess.annee.moisc.ano.txt}
 
-\strong{750712184.2016.2.ano}
-\strong{750712184.2016.2.ano.txt}
+\strong{'750712184'.2016.2.ano}
+\strong{'750712184'.2016.2.ano.txt}
 }
 \examples{
 \dontrun{
-   iano_mco(750712184,2015,12,'~/Documents/data/mco') -> ano_out15
-   iano_mco(750712184,2015,12,'~/Documents/data/mco', typano = "in") -> ano_in15
+   iano_mco('750712184',2015,12,'~/Documents/data/mco') -> ano_out15
+   iano_mco('750712184',2015,12,'~/Documents/data/mco', typano = "in") -> ano_in15
 }
 
 }

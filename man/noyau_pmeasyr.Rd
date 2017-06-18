@@ -20,7 +20,7 @@ Voir exemple
 library(magrittr)
 
 p <- noyau_pmeasyr(
-finess = '750712184',
+finess = ''750712184'',
 annee  = 2016,
 mois   = 12,
 path   = '~/Documents/data/mco',

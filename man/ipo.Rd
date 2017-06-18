@@ -34,7 +34,7 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   po <- ipo(750712184,2015,12,"~/Documents/data/mco")
+   po <- ipo('750712184',2015,12,"~/Documents/data/mco")
 }
 
 }

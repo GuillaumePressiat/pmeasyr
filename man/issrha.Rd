@@ -32,11 +32,11 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Genrha) :
 \emph{finess.annee.moisc.sha}
 
-\strong{750712184.2016.2.sha}
+\strong{'750712184'.2016.2.sha}
 }
 \examples{
 \dontrun{
-   sha <- issrha(750712184,2015,12,"~/Documents/data/ssr")
+   sha <- issrha('750712184',2015,12,"~/Documents/data/ssr")
 }
 
 }

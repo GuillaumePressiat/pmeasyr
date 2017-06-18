@@ -34,7 +34,7 @@ Formats depuis 2011 pris en charge
 Structure du nom du fichier attendu (sortie de Genrsa) :
 \emph{finess.annee.moisc.rsa}
 
-\strong{750712184.2016.2.rsa}
+\strong{'750712184'.2016.2.rsa}
 
 Types d'imports :
 \tabular{ll}{
@@ -60,7 +60,7 @@ Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les info
 }
 \examples{
 \dontrun{
-   irsa(750712184,2015,12,'~/Documents/data/mco') -> rsa15
+   irsa('750712184',2015,12,'~/Documents/data/mco') -> rsa15
 }
 
 }
