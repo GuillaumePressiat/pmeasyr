@@ -29,10 +29,13 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   irha(750712184,2015,12,'pathpath/') -> rha15
+   irha('750712184',2015,12,'pathpath/') -> rha15
 }
 }
 \seealso{
 \code{\link{iano_ssr}}, \code{\link{ileg_ssr}},
 utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+}
+\author{
+G. Pressiat
 }

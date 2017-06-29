@@ -34,7 +34,7 @@ Structure du nom du fichier attendu (sortie de Genrha) :
 }
 \examples{
 \dontrun{
-   anoh <- iano_psy(750712184,2015,12,"~/Documents/data/psy")
+   anoh <- iano_psy('750712184',2015,12,"~/Documents/data/psy")
 }
 
 }

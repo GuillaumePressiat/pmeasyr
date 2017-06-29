@@ -36,7 +36,7 @@ Structure du nom du fichier attendu (sortie de Paprica) :
 }
 \examples{
 \dontrun{
-   anoh <- iano_had(750712184,2015,12,"~/Documents/data/had")
+   anoh <- iano_had('750712184',2015,12,"~/Documents/data/had")
 }
 
 }

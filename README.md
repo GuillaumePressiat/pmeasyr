@@ -36,7 +36,7 @@ L'utilisation de R confère aux données du PMSI la liberté proposée par le lo
 
    - les requêtes sur les diagnostics et les actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui crée ses propres programmes
    - les données sont dans R : prêtes pour des modèles linéaires, logistiques, des classifications...
-   - la confrontation des données in\* (reflet du codage des établissements) aux données out\* (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](vignettes/vignette.Rmd#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil  
+   - la confrontation des données in\* (reflet du codage des établissements) aux données out\* (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](https://im-aphp.github.io/pmeasyr/articles/vignette.html#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil  
    - le reporting de l'activité en excel, pdf, word, html, ou en créant des applications (shiny)
    - l'utilisation des graphiques pour représenter des volumes d'activités et des cartographies interactives pour visualiser la localisation d'activités, de patientèles, et les flux de patients
    - le partage de projets RStudio, qui facilite et encourage les travaux en équipe.
@@ -61,7 +61,7 @@ Il est utilisé depuis un an à l'AP-HP pour des analyses d'activité et la desc
 
 ### Depuis github avec devtools
 
-```{r echo = T, eval = F} 
+```
 devtools::install_github('IM-APHP/pmeasyr')
 ``` 
 
@@ -71,11 +71,11 @@ Cette commande lance l'installation du package et de ses dépendances.
 
 La vignette introductive du package donne des exemples de commandes pour les traitements des données du champ PMSI MCO.
 
-```{r echo = T, eval = F}
+```
 browseVignettes('pmeasyr')
 ```
 
-Ou bien consulter la [vignette en ligne](vignettes/vignette.Rmd).
+Ou bien consulter la [vignette en ligne](https://im-aphp.github.io/pmeasyr/articles/vignette.html).
 
 ## Pour poursuivre
 
@@ -88,3 +88,4 @@ Une [page github](https://guillaumepressiat.github.io/) rassemble toutes les inf
   SIMAP / DOMU / AP-HP<br>
   <img src="https://github.com/IM-APHP/pmeasyr/blob/master/logo.jpg" alt="AP-HP Logo" align ="center" style="width: 48"/>
 </p>
+

@@ -36,8 +36,8 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   imed_mco(750712184,2015,12,'~/Documents/data/mco') -> med_out15
-   imed_mco(750712184,2015,12,'~/Documents/data/mco', typmed = "in") -> med_in15
+   imed_mco('750712184',2015,12,'~/Documents/data/mco') -> med_out15
+   imed_mco('750712184',2015,12,'~/Documents/data/mco', typmed = "in") -> med_in15
 }
 
 }

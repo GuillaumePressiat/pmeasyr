@@ -15,7 +15,7 @@ Obtenir le dictionnaire d'une table
 \examples{
 \dontrun{
 # N'importer qu'une ligne du fichier :
-   irsa(750712184, 2016, 8, '~/path/path', typi= 1, n_max = 1) -> import
+   irsa('750712184', 2016, 8, '~/path/path', typi= 1, n_max = 1) -> import
    dico(import$rsa)
 }
 

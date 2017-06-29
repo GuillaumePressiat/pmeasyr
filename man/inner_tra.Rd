@@ -23,8 +23,8 @@ Ajout du TRA par dplyr::inner_join
 }
 \examples{
 \dontrun{
-   med <- imed_mco(750712184,2015,12,"~/Documents/data/mco","out")
-   tra <- itra(750712184,2015,12,"~/Documents/data/mco")
+   med <- imed_mco('750712184',2015,12,"~/Documents/data/mco","out")
+   tra <- itra('750712184',2015,12,"~/Documents/data/mco")
    med <- inner_tra(med,tra)
 }
 

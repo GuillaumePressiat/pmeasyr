@@ -56,7 +56,7 @@ La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélér
 }
 \examples{
 \dontrun{
-   irum(750712184,2015,12,'~/Documents/data/mco', typi = 1) -> rum15
+   irum('750712184',2015,12,'~/Documents/data/mco', typi = 1) -> rum15
 }
 
 }

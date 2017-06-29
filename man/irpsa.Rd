@@ -36,7 +36,7 @@ Structure du nom du fichier attendu (sortie de Pivoine) :
 }
 \examples{
 \dontrun{
-   rpsa <- irpsa(750712184,2015,12,"~/Documents/data/psy")
+   rpsa <- irpsa('750712184',2015,12,"~/Documents/data/psy")
 }
 
 }

@@ -26,10 +26,10 @@ Le nom des fonctions dont l'objectif est de manipuler les **a**rchives commence 
 
 |Nom       |Fonction                                                                               |
 |:---------|:--------------------------------------------------------------------------------------|
-|[adezip](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip.Rmd)    |~ *.zip - Dezippe des fichiers de larchive PMSI                                        |
-|[adezip2](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adezip2.Rmd)   |~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive|
-|[astat](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/astat.Rmd)     |~ *.zip - Liste et volume des fichiers d'une archive PMSI                              |
-|[adelete](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/adelete.Rmd)   |~ *.zip - Suppression des fichiers en fin de traitement                                |
+|[adezip](https://im-aphp.github.io/pmeasyr/reference/adezip.html)    |~ *.zip - Dezippe des fichiers de larchive PMSI                                        |
+|[adezip2](https://im-aphp.github.io/pmeasyr/reference/adezip2.html)   |~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive|
+|[astat](https://im-aphp.github.io/pmeasyr/reference/astat.html)     |~ *.zip - Liste et volume des fichiers d'une archive PMSI                              |
+|[adelete](https://im-aphp.github.io/pmeasyr/reference/adelete.html)   |~ *.zip - Suppression des fichiers en fin de traitement                                |
 
 ### adezip : dezipper
 
@@ -89,15 +89,15 @@ En MCO, SSR et HAD les fonctions permettent d'importer les fichiers aux formats 
 
 |Nom       |Fonction                           |
 |:---------|:----------------------------------|
-|[irsa](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irsa.Rmd)      |~ MCO - Import des RSA             |
-|[irum](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irum.Rmd)      |~ MCO - Import des RUM             |
-|[idiap](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/idiap.Rmd)     |~ MCO - Import des DIAP            |
-|[idmi_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/idmi_mco.Rmd)  |~ MCO - Import des DMI             |
-|[iium](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iium.Rmd)      |~ MCO - Import des donnees UM      |
-|[ileg_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ileg_mco.Rmd)  |~ MCO - Import des erreurs Leg     |
-|[imed_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/imed_mco.Rmd)  |~ MCO - Import des Med             |
-|[ipo](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ipo.Rmd)       |~ MCO - Import des PO              |
-|[iano_mco](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_mco.Rmd)  |~ MCO - Import des Anohosp         |
+|[irsa](https://im-aphp.github.io/pmeasyr/reference/irsa.html)      |~ MCO - Import des RSA             |
+|[irum](https://im-aphp.github.io/pmeasyr/reference/irum.html)      |~ MCO - Import des RUM             |
+|[idiap](https://im-aphp.github.io/pmeasyr/reference/idiap.html)     |~ MCO - Import des DIAP            |
+|[idmi_mco](https://im-aphp.github.io/pmeasyr/reference/idmi_mco.html)  |~ MCO - Import des DMI             |
+|[iium](https://im-aphp.github.io/pmeasyr/reference/iium.html)      |~ MCO - Import des donnees UM      |
+|[ileg_mco](https://im-aphp.github.io/pmeasyr/reference/ileg_mco.html)  |~ MCO - Import des erreurs Leg     |
+|[imed_mco](https://im-aphp.github.io/pmeasyr/reference/imed_mco.html)  |~ MCO - Import des Med             |
+|[ipo](https://im-aphp.github.io/pmeasyr/reference/ipo.html)       |~ MCO - Import des PO              |
+|[iano_mco](https://im-aphp.github.io/pmeasyr/reference/iano_mco.html)  |~ MCO - Import des Anohosp         |
 
 Les donnees in / out sont prises en charge.
 
@@ -200,8 +200,8 @@ Le fichier TRA est un fichier du *out* qui permet de relier les donnees anonymes
 
 | Type     |Import                              |
 |---------:|:-----------------------------------|
-|[itra](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/itra.Rmd)      |~ TRA - Import du TRA               |
-|[inner_tra](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/inner_tra.Rmd) |~ TRA - Ajout du TRA aux donnees Out|
+|[itra](https://im-aphp.github.io/pmeasyr/reference/itra.html)      |~ TRA - Import du TRA               |
+|[inner_tra](https://im-aphp.github.io/pmeasyr/reference/inner_tra.html) |~ TRA - Ajout du TRA aux donnees Out|
 
 
 ```{r eval = F}
@@ -222,36 +222,36 @@ Les fonctions d'imports pour ces trois champs reposent sur le meme principe qu'e
 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|[iano_had](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_had.Rmd)   |~ HAD - Import des Anohosp            |
-|[imed_had](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/imed_had.Rmd)   |~ HAD - Import des Med                |
-|[irapss](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irapss.Rmd)     |~ HAD - Import des RAPSS              |
-|[ileg_had](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ileg_had.Rmd)     |~ HAD - Import des erreurs LEG        |
+|[iano_had](https://im-aphp.github.io/pmeasyr/reference/iano_had.html)   |~ HAD - Import des Anohosp            |
+|[imed_had](https://im-aphp.github.io/pmeasyr/reference/imed_had.html)   |~ HAD - Import des Med                |
+|[irapss](https://im-aphp.github.io/pmeasyr/reference/irapss.html)     |~ HAD - Import des RAPSS              |
+|[ileg_had](https://im-aphp.github.io/pmeasyr/reference/ileg_had.html)     |~ HAD - Import des erreurs LEG        |
 
 #### SSR
 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|[iano_ssr](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_ssr.Rmd)   |~ SSR - Import des Anohosp            |
-|[irha](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irha.Rmd)       |~ SSR - Import des RHA                |
-|[issrha](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/issrha.Rmd)     |~ SSR - Import des SSRHA              |
-|[imed_ssr](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/imed_ssr.Rmd)     |~ SSR - Import des MED              |
-|[iium_ssr](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iium_ssr.Rmd)     |~ SSR - Import des UM              |
-|[ileg_ssr](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ileg_ssr.Rmd)     |~ SSR - Import des erreurs LEG        |
+|[iano_ssr](https://im-aphp.github.io/pmeasyr/reference/iano_ssr.html)   |~ SSR - Import des Anohosp            |
+|[irha](https://im-aphp.github.io/pmeasyr/reference/irha.html)       |~ SSR - Import des RHA                |
+|[issrha](https://im-aphp.github.io/pmeasyr/reference/issrha.html)     |~ SSR - Import des SSRHA              |
+|[imed_ssr](https://im-aphp.github.io/pmeasyr/reference/imed_ssr.html)     |~ SSR - Import des MED              |
+|[iium_ssr](https://im-aphp.github.io/pmeasyr/reference/iium_ssr.html)     |~ SSR - Import des UM              |
+|[ileg_ssr](https://im-aphp.github.io/pmeasyr/reference/ileg_ssr.html)     |~ SSR - Import des erreurs LEG        |
 
 #### PSY 
 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|[iano_psy](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_psy.Rmd)   |~ PSY - Import des Anohosp            |
-|[ir3a](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/ir3a.Rmd)       |~ PSY - Import des R3A                |
-|[irpsa](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irpsa.Rmd)      |~ PSY - Import des RPSA               |
+|[iano_psy](https://im-aphp.github.io/pmeasyr/reference/iano_psy.html)   |~ PSY - Import des Anohosp            |
+|[ir3a](https://im-aphp.github.io/pmeasyr/reference/ir3a.html)       |~ PSY - Import des R3A                |
+|[irpsa](https://im-aphp.github.io/pmeasyr/reference/irpsa.html)      |~ PSY - Import des RPSA               |
 
 #### RSF
 
 |Nom        |Fonction                              |
 |:----------|:-------------------------------------|
-|[irafael](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/irafael.Rmd)    |~ RSF - Import des RSFA / Rafael      |
-|[iano_rafael](https://github.com/IM-APHP/pmeasyr/tree/master/Rd_md/iano_rafael.Rmd)|~ RSF - Import des RSFA / ANO         |
+|[irafael](https://im-aphp.github.io/pmeasyr/reference/irafael.html)    |~ RSF - Import des RSFA / Rafael      |
+|[iano_rafael](https://im-aphp.github.io/pmeasyr/reference/iano_rafael.html)|~ RSF - Import des RSFA / ANO         |
 
 ### Dico
 

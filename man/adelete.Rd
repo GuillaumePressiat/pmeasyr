@@ -24,9 +24,9 @@ Supprime les fichiers de l'archive PMSI dezippes en début de traitement
 }
 \examples{
 \dontrun{
-   adelete(750712184,2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
+   adelete('750712184',2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
    
-   adelete(750712184,2016,2, path = '~/Exemple')
+   adelete('750712184',2016,2, path = '~/Exemple')
 }
 
 }

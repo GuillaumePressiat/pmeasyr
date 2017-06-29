@@ -15,6 +15,7 @@ Imports:
     sjlabelled,
     knitr
 Author: Guillaume Pressiat
+Authors@R: c(person('Guillaume Pressiat', role = c("aut", "cre")))
 Maintainer: Guillaume Pressiat <guillaume.pressiat@aphp.fr>
 Description: Import de donnees PMSI. Gestion des archives. Formats depuis 2011.
 License: GPL-2 | file LICENSE

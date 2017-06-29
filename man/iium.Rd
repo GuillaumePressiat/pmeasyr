@@ -32,7 +32,7 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   um <- iium(750712184,2015,12,"~/Documents/data/mco")
+   um <- iium('750712184',2015,12,"~/Documents/data/mco")
 }
 
 }

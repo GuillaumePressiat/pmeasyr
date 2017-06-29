@@ -34,7 +34,7 @@ Structure du nom du fichier attendu (sortie de Paprica) :
 }
 \examples{
 \dontrun{
-   um <- iium(750712184,2015,12,"~/Documents/data/had")
+   um <- iium('750712184',2015,12,"~/Documents/data/had")
 }
 
 }

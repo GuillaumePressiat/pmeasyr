@@ -24,12 +24,12 @@ Une variable numérique indique la position des diagnostics
 \examples{
 \dontrun{
 # avec include = T
-irum(750712184, 2016, 8, '~/path/path', typi = 3) -> d1
+irum('750712184', 2016, 8, '~/path/path', typi = 3) -> d1
 tdiag(d1) -> d1
 d1$diags
 d1$actes
-d1$dads
-irsa(750712184, 2016, 8, '~/path/path', typi = 4) -> d1
+d1$dad
+irsa('750712184', 2016, 8, '~/path/path', typi = 4) -> d1
 tdiag(d1, include = F) -> alldiag
 }
 

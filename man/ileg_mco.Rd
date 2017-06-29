@@ -32,7 +32,7 @@ Formats depuis 2011 pris en charge
 }
 \examples{
 \dontrun{
-   ileg_mco(750712184,2015,12,'~/Documents/data/mco') -> leg15
+   ileg_mco('750712184',2015,12,'~/Documents/data/mco') -> leg15
 }
 
 }
