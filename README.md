@@ -10,6 +10,10 @@ Un [livret numérique en ligne](https://guillaumepressiat.github.io/pmeasyr/) pr
 
 Une [page github](https://guillaumepressiat.github.io/) rassemble toutes les informations autour du package : la documentation, des exemples ainsi que la présentation et le suivi des évolutions avec la partie [bloc-notes](https://guillaumepressiat.github.io/blog/).
 
+Une vidéo est aussi disponible :
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dRiQOZpIsmk" frameborder="0" allowfullscreen></iframe>
+
 ## Contexte
 
 Les données du Programme de Médicalisation des Systèmes d'Informations (PMSI) sont souvent traitées via des logiciels spécifiques au PMSI (ou des outils statistiques / bases de données du marché) ne permettant pas de réaliser des traitements statistiques et des infographies satisfaisantes. Les départements d'information médicale sont donc souvent amenés à retraiter ces données avec R.
