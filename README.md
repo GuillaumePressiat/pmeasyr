@@ -10,9 +10,7 @@ Un [livret numérique en ligne](https://guillaumepressiat.github.io/pmeasyr/) pr
 
 Une [page github](https://guillaumepressiat.github.io/) rassemble toutes les informations autour du package : la documentation, des exemples ainsi que la présentation et le suivi des évolutions avec la partie [bloc-notes](https://guillaumepressiat.github.io/blog/).
 
-Une vidéo est aussi disponible :
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dRiQOZpIsmk" frameborder="0" allowfullscreen></iframe>
+Une vidéo est aussi [disponible](https://guillaumepressiat.github.io/blog/2017/06/video-intro).
 
 ## Contexte
 
