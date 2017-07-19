@@ -336,12 +336,12 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     Fillers <- names(rum_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
     
-    rum_i <- rum_i[,!(names(rum_i) %in% Fillers)]
+    rum_i <- rum_i[,!(names(rum_i) %in% Fillers)] %>% dplyr::select(-ZAD)
     # Libelles
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rum_i <- rum_i  %>% dplyr::select(-ZAD) %>%  sjlabelled::set_label(v)
+      rum_i <- rum_i  %>%  sjlabelled::set_label(v)
     }
     
     rum_1 <- list(rum = rum_i )
@@ -454,12 +454,12 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     Fillers <- names(rum_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
     
-    rum_i <- rum_i[,!(names(rum_i) %in% Fillers)]
+    rum_i <- rum_i[,!(names(rum_i) %in% Fillers)] %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas)
     # Libelles
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjlabelled::set_label(v)
+      rum_i <- rum_i   %>%  sjlabelled::set_label(v)
     }
     
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
@@ -546,7 +546,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     }
     
     
-    rum_i <- rum_i %>%
+    rum_i <- rum_i %>%  dplyr::select(-lactes,-ldas,-ldad,-ZAD ) %>% 
       dplyr::mutate(das = stringr::str_replace_all(das, "\\s{1,},", ","),
                     dad = stringr::str_replace_all(dad, "\\s{1,},", ","))
     
@@ -559,7 +559,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     if (lib==T){
       v <- libelles
       v <- c(v[!is.na(v)],c("Stream Actes","Stream Das", "Stream Dad"))
-      rum_i <- rum_i  %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas) %>%  sjlabelled::set_label(v)
+      rum_i <- rum_i  %>%  sjlabelled::set_label(v)
     }
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
