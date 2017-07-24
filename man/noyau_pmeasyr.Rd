@@ -44,7 +44,9 @@ irsa(p, typi = 6) -> rsa
 p
 print(p)
 }
-
+}
+\seealso{
+\code{\link{noyau_skeleton}}
 }
 \author{
 G. Pressiat

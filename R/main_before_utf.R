@@ -5638,7 +5638,7 @@ NULL
 #' p
 #' print(p)
 #' }
-#' 
+#' @seealso \code{\link{noyau_skeleton}}
 #' @export 
 noyau_pmeasyr <- function(...){
   params <- list(...)
@@ -5660,6 +5660,55 @@ print.pm_param <- function(p){
   a <- c('*** Noyau de param pmeasyr ***\n', a)
   cat(a, sep="\n")
 
+}
+
+#' ~ par - Noyau de parametres
+#' 
+#' Générer un squelette de noyau de paramètres
+#' 
+#' Voir exemple
+#' 
+#' @author G. Pressiat
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' noyau_skeleton()
+#' ## résultat : 
+#' ## noyau_pmeasyr(
+#' ##   finess = '.........',
+#' ##   annee  = ....,
+#' ##   mois   = ..,
+#' ##   path   = ''
+#' ## ) -> p
+#'
+#' noyau_skeleton("alpha_bravo", T)
+#' 
+#' ## noyau_pmeasyr(
+#' ##   finess = '.........',
+#' ##   annee  = ....,
+#' ##   mois   = ..,
+#' ##   path   = ''
+#' ## ) -> alpha_bravo
+#' ## 
+#' ## # adezip(alpha_bravo, type = 'out')
+#' ## # adezip(alpha_bravo, type = 'in') 
+#'
+#' }
+#'
+#' @seealso \code{\link{noyau_pmeasyr}}
+#' @export 
+noyau_skeleton <- function(nom = "p", zip = F){
+  cat(paste0("\nnoyau_pmeasyr(
+  finess = \'.........\',
+  annee  = ....,
+  mois   = ..,
+  path   = \'\'
+) -> ", nom,  "\n\n"))
+  
+  if (zip){
+    cat(paste0("# adezip(", nom, ", type = \'out\')\n# adezip(", nom, ", type = \'in\')"))
+  }
 }
 
 ##############################################

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ RSF - Import des Anohosp RSFA — iano_rafael • pmeasyr</title>
+<title>~ par - Noyau de parametres — noyau_skeleton • pmeasyr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,82 +77,54 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ RSF - Import des Anohosp RSFA</h1>
+    <h1>~ par - Noyau de parametres</h1>
     </div>
 
     
-    <p>Import du fichier ANO-ACE RSF Out ou le ano-ace-maj (reprise)</p>
+    <p>Générer un squelette de noyau de paramètres</p>
     
 
-    <pre class="usage"><span class='fu'>iano_rafael</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>lamda</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>finess</th>
-      <td><p>Finess du Out a importer : dans le nom du fichier</p></td>
-    </tr>
-    <tr>
-      <th>annee</th>
-      <td><p>Annee PMSI (nb) des donnees sur 4 caracteres (2016)</p></td>
-    </tr>
-    <tr>
-      <th>mois</th>
-      <td><p>Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)</p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>Localisation du fichier de donnees</p></td>
-    </tr>
-    <tr>
-      <th>lamda</th>
-      <td><p>a TRUE, importe le fichier ano-ace-maj</p></td>
-    </tr>
-    <tr>
-      <th>lib</th>
-      <td><p>Ajout des libelles de colonnes aux tables, par defaut a <code>TRUE</code> ; necessite le package <code>sjlabelled</code></p></td>
-    </tr>
-    <tr>
-      <th>~...</th>
-      <td><p>parametres supplementaires a passer
-dans la fonction <code><a href='http://www.rdocumentation.org/packages/readr/topics/read_fwf'>read_fwf</a></code>, par exemple
-<code>n_max = 1e3</code> pour lire les 1000 premieres lignes,  <code>progress = F, skip = 1e3</code></p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Une table (data.frame ou tbl_df) qui contient les données Anohosp in / out</p>
-    
+    <pre class="usage"><span class='fu'>noyau_skeleton</span>(<span class='kw'>nom</span> <span class='kw'>=</span> <span class='st'>"p"</span>, <span class='kw'>zip</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+        
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Formats depuis 2012 pris en charge pour les ano-ace
-Formats depuis 2014 pris en charge pour les ano-ace-maj (reprise 2013)</p>
-<p>Structure du nom du fichier attendu  :
-<em>finess.annee.moisc.ano</em>
-    <strong>750712184.2016.2.ano</strong></p>
+    <p>Voir exemple</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='irafael.html'>irafael</a></code>,
-utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p>
+    <p><code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-   <span class='fu'>iano_rafael</span>(<span class='st'>'750712184'</span>, <span class='fl'>2015</span>, <span class='fl'>12</span>,<span class='st'>'~/Documents/data/rsf'</span>) <span class='kw'>-&gt;</span> <span class='no'>ano_out15</span>
-   <span class='fu'>iano_rafael</span>(<span class='st'>'750712184'</span>, <span class='fl'>2015</span>, <span class='fl'>12</span>,<span class='st'>'~/Documents/data/rsf'</span>, <span class='kw'>lamda</span> <span class='kw'>=</span> <span class='no'>T</span>) <span class='kw'>-&gt;</span> <span class='no'>lamda_maj_ano_out14</span>
+<span class='fu'>noyau_skeleton</span>()
+<span class='co'>## résultat : </span>
+<span class='co'>## noyau_pmeasyr(</span>
+<span class='co'>##   finess = '.........',</span>
+<span class='co'>##   annee  = ....,</span>
+<span class='co'>##   mois   = ..,</span>
+<span class='co'>##   path   = ''</span>
+<span class='co'>## ) -&gt; p</span>
+
+<span class='fu'>noyau_skeleton</span>(<span class='st'>"alpha_bravo"</span>, <span class='no'>T</span>)
+
+<span class='co'>## noyau_pmeasyr(</span>
+<span class='co'>##   finess = '.........',</span>
+<span class='co'>##   annee  = ....,</span>
+<span class='co'>##   mois   = ..,</span>
+<span class='co'>##   path   = ''</span>
+<span class='co'>## ) -&gt; alpha_bravo</span>
+<span class='co'>## </span>
+<span class='co'>## # adezip(alpha_bravo, type = 'out')</span>
+<span class='co'>## # adezip(alpha_bravo, type = 'in') </span>
+
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>

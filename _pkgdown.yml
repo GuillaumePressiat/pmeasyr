@@ -17,9 +17,11 @@ reference:
   - title: Noyau de paramètres
     contents:
     - noyau_pmeasyr
+    - noyau_skeleton
   - title: Autres
     contents:
     - tdiag
+    - dico
     
 navbar:
   title: pmeasyr
