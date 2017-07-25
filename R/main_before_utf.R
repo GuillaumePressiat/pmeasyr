@@ -1882,7 +1882,7 @@ idmi_mco <- function(...){
 idmi_mco.pm_param <- function(params, ...){
   new_par <- list(...)
   param2 <- utils::modifyList(params, new_par)
-  do.call(idmi_mcoo.default, param2)
+  do.call(idmi_mco.default, param2)
 }
 
 
