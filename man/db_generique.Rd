@@ -28,6 +28,7 @@ La tables déjà importée dans R est copiée dans la db
 }
 \examples{
 \dontrun{
-purrr::quietly(db_generique)(con, 16, ma_table, 'had', 'rapss_ano') -> statuts ; gc(); #ok
+purrr::quietly(db_generique)(con, 16, ma_table, 'had', 'rapss_ano') -> statuts ; gc(); #
+# Result in db : had_16_rapss_ano
 }
 }

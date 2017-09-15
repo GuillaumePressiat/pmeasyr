@@ -2,7 +2,7 @@
 % Please edit documentation in R/main_before_utf.R
 \name{tbl_had}
 \alias{tbl_had}
-\title{remote access aux tables had}
+\title{~ db - remote access aux tables had}
 \usage{
 tbl_had(con, 16, table)
 }
@@ -10,7 +10,7 @@ tbl_had(con, 16, table)
 tibble
 }
 \description{
-remote access aux tables had
+~ db - remote access aux tables had
 }
 \examples{
 \dontrun{

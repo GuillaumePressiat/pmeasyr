@@ -5851,7 +5851,7 @@ labeleasier <- function(col,
 #' @return nothing
 #' @export
 #'
-#' @usage db_mco_out(con, 16, p)
+#' @usage db_mco_out(con, an, p, path1 = '~/Documents/data/mco', remove = T)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_mco_out)(con, 16, p) -> statuts ; gc(); #ok
@@ -5909,7 +5909,7 @@ db_mco_out <- function(con, an, p, path1 = '~/Documents/data/mco', remove = T){
 #' @return nothing
 #' @export
 #'
-#' @usage db_mco_in(con, 16, p)
+#' @usage db_mco_in(con, an, p, path1 = '~/Documents/data/mco', remove = T)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_mco_in)(con, 16, p) -> statuts ; gc(); #ok
@@ -5954,7 +5954,7 @@ DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
 #' @import DBI
 #' @export
 #'
-#' @usage db_rsf_out(con, 16, p)
+#' @usage db_rsf_out(con, an, p, path1 = '~/Documents/data/rsf', remove = T)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_rsf_out)(con, 16, p) -> statuts ; gc(); #ok
@@ -6057,7 +6057,7 @@ tbl_ssr <- function(con, an, table){
   dplyr::tbl(con, 'ssr_' %+% an %+% '_' %+% table)  
 }
 
-#' remote access aux tables had
+#' ~ db - remote access aux tables had
 #'
 #'
 #' @return tibble
@@ -6105,7 +6105,8 @@ tbl_psy <- function(con, an, table){
 #' @usage db_generique(con, an, table, prefix, suffix, remove = T)
 #' @examples
 #' \dontrun{
-#' purrr::quietly(db_generique)(con, 16, ma_table, 'had', 'rapss_ano') -> statuts ; gc(); #ok
+#' purrr::quietly(db_generique)(con, 16, ma_table, 'had', 'rapss_ano') -> statuts ; gc(); #
+#' # Result in db : had_16_rapss_ano
 #' }
 #' @export 
 db_generique <- function(con,  an, table, prefix, suffix, remove = T){
@@ -6116,6 +6117,6 @@ db_generique <- function(con,  an, table, prefix, suffix, remove = T){
     DBI::dbRemoveTable(con, lr)
   }
   
-  DBI::dbWriteTable(con, prefix %+% an %+% suffix, as.data.frame(table))
+  DBI::dbWriteTable(con, prefix %+% '_' %+% an %+% '_' %+% '_' %+% suffix, as.data.frame(table))
 }
 

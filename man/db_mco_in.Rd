@@ -4,7 +4,7 @@
 \alias{db_mco_in}
 \title{~ db - Copier les rum dans une db}
 \usage{
-db_mco_in(con, 16, p)
+db_mco_in(con, an, p, path1 = '~/Documents/data/mco', remove = T)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}

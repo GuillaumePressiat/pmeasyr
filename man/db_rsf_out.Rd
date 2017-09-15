@@ -4,7 +4,7 @@
 \alias{db_rsf_out}
 \title{~ db - Copier les rsf dans une db}
 \usage{
-db_rsf_out(con, 16, p)
+db_rsf_out(con, an, p, path1 = '~/Documents/data/rsf', remove = T)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}
