@@ -26,6 +26,7 @@ reference:
     contents:
     - tdiag
     - dico
+    - "%+%"
     
 navbar:
   title: pmeasyr
