@@ -18,6 +18,10 @@ reference:
     contents:
     - noyau_pmeasyr
     - noyau_skeleton
+  - title: Vers la base de données 
+    contents:
+    - starts_with("db_")
+    - starts_with("tbl_")
   - title: Autres
     contents:
     - tdiag

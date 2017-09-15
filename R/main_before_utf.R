@@ -5739,6 +5739,10 @@ noyau_skeleton <- function(nom = "p", zip = F){
 #'
 #' @author G. Pressiat
 #'
+#'
+
+
+
 #' @import forcats
 #' @export
 labeleasier <- function(col,
@@ -5815,4 +5819,303 @@ labeleasier <- function(col,
   
 }
 
+##############################################
+####################### DB ###################
+##############################################
+
+
+#' ... ~ paste0 comme un pipe 
+#' @usage x %+% y
+#' @examples
+#' \dontrun{
+#' 'Hého' %+% ' ' %+% 'world !'
+#' }
+#' @export
+`%+%` <- function(x,y){paste0(x,y)}
+
+
+
+#' ~ db - Copier les rsa dans une db
+#'
+#' Copier les rsa, les passages um, les actes et les diagnostics des rsa dans une db
+#' 
+#' Les tables sont importées dans R puis copiées dans la db
+#' La table diag est créée, les variables ghm, année séquentielle des tarifs et un champ caractère diagnostics sont ajoutés à la table rsa
+#' 
+#' @param con la connexion a la base de donnees (src_..)
+#' @param an l'annee pmsi
+#' @param p le noyau pmeasyr
+#' @param path1 le chemin d'acces aux donnees
+#' @param remove a TRUE, les tables precedentes rsa sont effacees avant
+#'
+#' @return nothing
+#' @export
+#'
+#' @usage db_mco_out(con, 16, p)
+#' @examples
+#' \dontrun{
+#' purrr::quietly(db_mco_out)(con, 16, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_mco_out)(con, 15, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_out)(con, 14, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_out)(con, 13, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_out)(con, 12, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_out)(con, 11, p) -> statuts ; gc(); #..
+#' }
+db_mco_out <- function(con, an, p, path1 = '~/Documents/data/mco', remove = T){
+  
+  if (remove == T){
+    DBI::dbListTables(con) -> u
+    u[grepl('_rsa_',u) & grepl(an,u)] -> lr
+    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  }
+  
+  p <- utils::modifyList(p, list(annee = 2000 + an, path = path1))
+  
+  pmeasyr::irsa(p,  typi = 6) %>% pmeasyr::tdiag() -> rsa
+  pmeasyr::iano_mco(p) -> rsa_ano
+  pmeasyr::itra(p) -> tra
+  
+  pmeasyr::inner_tra(rsa$rsa, tra) %>% 
+    dplyr::mutate(ghm = paste0(RSACMD, RSATYPE, RSANUM, RSACOMPX),
+           diags = paste0(dpdrum,  das, collapse  = ', '),
+           anseqta = if_else(MOISSOR < "03", "20" %+% as.character(an-1), "20" %+% as.character(an))) -> rsa$rsa
+  
+ pmeasyr::inner_tra(rsa$actes, tra) -> rsa$actes
+ pmeasyr::inner_tra(rsa$diags, tra) -> rsa$diags
+ pmeasyr::inner_tra(rsa$rsa_um, tra) -> rsa$rsa_um
+ pmeasyr::inner_tra(rsa_ano, tra) -> rsa_ano
+  
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_rsa", as.data.frame(rsa$rsa))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_actes", as.data.frame(rsa$actes))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_diags", as.data.frame(rsa$diags))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_um", as.data.frame(rsa$rsa_um))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_ano", as.data.frame(rsa_ano))
+  
+}
+
+#' ~ db - Copier les rum dans une db
+#'
+#' Copier les rum, les actes et les diagnostics des rums dans une db
+#' 
+#' Les tables sont importées dans R puis copiées dans la db
+#' La table diag est créée et la durée des rum est calculée (DUREESEJPART)
+#'
+#' @param con la connexion a la base de donnees (src_..)
+#' @param an l'annee pmsi
+#' @param p le noyau pmeasyr
+#' @param path1 le chemin d'acces aux donnees
+#' @param remove a TRUE, les tables precedentes rsa sont effacees avant
+#'
+#' @return nothing
+#' @export
+#'
+#' @usage db_mco_in(con, 16, p)
+#' @examples
+#' \dontrun{
+#' purrr::quietly(db_mco_in)(con, 16, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_mco_in)(con, 15, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_in)(con, 14, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_in)(con, 13, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_in)(con, 12, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_in)(con, 11, p) -> statuts ; gc(); #..
+#' }
+db_mco_in <- function(con, an, p, path1 = '~/Documents/data/mco', remove = T){
+  if (remove == T){
+    DBI::dbListTables(con) -> u
+    u[grepl('_rum_',u) & grepl(an,u)] -> lr
+    lapply(lr, function(x){dbRemoveTable(con, x)})
+  }
+
+p <- utils::modifyList(p, list(annee = 2000 + an, path = path1))
+
+pmeasyr::irum(p,  typi = 4) %>% pmeasyr::tdiag() -> rum
+rum$rum %>% dplyr::mutate(DUREESEJPART = as.integer(difftime(D8SOUE, D8EEUE, units= c("days")))) -> rum$rum
+
+DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_rum", rum$rum)
+DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_diags", as.data.frame(rum$diags))
+DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
+
+}
+
+#' ~ db - Copier les rsf dans une db
+#'
+#' Copier tous les rsf (lettre par lettre, A, B, C, ...), les ano-ace dans une db
+#' 
+#' Les tables sont importées dans R puis copiées dans la db
+#'  
+#' @param con la connexion a la base de donnees (src_..)
+#' @param an l'annee pmsi
+#' @param p le noyau pmeasyr
+#' @param path1 le chemin d'acces aux donnees
+#' @param remove a TRUE, les tables precedentes rsa sont effacees avant
+#'
+#' @return nothing
+#' 
+#' @import DBI
+#' @export
+#'
+#' @usage db_rsf_out(con, 16, p)
+#' @examples
+#' \dontrun{
+#' purrr::quietly(db_rsf_out)(con, 16, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_rsf_out)(con, 15, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_rsf_out)(con, 14, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_rsf_out)(con, 13, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_rsf_out)(con, 12, p) -> statuts ; gc(); #..
+#' }
+db_rsf_out <- function(con, an, p, path1 = '~/Documents/data/rsf', remove = T){
+  
+  if (remove == T){
+    DBI::dbListTables(con) -> u
+    u[grepl('_rafael_',u) & grepl(an,u)] -> lr
+    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  }
+  
+  p <- utils::modifyList(p, list(annee = 2000 + an, path = path1))
+  
+  pmeasyr::irafael(p)  -> rsf
+  pmeasyr::iano_rafael(p) -> rsf_ano
+  
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_a", as.data.frame(rsf$A))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_b", as.data.frame(rsf$B))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_c", as.data.frame(rsf$C))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_h", as.data.frame(rsf$H))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_l", as.data.frame(rsf$L))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_m", as.data.frame(rsf$M))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_p", as.data.frame(rsf$P))
+  
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_ano", as.data.frame(rsf_ano))
+  
+}
+
+
+#' ~ db - Lister les tables d'une db en tableau
+#'
+#' @param con la connexion a la base de donnees (src_..)
+#' @param nb le nombre de lignes du tableau
+#'
+#' @return nothing
+#' @export
+#'
+#' @usage db_liste_table(con, nb = 15)
+#' @examples
+#' \dontrun{
+#' db_liste_tables(con)
+#' }
+#' @export
+db_liste_tables <- function(con, nb = 15){
+  DBI::dbListTables(con) -> liste
+  
+  suppressWarnings(matrix(c(sort(liste), rep('',nb - length(liste) %% nb)),
+                          nrow = nb)) %>% tibble::as_tibble() %>%
+    knitr::kable(col.names = paste0(nb %+% ' tables, n°',
+                                    1:(floor((length(liste)/ nb) )+1)))
+}
+
+#' ~ db - remote access aux tables mco
+#'
+#' 
+#' @return tibble
+#'
+#' @usage tbl_mco(con, 16, table)
+#' @examples
+#' \dontrun{
+#' tbl_mco(con, 16, 'rsa_rsa')
+#' }
+#' @export
+tbl_mco <- function(con, an, table){
+  dplyr::tbl(con, 'mco_' %+% an %+% '_' %+% table)  
+}
+
+#' ~ db - remote access aux tables rsf
+#'
+#'
+#' @return tibble
+#'
+#' @usage tbl_rsf(con, 16, table)
+#' @examples
+#' \dontrun{
+#' tbl_rsf(con, 16, 'rsf_rafael_ano')
+#' }
+#' @export
+tbl_rsf <- function(con, an, table){
+  dplyr::tbl(con, 'rsf_' %+% an %+% '_' %+% table)  
+}
+
+#' ~ db - remote access aux tables ssr
+#'
+#'
+#' @return tibble
+#'
+#' @usage tbl_ssr(con, 16, table)
+#' @examples
+#' \dontrun{
+#' tbl_ssr(con, 16, 'rha_rha')
+#' }
+#' @export
+tbl_ssr <- function(con, an, table){
+  dplyr::tbl(con, 'ssr_' %+% an %+% '_' %+% table)  
+}
+
+#' remote access aux tables had
+#'
+#'
+#' @return tibble
+#'
+#' @usage tbl_had(con, 16, table)
+#' @examples
+#' \dontrun{
+#' tbl_had(con, 16, 'rapss_rapss')
+#' }
+#' @export
+tbl_had <- function(con, an, table){
+  dplyr::tbl(con, 'had_' %+% an %+% '_' %+% table)  
+}
+
+#' ~ db - remote access aux tables psy
+#'
+#'
+#' @return tibble
+#'
+#' @usage tbl_psy(con, 16, table)
+#' @examples
+#' \dontrun{
+#' tbl_psy(con, 16, 'rpsa_rpsa')
+#' }
+#' @export
+tbl_psy <- function(con, an, table){
+  dplyr::tbl(con, 'psy_' %+% an %+% '_' %+% table)  
+}
+
+#' ~ db - Copier un tibble dans une db
+#'
+#' Copier une table R dans une db
+#' 
+#' La tables déjà importée dans R est copiée dans la db
+#' 
+#' @param con la connexion a la base de donnees (src_..)
+#' @param an l'annee pmsi
+#' @param table La table R (tibble) a copier dans la db
+#' @param prefix prefixe de la table dans la db (ex : mco, rsf, ssr, ...)
+#' @param suffix suffixe de la table dans la db (ex : rum_rum, rha_actes, rapss_rapss, ...)
+#' 
+#' @return nothing
+#' 
+#'
+#' @usage db_generique(con, an, table, prefix, suffix, remove = T)
+#' @examples
+#' \dontrun{
+#' purrr::quietly(db_generique)(con, 16, ma_table, 'had', 'rapss_ano') -> statuts ; gc(); #ok
+#' }
+#' @export 
+db_generique <- function(con,  an, table, prefix, suffix, remove = T){
+  nom <- prefix %+% "_" %+% an %+% "_" %+% suffix
+  if (remove == T){
+    DBI::dbListTables(con) -> u
+    u[u == nom] -> lr
+    DBI::dbRemoveTable(con, lr)
+  }
+  
+  DBI::dbWriteTable(con, prefix %+% an %+% suffix, as.data.frame(table))
+}
 

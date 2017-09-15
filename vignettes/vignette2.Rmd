@@ -11,7 +11,7 @@ vignette: >
 
 ```{r  eval = F}
 library(pmeasyr)
-library(dplyr)
+library(dplyr, warn.conflicts = F)
 ```
 
 ## 1 - Definir un noyau de parametres
