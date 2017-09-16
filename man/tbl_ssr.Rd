@@ -4,7 +4,7 @@
 \alias{tbl_ssr}
 \title{~ db - remote access aux tables ssr}
 \usage{
-tbl_ssr(con, 16, table)
+tbl_ssr(con, an, table)
 }
 \value{
 tibble

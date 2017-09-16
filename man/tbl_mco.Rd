@@ -4,7 +4,7 @@
 \alias{tbl_mco}
 \title{~ db - remote access aux tables mco}
 \usage{
-tbl_mco(con, 16, table)
+tbl_mco(con, an, table)
 }
 \value{
 tibble

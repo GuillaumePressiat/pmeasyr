@@ -4,7 +4,7 @@
 \alias{irum}
 \title{~ MCO - Import des RUM}
 \usage{
-irum(finess, annee, mois, path, lib = T, typi = 3, ...)
+irum(finess, annee, mois, path, lib = T, typi = 3, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du In a importer : dans le nom du fichier}
@@ -18,6 +18,8 @@ irum(finess, annee, mois, path, lib = T, typi = 3, ...)
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
 
 \item{typi}{Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

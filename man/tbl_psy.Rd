@@ -4,7 +4,7 @@
 \alias{tbl_psy}
 \title{~ db - remote access aux tables psy}
 \usage{
-tbl_psy(con, 16, table)
+tbl_psy(con, an, table)
 }
 \value{
 tibble

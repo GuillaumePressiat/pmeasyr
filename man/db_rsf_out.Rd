@@ -4,16 +4,12 @@
 \alias{db_rsf_out}
 \title{~ db - Copier les rsf dans une db}
 \usage{
-db_rsf_out(con, an, p, path1 = '~/Documents/data/rsf', remove = T)
+db_rsf_out(con, p, remove = T, ...)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}
 
-\item{an}{l'annee pmsi}
-
 \item{p}{le noyau pmeasyr}
-
-\item{path1}{le chemin d'acces aux donnees}
 
 \item{remove}{a TRUE, les tables precedentes rsa sont effacees avant}
 }
@@ -28,10 +24,7 @@ Les tables sont importées dans R puis copiées dans la db
 }
 \examples{
 \dontrun{
-purrr::quietly(db_rsf_out)(con, 16, p) -> statuts ; gc(); #ok
-purrr::quietly(db_rsf_out)(con, 15, p) -> statuts ; gc(); #..
-purrr::quietly(db_rsf_out)(con, 14, p) -> statuts ; gc(); #..
-purrr::quietly(db_rsf_out)(con, 13, p) -> statuts ; gc(); #..
-purrr::quietly(db_rsf_out)(con, 12, p) -> statuts ; gc(); #..
+purrr::quietly(db_rsf_out)(con, p) -> statuts ; gc(); #ok
+purrr::quietly(db_rsf_out)(con, p, annee = 2014) -> statuts ; gc(); #ok
 }
 }

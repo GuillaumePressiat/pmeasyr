@@ -4,7 +4,7 @@
 \alias{tbl_had}
 \title{~ db - remote access aux tables had}
 \usage{
-tbl_had(con, 16, table)
+tbl_had(con, an, table)
 }
 \value{
 tibble

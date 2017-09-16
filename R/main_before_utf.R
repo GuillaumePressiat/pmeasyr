@@ -37,6 +37,7 @@
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param typi Type d'import, par defaut a 3, a 0 : propose a l'utilisateur de choisir au lancement
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~...   parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -55,7 +56,7 @@
 #' @importFrom utils View data unzip modifyList
 #' @importFrom magrittr '%>%'
 #' @export irum
-#' @usage irum(finess, annee, mois, path, lib = T, typi = 3, ...)
+#' @usage irum(finess, annee, mois, path, lib = T, typi = 3, tolower_names = F, ...)
 #' @export
 irum <- function(...){
   UseMethod("irum")
@@ -81,7 +82,7 @@ irum.list <- function(l, ...){
 }
 
 #' @export
-irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
+irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_names = F, ...){
   if (annee < 2011 | annee > 2017){
     stop("Année PMSI non prise en charge\n")
   }
@@ -268,7 +269,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
       rum_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
                                readr::fwf_widths(c(2,6,1,3,NA),c("NOCLAS","CDGHM","Fil1","NOVERG","RUM")),
                                col_types = readr::cols('c','c','c','c','c'),
-                               na=character(), ...) %>%
+                               na=character(), ...)  %>%
         dplyr::mutate(
           CDERG         = stringr::str_sub(RUM,1,3),
           NOFINESS      = stringr::str_sub(RUM,4,12),
@@ -329,7 +330,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
       D8EEUE=lubridate::dmy(D8EEUE),
       D8SOUE=lubridate::dmy(D8SOUE),
       DP    = stringr::str_trim(DP),
-      DR    = stringr::str_trim(DR))
+      DR    = stringr::str_trim(DR)) %>% 
+      dplyr::mutate(DUREESEJPART = as.integer(difftime(D8SOUE, D8EEUE, units= c("days"))))
   }
   if (typi== 1){
     
@@ -341,10 +343,13 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rum_i <- rum_i  %>%  sjlabelled::set_label(v)
+      rum_i <- rum_i  %>%  sjlabelled::set_label(c(v, "Durée rum"))
     }
     
-    rum_1 <- list(rum = rum_i )
+    if (tolower_names){
+      names(rum_i) <- tolower(names(rum_i))
+    }
+    rum_1 <- list(rum = rum_i)
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
     #cat(paste("MCO RUM XLight",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
@@ -363,8 +368,11 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     rum_i <- rum_i[,!(names(rum_i) %in% Fillers)]
     if (lib==T){
       v <- libelles
-      v <- c(v[!is.na(v)],c("Stream Actes","Stream Das", "Stream Dad"))
+      v <- c(v[!is.na(v)], "Durée rum", "Stream Actes","Stream Das", "Stream Dad")
       rum_i <- rum_i %>%  sjlabelled::set_label(v)
+    }
+    if (tolower_names){
+      names(rum_i) <- tolower(names(rum_i))
     }
     rum_1 <- list(rum = rum_i)
     class(rum_1) <- append(class(rum_1),"RUM")
@@ -455,13 +463,20 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
     
     rum_i <- rum_i[,!(names(rum_i) %in% Fillers)] %>% dplyr::select(-ZAD, -ldad, -lactes, -ldas)
+    
     # Libelles
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rum_i <- rum_i   %>%  sjlabelled::set_label(v)
+      rum_i <- rum_i   %>%  sjlabelled::set_label(c(v, "Durée rum"))
     }
     
+    if (tolower_names){
+      names(rum_i) <- tolower(names(rum_i))
+      names(actes) <- tolower(names(actes))
+      names(das) <- tolower(names(das))
+      names(dad) <- tolower(names(dad))
+    }
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
@@ -558,8 +573,14 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, ...){
     # Libelles
     if (lib==T){
       v <- libelles
-      v <- c(v[!is.na(v)],c("Stream Actes","Stream Das", "Stream Dad"))
+      v <- c(v[!is.na(v)], "Durée rum", "Stream Actes","Stream Das", "Stream Dad")
       rum_i <- rum_i  %>%  sjlabelled::set_label(v)
+    }
+    if (tolower_names){
+      names(rum_i) <- tolower(names(rum_i))
+      names(actes) <- tolower(names(actes))
+      names(das) <- tolower(names(das))
+      names(dad) <- tolower(names(dad))
     }
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
@@ -669,7 +690,7 @@ irsa.list <- function(l, ...){
 }
 
 #' @export
-irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
+irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -743,7 +764,10 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     rsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsa"),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ... ) %>%
       dplyr::mutate(DP = stringr::str_trim(DP),
-                    DR = stringr::str_trim(DR))
+                    DR = stringr::str_trim(DR),
+      ghm = paste0(RSACMD, RSATYPE, RSANUM, RSACOMPX),
+                    anseqta = dplyr::if_else(MOISSOR < "03", as.character(annee - 1), as.character(annee)))
+    
   }
   
   if (typi== 1){
@@ -757,9 +781,11 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rsa_i <- rsa_i  %>% dplyr::select(-ZA) %>%  sjlabelled::set_label(v)
+      rsa_i <- rsa_i  %>% dplyr::select(-ZA) %>%  sjlabelled::set_label(c(v, 'Ghm', 'Année séq. de tarifs'))
     }
-    
+    if (tolower_names){
+      names(rsa_i) <- tolower(names(rsa_i))
+    }
     rsa_1 <- list(rsa = rsa_i)
     class(rsa_1) <- append(class(rsa_1),"RSA")
     
@@ -813,12 +839,16 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     if (lib==T){
       v <- libelles
       if (annee==2011){
-        v <- c(v[!is.na(v)],c("Supp. Radiothérapies", "Stream Actes", "Stream Das"))
+        v <- c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Supp. Radiothérapies", "Stream Actes", "Stream Das")
       }
       else {
-        v <- c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes", "Stream Das"))
+        v <- c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes", "Stream Das")
       }
       rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
+    }
+    
+    if (tolower_names){
+      names(rsa_i) <- tolower(names(rsa_i))
     }
     rsa_1 <- list(rsa = rsa_i)
     
@@ -867,12 +897,16 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     if (lib==T){
       v <- libelles
       if (annee==2011) {
-        v <- c(v[!is.na(v)],c("Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das"))
+        v <- c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
       }
       else{
-        v <-   c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das"))
+        v <-   c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
       }
       rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
+    }
+    
+    if (tolower_names){
+      names(rsa_i) <- tolower(names(rsa_i))
     }
     
     rsa_1 <- list(rsa = rsa_i)
@@ -974,14 +1008,20 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     if (lib==T){
       v <- libelles
       if (annee==2011){
-        v <- c(v[!is.na(v)],c("Supp. Radiothérapies"))
+        v <- c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Supp. Radiothérapies")
       }
       else {
-        v <- c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies"))
+        v <- c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Types Aut. à Portée Globale", "Supp. Radiothérapies")
       }
       rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
     }
     
+    if (tolower_names){
+      names(rsa_i) <- tolower(names(rsa_i))
+      names(actes) <- tolower(names(actes))
+      names(das) <- tolower(names(das))
+      names(rsa_um) <- tolower(names(rsa_um))
+    }
     rsa_1 <- list(rsa = rsa_i,
                   actes = actes,
                   das = das,
@@ -1088,13 +1128,19 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     if (lib==T){
       v <- libelles
       if (annee==2011) {
-        v <- c(v[!is.na(v)],c("Supp. Radiothérapies", "Stream Actes", "Stream Das"))
+        v <- c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Supp. Radiothérapies", "Stream Actes", "Stream Das")
       }
       else{
-        v <-  c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes", "Stream Das"))
+        v <-  c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes", "Stream Das")
       }
       
       rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
+    }
+    if (tolower_names){
+      names(rsa_i) <- tolower(names(rsa_i))
+      names(actes) <- tolower(names(actes))
+      names(das) <- tolower(names(das))
+      names(rsa_um) <- tolower(names(rsa_um))
     }
     
     rsa_1 <- list(rsa = rsa_i , actes = actes, das = das, rsa_um=rsa_um)
@@ -1204,13 +1250,19 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, ...){
     if (lib==T){
       v <- libelles
       if (annee==2011) {
-        v <- c(v[!is.na(v)],c("Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das"))
+        v <- c(v[!is.na(v)],"Ghm", "Année séq. de tarifs", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
       }
       else{
-        v <-  c(v[!is.na(v)],c("Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das"))
+        v <-  c(v[!is.na(v)],"Ghm", "Année séq. de tarifs", "Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
       }
       rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
       
+    }
+    if (tolower_names){
+      names(rsa_i) <- tolower(names(rsa_i))
+      names(actes) <- tolower(names(actes))
+      names(das) <- tolower(names(das))
+      names(rsa_um) <- tolower(names(rsa_um))
     }
     
     rsa_1 <- list(rsa = rsa_i , actes = actes, das = das, rsa_um = rsa_um)
@@ -1305,7 +1357,7 @@ itra.list <- function(l, ...){
 }
 
 #' @export
-itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
+itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolower_names = F, ... ){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1395,13 +1447,23 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco",... ){
   }
   
   if (lib==T & champ !="tra_psy_r3a"){
+    if (tolower_names){
+      names(tra_i) <- tolower(names(tra_i))
+    }
     v <- c(libelles, 'Établissement')
     return(tra_i  %>%  sjlabelled::set_label(v))
   }
   
   if (lib==T & champ =="tra_psy_r3a"){
+    if (tolower_names){
+      names(tra_i) <- tolower(names(tra_i))
+    }
     v <- libelles
     return(tra_i  %>%  sjlabelled::set_label(v))
+  }
+  
+  if (tolower_names){
+    names(tra_i) <- tolower(names(tra_i))
   }
   
   return(tra_i)
@@ -1470,7 +1532,7 @@ iano_mco.list <- function(l, ...){
 }
 
 #' @export
-iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, ...){
+iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1522,8 +1584,12 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       class = "col_spec"
     )
     if (annee>=2013){
-      suppressWarnings(ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+      ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+                               readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+      
+      # readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>%
                          dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                                        DTENT    = lubridate::dmy(DTENT),
                                        cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -1535,29 +1601,35 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
                                        MTBASERM = MTBASERM/100,
                                        MTRMBAMC = MTRMBAMC/100,
                                        TAUXRM   = TAUXRM  /100,
-                                       MTMALPAR = MTMALPAR/100) )
+                                       MTMALPAR = MTMALPAR/100)
       
       
     }
     if (2011<annee & annee<2013){
-      suppressWarnings(ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
-                         dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                                       DTENT    = lubridate::dmy(DTENT),
-                                       cok      = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
-                                                     (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') == 7),
-                                       MTFACTMO = MTFACTMO/100,
-                                       MTFORJOU = MTFORJOU/100,
-                                       MTFACTOT = MTFACTOT/100,
-                                       MTBASERM = MTBASERM/100,
-                                       MTRMBAMC = MTRMBAMC/100,
-                                       TAUXRM   = TAUXRM  /100,
-                                       MTMALPAR = MTMALPAR/100) )
       
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+                                              readr::fwf_widths(af,an), col_types =at, na=character(), ...)  
+  # readr::problems(ano_i) -> synthese_import
+  ano_i <- ano_i %>%
+    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
+                  DTENT    = lubridate::dmy(DTENT),
+                  cok      = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
+                                (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') == 7),
+                  MTFACTMO = MTFACTMO/100,
+                  MTFORJOU = MTFORJOU/100,
+                  MTFACTOT = MTFACTOT/100,
+                  MTBASERM = MTBASERM/100,
+                  MTRMBAMC = MTRMBAMC/100,
+                  TAUXRM   = TAUXRM  /100,
+                  MTMALPAR = MTMALPAR/100)
+  
     }
     if (annee == 2011){
-      suppressWarnings( ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                                               readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...)  
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>%
                           dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                                         DTENT    = lubridate::dmy(DTENT),
                                         cok      = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -1568,7 +1640,6 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
                                         MTBASERM = MTBASERM/100,
                                         TAUXRM   = TAUXRM  /100,
                                         MTMALPAR = MTMALPAR/100)
-      )
     }
     
     Fillers <- names(ano_i)
@@ -1619,7 +1690,11 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
     
     if (2011<annee){
       ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
-                             readr::fwf_widths(af,an), col_types =at, na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+       
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
         dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
                       MTFACTMO = MTFACTMO/100,
                       MTFORJOU = MTFORJOU/100,
@@ -1631,7 +1706,11 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
     }
     if (annee == 2011){
       ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
-                             readr::fwf_widths(af,an), col_types =at, na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      # readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
         dplyr::mutate(
           MTFACTMO = MTFACTMO/100,
           MTFORJOU = MTFORJOU/100,
@@ -1649,6 +1728,10 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       v <- libelles[!is.na(libelles)]
       ano_i <- ano_i  %>%  sjlabelled::set_label(v)
     }
+  }
+  
+  if (tolower_names){
+    names(ano_i) <- tolower(names(ano_i))
   }
   
   return(ano_i)
@@ -1712,7 +1795,7 @@ imed_mco.list <- function(l, ...){
 }
 
 #' @export
-imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, ...){
+imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1791,6 +1874,9 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
       v <- libelles
       med_i <- med_i  %>%  sjlabelled::set_label(v)
     }
+    if (tolower_names){
+      names(med_i) <- tolower(names(med_i))
+    }
     return( med_i  )
   }
   if (typmed=="in"){
@@ -1839,7 +1925,11 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
       v<- v[!is.na(v)]
       med_i <- med_i %>% dplyr::select(-Fil1) %>%  sjlabelled::set_label(v)
     }
-    return(med_i %>% dplyr::mutate(DTDISP = lubridate::dmy(DTDISP)) )
+    med_i %>% dplyr::mutate(DTDISP = lubridate::dmy(DTDISP)) -> med_i
+    if (tolower_names){
+      names(med_i) <- tolower(names(med_i))
+    }
+    return(med_i)
   }
   
 }
@@ -1895,7 +1985,7 @@ idmi_mco.list <- function(l, ...){
 }
 
 #' @export
-idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, ...){
+idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -1955,6 +2045,9 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
       v <- libelles
       dmi_i <- dmi_i  %>%  sjlabelled::set_label(v)
     }
+    if (tolower_names){
+      names(dmi_i) <- tolower(names(dmi_i))
+    }
     return(dmi_i)
   }
   if (typdmi=="in"){
@@ -2001,6 +2094,9 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
       v <- libelles
       v <- v[!is.na(v)]
       dmi_i <- dmi_i  %>% dplyr::select(-Fil1,-Fil2) %>%  sjlabelled::set_label(v)
+    }
+    if (tolower_names){
+      names(dmi_i) <- tolower(names(dmi_i))
     }
     return(dmi_i)
   }
@@ -2058,7 +2154,7 @@ ileg_mco.list <- function(l , ...){
 }
 
 #' @export
-ileg_mco.default <- function(finess, annee, mois, path, reshape = F, ...){
+ileg_mco.default <- function(finess, annee, mois, path, reshape = F, tolower_names = F, ...){
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"), ...)
   
@@ -2077,12 +2173,18 @@ ileg_mco.default <- function(finess, annee, mois, path, reshape = F, ...){
   leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
   
   if (reshape==T){
+    if (tolower_names){
+      names(leg_i1) <- tolower(names(leg_i1))
+    }
     return(leg_i1)
   }
   
   leg_i1 %>% 
     dplyr::group_by(FINESS, MOIS, ANNEE, CLE_RSA, NBERR) %>%
     dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
+  if (tolower_names){
+    names(leg_i1) <- tolower(names(leg_i1))
+  }
   return(dplyr::ungroup(leg_i1))
   
 }
@@ -2113,9 +2215,12 @@ ileg_mco.default <- function(finess, annee, mois, path, reshape = F, ...){
 
 #' @export
 inner_tra <- function(table, tra, sel = 1, champ = "mco"){
+#inner_tra <- function(table, tra ){
+  
+  suppressMessages(  dplyr::inner_join(table, tra) )
   if (champ == "mco"){
     if (sel==1){
-      return( suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(-NO_ligne_RSS,-DTENT,-GHM1,-DTSORT))))
+      return( suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(c(1:2,4,8)))))
     }
     if (sel==2){
       return( suppressMessages( dplyr::inner_join(table, tra )))
@@ -2123,9 +2228,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
   }
   if (champ == "had"){
     if (sel==1){
-      return( suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(-NIP,-DTNAI, -DTENT, -DTSORT,-ECHPMSI,
-                                                                               -PROV,-SCHPMSI, -DEST, -DT_DEB_SEQ,-DT_FIN_SEQ,
-                                                                               -DT_DEB_SS_SEQ,-DT_FIN_SS_SEQ,-DERNIERE_SS_SEQ))))
+      return( suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(1:4))))
     }
     if (sel==2){
       return( suppressMessages( dplyr::inner_join(table, tra)))
@@ -2133,7 +2236,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
   }
   if (champ == "ssr"){
     if (sel==1){
-      return(suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(-NOSEJ2,-NOSEMAINE, -NOLIGNE_RHS))))
+      return(suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(c(1,3,4,5)))))
     }
     if (sel==2){
       return(suppressMessages(  dplyr::inner_join(table, tra)))
@@ -2141,8 +2244,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
   }
   if (champ == "psyrpsa"){
     if (sel==1){
-      return(suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(-IPP,-DTENT,-DTENT2,-DTSORT,
-                                                                              -DT_DEB_SEQ,-DT_FIN_SEQ),
+      return(suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(c(3:5,10)),
                                                  by=c('NOSEJPSY'='NOSEQSEJ','NOSEQ'='NOSEQ'))))
     }
     if (sel==2){
@@ -2165,7 +2267,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
     print("Paramètre champ incorrect")
     return(NULL)
   }
-  
+
 }
 
 
@@ -2220,7 +2322,7 @@ idiap.list <- function(l , ...){
 }
 
 #' @export
-idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...){
+idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2280,6 +2382,9 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
       v <- libelles
       diap_i <- diap_i  %>%  sjlabelled::set_label(v)
     }
+    if (tolower_names){
+      names(diap_i) <- tolower(names(diap_i))
+    }
     return(diap_i)
   }
   if (typdiap=="in"){
@@ -2326,6 +2431,9 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
       
       v <- libelles
       diap_i <- diap_i  %>%  sjlabelled::set_label(v)
+    }
+    if (tolower_names){
+      names(diap_i) <- tolower(names(diap_i))
     }
     return(diap_i)
   }
@@ -2384,7 +2492,7 @@ iium.list <- function(l , ...){
 }
 
 #' @export
-iium.default <- function(finess, annee, mois, path, lib = T, ...){
+iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2440,6 +2548,9 @@ iium.default <- function(finess, annee, mois, path, lib = T, ...){
     v <- libelles
     ium_i <- ium_i  %>%  sjlabelled::set_label(v)
   }
+  if (tolower_names){
+    names(ium_i) <- tolower(names(ium_i))
+  }
   return(ium_i)
 }
 
@@ -2493,7 +2604,7 @@ ipo.list <- function(l, ...){
 }
 
 #' @export
-ipo.default <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...){
+ipo.default <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, tolower_names = F, ...){
 if (annee<2011|annee>2017){
   stop('Année PMSI non prise en charge\n')
 }
@@ -2553,6 +2664,9 @@ if (typpo=="out"){
     v <- libelles
     po_i <- po_i  %>%  sjlabelled::set_label(v)
   }
+  if (tolower_names){
+    names(po_i) <- tolower(names(po_i))
+  }
   return(po_i)
 }
 if (typpo=="in"){
@@ -2598,6 +2712,9 @@ if (typpo=="in"){
   if (lib==T){
     v <- libelles
     po_i <- po_i  %>%  sjlabelled::set_label(v)
+  }
+  if (tolower_names){
+    names(po_i) <- tolower(names(po_i))
   }
   return(po_i)
 }
@@ -2665,7 +2782,7 @@ irapss.list <- function(l, ...){
 }
 
 #' @export
-irapss.default <- function(finess, annee, mois, path, lib = T, ...){
+irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2944,6 +3061,12 @@ irapss.default <- function(finess, annee, mois, path, lib = T, ...){
   if (lib==T){
     rapss_i <- rapss_i  %>% sjlabelled::set_label(libelles[!is.na(libelles)])
   }
+  if (tolower_names){
+    names(rapss_i) <- tolower(names(rapss_i))
+    names(acdi) <- tolower(names(acdi))
+    names(ght) <- tolower(names(ght))
+  }
+  
   rapss_1 <- list(rapss = rapss_i, acdi = acdi, ght = ght)
   return(rapss_1)
   
@@ -3004,7 +3127,7 @@ iano_had.list <- function(l, ...){
 }
 
 #' @export
-iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
+iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -3050,7 +3173,10 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
   )
   if (annee<=2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+    #readr::problems(ano_i) -> synthese_import
+    
+    ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT    = lubridate::dmy(DTENT),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -3063,7 +3189,10 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
   }
   if (annee>2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+    #readr::problems(ano_i) -> synthese_import
+    
+    ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT    = lubridate::dmy(DTENT),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -3078,6 +3207,9 @@ iano_had.default <- function(finess, annee,mois, path, lib=T, ...){
   }
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
+  if (tolower_names){
+    names(ano_i) <- tolower(names(ano_i))
+  }
   
   return(ano_i)
 }
@@ -3136,7 +3268,7 @@ imed_had.list <- function(l, ...){
 }
 
 #' @export
-imed_had.default <- function(finess, annee, mois, path, lib=T, ...){
+imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -3193,7 +3325,9 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, ...){
                     PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
     med_i <- rbind(med_i,med_i2)
   }
-  
+  if (tolower_names){
+    names(med_i) <- tolower(names(med_i))
+  }
   return(med_i)
 }
 
@@ -3243,7 +3377,7 @@ ileg_had.list <- function(l, ...){
 }
 
 #' @export
-ileg_had.default <- function(finess, annee, mois, path, reshape = F, ...){
+ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_names = F, ...){
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
@@ -3264,13 +3398,18 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, ...){
   leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
   
   if (reshape==T){
+    if (tolower_names){
+      names(leg_i) <- tolower(names(leg_i))
+    }
     return(leg_i1)
   }
   
   leg_i1 %>% 
     dplyr::group_by(FINESS, MOIS, ANNEE, NOSEJHAD, NOSEQ, NOSOUSSEQ, NBERR) %>%
     dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
-  
+  if (tolower_names){
+    names(leg_i) <- tolower(names(leg_i))
+  }
   return(dplyr::ungroup(leg_i1))
 }
 
@@ -3324,7 +3463,7 @@ irha.list <- function(l, ...){
 }
 
 #' @export
-irha.default <- function(finess, annee, mois, path, lib=T, ...){
+irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -3742,7 +3881,10 @@ irha.default <- function(finess, annee, mois, path, lib=T, ...){
   rha_i <- rha_i[,!(names(rha_i) %in% Fillers)]
   
   rha_i <- rha_i   %>% dplyr::select(-ZAD) %>% sjlabelled::set_label(libelles[!is.na(libelles)])
-  
+  if (tolower_names){
+    names(rha_i) <- tolower(names(rha_i))
+    names(acdi) <- tolower(names(acdi))
+  }
   rha_1 = list(rha = rha_i, acdi = acdi)
   deux <- Sys.time()
   #cat("Données RHA importées en : ", deux-un, " secondes\n")
@@ -3805,7 +3947,7 @@ iano_ssr.list <- function(l, ...){
 }
 
 #' @export
-iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
+iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -3852,7 +3994,11 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
   
   if (annee>2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
+    
+    readr::problems(ano_i) <- synthese_import
+    
+    ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT   = lubridate::dmy(DTENT),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -3867,7 +4013,10 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
   }
   if (annee<2013){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+    readr::problems(ano_i) <- synthese_import
+    
+    ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT   = lubridate::dmy(DTENT),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -3880,6 +4029,15 @@ iano_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
   }
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("FIL"))
+  
+  if (tolower_names){
+    names(ano_i) <- tolower(names(ano_i))
+  }
+  
+  if (nrow(synthese_import) > 0){
+    cat("Problèmes à l'import :\n")
+    print(knitr::kable(synthese_import))
+  }
   
   return(ano_i)
 }
@@ -3939,7 +4097,7 @@ issrha.list <- function(l, ...){
 }
 
 #' @export
-issrha.default <- function(finess, annee,mois, path, lib=T, ...){
+issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4006,7 +4164,9 @@ issrha.default <- function(finess, annee,mois, path, lib=T, ...){
     gp <- dplyr::bind_cols(fixe, gp) 
     return(list(ssrha = ssrha_i, gme = gp))
   }
-  
+  if (tolower_names){
+    names(ssrha_i) <- tolower(names(ssrha_i))
+  }
   return(ssrha_i)
 }
 
@@ -4056,7 +4216,7 @@ ileg_ssr.list <- function(l, ...){
 }
 
 #' @export
-ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
+ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, tolower_names = F, ...){
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
@@ -4076,13 +4236,19 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, ...){
   leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
   
   if (reshape==T){
+    if (tolower_names){
+      names(leg_i1) <- tolower(names(leg_i1))
+    }
     return(leg_i1)
+    
   }
   
   leg_i1 %>% 
     dplyr::group_by(FINESS, MOIS, ANNEE, NOSEQSEJ, NOSEQRHS, NBERR) %>%
     dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
-  
+  if (tolower_names){
+    names(leg_i1) <- tolower(names(leg_i1))
+  }
   return(dplyr::ungroup(leg_i1))
 }
 
@@ -4140,7 +4306,7 @@ imed_ssr.list <- function(l, ...){
 }
 
 #' @export
-imed_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
+imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4206,7 +4372,9 @@ imed_ssr.default <- function(finess, annee, mois, path, lib=T, ...){
   Fillers <- names(med_i)
   Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
   med_i <- med_i[,!(names(med_i) %in% Fillers)]
-  
+  if (tolower_names){
+    names(med_i) <- tolower(names(med_i))
+  }
   return(med_i)
 }
 
@@ -4260,7 +4428,7 @@ iium_ssr.list <- function(l , ...){
 }
 
 #' @export
-iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
+iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   if (annee<2013|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4315,6 +4483,10 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, ...){
     v <- libelles
     ium_i <- ium_i  %>%  sjlabelled::set_label(v)
   }
+  if (tolower_names){
+    names(ium_i) <- tolower(names(ium_i))
+  }
+  
   return(ium_i)
 }
 
@@ -4378,7 +4550,7 @@ irpsa.list <- function(l, ...){
 }
 
 #' @export
-irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
+irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
   if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4494,6 +4666,11 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, ...){
                                      "Délai depuis la date d'entrée", "Code CCAM",
                                      "Extension PMSI", "Code de la phase", "Code de l'activité", "Extension documentaire", "Nombre de réalisations"))
     
+    if (tolower_names){
+      names(rpsa_i) <- tolower(names(rpsa_i))
+      names(da) <- tolower(names(da))
+      names(actes) <- tolower(names(actes))
+    }
     rpsa_1 = list(rpsa = rpsa_i, das = da, actes = actes)
   }
   return(rpsa_1)
@@ -4555,7 +4732,7 @@ ir3a.list <- function(l, ...){
 }
 
 #' @export
-ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
+ir3a.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
   if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4620,6 +4797,13 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, ...){
   r3a_i <- r3a_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
   
   da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour',"N° d'ordre", 'Diagnostics et facteurs associés'))
+  
+  
+  if (tolower_names){
+    names(r3a_i) <- tolower(names(r3a_i))
+    names(da) <- tolower(names(da))
+  }
+  
   r3a_1 = list(r3a = r3a_i, das = da)
   
   return(r3a_1)
@@ -4679,7 +4863,7 @@ iano_psy.list <- function(l, ...){
 }
 
 #' @export
-iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
+iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
   if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4727,7 +4911,9 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
   
   if (annee<=2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
+    
+    ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT    = lubridate::dmy(DTENT),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -4741,7 +4927,9 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
   }
   if (annee>2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
+
+    ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT    = lubridate::dmy(DTENT),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
@@ -4756,6 +4944,12 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, ...){
   }
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
+  
+  if (tolower_names){
+    names(ano_i) <- tolower(names(ano_i))
+  }
+  
+
   return(ano_i)
 }
 
@@ -5232,9 +5426,11 @@ dico <- function(table){
 #' @seealso \code{\link{irsa}}, \code{\link{irum}}, \code{\link{irha}}
 
 #' @export
-tdiag <- function (d,  include = T)
-{
+tdiag <- function (d,  include = T){
+  
+  
   if (names(d)[1] == "rsa") {
+    if ('DP' %in% names(d$rsa)){
     temp <- d$rsa %>% dplyr::select(CLE_RSA, NSEQRUM = NOSEQRUM, DP, DR) %>%
       sjlabelled::set_label(rep("", 4))
     e <- temp %>% tidyr::gather(position, diag, -CLE_RSA, - NSEQRUM,
@@ -5249,16 +5445,52 @@ tdiag <- function (d,  include = T)
     f <- e %>% dplyr::filter(diag != "")
     h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DPUM", `4` = "DRUM",
                                                                                                          `5` = "DAS"))))
+    
+    h <- sjlabelled::remove_all_labels(h)
+    if (!is.null(sjlabelled::get_label(d$rsa$NOFINESS))){
     h <- h %>% sjlabelled::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
                                    "Diagnostic"))
+    }
+    
     if (include == F) {
       return(h)
     }
     else {
       return(list(rsa = d$rsa, rsa_um = d$rsa_um, actes = d$actes, diags = h))
     }
+    }
+    else if ('dp' %in% names(d$rsa)){
+      temp <- d$rsa %>% dplyr::select(cle_rsa, nseqrum = noseqrum, dp, dr) %>%
+        sjlabelled::set_label(rep("", 4))
+      e <- temp %>% tidyr::gather(position, diag, -cle_rsa, - nseqrum,
+                                  na.rm = T)
+      f <- e %>% dplyr::filter(diag != "")
+      g <- d$das  %>% dplyr::select(cle_rsa,nseqrum,diag = das) %>% dplyr::mutate(position = "das")
+      h <- dplyr::bind_rows(f, g)
+      temp <- d$rsa_um %>% dplyr::select(cle_rsa, nseqrum, dpum, drum) %>%
+        sjlabelled::set_label(rep("", 4))
+      e <- temp %>% tidyr::gather(position, diag, -cle_rsa, - nseqrum,
+                                  na.rm = T)
+      f <- e %>% dplyr::filter(diag != "")
+      h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "dp", `2` = "dr", `3` = "dpum", `4` = "drum",
+                                                                                                           `5` = "das"))))
+      h <- sjlabelled::remove_all_labels(h)
+      
+      if (!is.null(sjlabelled::get_label(d$rsa$nofiness))){
+      h <- h %>% sjlabelled::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
+                                         "Diagnostic"))
+      }
+      
+      if (include == F) {
+        return(h)
+      }
+      else {
+        return(list(rsa = d$rsa, rsa_um = d$rsa_um, actes = d$actes, diags = h))
+      }
+    }
   }
   if (names(d)[1]  == "rum") {
+    if ("DP" %in% names(d$rum)){
     temp <- d$rum %>% dplyr::select(NAS,NORUM, DP, DR) %>% sjlabelled::set_label(rep("",4))
     e <- temp %>% tidyr::gather(position, diag, -NAS,- NORUM, na.rm = T)
     f <- e %>% dplyr::filter(diag != "")
@@ -5267,16 +5499,43 @@ tdiag <- function (d,  include = T)
     h <- dplyr::bind_rows(list(f, g, g2)) %>%
       dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DAS", `4`="DAD"))))
     
+    h <- sjlabelled::remove_all_labels(h)
+   
+     if (!is.null(sjlabelled::get_label(d$rum$NOFINESS))){
     h <- h %>% sjlabelled::set_label(c("N° administratif du séjour", "N° du RUM",
                                    "1:DP, 2:DR, 3:DAS, 4:DAD", "Diagnostic"))
+    }
     if (include == F) {
       return(h)
     }
     else {
       return(list(rum = d$rum, actes = d$actes, diags = h))
     }
+    }
+    else if ("dp" %in% names(d$rum)){
+      temp <- d$rum %>% dplyr::select(nas, norum, dp, dr) %>% sjlabelled::set_label(rep("",4))
+      e <- temp %>% tidyr::gather(position, diag, -nas,- norum, na.rm = T)
+      f <- e %>% dplyr::filter(diag != "")
+      g <- d$das %>% dplyr::rename(diag = das) %>% dplyr::mutate(position = "das")
+      g2 <- d$dad %>% dplyr::rename(diag = dad) %>% dplyr::mutate(position = "dad")
+      h <- dplyr::bind_rows(list(f, g, g2)) %>%
+        dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "dp", `2` = "dr", `3` = "das", `4`="dad"))))
+      
+      h <- sjlabelled::remove_all_labels(h)
+     
+       if (!is.null(sjlabelled::get_label(d$rum$nofiness))){
+      h <- h %>% sjlabelled::set_label(c("N° administratif du séjour", "N° du RUM",
+                                         "1:DP, 2:DR, 3:DAS, 4:DAD", "Diagnostic"))}
+      if (include == F) {
+        return(h)
+      }
+      else {
+        return(list(rum = d$rum, actes = d$actes, diags = h))
+      }
+    }
   }
   if (names(d)[1] == "rha") {
+    if ("MMP" %in% names(d$rha)){
     temp <- d$rha %>% dplyr::select(NOSEQSEJ, NOSEQRHS, MMP, FPPC, AE) %>%
       sjlabelled::set_label(rep("", 5))
     e <- temp %>% tidyr::gather(position, diag, -NOSEQSEJ, - NOSEQRHS,
@@ -5286,8 +5545,12 @@ tdiag <- function (d,  include = T)
     h <- dplyr::bind_rows(f, g)
     h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "MMP", `2` = "FPPC", `3` = "AE", `4` = "DA"))))
     
+    
+    
     h <- h %>% sjlabelled::set_label(c("N° séquentiel du séjour", "N° séquentiel du RHS","1:MMP, 2:FPPC, 3:AE, 4:DA",
                                    "Diagnostic"))
+    
+    
     if (include == F) {
       return(h)
     }
@@ -5295,7 +5558,30 @@ tdiag <- function (d,  include = T)
       return(list(rha = d$rha, acdi = d$acdi, diags = h))
     }
   }
-
+    else if ("mmp" %in% names(d$rha)){
+      temp <- d$rha %>% dplyr::select(noseqsej, noseqrhs, mmp, fppc, ae) %>%
+        sjlabelled::set_label(rep("", 5))
+      e <- temp %>% tidyr::gather(position, diag, -noseqsej, - noseqrhs,
+                                  na.rm = T)
+      f <- e %>% dplyr::filter(diag != "")
+      g <- d$acdi  %>% dplyr::filter(code == 'DA') %>% dplyr::select(noseqsej,noseqrhs,diag = da) %>% dplyr::mutate(position = "da")
+      h <- dplyr::bind_rows(f, g)
+      h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "mmp", `2` = "fppc", `3` = "ae", `4` = "da"))))
+      
+      
+      h <- h %>% sjlabelled::set_label(c("N° séquentiel du séjour", "N° séquentiel du RHS","1:MMP, 2:FPPC, 3:AE, 4:DA",
+                                         "Diagnostic"))
+      
+      if (include == F) {
+        return(h)
+      }
+      else {
+        return(list(rha = d$rha, acdi = d$acdi, diags = h))
+      }
+    }
+    
+    }
+  
 }
 
 
@@ -5356,7 +5642,7 @@ irafael.list <- function(l, ...){
 }
 
 #' @export
-irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, ...){
+irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -5455,6 +5741,16 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
                                                 nrow(rafael_M),
                                                 nrow(rafael_P)))))
   }
+  if (tolower_names){
+    names(rafael_A) <- tolower(names(rafael_A))
+    names(rafael_B) <- tolower(names(rafael_B))
+    names(rafael_C) <- tolower(names(rafael_C))
+    names(rafael_H) <- tolower(names(rafael_H))
+    names(rafael_L) <- tolower(names(rafael_L))
+    names(rafael_M) <- tolower(names(rafael_M))
+    names(rafael_P) <- tolower(names(rafael_P))
+  }
+  
   return(list("A" = rafael_A,
               "B" = rafael_B,
               "C" = rafael_C,
@@ -5524,7 +5820,7 @@ iano_rafael.list <- function(l, ...){
 }
 
 #' @export
-iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, ...){
+iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, tolower_names = F, ...){
   if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -5586,6 +5882,9 @@ iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, 
   }
   
   
+  if (tolower_names){
+    names(ano_i) <- tolower(names(ano_i))
+  }
   
   return(ano_i)
 }
@@ -5843,42 +6142,37 @@ labeleasier <- function(col,
 #' La table diag est créée, les variables ghm, année séquentielle des tarifs et un champ caractère diagnostics sont ajoutés à la table rsa
 #' 
 #' @param con la connexion a la base de donnees (src_..)
-#' @param an l'annee pmsi
 #' @param p le noyau pmeasyr
-#' @param path1 le chemin d'acces aux donnees
 #' @param remove a TRUE, les tables precedentes rsa sont effacees avant
 #'
 #' @return nothing
 #' @export
 #'
-#' @usage db_mco_out(con, an, p, path1 = '~/Documents/data/mco', remove = T)
+#' @usage db_mco_out(con, p, remove = T, ...)
 #' @examples
 #' \dontrun{
-#' purrr::quietly(db_mco_out)(con, 16, p) -> statuts ; gc(); #ok
-#' purrr::quietly(db_mco_out)(con, 15, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_out)(con, 14, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_out)(con, 13, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_out)(con, 12, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_out)(con, 11, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_out)(con, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_mco_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
 #' }
-db_mco_out <- function(con, an, p, path1 = '~/Documents/data/mco', remove = T){
+db_mco_out <- function(con, p, remove = T, ...){
   
+  p <- utils::modifyList(p, list(...))
+  an <- substr(as.character(p$annee), 3, 4)
   if (remove == T){
     DBI::dbListTables(con) -> u
-    u[grepl('_rsa_',u) & grepl(an,u)] -> lr
+    u[grepl('_rsa_',u) & grepl(an, u)] -> lr
     lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
   }
   
-  p <- utils::modifyList(p, list(annee = 2000 + an, path = path1))
+
+  
   
   pmeasyr::irsa(p,  typi = 6) %>% pmeasyr::tdiag() -> rsa
   pmeasyr::iano_mco(p) -> rsa_ano
   pmeasyr::itra(p) -> tra
   
   pmeasyr::inner_tra(rsa$rsa, tra) %>% 
-    dplyr::mutate(ghm = paste0(RSACMD, RSATYPE, RSANUM, RSACOMPX),
-           diags = paste0(dpdrum,  das, collapse  = ', '),
-           anseqta = if_else(MOISSOR < "03", "20" %+% as.character(an-1), "20" %+% as.character(an))) -> rsa$rsa
+    mutate(diags = paste0(dpdrum,  das, collapse  = ', ')) -> rsa$rsa
   
  pmeasyr::inner_tra(rsa$actes, tra) -> rsa$actes
  pmeasyr::inner_tra(rsa$diags, tra) -> rsa$diags
@@ -5901,35 +6195,31 @@ db_mco_out <- function(con, an, p, path1 = '~/Documents/data/mco', remove = T){
 #' La table diag est créée et la durée des rum est calculée (DUREESEJPART)
 #'
 #' @param con la connexion a la base de donnees (src_..)
-#' @param an l'annee pmsi
 #' @param p le noyau pmeasyr
-#' @param path1 le chemin d'acces aux donnees
 #' @param remove a TRUE, les tables precedentes rsa sont effacees avant
 #'
 #' @return nothing
 #' @export
 #'
-#' @usage db_mco_in(con, an, p, path1 = '~/Documents/data/mco', remove = T)
+#' @usage db_mco_in(con, p, remove = T, ...)
 #' @examples
 #' \dontrun{
-#' purrr::quietly(db_mco_in)(con, 16, p) -> statuts ; gc(); #ok
-#' purrr::quietly(db_mco_in)(con, 15, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_in)(con, 14, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_in)(con, 13, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_in)(con, 12, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_mco_in)(con, 11, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_mco_in)(con, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_mco_in)(con, p, annee = 2015) -> statuts ; gc(); #..
 #' }
-db_mco_in <- function(con, an, p, path1 = '~/Documents/data/mco', remove = T){
+db_mco_in <- function(con, p, remove = T, ...){
+  
+  p <- utils::modifyList(p, list(...))
+  an <- substr(as.character(p$annee), 3, 4)
+  
   if (remove == T){
     DBI::dbListTables(con) -> u
     u[grepl('_rum_',u) & grepl(an,u)] -> lr
     lapply(lr, function(x){dbRemoveTable(con, x)})
   }
 
-p <- utils::modifyList(p, list(annee = 2000 + an, path = path1))
-
 pmeasyr::irum(p,  typi = 4) %>% pmeasyr::tdiag() -> rum
-rum$rum %>% dplyr::mutate(DUREESEJPART = as.integer(difftime(D8SOUE, D8EEUE, units= c("days")))) -> rum$rum
+
 
 DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_rum", rum$rum)
 DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_diags", as.data.frame(rum$diags))
@@ -5944,9 +6234,7 @@ DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
 #' Les tables sont importées dans R puis copiées dans la db
 #'  
 #' @param con la connexion a la base de donnees (src_..)
-#' @param an l'annee pmsi
 #' @param p le noyau pmeasyr
-#' @param path1 le chemin d'acces aux donnees
 #' @param remove a TRUE, les tables precedentes rsa sont effacees avant
 #'
 #' @return nothing
@@ -5954,24 +6242,21 @@ DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
 #' @import DBI
 #' @export
 #'
-#' @usage db_rsf_out(con, an, p, path1 = '~/Documents/data/rsf', remove = T)
+#' @usage db_rsf_out(con, p, remove = T, ...)
 #' @examples
 #' \dontrun{
-#' purrr::quietly(db_rsf_out)(con, 16, p) -> statuts ; gc(); #ok
-#' purrr::quietly(db_rsf_out)(con, 15, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_rsf_out)(con, 14, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_rsf_out)(con, 13, p) -> statuts ; gc(); #..
-#' purrr::quietly(db_rsf_out)(con, 12, p) -> statuts ; gc(); #..
+#' purrr::quietly(db_rsf_out)(con, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_rsf_out)(con, p, annee = 2014) -> statuts ; gc(); #ok
 #' }
-db_rsf_out <- function(con, an, p, path1 = '~/Documents/data/rsf', remove = T){
+db_rsf_out <- function(con, p, remove = T, ...){
+  p <- utils::modifyList(p, list(...))
+  an <- substr(as.character(p$annee), 3, 4)
   
   if (remove == T){
     DBI::dbListTables(con) -> u
     u[grepl('_rafael_',u) & grepl(an,u)] -> lr
     lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
   }
-  
-  p <- utils::modifyList(p, list(annee = 2000 + an, path = path1))
   
   pmeasyr::irafael(p)  -> rsf
   pmeasyr::iano_rafael(p) -> rsf_ano
@@ -6017,7 +6302,7 @@ db_liste_tables <- function(con, nb = 15){
 #' 
 #' @return tibble
 #'
-#' @usage tbl_mco(con, 16, table)
+#' @usage tbl_mco(con, an, table)
 #' @examples
 #' \dontrun{
 #' tbl_mco(con, 16, 'rsa_rsa')
@@ -6032,7 +6317,7 @@ tbl_mco <- function(con, an, table){
 #'
 #' @return tibble
 #'
-#' @usage tbl_rsf(con, 16, table)
+#' @usage tbl_rsf(con, an, table)
 #' @examples
 #' \dontrun{
 #' tbl_rsf(con, 16, 'rsf_rafael_ano')
@@ -6047,7 +6332,7 @@ tbl_rsf <- function(con, an, table){
 #'
 #' @return tibble
 #'
-#' @usage tbl_ssr(con, 16, table)
+#' @usage tbl_ssr(con, an, table)
 #' @examples
 #' \dontrun{
 #' tbl_ssr(con, 16, 'rha_rha')
@@ -6062,7 +6347,7 @@ tbl_ssr <- function(con, an, table){
 #'
 #' @return tibble
 #'
-#' @usage tbl_had(con, 16, table)
+#' @usage tbl_had(con, an, table)
 #' @examples
 #' \dontrun{
 #' tbl_had(con, 16, 'rapss_rapss')
@@ -6077,7 +6362,7 @@ tbl_had <- function(con, an, table){
 #'
 #' @return tibble
 #'
-#' @usage tbl_psy(con, 16, table)
+#' @usage tbl_psy(con, an, table)
 #' @examples
 #' \dontrun{
 #' tbl_psy(con, 16, 'rpsa_rpsa')
@@ -6113,10 +6398,10 @@ db_generique <- function(con,  an, table, prefix, suffix, remove = T){
   nom <- prefix %+% "_" %+% an %+% "_" %+% suffix
   if (remove == T){
     DBI::dbListTables(con) -> u
-    u[u == nom] -> lr
-    DBI::dbRemoveTable(con, lr)
+    if (length(u[u == nom])>0){
+    DBI::dbRemoveTable(con, nom)}
   }
   
-  DBI::dbWriteTable(con, prefix %+% '_' %+% an %+% '_' %+% '_' %+% suffix, as.data.frame(table))
+  DBI::dbWriteTable(con, nom, as.data.frame(table))
 }
 

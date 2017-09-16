@@ -4,16 +4,12 @@
 \alias{db_mco_out}
 \title{~ db - Copier les rsa dans une db}
 \usage{
-db_mco_out(con, an, p, path1 = '~/Documents/data/mco', remove = T)
+db_mco_out(con, p, remove = T, ...)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}
 
-\item{an}{l'annee pmsi}
-
 \item{p}{le noyau pmeasyr}
-
-\item{path1}{le chemin d'acces aux donnees}
 
 \item{remove}{a TRUE, les tables precedentes rsa sont effacees avant}
 }
@@ -29,11 +25,7 @@ La table diag est créée, les variables ghm, année séquentielle des tarifs et
 }
 \examples{
 \dontrun{
-purrr::quietly(db_mco_out)(con, 16, p) -> statuts ; gc(); #ok
-purrr::quietly(db_mco_out)(con, 15, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_out)(con, 14, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_out)(con, 13, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_out)(con, 12, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_out)(con, 11, p) -> statuts ; gc(); #..
+purrr::quietly(db_mco_out)(con, p) -> statuts ; gc(); #ok
+purrr::quietly(db_mco_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
 }
 }

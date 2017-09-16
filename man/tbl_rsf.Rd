@@ -4,7 +4,7 @@
 \alias{tbl_rsf}
 \title{~ db - remote access aux tables rsf}
 \usage{
-tbl_rsf(con, 16, table)
+tbl_rsf(con, an, table)
 }
 \value{
 tibble

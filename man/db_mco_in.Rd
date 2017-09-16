@@ -4,16 +4,12 @@
 \alias{db_mco_in}
 \title{~ db - Copier les rum dans une db}
 \usage{
-db_mco_in(con, an, p, path1 = '~/Documents/data/mco', remove = T)
+db_mco_in(con, p, remove = T, ...)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}
 
-\item{an}{l'annee pmsi}
-
 \item{p}{le noyau pmeasyr}
-
-\item{path1}{le chemin d'acces aux donnees}
 
 \item{remove}{a TRUE, les tables precedentes rsa sont effacees avant}
 }
@@ -29,11 +25,7 @@ La table diag est créée et la durée des rum est calculée (DUREESEJPART)
 }
 \examples{
 \dontrun{
-purrr::quietly(db_mco_in)(con, 16, p) -> statuts ; gc(); #ok
-purrr::quietly(db_mco_in)(con, 15, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_in)(con, 14, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_in)(con, 13, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_in)(con, 12, p) -> statuts ; gc(); #..
-purrr::quietly(db_mco_in)(con, 11, p) -> statuts ; gc(); #..
+purrr::quietly(db_mco_in)(con, p) -> statuts ; gc(); #ok
+purrr::quietly(db_mco_in)(con, p, annee = 2015) -> statuts ; gc(); #..
 }
 }
