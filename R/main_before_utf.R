@@ -3667,6 +3667,8 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
+    
+    if (lib == T){
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CCAM)","Diagnostic associé",
                    "Code CSARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
                    "Code modulateur patient n°2", "Code de l'intervenant", "Nb de patients en acte individuel",
@@ -3675,6 +3677,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                    "Activité CCAM", "Extension documentaire CCAM")
     
     acdi <- acdi %>% sjlabelled::set_label(labelacdi)
+    }
   }
   if (annee == 2014){
     fzacte <- function(ccam){
@@ -3740,6 +3743,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
+    if (lib == T){
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CCAM)","Diagnostic associé",
                    "Code CSARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
                    "Code modulateur patient n°2", "Code de l'intervenant", "Nb de patients en acte individuel",
@@ -3748,7 +3752,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                    "Activité CCAM", "Extension documentaire CCAM")
     
     acdi <- acdi %>% sjlabelled::set_label(labelacdi)
-    
+    }
   }
   if (annee == 2013){
     fzacte <- function(ccam){
@@ -3815,6 +3819,8 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
+    
+    if (lib == T){
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CDARR / CCAM)","Diagnostic associé",
                    "Code CSARR","Code CDARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
                    "Code modulateur patient n°2", "Code de l'intervenant", "Nb de patients en acte individuel",
@@ -3822,7 +3828,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
     
     acdi <- acdi %>% sjlabelled::set_label(labelacdi)
-    
+    }
   }
   if (annee == 2012){
     fzacte <- function(ccam){
@@ -3886,13 +3892,17 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
+    acdi <- dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
+    
+    if (lib == T){
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CDARR / CCAM)","Diagnostic associé",
                    "Code CSARR","Code CDARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
                    "Code modulateur patient n°2", "Code de l'intervenant", "Nb de patients en acte individuel",
                    "Nb de réalisations","Acte compatible avec la semaine", "Délai depuis la date d'entrée dans l'UM",
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
-    acdi <- dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
+    
     acdi <- acdi %>% sjlabelled::set_label(labelacdi)
+    }
   }
   if (annee == 2011){
     fzacte <- function(ccam){
@@ -3950,13 +3960,15 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzdarr(cdarr), fzacte(ccam))
+    
+    if (lib == T){
     labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CDARR / CCAM)","Diagnostic associé",
                    "Code de l'intervenant", "Code CDARR", "Nb de réalisations","Acte compatible avec la semaine",
                    "Délai depuis la date d'entrée dans l'UM",
                    "Code CCAM", "Phase CCAM", "Activité CCAM", "Extension documentaire CCAM")
     
     acdi <- acdi %>% sjlabelled::set_label(labelacdi)
-    
+    }
   }
   
   
@@ -3969,15 +3981,17 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   
   rha_i <- rha_i[,!(names(rha_i) %in% Fillers)]
   
-  rha_i <- rha_i   %>% dplyr::select(-ZAD) %>% sjlabelled::set_label(libelles[!is.na(libelles)])
+  rha_i <- rha_i   %>% dplyr::select(-ZAD)
+  if (lib == T){
+   rha_i <- rha_i %>% sjlabelled::set_label(libelles[!is.na(libelles)])
+  }
   if (tolower_names){
     names(rha_i) <- tolower(names(rha_i))
     names(acdi) <- tolower(names(acdi))
   }
   
-  attr(rha_1,"problems") <- synthese_import
-  
   rha_1 = list(rha = rha_i, acdi = acdi)
+  attr(rha_1,"problems") <- synthese_import
   deux <- Sys.time()
   #cat("Données RHA importées en : ", deux-un, " secondes\n")
   return(rha_1)
@@ -4085,11 +4099,11 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
     class = "col_spec"
   )
   
+  ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+                           readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+  readr::problems(ano_i) -> synthese_import
+  
   if (annee>2012){
-    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
-    
-    readr::problems(ano_i) <- synthese_import
     
     ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
@@ -4105,9 +4119,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
                     TAUXRM   = TAUXRM  /100)
   }
   if (annee<2013){
-    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
-    readr::problems(ano_i) <- synthese_import
+
     
     ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
@@ -4120,17 +4132,17 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
                     MTBASERM = MTBASERM/100,
                     TAUXRM   = TAUXRM  /100)
   }
+  
+  if (lib == T){
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("FIL"))
+  }
   
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
   }
   
-  if (nrow(synthese_import) > 0){
-    cat("Problèmes à l'import :\n")
-    print(knitr::kable(synthese_import))
-  }
+
   attr(ano_i,"problems") <- synthese_import
   return(ano_i)
 }
@@ -4241,8 +4253,10 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
   readr::problems(ssrha_i) -> synthese_import
   
-  ssrha_i <- ssrha_i %>%
-    sjlabelled::set_label(libelles)
+  if (lib == T){
+    ssrha_i <- ssrha_i %>%
+      sjlabelled::set_label(libelles)
+  }
 
   if (annee > 2016){
     zac  <- ssrha_i %>% dplyr::select(NBZGP, ZGP)
@@ -4256,10 +4270,16 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
                         NJ = stringr::str_sub(zac1, 11, 13) %>% as.integer()) %>%
       dplyr::select(-zac1)
     
-    
+    if (lib == T){
     gp <- sjlabelled::set_label(gp, c("GME", "GMT", "Nombre de jours de présence"))
+    }
+    
     gp <- dplyr::bind_cols(fixe, gp) 
-    return(list(ssrha = ssrha_i, gme = gp))
+    
+    
+    ssrha_1 <- list(ssrha = ssrha_i, gme = gp)
+    attr(ssrha_1,"problems") <- synthese_import
+    return(ssrha_1)
   }
   if (tolower_names){
     names(ssrha_i) <- tolower(names(ssrha_i))
@@ -6281,7 +6301,7 @@ labeleasier <- function(col,
 
 #' ~ db - Copier les rsa dans une db
 #'
-#' Copier les rsa, les passages um, les actes et les diagnostics des rsa dans une db
+#' Copier les rsa, les passages um, les actes et les diagnostics des rsa, et ano dans une db
 #' 
 #' Les tables sont importées dans R puis copiées dans la db.
 #' La table diag est créée, les variables ghm, année séquentielle des tarifs
@@ -6291,7 +6311,7 @@ labeleasier <- function(col,
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rsa de l'annee sont effacees avant
-#'
+#' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
 #' @return nothing
 #' @export
 #'
@@ -6301,7 +6321,7 @@ labeleasier <- function(col,
 #' purrr::quietly(db_mco_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_mco_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
 #' }
-db_mco_out <- function(con, p, remove = T, ...){
+db_mco_out <- function(con, p, remove = T, zip = T, ...){
   
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
@@ -6311,7 +6331,9 @@ db_mco_out <- function(con, p, remove = T, ...){
     lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
   }
   
-
+  if (zip == T){
+    adezip(p, type = "out", liste = c('rsa', 'ano', 'tra'))
+  }
   
   
   pmeasyr::irsa(p,  typi = 6) %>% pmeasyr::tdiag() -> rsa
@@ -6332,6 +6354,81 @@ db_mco_out <- function(con, p, remove = T, ...){
   DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_um", as.data.frame(rsa$rsa_um))
   DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_ano", as.data.frame(rsa_ano))
   
+  if (zip == T){
+    pmeasyr::adelete(p)
+  }
+}
+
+
+#' ~ db - Copier les rha dans une db
+#'
+#' Copier les rha, les actes, les diagnostics des rha, ssrha et ano dans une db
+#' 
+#' Les tables sont importées dans R puis copiées dans la db.
+#' Le tra est ajouté aux tables.
+#' 
+#' @param con la connexion a la base de donnees (src_..)
+#' @param p le noyau pmeasyr
+#' @param remove a TRUE, les tables precedentes rha de l'annee sont effacees avant
+#' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
+#' @return nothing
+#' @export
+#'
+#' @usage db_ssr_out(con, p, remove = T, ...)
+#' @examples
+#' \dontrun{
+#' purrr::quietly(db_ssr_out)(con, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_ssr_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
+#' }
+db_ssr_out <- function(con, p, remove = T, zip = T, ...){
+  
+  p <- utils::modifyList(p, list(...))
+  an <- substr(as.character(p$annee), 3, 4)
+  if (remove == T){
+    DBI::dbListTables(con) -> u
+    u[grepl('ssr',u) & grepl(an, u)] -> lr
+    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  }
+  
+  
+  if (zip == T){
+    pmeasyr::adezip(p, type = "out", liste = c('rha', 'ano', 'sha', 'tra'))
+  }
+  
+  pmeasyr::irha(p) -> rha
+  pmeasyr::issrha(p) -> ssrha
+  pmeasyr::iano_ssr(p) -> rha_ano
+  pmeasyr::itra(p, champ = "ssr") -> tra
+  
+  pmeasyr::inner_tra(rha$rha, tra, champ = "ssr") -> rha$rha
+  pmeasyr::inner_tra(rha$acdi, tra, champ = "ssr") -> rha$acdi
+  
+  if (annee > 2016){
+    pmeasyr::inner_tra(ssrha$ssrha, tra) -> ssrha$ssrha
+    pmeasyr::inner_tra(ssrha$gme, tra) -> ssrha$gme
+  } 
+  else {
+    pmeasyr::inner_tra(ssrha, tra, champ = "ssr") -> ssrha
+  }
+  
+  pmeasyr::inner_tra(rha_ano, tra, champ = "ssr") -> rha_ano
+  
+  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_rha", as.data.frame(rha$rha))
+  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_acdi", as.data.frame(rha$acdi))
+  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ano", as.data.frame(rha_ano))
+  
+  if (annee > 2016){
+    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", as.data.frame(ssrha$ssrha))
+    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_gme", as.data.frame(ssrha$gme))
+  }
+  else {
+    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", as.data.frame(ssrha))  
+  }
+  
+  if (zip == T){
+    pmeasyr::adelete(p)
+  }
+  
 }
 
 #' ~ db - Copier les rapss dans une db
@@ -6344,7 +6441,7 @@ db_mco_out <- function(con, p, remove = T, ...){
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rapss de l'annee sont effacees avant
-#'
+#' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
 #' @return nothing
 #' @export
 #'
@@ -6354,7 +6451,7 @@ db_mco_out <- function(con, p, remove = T, ...){
 #' purrr::quietly(db_had_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_had_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
 #' }
-db_had_out <- function(con, p, remove = T, ...){
+db_had_out <- function(con, p, remove = T, zip = T, ...){
   
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
@@ -6364,7 +6461,10 @@ db_had_out <- function(con, p, remove = T, ...){
     lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
   }
   
-
+  if (zip == T){
+    pmeasyr::adezip(p, type = "out", liste = c('rapss', 'ano', 'tra'))
+  }
+  
   pmeasyr::irapss(p) -> rapss
   pmeasyr::iano_had(p) -> rapss_ano
   pmeasyr::itra(p, champ = "had") -> tra
@@ -6377,6 +6477,9 @@ db_had_out <- function(con, p, remove = T, ...){
   DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_acdi", as.data.frame(rapss$acdi))
   DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_ano", as.data.frame(rapss_ano))
   
+  if (zip == T){
+    pmeasyr::adelete(p)
+  }
 }
 
 #' ~ db - Copier les rpsa dans une db
@@ -6389,7 +6492,7 @@ db_had_out <- function(con, p, remove = T, ...){
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rpsa de l'annee sont effacees avant
-#'
+#' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
 #' @return nothing
 #' @export
 #'
@@ -6397,9 +6500,9 @@ db_had_out <- function(con, p, remove = T, ...){
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_psy_out)(con, p) -> statuts ; gc(); #ok
-#' purrr::quietly(db_psy_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
+#' purrr::quietly(db_psy_out)(con, p, annee = 2017, mois = 6) -> statuts ; gc(); #..
 #' }
-db_psy_out <- function(con, p, remove = T, ...){
+db_psy_out <- function(con, p, remove = T, zip = T, ...){
   
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
@@ -6409,6 +6512,9 @@ db_psy_out <- function(con, p, remove = T, ...){
     lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
   }
   
+  if (zip == T){
+    pmeasyr::adezip(p, type = "out", liste = c('rpsa', 'ano', 'tra', 'r3a'))
+  }
   
   pmeasyr::irpsa(p) -> rpsa
   pmeasyr::iano_psy(p) -> rpsa_ano
@@ -6440,6 +6546,9 @@ db_psy_out <- function(con, p, remove = T, ...){
   DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_r3a", as.data.frame(r3a$r3a))
   DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_das", as.data.frame(r3a$das))
   
+  if (zip == T){
+    pmeasyr::adelete(p)
+  }
 }
 
 
@@ -6453,7 +6562,7 @@ db_psy_out <- function(con, p, remove = T, ...){
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rum de l'annee sont effacees avant
-#'
+#' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
 #' @return nothing
 #' @export
 #'
@@ -6463,7 +6572,7 @@ db_psy_out <- function(con, p, remove = T, ...){
 #' purrr::quietly(db_mco_in)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_mco_in)(con, p, annee = 2015) -> statuts ; gc(); #..
 #' }
-db_mco_in <- function(con, p, remove = T, ...){
+db_mco_in <- function(con, p, remove = T, zip = T, ...){
   
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
@@ -6474,13 +6583,19 @@ db_mco_in <- function(con, p, remove = T, ...){
     lapply(lr, function(x){dbRemoveTable(con, x)})
   }
 
-pmeasyr::irum(p,  typi = 4) %>% pmeasyr::tdiag() -> rum
+  if (zip == T){
+    pmeasyr::adezip(p, type = "in", liste = 'rss')
+  }
+  pmeasyr::irum(p,  typi = 4) %>% pmeasyr::tdiag() -> rum
 
 
-DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_rum", rum$rum)
-DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_diags", as.data.frame(rum$diags))
-DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_rum", rum$rum)
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_diags", as.data.frame(rum$diags))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
 
+  if (zip == T){
+    pmeasyr::adelete(p)
+  }
 }
 
 #' ~ db - Copier les rsf dans une db
@@ -6492,7 +6607,7 @@ DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rafael de l'annee sont effacees avant
-#'
+#' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
 #' @return nothing
 #' 
 #' @import DBI
@@ -6504,7 +6619,7 @@ DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
 #' purrr::quietly(db_rsf_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_rsf_out)(con, p, annee = 2014) -> statuts ; gc(); #ok
 #' }
-db_rsf_out <- function(con, p, remove = T, ...){
+db_rsf_out <- function(con, p, remove = T, zip = T, ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
   
@@ -6512,6 +6627,10 @@ db_rsf_out <- function(con, p, remove = T, ...){
     DBI::dbListTables(con) -> u
     u[grepl('_rafael_',u) & grepl(an,u)] -> lr
     lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  }
+  
+  if (zip == T){
+    pmeasyr::adezip(p, type = "out", liste = c('rsfa', 'ano-ace'))
   }
   
   pmeasyr::irafael(p)  -> rsf
@@ -6527,6 +6646,9 @@ db_rsf_out <- function(con, p, remove = T, ...){
   
   DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_ano", as.data.frame(rsf_ano))
   
+  if (zip == T){
+    pmeasyr::adelete(p)
+  }
 }
 
 

@@ -12,6 +12,8 @@ db_had_out(con, p, remove = T, ...)
 \item{p}{le noyau pmeasyr}
 
 \item{remove}{a TRUE, les tables precedentes rapss de l'annee sont effacees avant}
+
+\item{zip}{a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db}
 }
 \value{
 nothing

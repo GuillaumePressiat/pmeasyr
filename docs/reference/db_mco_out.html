@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>Copier les rsa, les passages um, les actes et les diagnostics des rsa dans une db</p>
+    <p>Copier les rsa, les passages um, les actes et les diagnostics des rsa, et ano dans une db</p>
     
 
     <pre class="usage"><span class='fu'>db_mco_out</span>(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='no'>...</span>)</pre>
@@ -100,6 +100,10 @@
     <tr>
       <th>remove</th>
       <td><p>a TRUE, les tables precedentes rsa de l'annee sont effacees avant</p></td>
+    </tr>
+    <tr>
+      <th>zip</th>
+      <td><p>a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db</p></td>
     </tr>
     </table>
     

@@ -12,12 +12,14 @@ db_mco_out(con, p, remove = T, ...)
 \item{p}{le noyau pmeasyr}
 
 \item{remove}{a TRUE, les tables precedentes rsa de l'annee sont effacees avant}
+
+\item{zip}{a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db}
 }
 \value{
 nothing
 }
 \description{
-Copier les rsa, les passages um, les actes et les diagnostics des rsa dans une db
+Copier les rsa, les passages um, les actes et les diagnostics des rsa, et ano dans une db
 }
 \details{
 Les tables sont importées dans R puis copiées dans la db.
