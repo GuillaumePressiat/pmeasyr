@@ -6341,18 +6341,18 @@ db_mco_out <- function(con, p, remove = T, zip = T, ...){
   pmeasyr::itra(p) -> tra
   
   pmeasyr::inner_tra(rsa$rsa, tra) %>% 
-    mutate(diags = paste0(dpdrum,  das, collapse  = ', ')) -> rsa$rsa
+    mutate(diags = paste0(dpdrum,  das, sep  = ' ')) -> rsa$rsa
   
  pmeasyr::inner_tra(rsa$actes, tra) -> rsa$actes
  pmeasyr::inner_tra(rsa$diags, tra) -> rsa$diags
  pmeasyr::inner_tra(rsa$rsa_um, tra) -> rsa$rsa_um
  pmeasyr::inner_tra(rsa_ano, tra) -> rsa_ano
   
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_rsa", as.data.frame(rsa$rsa))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_actes", as.data.frame(rsa$actes))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_diags", as.data.frame(rsa$diags))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_um", as.data.frame(rsa$rsa_um))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_ano", as.data.frame(rsa_ano))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_rsa", dplyr::as_data_frame(rsa$rsa))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_actes", dplyr::as_data_frame(rsa$actes))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_diags", dplyr::as_data_frame(rsa$diags))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_um", dplyr::as_data_frame(rsa$rsa_um))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_ano", dplyr::as_data_frame(rsa_ano))
   
   if (zip == T){
     pmeasyr::adelete(p)
@@ -6403,7 +6403,7 @@ db_ssr_out <- function(con, p, remove = T, zip = T, ...){
   pmeasyr::inner_tra(rha$rha, tra, champ = "ssr") -> rha$rha
   pmeasyr::inner_tra(rha$acdi, tra, champ = "ssr") -> rha$acdi
   
-  if (annee > 2016){
+  if (p$annee > 2016){
     pmeasyr::inner_tra(ssrha$ssrha, tra) -> ssrha$ssrha
     pmeasyr::inner_tra(ssrha$gme, tra) -> ssrha$gme
   } 
@@ -6413,16 +6413,16 @@ db_ssr_out <- function(con, p, remove = T, zip = T, ...){
   
   pmeasyr::inner_tra(rha_ano, tra, champ = "ssr") -> rha_ano
   
-  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_rha", as.data.frame(rha$rha))
-  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_acdi", as.data.frame(rha$acdi))
-  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ano", as.data.frame(rha_ano))
+  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_rha", dplyr::as_data_frame(rha$rha))
+  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_acdi", dplyr::as_data_frame(rha$acdi))
+  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ano", dplyr::as_data_frame(rha_ano))
   
-  if (annee > 2016){
-    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", as.data.frame(ssrha$ssrha))
-    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_gme", as.data.frame(ssrha$gme))
+  if (p$annee > 2016){
+    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", dplyr::as_data_frame(ssrha$ssrha))
+    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_gme", dplyr::as_data_frame(ssrha$gme))
   }
   else {
-    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", as.data.frame(ssrha))  
+    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", dplyr::as_data_frame(ssrha))  
   }
   
   if (zip == T){
@@ -6473,9 +6473,9 @@ db_had_out <- function(con, p, remove = T, zip = T, ...){
   pmeasyr::inner_tra(rapss$acdi, tra) -> rapss$acdi
   pmeasyr::inner_tra(rapss_ano, tra) -> rapss_ano
   
-  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_rapss", as.data.frame(rapss$rapss))
-  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_acdi", as.data.frame(rapss$acdi))
-  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_ano", as.data.frame(rapss_ano))
+  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_rapss", dplyr::as_data_frame(rapss$rapss))
+  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_acdi", dplyr::as_data_frame(rapss$acdi))
+  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_ano", dplyr::as_data_frame(rapss_ano))
   
   if (zip == T){
     pmeasyr::adelete(p)
@@ -6535,16 +6535,16 @@ db_psy_out <- function(con, p, remove = T, zip = T, ...){
   pmeasyr::inner_tra(r3a$r3a, tra_r3a, champ = "psy_r3a") -> r3a$r3a
   pmeasyr::inner_tra(r3a$da, tra_r3a, champ = "psy_r3a") -> r3a$da
   
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_rpsa", as.data.frame(rpsa$rpsa))
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_das", as.data.frame(rpsa$das))
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_rpsa", dplyr::as_data_frame(rpsa$rpsa))
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_das", dplyr::as_data_frame(rpsa$das))
   
   if (p$annee > 2016){
-    DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_actes", as.data.frame(rpsa$actes))
+    DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_actes", dplyr::as_data_frame(rpsa$actes))
   }
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_ano", as.data.frame(rpsa_ano))
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_ano", dplyr::as_data_frame(rpsa_ano))
   
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_r3a", as.data.frame(r3a$r3a))
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_das", as.data.frame(r3a$das))
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_r3a", dplyr::as_data_frame(r3a$r3a))
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_das", dplyr::as_data_frame(r3a$das))
   
   if (zip == T){
     pmeasyr::adelete(p)
@@ -6589,9 +6589,9 @@ db_mco_in <- function(con, p, remove = T, zip = T, ...){
   pmeasyr::irum(p,  typi = 4) %>% pmeasyr::tdiag() -> rum
 
 
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_rum", rum$rum)
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_diags", as.data.frame(rum$diags))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_rum", dplyr::as_data_frame(rum$rum))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_diags", dplyr::as_data_frame(rum$diags))
+  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", dplyr::as_data_frame(rum$actes))
 
   if (zip == T){
     pmeasyr::adelete(p)
@@ -6636,15 +6636,15 @@ db_rsf_out <- function(con, p, remove = T, zip = T, ...){
   pmeasyr::irafael(p)  -> rsf
   pmeasyr::iano_rafael(p) -> rsf_ano
   
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_a", as.data.frame(rsf$A))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_b", as.data.frame(rsf$B))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_c", as.data.frame(rsf$C))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_h", as.data.frame(rsf$H))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_l", as.data.frame(rsf$L))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_m", as.data.frame(rsf$M))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_p", as.data.frame(rsf$P))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_a", dplyr::as_data_frame(rsf$A))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_b", dplyr::as_data_frame(rsf$B))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_c", dplyr::as_data_frame(rsf$C))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_h", dplyr::as_data_frame(rsf$H))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_l", dplyr::as_data_frame(rsf$L))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_m", dplyr::as_data_frame(rsf$M))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_p", dplyr::as_data_frame(rsf$P))
   
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_ano", as.data.frame(rsf_ano))
+  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_ano", dplyr::as_data_frame(rsf_ano))
   
   if (zip == T){
     pmeasyr::adelete(p)
@@ -6780,6 +6780,6 @@ db_generique <- function(con,  an, table, prefix, suffix, remove = T){
     DBI::dbRemoveTable(con, nom)}
   }
   
-  DBI::dbWriteTable(con, nom, as.data.frame(table))
+  DBI::dbWriteTable(con, nom, dplyr::as_data_frame(table))
 }
 
