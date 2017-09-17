@@ -4,7 +4,7 @@
 \alias{issrha}
 \title{~ SSR - Import des SSRHA}
 \usage{
-issrha(finess, annee, mois, path, lib = T, ...)
+issrha(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -16,6 +16,8 @@ issrha(finess, annee, mois, path, lib = T, ...)
 \item{path}{Localisation du fichier de donnees}
 
 \item{lib}{Ajout des libelles a la table : T}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

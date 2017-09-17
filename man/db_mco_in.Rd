@@ -11,7 +11,7 @@ db_mco_in(con, p, remove = T, ...)
 
 \item{p}{le noyau pmeasyr}
 
-\item{remove}{a TRUE, les tables precedentes rsa sont effacees avant}
+\item{remove}{a TRUE, les tables precedentes rum de l'annee sont effacees avant}
 }
 \value{
 nothing

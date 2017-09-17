@@ -4,7 +4,7 @@
 \alias{ipo}
 \title{~ MCO - Import des PO}
 \usage{
-ipo(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
+ipo(finess, annee, mois, path, typpo = c("out", "in"), lib = T, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -18,6 +18,8 @@ ipo(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
 \item{typpo}{Type de donnees In / Out}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

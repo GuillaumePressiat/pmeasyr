@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ PSY - Import des Anohosp — iano_psy • pmeasyr</title>
+<title>~ db - Copier les rapss dans une db — db_had_out • pmeasyr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,66 +77,46 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ PSY - Import des Anohosp</h1>
+    <h1>~ db - Copier les rapss dans une db</h1>
     </div>
 
     
-    <p>Import du fichier Ano Out</p>
+    <p>Copier les rapss, les actes, les diagnostics et la table ano des rapss dans une db</p>
     
 
-    <pre class="usage"><span class='fu'>iano_psy</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>db_had_out</span>(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>finess</th>
-      <td><p>Finess du Out a importer : dans le nom du fichier</p></td>
+      <th>con</th>
+      <td><p>la connexion a la base de donnees (src_..)</p></td>
     </tr>
     <tr>
-      <th>annee</th>
-      <td><p>Annee PMSI (nb) des donnees sur 4 caracteres (2016)</p></td>
+      <th>p</th>
+      <td><p>le noyau pmeasyr</p></td>
     </tr>
     <tr>
-      <th>mois</th>
-      <td><p>Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)</p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>Localisation du fichier de donnees</p></td>
-    </tr>
-    <tr>
-      <th>tolower_names</th>
-      <td><p>a TRUE les noms de colonnes sont tous en minuscules</p></td>
-    </tr>
-    <tr>
-      <th>~...</th>
-      <td><p>parametres supplementaires a passer
-dans la fonction <code><a href='http://www.rdocumentation.org/packages/readr/topics/read_fwf'>read_fwf</a></code>, par exemple
-<code>n_max = 1e3</code> pour lire les 1000 premieres lignes,  <code>progress = F, skip = 1e3</code></p></td>
+      <th>remove</th>
+      <td><p>a TRUE, les tables precedentes rapss de l'annee sont effacees avant</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Une table (data.frame, tbl_df) contenant les données Anohosp SSR du Out.</p>
+    <p>nothing</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Formats depuis 2012 pris en charge
-Structure du nom du fichier attendu (sortie de Genrha) :
-<em>finess.annee.moisc.ano</em>
-    <strong>750712184.2016.2.ano</strong></p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='irpsa.html'>irpsa</a></code>,
-utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p>
+    <p>Les tables sont importées dans R puis copiées dans la db.
+Le tra est ajouté aux tables.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-     <span class='no'>anoh</span> <span class='kw'>&lt;-</span> <span class='fu'>iano_psy</span>(<span class='st'>'750712184'</span>,<span class='fl'>2015</span>,<span class='fl'>12</span>,<span class='st'>"~/Documents/data/psy"</span>)
+  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_had_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#ok</span>
+  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_had_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>annee</span> <span class='kw'>=</span> <span class='fl'>2017</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>7</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#..</span>
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -147,15 +127,9 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-G. Pressiat
 
   </div>
 </div>

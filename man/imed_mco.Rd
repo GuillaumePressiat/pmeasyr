@@ -4,7 +4,7 @@
 \alias{imed_mco}
 \title{~ MCO - Import des Med}
 \usage{
-imed_mco(finess, annee, mois, path, lib = T, typmed = c('out', 'in'))
+imed_mco(finess, annee, mois, path, lib = T, tolower_names = F, typmed = c('out', 'in'))
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -18,6 +18,8 @@ imed_mco(finess, annee, mois, path, lib = T, typmed = c('out', 'in'))
 \item{typmed}{Type de donnees In / Out}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

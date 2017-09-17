@@ -92,6 +92,7 @@
 <li><p>Un nouveau parametre <code>tolower_names</code> permet de choisir des noms de colonnes en minuscules</p></li>
 <li><p>Les colonnes ghm, anseqta desormais presentes en sortie de irsa</p></li>
 <li><p>La colonne DUREESEJPART desormais presente en sortie de irum</p></li>
+<li><p>En cas de problème rencontré à la lecture du fichier pmsi, un attribut problems est accessible sur la table importée <code>obj</code> en appelant <code>readr::problems(obj)</code>. C’est un cas relativement fréquent lorsqu’aucune donnée de facturation n’est disponible pour un patient : dans le fichier ano, des XXXX sont présents à la place de données numériques.</p></li>
 </ul>
 </div>
 <div id="vers-la-base-de-donnees" class="section level3">
@@ -100,7 +101,7 @@
 <ul>
 <li><p>de nouvelles fonctions <code>db_mco_in</code>, <code>db_mco_out</code>, <code>db_rsf_out</code> et <code>db_generique</code> permettent d’integrer les tables de pmeasyr dans une base de donnees <code>src_</code>, avec <em>dplyr</em> &amp; <em>dbplyr</em>, <em>DBI</em>, <em>MonetDBLite</em> <em>RSQLite</em>, <em>RPostgreSQL</em>, etc.</p></li>
 <li><p>des fonctions <code>tbl_mco</code>, <code>tbl_rsf</code>, <code>tbl_had</code>, <code>tbl_ssr</code>, <code>tbl_psy</code> pour se connecter a ses tables</p></li>
-<li><p>Bientôt une vignette presentera ces fonctionnalites</p></li>
+<li><p>Une vignette présente ces fonctionalités</p></li>
 </ul>
 </div>
 </div>

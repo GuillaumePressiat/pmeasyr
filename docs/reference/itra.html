@@ -84,7 +84,7 @@
     <p>Import du fichier TRA, 4 champs PMSI couverts.</p>
     
 
-    <pre class="usage"><span class='fu'>itra</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>champ</span> <span class='kw'>=</span> <span class='st'>"mco"</span>)</pre>
+    <pre class="usage"><span class='fu'>itra</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>champ</span> <span class='kw'>=</span> <span class='st'>"mco"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -111,7 +111,11 @@
     </tr>
     <tr>
       <th>champ</th>
-      <td><p>Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"</p></td>
+      <td><p>Champ PMSI du TRA a integrer ("mco", "ssr", "had", "psy_rpsa", ", "psy_r3a"), par defaut "mco"</p></td>
+    </tr>
+    <tr>
+      <th>tolower_names</th>
+      <td><p>a TRUE les noms de colonnes sont tous en minuscules</p></td>
     </tr>
     <tr>
       <th>~...</th>

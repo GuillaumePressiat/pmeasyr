@@ -4,7 +4,7 @@
 \alias{iano_mco}
 \title{~ MCO - Import des Anohosp}
 \usage{
-iano_mco(finess, annee, mois, path, lib = T, typano = "out")
+iano_mco(finess, annee, mois, path, lib = T, tolower_names = F, typano = "out")
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -18,6 +18,8 @@ iano_mco(finess, annee, mois, path, lib = T, typano = "out")
 \item{typano}{Type de donnees In / Out}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

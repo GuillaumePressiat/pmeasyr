@@ -84,7 +84,7 @@
     <p>Import de la liste d'erreurs de génération Paprica</p>
     
 
-    <pre class="usage"><span class='fu'>ileg_had</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>reshape</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ileg_had</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>reshape</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -108,6 +108,10 @@
     <tr>
       <th>reshape</th>
       <td><p>booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F</p></td>
+    </tr>
+    <tr>
+      <th>tolower_names</th>
+      <td><p>a TRUE les noms de colonnes sont tous en minuscules</p></td>
     </tr>
     </table>
     

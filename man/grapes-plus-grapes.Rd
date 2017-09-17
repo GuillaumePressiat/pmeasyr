@@ -2,12 +2,12 @@
 % Please edit documentation in R/main_before_utf.R
 \name{\%+\%}
 \alias{\%+\%}
-\title{... ~ paste0 comme un pipe}
+\title{~ ... paste0 comme un pipe}
 \usage{
 x %+% y
 }
 \description{
-... ~ paste0 comme un pipe
+~ ... paste0 comme un pipe
 }
 \examples{
 \dontrun{

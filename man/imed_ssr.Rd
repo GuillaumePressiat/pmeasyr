@@ -4,7 +4,7 @@
 \alias{imed_ssr}
 \title{~ SSR - Import des Med}
 \usage{
-imed_ssr(finess, annee, mois, path, lib = T, ...)
+imed_ssr(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -16,6 +16,8 @@ imed_ssr(finess, annee, mois, path, lib = T, ...)
 \item{path}{Localisation du fichier de donnees}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

@@ -4,7 +4,7 @@
 \alias{ileg_mco}
 \title{~ MCO - Import des erreurs Leg}
 \usage{
-ileg_mco(finess, annee, mois, path, reshape = F, ...)
+ileg_mco(finess, annee, mois, path, reshape = F, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -16,6 +16,8 @@ ileg_mco(finess, annee, mois, path, reshape = F, ...)
 \item{path}{Localisation du fichier de donnees}
 
 \item{reshape}{booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

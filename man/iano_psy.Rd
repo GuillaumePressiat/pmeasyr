@@ -4,7 +4,7 @@
 \alias{iano_psy}
 \title{~ PSY - Import des Anohosp}
 \usage{
-iano_psy(finess, annee, mois, path, lib = T, ...)
+iano_psy(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -14,6 +14,8 @@ iano_psy(finess, annee, mois, path, lib = T, ...)
 \item{mois}{Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)}
 
 \item{path}{Localisation du fichier de donnees}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

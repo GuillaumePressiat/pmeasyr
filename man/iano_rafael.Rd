@@ -4,7 +4,7 @@
 \alias{iano_rafael}
 \title{~ RSF - Import des Anohosp RSFA}
 \usage{
-iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
+iano_rafael(finess, annee, mois, path, lib = T, lamda = F, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -18,6 +18,8 @@ iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
 \item{lamda}{a TRUE, importe le fichier ano-ace-maj}
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

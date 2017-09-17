@@ -114,7 +114,7 @@ p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/noyau_pme
 <h4 class="hasAnchor">
 <a href="#mco" class="anchor"></a>MCO</h4>
 <p>Avec les fonctions <code>db_mco_in</code> et <code>db_mco_out</code>, les tables rum, actes et diagnostics des rums, les tables rsa, actes, diagnostics et passages um et ano des rsa sont integrees dans la db, avec le fichier tra accole.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tables mco in 2011 - 2016</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tables mco in 2011</span>
 purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2011</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ok ?</span>
 <span class="co"># ... 2012 -- 2015</span>
 purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
@@ -127,9 +127,7 @@ purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_out)(con, 
 <h4 class="hasAnchor">
 <a href="#rsf" class="anchor"></a>RSF</h4>
 <p>Avec la fonction <code>db_rsf_out</code>, tous les rafael du out sont integrees dans la db, un par table (A, B, C, etc) et la table ano-ace.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tables mco in 2011 - 2016</span>
-
-p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/rsf"</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/rsf"</span>
 
 <span class="co"># Tables rsf out 2016</span>
 purrr<span class="op">::</span><span class="kw">quietly</span>(db_rsf_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></code></pre></div>

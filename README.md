@@ -1,10 +1,10 @@
-# pmeasyr : import de données PMSI 
+# pmeasyr : données PMSI avec R
 
 ***Guillaume Pressiat***
 
 ***SIMAP / DOMU / AP-HP***
 
-*16 janvier 2017*
+*17 septembre 2017*
 
 Un [livret numérique en ligne](https://guillaumepressiat.github.io/pmeasyr/) présente le fonctionnement du package et donne des exemples de codes (imports, requêtes, analyses) pour se familiariser à son utilisation.
 

@@ -4,7 +4,7 @@
 \alias{itra}
 \title{~ TRA - Import du TRA}
 \usage{
-itra(finess, annee, mois, path, lib = T, champ = "mco")
+itra(finess, annee, mois, path, lib = T, tolower_names = F, champ = "mco")
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
@@ -17,7 +17,9 @@ itra(finess, annee, mois, path, lib = T, champ = "mco")
 
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
 
-\item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"}
+\item{champ}{Champ PMSI du TRA a integrer ("mco", "ssr", "had", "psy_rpsa", ", "psy_r3a"), par defaut "mco"}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple

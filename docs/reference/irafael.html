@@ -84,7 +84,7 @@
     <p>Import des Rafael et des Rafael reprises</p>
     
 
-    <pre class="usage"><span class='fu'>irafael</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>lister</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>,
+    <pre class="usage"><span class='fu'>irafael</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>lister</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>,
 <span class='st'>"C"</span>, <span class='st'>"H"</span>, <span class='st'>"L"</span>, <span class='st'>"M"</span>, <span class='st'>"P"</span>), <span class='kw'>lamda</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -121,6 +121,10 @@
     <tr>
       <th>lamda</th>
       <td><p>a TRUE, importe les fichiers <code>rsfa-maj</code> de reprise de l'annee passee</p></td>
+    </tr>
+    <tr>
+      <th>tolower_names</th>
+      <td><p>a TRUE les noms de colonnes sont tous en minuscules</p></td>
     </tr>
     <tr>
       <th>~...</th>

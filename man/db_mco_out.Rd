@@ -11,7 +11,7 @@ db_mco_out(con, p, remove = T, ...)
 
 \item{p}{le noyau pmeasyr}
 
-\item{remove}{a TRUE, les tables precedentes rsa sont effacees avant}
+\item{remove}{a TRUE, les tables precedentes rsa de l'annee sont effacees avant}
 }
 \value{
 nothing
@@ -20,8 +20,10 @@ nothing
 Copier les rsa, les passages um, les actes et les diagnostics des rsa dans une db
 }
 \details{
-Les tables sont importées dans R puis copiées dans la db
-La table diag est créée, les variables ghm, année séquentielle des tarifs et un champ caractère diagnostics sont ajoutés à la table rsa
+Les tables sont importées dans R puis copiées dans la db.
+La table diag est créée, les variables ghm, année séquentielle des tarifs
+et un champ caractère diagnostics sont ajoutés à la table rsa.
+Le tra est ajouté aux tables.
 }
 \examples{
 \dontrun{

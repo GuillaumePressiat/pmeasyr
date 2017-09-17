@@ -4,7 +4,7 @@
 \alias{irafael}
 \title{~ RSF - Import des Rafael}
 \usage{
-irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
+irafael(finess, annee, mois, path, lib = T, tolower_names = F, stat = T, lister = c("A", "B",
 "C", "H", "L", "M", "P"), lamda = F, ...)
 }
 \arguments{
@@ -23,6 +23,8 @@ irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
 \item{lister}{Liste des types d'enregistrements a importer}
 
 \item{lamda}{a TRUE, importe les fichiers \code{rsfa-maj} de reprise de l'annee passee}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{Autres parametres a specifier \code{n_max = 1e3}, ...}
 }

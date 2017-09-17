@@ -332,6 +332,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
       DP    = stringr::str_trim(DP),
       DR    = stringr::str_trim(DR)) %>% 
       dplyr::mutate(DUREESEJPART = as.integer(difftime(D8SOUE, D8EEUE, units= c("days"))))
+    readr::problems(rum_i) -> synthese_import
   }
   if (typi== 1){
     
@@ -585,6 +586,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
     rum_1 <- list(rum = rum_i, actes = actes, das = das, dad = dad)
     class(rum_1) <- append(class(rum_1),"RUM")
     deux<-Sys.time()
+    attr(rum_i,"problems") <- synthese_import
     #cat(paste("MCO RUM Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     return(rum_1)
   }
@@ -646,6 +648,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param typi Type d'import, par defaut a 4, a 0 : propose a l'utilisateur de choisir au lancement
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -661,7 +664,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
 #'
 #' @seealso \code{\link{irum}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage irsa(finess, annee, mois, path, lib = T, typi = 4, ...)
+#' @usage irsa(finess, annee, mois, path, lib = T, typi = 4, tolower_names = F, ...)
 #' @export irsa
 #' @export
 irsa <- function(...){
@@ -762,7 +765,10 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
   if (typi !=0){
     #cat('Lecture du fichier | Parsing partie fixe...\n')
     rsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsa"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ... ) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ... ) 
+    readr::problems(rsa_i) -> synthese_import
+    
+    rsa_i <- rsa_i %>%
       dplyr::mutate(DP = stringr::str_trim(DP),
                     DR = stringr::str_trim(DR),
       ghm = paste0(RSACMD, RSATYPE, RSANUM, RSACOMPX),
@@ -788,7 +794,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     }
     rsa_1 <- list(rsa = rsa_i)
     class(rsa_1) <- append(class(rsa_1),"RSA")
-    
+    attr(rsa_1,"problems") <- synthese_import
     return(rsa_1)
   }
   pmeasyr::formats %>% dplyr::filter(table == "rsa" & an == as.integer(annee)) -> rg
@@ -857,7 +863,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     
     deux<-Sys.time()
    #cat(paste("MCO RSA Light+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-    
+    attr(rsa_1,"problems") <- synthese_import
     return(rsa_1)
     
   }
@@ -915,7 +921,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     #cat(paste("MCO RSA Light++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     #cat("La table rsa est dans l'environnement de travail\n")
     
-    
+    attr(rsa_1,"problems") <- synthese_import
     return(rsa_1)
   }
   
@@ -1028,7 +1034,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
                   rsa_um=rsa_um)
     class(rsa_1) <- append(class(rsa_1),"RSA")
     #cat(paste("MCO RSA Standard",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
-    
+    attr(rsa_1,"problems") <- synthese_import
     return(rsa_1)
   }
   if (typi == 5){
@@ -1149,7 +1155,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     #cat(paste("MCO RSA Standard+",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     #cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
     
-    
+    attr(rsa_1,"problems") <- synthese_import
     return(rsa_1)
     
   }
@@ -1271,7 +1277,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     #cat(paste("MCO RSA Standard++",annee, paste0("M",mois),"chargés en : ",round(difftime(deux,un, units="secs"),0), "secondes\n"))
     #cat("Les tables rsa, acdi et rsa_um sont dans l'environnement de travail\n")
     
-    
+    attr(rsa_1,"problems") <- synthese_import
     return(rsa_1)
   }
   cat("Quel type d'import ?\n")
@@ -1311,7 +1317,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
-#' @param champ Champ PMSI du TRA a integrer ("mco", "ssr", "had", "tra_psy_rpsa", ", "tra_psy_r3a"), par defaut "mco"
+#' @param champ Champ PMSI du TRA a integrer ("mco", "ssr", "had", "psy_rpsa", ", "psy_r3a"), par defaut "mco"
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}
@@ -1325,7 +1332,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
 #'
 #' @author G. Pressiat
 #'
-#' @usage itra(finess, annee, mois, path, lib = T, champ = "mco")
+#' @usage itra(finess, annee, mois, path, lib = T, tolower_names = F, champ = "mco")
 #' @seealso \code{\link{irum}}, \code{\link{irsa}}, \code{\link{ileg_mco}}, \code{\link{iano_mco}}, \code{\link{irha}}, \code{\link{irapss}}, \code{\link{irpsa}}, \code{\link{ir3a}}, 
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 
@@ -1408,14 +1415,20 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   
   if (champ=="mco"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(tra_i) -> synthese_import
+    
+    tra_i <- tra_i %>%
       dplyr::mutate(DTENT  = lubridate::dmy(DTENT),
                     DTSORT = lubridate::dmy(DTSORT),
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
   }
   if (champ=="had"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(tra_i) -> synthese_import
+    
+    tra_i <- tra_i %>%
       dplyr::mutate(DTENT  = lubridate::dmy(DTENT),
                     DTSORT = lubridate::dmy(DTSORT),
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2)),
@@ -1427,26 +1440,32 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   }
   if (champ=="ssr"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(tra_i) -> synthese_import
+    tra_i <- tra_i %>%
       dplyr::mutate(NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
   }
-  if (champ=="tra_psy_rpsa"){
+  if (champ=="psy_rpsa"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(tra_i) -> synthese_import
+    tra_i <- tra_i %>%
       dplyr::mutate(NOHOP = paste0("000",stringr::str_sub(NAS,1,2)),
                     DTENT  = lubridate::dmy(DTENT),
                     DTSORT = lubridate::dmy(DTSORT),
                     DT_DEB_SEQ = lubridate::dmy(DT_DEB_SEQ),
                     DT_FIN_SEQ = lubridate::dmy(DT_FIN_SEQ))
   }
-  if (champ=="tra_psy_r3a"){
+  if (champ=="psy_r3a"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.raa.txt"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(tra_i) -> synthese_import
+    tra_i <- tra_i %>%
       dplyr::mutate(DTACTE  = lubridate::dmy(DTACTE),
                     DTACTE_2  = lubridate::dmy(DTACTE_2))
   }
   
-  if (lib==T & champ !="tra_psy_r3a"){
+  if (lib==T & champ !="psy_r3a"){
     if (tolower_names){
       names(tra_i) <- tolower(names(tra_i))
     }
@@ -1454,7 +1473,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     return(tra_i  %>%  sjlabelled::set_label(v))
   }
   
-  if (lib==T & champ =="tra_psy_r3a"){
+  if (lib==T & champ =="psy_r3a"){
     if (tolower_names){
       names(tra_i) <- tolower(names(tra_i))
     }
@@ -1465,7 +1484,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   if (tolower_names){
     names(tra_i) <- tolower(names(tra_i))
   }
-  
+  attr(tra_i,"problems") <- synthese_import
   return(tra_i)
 }
 
@@ -1487,6 +1506,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
 #' @param path Localisation du fichier de donnees
 #' @param typano Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -1504,7 +1524,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
 #' @seealso \code{\link{irum}}, \code{\link{irsa}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 #' @export iano_mco
-#' @usage iano_mco(finess, annee, mois, path, lib = T, typano = "out")
+#' @usage iano_mco(finess, annee, mois, path, lib = T, tolower_names = F, typano = "out")
 #' @export
 iano_mco <- function( ...){
   UseMethod('iano_mco')
@@ -1587,7 +1607,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                                readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
       
-      # readr::problems(ano_i) -> synthese_import
+      readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>%
                          dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
@@ -1609,7 +1629,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       
       ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                                               readr::fwf_widths(af,an), col_types =at, na=character(), ...)  
-  # readr::problems(ano_i) -> synthese_import
+  readr::problems(ano_i) -> synthese_import
   ano_i <- ano_i %>%
     dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                   DTENT    = lubridate::dmy(DTENT),
@@ -1708,7 +1728,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
-      # readr::problems(ano_i) -> synthese_import
+      readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>% 
         dplyr::mutate(
@@ -1733,7 +1753,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
   }
-  
+  attr(ano_i,"problems") <- synthese_import
   return(ano_i)
 }
 
@@ -1749,6 +1769,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
 #' @param path Localisation du fichier de donnees
 #' @param typmed Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -1765,7 +1786,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
 #'
 #' @author G. Pressiat
 #'
-#' @usage imed_mco(finess, annee, mois, path, lib = T, typmed = c('out', 'in'))
+#' @usage imed_mco(finess, annee, mois, path, lib = T, tolower_names = F, typmed = c('out', 'in'))
 #' @seealso \code{\link{irum}}, \code{\link{irsa}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 #' @export imed_mco
@@ -1848,7 +1869,10 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     )
     
     med_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(med_i) -> synthese_import
+    
+    med_i <- med_i %>%
       dplyr::mutate(NBADM = NBADM/1000,
                     PRIX =  PRIX /1000)
     
@@ -1856,7 +1880,10 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
     if (info$size >0 & !is.na(info$size)){
       med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
-                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                              readr::fwf_widths(af,an), col_types =at, na=character(), ...)
+      synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i2))
+      
+      med_i2 <- med_i2 %>%
         dplyr::mutate(NBADM = NBADM/1000,
                       PRIX =  PRIX /1000)
       med_i <- rbind(med_i,med_i2)
@@ -1865,9 +1892,14 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medthrombo"))
     if (info$size >0 & !is.na(info$size)){
       med_i3<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medthrombo"),
-                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i3))
+      
+      med_i3 <- med_i3 %>%
         dplyr::mutate(NBADM = NBADM/1000,
                       PRIX =  PRIX /1000)
+      
       med_i <- rbind(med_i,med_i3)
     }
     if (lib==T){
@@ -1877,7 +1909,8 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     if (tolower_names){
       names(med_i) <- tolower(names(med_i))
     }
-    return( med_i  )
+    attr(med_i,"problems") <- synthese_import
+    return(med_i)
   }
   if (typmed=="in"){
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rum_med', an == substr(as.character(annee),3,4))
@@ -1916,7 +1949,11 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     info = file.info(paste0(path,"/",finess,".",annee,".",mois,".med.txt"))
     if (info$size >0 & !is.na(info$size)){
       med_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med.txt"),
-                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(med_i) -> synthese_import
+      
+      med_i <- med_i %>%
         dplyr::mutate(NBADM = NBADM/1000,
                       PRIX =  PRIX /1000)
     }
@@ -1929,6 +1966,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     if (tolower_names){
       names(med_i) <- tolower(names(med_i))
     }
+    attr(med_i,"problems") <- synthese_import
     return(med_i)
   }
   
@@ -1946,6 +1984,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
 #' @param path Localisation du fichier de donnees
 #' @param typdmi Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2037,7 +2076,11 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
       class = "col_spec"
     )
     dmi_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".dmip"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    
+    readr::problems(dmi_i) -> synthese_import
+    
+    dmi_i <- dmi_i %>%
       dplyr::mutate(PRIX   =  PRIX /1000)
     
     
@@ -2048,6 +2091,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
     if (tolower_names){
       names(dmi_i) <- tolower(names(dmi_i))
     }
+    attr(dmi_i,"problems") <- synthese_import
     return(dmi_i)
   }
   if (typdmi=="in"){
@@ -2085,7 +2129,11 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
       class = "col_spec"
     )
     dmi_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".dmi.txt"),
-                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    
+    readr::problems(dmi_i) -> synthese_import
+    
+    dmi_i <- dmi_i %>%
       dplyr::mutate(PRIX   =  PRIX /1000,
                     DTPOSE = lubridate::dmy(DTPOSE))
     
@@ -2098,6 +2146,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
     if (tolower_names){
       names(dmi_i) <- tolower(names(dmi_i))
     }
+    attr(dmi_i,"problems") <- synthese_import
     return(dmi_i)
   }
 }
@@ -2113,6 +2162,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2129,7 +2179,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #' @seealso \code{\link{irum}}, \code{\link{irsa}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 #' @export ileg_mco
-#' @usage ileg_mco(finess, annee, mois, path, reshape = F, ...)
+#' @usage ileg_mco(finess, annee, mois, path, reshape = F, tolower_names = F, ...)
 #' @export
 ileg_mco <- function(...){
   UseMethod('ileg_mco')
@@ -2242,21 +2292,20 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
       return(suppressMessages(  dplyr::inner_join(table, tra)))
     }
   }
-  if (champ == "psyrpsa"){
+  if (champ == "psy_rpsa"){
     if (sel==1){
-      return(suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(c(3:5,10)),
-                                                 by=c('NOSEJPSY'='NOSEQSEJ','NOSEQ'='NOSEQ'))))
+      return(suppressMessages( dplyr::inner_join(table, tra %>% dplyr::select(c(3:5,10)))))
     }
     if (sel==2){
-      return(suppressMessages(  dplyr::inner_join(table, tra, by=c('NOSEJPSY'='NOSEQSEJ','NOSEQ'='NOSEQ'))))
+      return(suppressMessages(  dplyr::inner_join(table, tra)))
     }
   }
-  if (champ == "psyr3a"){
+  if (champ == "psy_r3a"){
     if (sel==1){
-      return(suppressMessages( dplyr::inner_join(table, tra, by=c('NOORDR'='NOORDR'))))
+      return(suppressMessages( dplyr::inner_join(table, tra)))
     }
     if (sel==2){
-      return(suppressMessages(  dplyr::inner_join(table, tra, by=c('NOORDR'='NOORDR'))))
+      return(suppressMessages(  dplyr::inner_join(table, tra)))
     }
   }
   if (!(sel %in% 1:2)){
@@ -2283,6 +2332,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @param path Localisation du fichier de donnees
 #' @param typdiap Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2297,7 +2347,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irum}}, \code{\link{irsa}}
-#' @usage idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, ...)
+#' @usage idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, tolower_names = F, ...)
 #' @export idiap
 #' @export
 idiap <- function(...){
@@ -2376,6 +2426,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
     
     diap_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".diap"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...)
+    readr::problems(diap_i) -> synthese_import
     
     
     if (lib==T){
@@ -2385,6 +2436,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
     if (tolower_names){
       names(diap_i) <- tolower(names(diap_i))
     }
+    attr(diap_i,"problems") <- synthese_import
     return(diap_i)
   }
   if (typdiap=="in"){
@@ -2423,7 +2475,10 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
     )
     
     diap_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".diap.txt"),
-                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(diap_i) -> synthese_import
+    
+    diap_i <- diap_i %>%
       dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
     
     
@@ -2435,6 +2490,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
     if (tolower_names){
       names(diap_i) <- tolower(names(diap_i))
     }
+    attr(diap_i,"problems") <- synthese_import
     return(diap_i)
   }
   
@@ -2453,6 +2509,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2468,7 +2525,7 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
 #'
 #' @seealso \code{\link{irsa}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage iium(finess, annee, mois, path, lib = T, ...)
+#' @usage iium(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export iium
 #' @export
 iium <- function(...){
@@ -2540,7 +2597,10 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   )
   
   ium_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ium"),
-                         readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                         readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+  readr::problems(ium_i) -> synthese_import
+  
+  ium_i <- ium_i %>%
     dplyr::mutate(DTEAUT = lubridate::dmy(DTEAUT))
   
   
@@ -2551,6 +2611,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   if (tolower_names){
     names(ium_i) <- tolower(names(ium_i))
   }
+  attr(ium_i,"problems") <- synthese_import
   return(ium_i)
 }
 
@@ -2566,6 +2627,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
 #' @param path Localisation du fichier de donnees
 #' @param typpo Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2579,7 +2641,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irum}}, \code{\link{irsa}}, utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage ipo(finess, annee, mois, path, typpo = c("out", "in"), lib = T, ...)
+#' @usage ipo(finess, annee, mois, path, typpo = c("out", "in"), lib = T, tolower_names = F, ...)
 #' @export ipo
 #' @export
 ipo <- function( ...){
@@ -2658,6 +2720,7 @@ if (typpo=="out"){
   
   po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg"),
                         readr::fwf_widths(af,an), col_types =at, na=character(), ...)
+  readr::problems(po_i) -> synthese_import
   
   
   if (lib==T){
@@ -2667,6 +2730,8 @@ if (typpo=="out"){
   if (tolower_names){
     names(po_i) <- tolower(names(po_i))
   }
+  
+  attr(po_i,"problems") <- synthese_import
   return(po_i)
 }
 if (typpo=="in"){
@@ -2705,7 +2770,10 @@ if (typpo=="in"){
   )
   
   po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg.txt"),
-                        readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                        readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+  readr::problems(po_i) -> synthese_import
+  
+  po_i <- po_i %>%
     dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
   
   
@@ -2716,6 +2784,7 @@ if (typpo=="in"){
   if (tolower_names){
     names(po_i) <- tolower(names(po_i))
   }
+  attr(po_i,"problems") <- synthese_import
   return(po_i)
 }
 
@@ -2742,6 +2811,7 @@ if (typpo=="in"){
 #' @param annee Annee PMSI (nb) des données sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -2757,7 +2827,7 @@ if (typpo=="in"){
 #'
 #' @seealso \code{\link{iano_had}}, \code{\link{ileg_had}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage irapss(finess, annee, mois, path, lib = T, ...)
+#' @usage irapss(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export irapss
 #' @export
 irapss <- function(...){
@@ -2838,8 +2908,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   
   rapss_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rapss"),
                              readr::fwf_widths(af,an), col_types = at , na=character(),...)
-  
-  
+  readr::problems(rapss_i) -> synthese_import
   
   if (annee==2011){
     zght <- ".{5}"
@@ -3068,6 +3137,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   }
   
   rapss_1 <- list(rapss = rapss_i, acdi = acdi, ght = ght)
+  attr(rapss_1, "problems") <- synthese_import
   return(rapss_1)
   
 }
@@ -3087,6 +3157,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -3102,7 +3173,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
 #'
 #' @seealso \code{\link{irapss}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage iano_had(finess, annee, mois, path, lib = T, ...)
+#' @usage iano_had(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export iano_had
 #' @export
 iano_had <- function(...){
@@ -3174,7 +3245,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
   if (annee<=2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
-    #readr::problems(ano_i) -> synthese_import
+    readr::problems(ano_i) -> synthese_import
     
     ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
@@ -3190,7 +3261,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
   if (annee>2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
-    #readr::problems(ano_i) -> synthese_import
+    readr::problems(ano_i) -> synthese_import
     
     ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
@@ -3205,12 +3276,15 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
                     MTRMBAMC = MTRMBAMC/100,
                     TAUXRM   = TAUXRM  /100)
   }
+  if (lib==T){
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
+  }
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
   }
-  
+
+  attr(ano_i,"problems") <- synthese_import
   return(ano_i)
 }
 
@@ -3229,6 +3303,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -3244,7 +3319,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
 #'
 #' @seealso \code{\link{irapss}}
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage imed_had(finess, annee, mois, path, lib = T, ...)
+#' @usage imed_had(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export imed_had
 #' @export
 imed_had <- function(...){
@@ -3313,14 +3388,20 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
     class = "col_spec"
   )
   med_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
-                           readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                           readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+  readr::problems(med_i) -> synthese_import
+  
+  med_i <- med_i %>%
     dplyr::mutate(NBADM = NBADM/1000,
                   PRIX  = PRIX /1000) %>% sjlabelled::set_label(libelles)
   
   info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
   if (info$size >0 & !is.na(info$size)){
     med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
-                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
+                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+     synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i2))
+    
+    med_i2 <- med_i2 %>%
       dplyr::mutate(NBADM = NBADM/1000,
                     PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
     med_i <- rbind(med_i,med_i2)
@@ -3328,6 +3409,8 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
   if (tolower_names){
     names(med_i) <- tolower(names(med_i))
   }
+  
+  attr(med_i,"problems") <- synthese_import
   return(med_i)
 }
 
@@ -3341,6 +3424,7 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #'
 #' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
 #'
@@ -3353,7 +3437,7 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
 #'
 #' @seealso \code{\link{irapss}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage ileg_had(finess, annee, mois, path, reshape = F, ...)
+#' @usage ileg_had(finess, annee, mois, path, reshape = F, tolower_names = F, ...)
 #' @export ileg_had
 #' @export
 ileg_had <- function(...){
@@ -3428,6 +3512,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
 #' @param mois Mois de la periode (du fichier Out)
 #' @param path Chemin d'acces au fichier .rha
 #' @param lib Attribution de libelles aux colonnes
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max=10e3} pour lire les 1000 premieres lignes
@@ -3439,7 +3524,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
 #' @author G. Pressiat
 #' @seealso \code{\link{iano_ssr}}, \code{\link{ileg_ssr}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage irha(finess, annee, mois, path, lib = T, ...)
+#' @usage irha(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export irha
 #' @export
 irha <- function(...){
@@ -3508,7 +3593,11 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     class = "col_spec"
   )
   suppressWarnings(rha_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rha"),
-                                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)) %>%
+                                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
+  
+  readr::problems(rha_i) -> synthese_import
+  
+  rha_i <- rha_i %>%
     dplyr::mutate(FPPC = stringr::str_trim(FPPC),
                   MMP = stringr::str_trim(MMP),
                   AE = stringr::str_trim(AE))
@@ -3885,6 +3974,9 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     names(rha_i) <- tolower(names(rha_i))
     names(acdi) <- tolower(names(acdi))
   }
+  
+  attr(rha_1,"problems") <- synthese_import
+  
   rha_1 = list(rha = rha_i, acdi = acdi)
   deux <- Sys.time()
   #cat("Données RHA importées en : ", deux-un, " secondes\n")
@@ -3906,6 +3998,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... paramètres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes, \code{progress = F, skip =...}
@@ -3922,7 +4015,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
 #' @seealso \code{\link{irha}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 #' 
-#' @usage iano_ssr(finess, annee, mois, path, lib = T, ...)
+#' @usage iano_ssr(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export iano_ssr
 #' @export
 iano_ssr <- function(...){
@@ -4038,7 +4131,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
     cat("Problèmes à l'import :\n")
     print(knitr::kable(synthese_import))
   }
-  
+  attr(ano_i,"problems") <- synthese_import
   return(ano_i)
 }
 
@@ -4057,6 +4150,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles a la table : T
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4072,7 +4166,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #'
 #' @seealso \code{\link{irha}}, \code{\link{ileg_ssr}}, \code{\link{iano_ssr}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage issrha(finess, annee, mois, path, lib = T, ...)
+#' @usage issrha(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export issrha
 #' @export
 issrha <- function(...){
@@ -4144,7 +4238,10 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
   
 
   ssrha_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".sha"),
-                             readr::fwf_widths(af,an), col_types = at , na=character(), ...) %>%
+                             readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+  readr::problems(ssrha_i) -> synthese_import
+  
+  ssrha_i <- ssrha_i %>%
     sjlabelled::set_label(libelles)
 
   if (annee > 2016){
@@ -4167,6 +4264,8 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
   if (tolower_names){
     names(ssrha_i) <- tolower(names(ssrha_i))
   }
+  
+  attr(ssrha_i,"problems") <- synthese_import
   return(ssrha_i)
 }
 
@@ -4180,6 +4279,7 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #'
 #' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
 #'
@@ -4192,7 +4292,7 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
 #'
 #' @seealso \code{\link{irha}}, \code{\link{issrha}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage ileg_ssr(finess, annee, mois, path, reshape = F, ...)
+#' @usage ileg_ssr(finess, annee, mois, path, reshape = F, tolower_names = F, ...)
 #' @export ileg_ssr
 #' @export
 ileg_ssr <- function(...){
@@ -4267,6 +4367,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4282,7 +4383,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
 #'
 #' @seealso \code{\link{irapss}}
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage imed_ssr(finess, annee, mois, path, lib = T, ...)
+#' @usage imed_ssr(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export imed_ssr
 #' @export
 imed_ssr <- function(...){
@@ -4389,6 +4490,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires à passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4477,7 +4579,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
   
   ium_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ium"),
                          readr::fwf_widths(af,an), col_types =at, na=character(), ...)
-  
+  readr::problems(ium_i) -> synthese_import
   
   if (lib==T){
     v <- libelles
@@ -4487,6 +4589,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
     names(ium_i) <- tolower(names(ium_i))
   }
   
+  attr(ium_i,"problems") <- synthese_import
   return(ium_i)
 }
 
@@ -4510,6 +4613,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4525,7 +4629,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #'
 #' @seealso \code{\link{ir3a}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage irpsa(finess, annee, mois, path, lib = T, ...) 
+#' @usage irpsa(finess, annee, mois, path, lib = T, tolower_names = F, ...) 
 #' @export irpsa
 #' @export
 irpsa <- function(...){
@@ -4550,7 +4654,7 @@ irpsa.list <- function(l, ...){
 }
 
 #' @export
-irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
+irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4597,29 +4701,42 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, .
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
   suppressWarnings(rpsa_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rpsa"),
-                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) %>%
+                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
+  
+  readr::problems(rpsa_i) -> synthese_import
+  
+  rpsa_i <- rpsa_i %>%
     dplyr::mutate(DP = stringr::str_trim(DP))
   
   
   if (annee < 2017){
-    zad <- rpsa_i %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
+    zad <- rpsa_i %>% dplyr::select(NOSEQSEJ, NOSEQ,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
                                                                                  lda = stringr::str_extract_all(da, '.{1,6}'))
     
   da <- purrr::flatten_chr(zad$lda) %>% stringr::str_trim()
   
-  df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA)
+  df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBDA)
   df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
   da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
   
   
   rpsa_i$ZAD[is.na(rpsa_i$ZAD)] <- ""
   rpsa_i <- rpsa_i %>% dplyr::mutate(das = extz(ZAD, ".{1,6}")) %>% dplyr::select(-ZAD)
+  
+  if (lib == T){
   rpsa_i <- rpsa_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
   
   da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                    'Diagnostics et facteurs associés'))
+  }
+  
+  if (tolower_names){
+    names(rpsa_i) <- tolower(names(rpsa_i))
+    names(da) <- tolower(names(da))
+  }
   rpsa_1 = list(rpsa = rpsa_i, das = da)
   }
+  
   if (annee > 2016){
     rpsa_i <- rpsa_i %>%  
       dplyr::mutate(da  = ifelse(NBDA>0,stringr::str_sub(ZAD,1, NBDA*6),""),
@@ -4630,13 +4747,13 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, .
     zad <- rpsa_i
     da <- purrr::flatten_chr(zad$lda) %>% stringr::str_trim()
     
-    df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBDA)
+    df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
     
     actes <- purrr::flatten_chr(zad$lactes)
     
-    df <- zad %>% dplyr::select(NOSEJPSY, NOSEQ,NBZA)
+    df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBZA)
     df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
     actes <- dplyr::bind_cols(df,data.frame(ACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBZA)
     
@@ -4657,15 +4774,18 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, .
     rpsa_i <- rpsa_i %>% dplyr::mutate(das = extz(da, ".{1,6}"), 
                                        actes = extz(actes, "[A-Z]{4}[0-9]{3}")) %>% dplyr::select(-ZAD, -da, -lactes, -lda)
     libelles[is.na(libelles)] <- ""
+    
+    if (lib == T){
     rpsa_i <- rpsa_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream actes","Stream DA ou facteurs associés"))
     
     da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                      'Diagnostics et facteurs associés'))
     
+    
     actes <- actes %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
                                      "Délai depuis la date d'entrée", "Code CCAM",
                                      "Extension PMSI", "Code de la phase", "Code de l'activité", "Extension documentaire", "Nombre de réalisations"))
-    
+    }
     if (tolower_names){
       names(rpsa_i) <- tolower(names(rpsa_i))
       names(da) <- tolower(names(da))
@@ -4673,6 +4793,8 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, .
     }
     rpsa_1 = list(rpsa = rpsa_i, das = da, actes = actes)
   }
+  
+  attr(rpsa_1,"problems") <- synthese_import
   return(rpsa_1)
 }
 
@@ -4692,6 +4814,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, .
 #' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4707,7 +4830,7 @@ irpsa.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, .
 #'
 #' @seealso \code{\link{irpsa}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage ir3a(finess, annee, mois, path, lib = T, ...)
+#' @usage ir3a(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export ir3a
 #' @export
 ir3a <- function(...){
@@ -4732,7 +4855,7 @@ ir3a.list <- function(l, ...){
 }
 
 #' @export
-ir3a.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
+ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   if (annee<2012|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -4779,25 +4902,31 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
   suppressWarnings(r3a_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".r3a"),
-                                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)) %>%
+                                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
+  
+  readr::problems(r3a_i) -> synthese_import
+  
+  r3a_i <- r3a_i %>%
     dplyr::mutate(DP = stringr::str_trim(DP))
   
-  zad <- r3a_i %>% dplyr::select(NOSEJPSY,NOORDR,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
+  zad <- r3a_i %>% dplyr::select(NOSEQSEJ,NOORDR,NBDA,ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),
                                                                               lda = stringr::str_extract_all(da, '.{1,6}'))
   
   da <- purrr::flatten_chr(zad$lda)
   
-  df <- zad %>% dplyr::select(NOSEJPSY,NOORDR,NBDA)
+  df <- zad %>% dplyr::select(NOSEQSEJ,NOORDR,NBDA)
   df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
   da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
   
   
   r3a_i$ZAD[is.na(r3a_i$ZAD)] <- ""
   r3a_i <- r3a_i %>% dplyr::mutate(das = extz(ZAD, ".{1,6}")) %>% dplyr::select(-ZAD)
+  
+  if (lib == T){
   r3a_i <- r3a_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream DA ou facteurs associés"))
   
   da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour',"N° d'ordre", 'Diagnostics et facteurs associés'))
-  
+  }
   
   if (tolower_names){
     names(r3a_i) <- tolower(names(r3a_i))
@@ -4806,6 +4935,7 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   
   r3a_1 = list(r3a = r3a_i, das = da)
   
+  attr(r3a_1,"problems") <- synthese_import
   return(r3a_1)
 }
 
@@ -4823,6 +4953,7 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -4838,7 +4969,7 @@ ir3a.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
 #'
 #' @seealso \code{\link{irpsa}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage iano_psy(finess, annee, mois, path, lib = T, ...)
+#' @usage iano_psy(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export iano_psy
 #' @export
 iano_psy <- function(...){
@@ -4912,7 +5043,7 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
   if (annee<=2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
-    
+    readr::problems(ano_i) -> synthese_import
     ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT    = lubridate::dmy(DTENT),
@@ -4928,7 +5059,7 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
   if (annee>2012){
     ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
-
+    readr::problems(ano_i) -> synthese_import
     ano_i <- ano_i %>%
       dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
                     DTENT    = lubridate::dmy(DTENT),
@@ -4942,14 +5073,17 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
                     MTRMBAMC = MTRMBAMC/100,
                     TAUXRM   = TAUXRM  /100)
   }
+  
+  if (lib == T){
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
+  }
   
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
   }
   
-
+  attr(ano_i,"problems") <- synthese_import
   return(ano_i)
 }
 
@@ -5611,12 +5745,13 @@ tdiag <- function (d,  include = T){
 #' @param stat avec stat = T, un tableau synthetise le nombre de lignes par type de rafael
 #' @param lister Liste des types d'enregistrements a importer
 #' @param lamda a TRUE, importe les fichiers \code{rsfa-maj} de reprise de l'annee passee
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... Autres parametres a specifier \code{n_max = 1e3}, ...
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{iano_rafael}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage irafael(finess, annee, mois, path, lib = T, stat = T, lister = c("A", "B",
+#' @usage irafael(finess, annee, mois, path, lib = T, tolower_names = F, stat = T, lister = c("A", "B",
 #' "C", "H", "L", "M", "P"), lamda = F, ...)
 #' @export irafael
 #' @export
@@ -5664,6 +5799,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
     r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa"),
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
+    readr::problems(r) -> synthese_import
     
     typi_r <- 9
     if (annee > 2016){typi_r <- 11}
@@ -5679,6 +5815,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
     r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa-maj"),
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
+    readr::problems(r) -> synthese_import
     typi_r <- 27
     if (annee > 2017){typi_r <- 29}
   }
@@ -5751,13 +5888,16 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
     names(rafael_P) <- tolower(names(rafael_P))
   }
   
-  return(list("A" = rafael_A,
-              "B" = rafael_B,
-              "C" = rafael_C,
-              "H" = rafael_H,
-              "L" = rafael_L,
-              "M" = rafael_M,
-              "P" = rafael_P))
+  r_ii <- list("A" = rafael_A,
+               "B" = rafael_B,
+               "C" = rafael_C,
+               "H" = rafael_H,
+               "L" = rafael_L,
+               "M" = rafael_M,
+               "P" = rafael_P)
+  
+  attr(r_ii,"problems") <- synthese_import
+  return(r_ii)
   
 }
 
@@ -5779,6 +5919,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
 #' @param path Localisation du fichier de donnees
 #' @param lamda a TRUE, importe le fichier ano-ace-maj
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
@@ -5795,7 +5936,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister
 #'
 #' @seealso \code{\link{irafael}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage iano_rafael(finess, annee, mois, path, lib = T, lamda = F, ...)
+#' @usage iano_rafael(finess, annee, mois, path, lib = T, lamda = F, tolower_names = F, ...)
 #' @export iano_rafael
 #' @export
 iano_rafael <- function(...){
@@ -5867,14 +6008,18 @@ iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, 
     class = "col_spec"
   )
   if (lamda == F){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace"),
-                                               readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                                               readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
+  readr::problems(ano_i) -> synthese_import
+  ano_i <- ano_i %>%
     dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                   DTENT    = lubridate::dmy(DTENT),
                   cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
                            (CRDENTR=='0') ==5)) %>% sjlabelled::set_label(c(libelles, 'Chaînage Ok'))
   }
   if (lamda == T){    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano-ace-maj"),
-                                               readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
+                                               readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
+  readr::problems(ano_i) -> synthese_import
+  ano_i <- ano_i %>%
     dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
                   DTENT    = lubridate::dmy(DTENT),
                   cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
@@ -5885,7 +6030,7 @@ iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, 
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
   }
-  
+  attr(ano_i,"problems") <- synthese_import
   return(ano_i)
 }
 
@@ -6123,7 +6268,7 @@ labeleasier <- function(col,
 ##############################################
 
 
-#' ... ~ paste0 comme un pipe 
+#' ~ ... paste0 comme un pipe 
 #' @usage x %+% y
 #' @examples
 #' \dontrun{
@@ -6138,12 +6283,14 @@ labeleasier <- function(col,
 #'
 #' Copier les rsa, les passages um, les actes et les diagnostics des rsa dans une db
 #' 
-#' Les tables sont importées dans R puis copiées dans la db
-#' La table diag est créée, les variables ghm, année séquentielle des tarifs et un champ caractère diagnostics sont ajoutés à la table rsa
+#' Les tables sont importées dans R puis copiées dans la db.
+#' La table diag est créée, les variables ghm, année séquentielle des tarifs
+#' et un champ caractère diagnostics sont ajoutés à la table rsa.
+#' Le tra est ajouté aux tables.
 #' 
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
-#' @param remove a TRUE, les tables precedentes rsa sont effacees avant
+#' @param remove a TRUE, les tables precedentes rsa de l'annee sont effacees avant
 #'
 #' @return nothing
 #' @export
@@ -6187,6 +6334,115 @@ db_mco_out <- function(con, p, remove = T, ...){
   
 }
 
+#' ~ db - Copier les rapss dans une db
+#'
+#' Copier les rapss, les actes, les diagnostics et la table ano des rapss dans une db
+#' 
+#' Les tables sont importées dans R puis copiées dans la db.
+#' Le tra est ajouté aux tables.
+#' 
+#' @param con la connexion a la base de donnees (src_..)
+#' @param p le noyau pmeasyr
+#' @param remove a TRUE, les tables precedentes rapss de l'annee sont effacees avant
+#'
+#' @return nothing
+#' @export
+#'
+#' @usage db_had_out(con, p, remove = T, ...)
+#' @examples
+#' \dontrun{
+#' purrr::quietly(db_had_out)(con, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_had_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
+#' }
+db_had_out <- function(con, p, remove = T, ...){
+  
+  p <- utils::modifyList(p, list(...))
+  an <- substr(as.character(p$annee), 3, 4)
+  if (remove == T){
+    DBI::dbListTables(con) -> u
+    u[grepl('_rapss_',u) & grepl(an, u)] -> lr
+    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  }
+  
+
+  pmeasyr::irapss(p) -> rapss
+  pmeasyr::iano_had(p) -> rapss_ano
+  pmeasyr::itra(p, champ = "had") -> tra
+  
+  pmeasyr::inner_tra(rapss$rapss, tra) -> rapss$rapss
+  pmeasyr::inner_tra(rapss$acdi, tra) -> rapss$acdi
+  pmeasyr::inner_tra(rapss_ano, tra) -> rapss_ano
+  
+  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_rapss", as.data.frame(rapss$rapss))
+  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_acdi", as.data.frame(rapss$acdi))
+  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_ano", as.data.frame(rapss_ano))
+  
+}
+
+#' ~ db - Copier les rpsa dans une db
+#'
+#' Copier les rpsa, les actes, les diagnostics et la table ano des rpsa dans une db
+#' 
+#' Les tables sont importées dans R puis copiées dans la db.
+#' Le tra est ajouté aux tables.
+#' 
+#' @param con la connexion a la base de donnees (src_..)
+#' @param p le noyau pmeasyr
+#' @param remove a TRUE, les tables precedentes rpsa de l'annee sont effacees avant
+#'
+#' @return nothing
+#' @export
+#'
+#' @usage db_psy_out(con, p, remove = T, ...)
+#' @examples
+#' \dontrun{
+#' purrr::quietly(db_psy_out)(con, p) -> statuts ; gc(); #ok
+#' purrr::quietly(db_psy_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
+#' }
+db_psy_out <- function(con, p, remove = T, ...){
+  
+  p <- utils::modifyList(p, list(...))
+  an <- substr(as.character(p$annee), 3, 4)
+  if (remove == T){
+    DBI::dbListTables(con) -> u
+    u[grepl('psy',u) & grepl(an, u)] -> lr
+    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  }
+  
+  
+  pmeasyr::irpsa(p) -> rpsa
+  pmeasyr::iano_psy(p) -> rpsa_ano
+  
+  pmeasyr::ir3a(p) -> r3a
+  pmeasyr::itra(p, champ = "psy_rpsa") -> tra_rpsa
+  pmeasyr::itra(p, champ = "psy_r3a") -> tra_r3a
+  
+  pmeasyr::inner_tra(rpsa$rpsa, tra_rpsa, champ = "psy_rpsa") -> rpsa$rpsa
+  pmeasyr::inner_tra(rpsa$das, tra_rpsa, champ = "psy_rpsa") -> rpsa$das
+  
+  if (p$annee > 2016){
+    pmeasyr::inner_tra(rpsa$actes, tra_rpsa) -> rpsa$actes
+  }
+  
+  pmeasyr::inner_tra(rpsa_ano, tra_rpsa, champ = "psy_rpsa") -> rpsa_ano
+  
+  pmeasyr::inner_tra(r3a$r3a, tra_r3a, champ = "psy_r3a") -> r3a$r3a
+  pmeasyr::inner_tra(r3a$da, tra_r3a, champ = "psy_r3a") -> r3a$da
+  
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_rpsa", as.data.frame(rpsa$rpsa))
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_das", as.data.frame(rpsa$das))
+  
+  if (p$annee > 2016){
+    DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_actes", as.data.frame(rpsa$actes))
+  }
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_ano", as.data.frame(rpsa_ano))
+  
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_r3a", as.data.frame(r3a$r3a))
+  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_das", as.data.frame(r3a$das))
+  
+}
+
+
 #' ~ db - Copier les rum dans une db
 #'
 #' Copier les rum, les actes et les diagnostics des rums dans une db
@@ -6196,7 +6452,7 @@ db_mco_out <- function(con, p, remove = T, ...){
 #'
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
-#' @param remove a TRUE, les tables precedentes rsa sont effacees avant
+#' @param remove a TRUE, les tables precedentes rum de l'annee sont effacees avant
 #'
 #' @return nothing
 #' @export
@@ -6235,7 +6491,7 @@ DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", as.data.frame(rum$actes))
 #'  
 #' @param con la connexion a la base de donnees (src_..)
 #' @param p le noyau pmeasyr
-#' @param remove a TRUE, les tables precedentes rsa sont effacees avant
+#' @param remove a TRUE, les tables precedentes rafael de l'annee sont effacees avant
 #'
 #' @return nothing
 #' 

@@ -84,7 +84,7 @@
     <p>Import du fichier ANO In ou Out.</p>
     
 
-    <pre class="usage"><span class='fu'>iano_mco</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>typano</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</pre>
+    <pre class="usage"><span class='fu'>iano_mco</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>typano</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -112,6 +112,10 @@
     <tr>
       <th>lib</th>
       <td><p>Ajout des libelles de colonnes aux tables, par defaut a <code>TRUE</code> ; necessite le package <code>sjlabelled</code></p></td>
+    </tr>
+    <tr>
+      <th>tolower_names</th>
+      <td><p>a TRUE les noms de colonnes sont tous en minuscules</p></td>
     </tr>
     <tr>
       <th>~...</th>

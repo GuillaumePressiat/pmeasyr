@@ -9,6 +9,7 @@
 
 * La colonne DUREESEJPART desormais presente en sortie de irum
 
+* En cas de problème rencontré à la lecture du fichier pmsi, un attribut problems est accessible sur la table importée `obj` en appelant `readr::problems(obj)`. C'est un cas relativement fréquent lorsqu'aucune donnée de facturation n'est disponible pour un patient : dans le fichier ano, des XXXX sont présents à la place de données numériques.
 
 ### Vers la base de donnees
 
@@ -16,4 +17,4 @@
 
 * des fonctions `tbl_mco`, `tbl_rsf`, `tbl_had`, `tbl_ssr`, `tbl_psy` pour se connecter a ses tables
 
-* Bientôt une vignette presentera ces fonctionnalites
+* Une vignette présente ces fonctionalités

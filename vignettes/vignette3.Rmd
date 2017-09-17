@@ -65,12 +65,13 @@ p <- noyau_pmeasyr(
 
 ### 2 - Integrer les tables pmsi dans la db a laquelle on est connecte
 
+
 #### MCO
 
 Avec les fonctions `db_mco_in` et `db_mco_out`, les tables rum, actes et diagnostics des rums, les tables rsa, actes, diagnostics et passages um et ano des rsa sont integrees dans la db, avec le fichier tra accole.
 
 ```{r, eval = F}
-# Tables mco in 2011 - 2016
+# Tables mco in 2011
 purrr::quietly(db_mco_in)(con,  p, annee = 2011) -> ok # on analyse l'objet ok ensuite : ok ?
 # ... 2012 -- 2015
 purrr::quietly(db_mco_in)(con,  p, annee = 2016) -> ok # on analyse l'objet ok ensuite : ..
@@ -85,13 +86,14 @@ purrr::quietly(db_mco_out)(con,  p, annee = 2016) -> ok # on analyse l'objet ok 
 Avec la fonction `db_rsf_out`, tous les rafael du out sont integrees dans la db, un par table (A, B, C, etc) et la table ano-ace.
 
 ```{r, eval = F}
-# Tables mco in 2011 - 2016
+
 
 p$path <- "~/Documents/data/rsf"
 
 # Tables rsf out 2016
 purrr::quietly(db_rsf_out)(con,  p, annee = 2016) -> ok # on analyse l'objet ok ensuite : ..
 ```
+
 
 
 #### Table par table

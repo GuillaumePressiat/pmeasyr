@@ -4,7 +4,7 @@
 \alias{irha}
 \title{~ SSR - Import des RHA}
 \usage{
-irha(finess, annee, mois, path, lib = T, ...)
+irha(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du fichier Out de GENRHA a integrer}
@@ -16,6 +16,8 @@ irha(finess, annee, mois, path, lib = T, ...)
 \item{path}{Chemin d'acces au fichier .rha}
 
 \item{lib}{Attribution de libelles aux colonnes}
+
+\item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
