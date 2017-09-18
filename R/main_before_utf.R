@@ -4276,7 +4276,10 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
     
     gp <- dplyr::bind_cols(fixe, gp) 
     
-    
+    if (tolower_names){
+      names(ssrha_i) <- tolower(names(ssrha_i))
+      names(gp) <- tolower(names(gp))
+    }
     ssrha_1 <- list(ssrha = ssrha_i, gme = gp)
     attr(ssrha_1,"problems") <- synthese_import
     return(ssrha_1)
