@@ -4274,7 +4274,7 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
     gp <- sjlabelled::set_label(gp, c("GME", "GMT", "Nombre de jours de présence"))
     }
     
-    gp <- dplyr::bind_cols(fixe, gp) 
+    gp <- dplyr::as_tibble(dplyr::bind_cols(fixe, gp))
     
     if (tolower_names){
       names(ssrha_i) <- tolower(names(ssrha_i))
@@ -6407,8 +6407,8 @@ db_ssr_out <- function(con, p, remove = T, zip = T, ...){
   pmeasyr::inner_tra(rha$acdi, tra, champ = "ssr") -> rha$acdi
   
   if (p$annee > 2016){
-    pmeasyr::inner_tra(ssrha$ssrha, tra) -> ssrha$ssrha
-    pmeasyr::inner_tra(ssrha$gme, tra) -> ssrha$gme
+    pmeasyr::inner_tra(ssrha$ssrha, tra, champ = "ssr") -> ssrha$ssrha
+    pmeasyr::inner_tra(ssrha$gme, tra, champ = "ssr") -> ssrha$gme
   } 
   else {
     pmeasyr::inner_tra(ssrha, tra, champ = "ssr") -> ssrha
