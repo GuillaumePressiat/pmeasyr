@@ -4,7 +4,7 @@
 \alias{db_mco_in}
 \title{~ db - Copier les rum dans une db}
 \usage{
-db_mco_in(con, p, remove = T, ...)
+db_mco_in(con, p, remove = T, zip = T, indexes = list(), ...)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}
@@ -14,6 +14,8 @@ db_mco_in(con, p, remove = T, ...)
 \item{remove}{a TRUE, les tables precedentes rum de l'annee sont effacees avant}
 
 \item{zip}{a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db}
+
+\item{indexes}{index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})}
 }
 \value{
 nothing

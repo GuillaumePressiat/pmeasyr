@@ -6315,49 +6315,58 @@ labeleasier <- function(col,
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rsa de l'annee sont effacees avant
 #' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
+#' @param indexes index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})
 #' @return nothing
 #' @export
 #'
-#' @usage db_mco_out(con, p, remove = T, ...)
+#' @usage db_mco_out(con, p, remove = T, zip = T, indexes = list(),  ...)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_mco_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_mco_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
 #' }
-db_mco_out <- function(con, p, remove = T, zip = T, ...){
-  
+db_mco_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
-  if (remove == T){
-    DBI::dbListTables(con) -> u
-    u[grepl('_rsa_',u) & grepl(an, u)] -> lr
-    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  if (remove == T) {
+    #u <- DBI::dbListTables(con)
+    u <- dplyr::src_tbls(con)
+    lr <- u[grepl("_rsa_", u) & grepl(an, u)]
+    lapply(lr, function(x) {
+      DBI::dbRemoveTable(con$con, x)
+    })
   }
-  
-  if (zip == T){
-    adezip(p, type = "out", liste = c('rsa', 'ano', 'tra'))
+  if (zip == T) {
+    adezip(p, type = "out", liste = c("rsa", "ano", "tra"))
   }
+  rsa <- pmeasyr::irsa(p, typi = 6) %>% pmeasyr::tdiag()
+  rsa_ano <- pmeasyr::iano_mco(p)
+  tra <- pmeasyr::itra(p)
+  rsa$rsa <- pmeasyr::inner_tra(rsa$rsa, tra) %>% mutate(diags = paste0(dpdrum,
+                                                                        das, sep = " "))
+  rsa$actes <- pmeasyr::inner_tra(rsa$actes, tra)
+  rsa$diags <- pmeasyr::inner_tra(rsa$diags, tra)
+  rsa$rsa_um <- pmeasyr::inner_tra(rsa$rsa_um, tra)
+  rsa_ano <- pmeasyr::inner_tra(rsa_ano, tra)
   
+  purrr::flatten_int(purrr::map(indexes, length)) -> t_1
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$rsa))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsa$rsa),    "mco_" %+% an %+% "_rsa_rsa",   temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$actes))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsa$actes),  "mco_" %+% an %+% "_rsa_actes", temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$diags))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsa$diags),  "mco_" %+% an %+% "_rsa_diags", temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$rsa_um))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsa$rsa_um), "mco_" %+% an %+% "_rsa_um",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa_ano))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsa_ano),    "mco_" %+% an %+% "_rsa_ano",   temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
   
-  pmeasyr::irsa(p,  typi = 6) %>% pmeasyr::tdiag() -> rsa
-  pmeasyr::iano_mco(p) -> rsa_ano
-  pmeasyr::itra(p) -> tra
-  
-  pmeasyr::inner_tra(rsa$rsa, tra) %>% 
-    mutate(diags = paste0(dpdrum,  das, sep  = ' ')) -> rsa$rsa
-  
- pmeasyr::inner_tra(rsa$actes, tra) -> rsa$actes
- pmeasyr::inner_tra(rsa$diags, tra) -> rsa$diags
- pmeasyr::inner_tra(rsa$rsa_um, tra) -> rsa$rsa_um
- pmeasyr::inner_tra(rsa_ano, tra) -> rsa_ano
-  
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_rsa", dplyr::as_data_frame(rsa$rsa))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_actes", dplyr::as_data_frame(rsa$actes))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_diags", dplyr::as_data_frame(rsa$diags))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_um", dplyr::as_data_frame(rsa$rsa_um))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rsa_ano", dplyr::as_data_frame(rsa_ano))
-  
-  if (zip == T){
+  if (zip == T) {
     pmeasyr::adelete(p)
   }
 }
@@ -6374,64 +6383,75 @@ db_mco_out <- function(con, p, remove = T, zip = T, ...){
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rha de l'annee sont effacees avant
 #' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
+#' @param indexes index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})
 #' @return nothing
 #' @export
 #'
-#' @usage db_ssr_out(con, p, remove = T, ...)
+#' @usage db_ssr_out(con, p, remove = T, zip = T, indexes = list(), ...)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_ssr_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_ssr_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
 #' }
-db_ssr_out <- function(con, p, remove = T, zip = T, ...){
-  
+db_ssr_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
-  if (remove == T){
-    DBI::dbListTables(con) -> u
-    u[grepl('ssr',u) & grepl(an, u)] -> lr
-    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  if (remove == T) {
+    #u <- DBI::dbListTables(con)
+    u <- dplyr::src_tbls(con)
+    lr <- u[grepl("ssr", u) & grepl(an, u)]
+    lapply(lr, function(x) {
+      DBI::dbRemoveTable(con$con, x)
+    })
   }
-  
-  
-  if (zip == T){
-    pmeasyr::adezip(p, type = "out", liste = c('rha', 'ano', 'sha', 'tra'))
+  if (zip == T) {
+    pmeasyr::adezip(p, type = "out", liste = c("rha", "ano",
+                                               "sha", "tra"))
   }
-  
-  pmeasyr::irha(p) -> rha
-  pmeasyr::issrha(p) -> ssrha
-  pmeasyr::iano_ssr(p) -> rha_ano
-  pmeasyr::itra(p, champ = "ssr") -> tra
-  
-  pmeasyr::inner_tra(rha$rha, tra, champ = "ssr") -> rha$rha
-  pmeasyr::inner_tra(rha$acdi, tra, champ = "ssr") -> rha$acdi
-  
-  if (p$annee > 2016){
-    pmeasyr::inner_tra(ssrha$ssrha, tra, champ = "ssr") -> ssrha$ssrha
-    pmeasyr::inner_tra(ssrha$gme, tra, champ = "ssr") -> ssrha$gme
-  } 
-  else {
-    pmeasyr::inner_tra(ssrha, tra, champ = "ssr") -> ssrha
-  }
-  
-  pmeasyr::inner_tra(rha_ano, tra, champ = "ssr") -> rha_ano
-  
-  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_rha", dplyr::as_data_frame(rha$rha))
-  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_acdi", dplyr::as_data_frame(rha$acdi))
-  DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ano", dplyr::as_data_frame(rha_ano))
-  
-  if (p$annee > 2016){
-    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", dplyr::as_data_frame(ssrha$ssrha))
-    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_gme", dplyr::as_data_frame(ssrha$gme))
+  rha <- pmeasyr::irha(p)
+  ssrha <- pmeasyr::issrha(p)
+  rha_ano <- pmeasyr::iano_ssr(p)
+  tra <- pmeasyr::itra(p, champ = "ssr")
+  rha$rha <- pmeasyr::inner_tra(rha$rha, tra, champ = "ssr")
+  rha$acdi <- pmeasyr::inner_tra(rha$acdi, tra, champ = "ssr")
+  if (p$annee > 2016) {
+    ssrha$ssrha <- pmeasyr::inner_tra(ssrha$ssrha, tra, champ = "ssr")
+    ssrha$gme <- pmeasyr::inner_tra(ssrha$gme, tra, champ = "ssr")
   }
   else {
-    DBI::dbWriteTable(con, "ssr_" %+% an %+% "_rha_ssrha", dplyr::as_data_frame(ssrha))  
+    ssrha <- pmeasyr::inner_tra(ssrha, tra, champ = "ssr")
   }
+  rha_ano <- pmeasyr::inner_tra(rha_ano, tra, champ = "ssr")
   
-  if (zip == T){
+  
+  purrr::flatten_int(purrr::map(indexes, length)) -> t_1
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rha$rha))))) -> t_2
+  
+  dplyr::copy_to(con, dplyr::as_data_frame(rha$rha),   "ssr_" %+% an %+% "_rha_rha",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rha$acdi))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rha$acdi),   "ssr_" %+% an %+% "_rha_acdi",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rha_ano))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rha_ano),    "ssr_" %+% an %+% "_rha_ano",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  
+  if (p$annee > 2016) {
+    purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(ssrha$ssrha))))) -> t_2
+    dplyr::copy_to(con, dplyr::as_data_frame(ssrha$ssrha),    "ssr_" %+% an %+% "_rha_ssrha",    temporary = FALSE, overwrite = TRUE,
+                   indexes = indexes[t_1 == t_2])
+    purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(ssrha$gme))))) -> t_2
+    dplyr::copy_to(con, dplyr::as_data_frame(ssrha$gme),    "ssr_" %+% an %+% "_rha_gme",    temporary = FALSE, overwrite = TRUE,
+                   indexes = indexes[t_1 == t_2])
+  }
+  else {
+    purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(ssrha))))) -> t_2
+    dplyr::copy_to(con, dplyr::as_data_frame(ssrha),    "ssr_" %+% an %+% "_rha_ssrha",    temporary = FALSE, overwrite = TRUE,
+                   indexes = indexes[t_1 == t_2])
+  }
+  if (zip == T) {
     pmeasyr::adelete(p)
   }
-  
 }
 
 #' ~ db - Copier les rapss dans une db
@@ -6445,42 +6465,50 @@ db_ssr_out <- function(con, p, remove = T, zip = T, ...){
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rapss de l'annee sont effacees avant
 #' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
+#' @param indexes index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})
 #' @return nothing
 #' @export
 #'
-#' @usage db_had_out(con, p, remove = T, ...)
+#' @usage db_had_out(con, p, remove = T, zip = T, indexes = list(), ...)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_had_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_had_out)(con, p, annee = 2017, mois = 7) -> statuts ; gc(); #..
 #' }
-db_had_out <- function(con, p, remove = T, zip = T, ...){
-  
+db_had_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
-  if (remove == T){
-    DBI::dbListTables(con) -> u
-    u[grepl('_rapss_',u) & grepl(an, u)] -> lr
-    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  if (remove == T) {
+    #u <- DBI::dbListTables(con)
+    u <- dplyr::src_tbls(con)
+    lr <- u[grepl("_rapss_", u) & grepl(an, u)]
+    lapply(lr, function(x) {
+      DBI::dbRemoveTable(con$con, x)
+    })
   }
-  
-  if (zip == T){
-    pmeasyr::adezip(p, type = "out", liste = c('rapss', 'ano', 'tra'))
+  if (zip == T) {
+    pmeasyr::adezip(p, type = "out", liste = c("rapss", "ano",
+                                               "tra"))
   }
+  rapss <- pmeasyr::irapss(p)
+  rapss_ano <- pmeasyr::iano_had(p)
+  tra <- pmeasyr::itra(p, champ = "had")
+  rapss$rapss <- pmeasyr::inner_tra(rapss$rapss, tra)
+  rapss$acdi <- pmeasyr::inner_tra(rapss$acdi, tra)
+  rapss_ano <- pmeasyr::inner_tra(rapss_ano, tra)
   
-  pmeasyr::irapss(p) -> rapss
-  pmeasyr::iano_had(p) -> rapss_ano
-  pmeasyr::itra(p, champ = "had") -> tra
+  purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   
-  pmeasyr::inner_tra(rapss$rapss, tra) -> rapss$rapss
-  pmeasyr::inner_tra(rapss$acdi, tra) -> rapss$acdi
-  pmeasyr::inner_tra(rapss_ano, tra) -> rapss_ano
-  
-  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_rapss", dplyr::as_data_frame(rapss$rapss))
-  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_acdi", dplyr::as_data_frame(rapss$acdi))
-  DBI::dbWriteTable(con, "had_" %+% an %+% "_rapss_ano", dplyr::as_data_frame(rapss_ano))
-  
-  if (zip == T){
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rapss$rapss))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rapss$rapss),    "had_" %+% an %+% "_rapss_rapss",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rapss$acdi))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rapss$acdi),    "had_" %+% an %+% "_rapss_acdi",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rapss_ano))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rapss_ano),    "had_" %+% an %+% "_rapss_ano",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  if (zip == T) {
     pmeasyr::adelete(p)
   }
 }
@@ -6496,60 +6524,74 @@ db_had_out <- function(con, p, remove = T, zip = T, ...){
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rpsa de l'annee sont effacees avant
 #' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
+#' @param indexes index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})
 #' @return nothing
 #' @export
 #'
-#' @usage db_psy_out(con, p, remove = T, ...)
+#' @usage db_psy_out(con, p, remove = T, zip = T, indexes = list(), ...)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_psy_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_psy_out)(con, p, annee = 2017, mois = 6) -> statuts ; gc(); #..
 #' }
-db_psy_out <- function(con, p, remove = T, zip = T, ...){
-  
+db_psy_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
-  if (remove == T){
-    DBI::dbListTables(con) -> u
-    u[grepl('psy',u) & grepl(an, u)] -> lr
-    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  if (remove == T) {
+    #u <- DBI::dbListTables(con)
+    u <- dplyr::src_tbls(con)
+    lr <- u[grepl("psy", u) & grepl(an, u)]
+    lapply(lr, function(x) {
+      DBI::dbRemoveTable(con$con, x)
+    })
+  }
+  if (zip == T) {
+    pmeasyr::adezip(p, type = "out", liste = c("rpsa", "ano",
+                                               "tra", "r3a"))
   }
   
-  if (zip == T){
-    pmeasyr::adezip(p, type = "out", liste = c('rpsa', 'ano', 'tra', 'r3a'))
+  rpsa <- pmeasyr::irpsa(p)
+  rpsa_ano <- pmeasyr::iano_psy(p)
+  r3a <- pmeasyr::ir3a(p)
+  tra_rpsa <- pmeasyr::itra(p, champ = "psy_rpsa")
+  tra_r3a <- pmeasyr::itra(p, champ = "psy_r3a")
+  
+  rpsa$rpsa <- pmeasyr::inner_tra(rpsa$rpsa, tra_rpsa, champ = "psy_rpsa")
+  rpsa$das <- pmeasyr::inner_tra(rpsa$das, tra_rpsa, champ = "psy_rpsa")
+  if (p$annee > 2016) {
+    rpsa$actes <- pmeasyr::inner_tra(rpsa$actes, tra_rpsa)
   }
+  rpsa_ano <- pmeasyr::inner_tra(rpsa_ano, tra_rpsa, champ = "psy_rpsa")
+  r3a$r3a <- pmeasyr::inner_tra(r3a$r3a, tra_r3a, champ = "psy_r3a")
+  r3a$da <- pmeasyr::inner_tra(r3a$da, tra_r3a, champ = "psy_r3a")
   
-  pmeasyr::irpsa(p) -> rpsa
-  pmeasyr::iano_psy(p) -> rpsa_ano
+  purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   
-  pmeasyr::ir3a(p) -> r3a
-  pmeasyr::itra(p, champ = "psy_rpsa") -> tra_rpsa
-  pmeasyr::itra(p, champ = "psy_r3a") -> tra_r3a
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa$rpsa))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rpsa$rpsa),    "psy_" %+% an %+% "_rpsa_rpsa",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa$das))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rpsa$das),    "psy_" %+% an %+% "_rpsa_das",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
   
-  pmeasyr::inner_tra(rpsa$rpsa, tra_rpsa, champ = "psy_rpsa") -> rpsa$rpsa
-  pmeasyr::inner_tra(rpsa$das, tra_rpsa, champ = "psy_rpsa") -> rpsa$das
-  
-  if (p$annee > 2016){
-    pmeasyr::inner_tra(rpsa$actes, tra_rpsa) -> rpsa$actes
+  if (p$annee > 2016) {
+    purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa$actes))))) -> t_2
+    dplyr::copy_to(con, dplyr::as_data_frame(rpsa$actes),    "psy_" %+% an %+% "_rpsa_actes",    temporary = FALSE, overwrite = TRUE,
+                   indexes = indexes[t_1 == t_2])
   }
-  
-  pmeasyr::inner_tra(rpsa_ano, tra_rpsa, champ = "psy_rpsa") -> rpsa_ano
-  
-  pmeasyr::inner_tra(r3a$r3a, tra_r3a, champ = "psy_r3a") -> r3a$r3a
-  pmeasyr::inner_tra(r3a$da, tra_r3a, champ = "psy_r3a") -> r3a$da
-  
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_rpsa", dplyr::as_data_frame(rpsa$rpsa))
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_das", dplyr::as_data_frame(rpsa$das))
-  
-  if (p$annee > 2016){
-    DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_actes", dplyr::as_data_frame(rpsa$actes))
-  }
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_rpsa_ano", dplyr::as_data_frame(rpsa_ano))
-  
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_r3a", dplyr::as_data_frame(r3a$r3a))
-  DBI::dbWriteTable(con, "psy_" %+% an %+% "_r3a_das", dplyr::as_data_frame(r3a$das))
-  
-  if (zip == T){
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa_ano))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rpsa_ano),    "psy_" %+% an %+% "_rpsa_ano",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(r3a$r3a))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(r3a$r3a),    "psy_" %+% an %+% "_r3a_r3a",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(r3a$das))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(r3a$das),    "psy_" %+% an %+% "_r3a_das",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+
+  if (zip == T) {
     pmeasyr::adelete(p)
   }
 }
@@ -6566,37 +6608,39 @@ db_psy_out <- function(con, p, remove = T, zip = T, ...){
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rum de l'annee sont effacees avant
 #' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
+#' @param indexes index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})
 #' @return nothing
 #' @export
 #'
-#' @usage db_mco_in(con, p, remove = T, ...)
+#' @usage db_mco_in(con, p, remove = T, zip = T, indexes = list(), ...)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_mco_in)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_mco_in)(con, p, annee = 2015) -> statuts ; gc(); #..
 #' }
-db_mco_in <- function(con, p, remove = T, zip = T, ...){
-  
+db_mco_in <- function (con, p, remove = T, zip = T, indexes = list(), ...) {
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
-  
-  if (remove == T){
-    DBI::dbListTables(con) -> u
-    u[grepl('_rum_',u) & grepl(an,u)] -> lr
-    lapply(lr, function(x){dbRemoveTable(con, x)})
+  if (remove == T) {
+    #u <- DBI::dbListTables(con)
+    u <- dplyr::src_tbls(con)
+    lr <- u[grepl("_rum_", u) & grepl(an, u)]
+    lapply(lr, function(x) {
+      dbRemoveTable(con$con, x)
+    })
   }
-
-  if (zip == T){
-    pmeasyr::adezip(p, type = "in", liste = 'rss')
+  if (zip == T) {
+    pmeasyr::adezip(p, type = "in", liste = "rss")
   }
-  pmeasyr::irum(p,  typi = 4) %>% pmeasyr::tdiag() -> rum
-
-
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_rum", dplyr::as_data_frame(rum$rum))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_diags", dplyr::as_data_frame(rum$diags))
-  DBI::dbWriteTable(con, "mco_" %+% an %+% "_rum_actes", dplyr::as_data_frame(rum$actes))
-
-  if (zip == T){
+  rum <- pmeasyr::irum(p, typi = 4) %>% pmeasyr::tdiag()
+  purrr::flatten_int(purrr::map(indexes, length)) -> t_1
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rum$rum))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rum$rum),   "mco_" %+% an %+% "_rum_rum",    temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rum$diags))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rum$diags), "mco_" %+% an %+% "_rum_diags",  temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rum$actes))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rum$actes), "mco_" %+% an %+% "_rum_actes",  temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
+  if (zip == T) {
     pmeasyr::adelete(p)
   }
 }
@@ -6611,45 +6655,62 @@ db_mco_in <- function(con, p, remove = T, zip = T, ...){
 #' @param p le noyau pmeasyr
 #' @param remove a TRUE, les tables precedentes rafael de l'annee sont effacees avant
 #' @param zip a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db
+#' @param indexes index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})
 #' @return nothing
 #' 
 #' @import DBI
 #' @export
 #'
-#' @usage db_rsf_out(con, p, remove = T, ...)
+#' @usage db_rsf_out(con, p, remove = T, zip = T, indexes = list(), ...)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_rsf_out)(con, p) -> statuts ; gc(); #ok
 #' purrr::quietly(db_rsf_out)(con, p, annee = 2014) -> statuts ; gc(); #ok
 #' }
-db_rsf_out <- function(con, p, remove = T, zip = T, ...){
+db_rsf_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
-  
-  if (remove == T){
-    DBI::dbListTables(con) -> u
-    u[grepl('_rafael_',u) & grepl(an,u)] -> lr
-    lapply(lr, function(x){DBI::dbRemoveTable(con, x)})
+  if (remove == T) {
+    u <- dplyr::src_tbls(con)
+    lr <- u[grepl("_rafael_", u) & grepl(an, u)]
+    lapply(lr, function(x) {
+      DBI::dbRemoveTable(con$con, x)
+    })
+  }
+  if (zip == T) {
+    pmeasyr::adezip(p, type = "out", liste = c("rsfa", "ano-ace"))
   }
   
-  if (zip == T){
-    pmeasyr::adezip(p, type = "out", liste = c('rsfa', 'ano-ace'))
-  }
+  rsf <- pmeasyr::irafael(p)
+  rsf_ano <- pmeasyr::iano_rafael(p)
   
-  pmeasyr::irafael(p)  -> rsf
-  pmeasyr::iano_rafael(p) -> rsf_ano
+  purrr::flatten_int(purrr::map(indexes, length)) -> t_1
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$A))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf$A),   "rsf_" %+% an %+% "_rafael_a",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$B))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf$B),   "rsf_" %+% an %+% "_rafael_b",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$C))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf$C),   "rsf_" %+% an %+% "_rafael_c",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$H))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf$H),   "rsf_" %+% an %+% "_rafael_h",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$L))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf$L),   "rsf_" %+% an %+% "_rafael_l",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$M))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf$M),   "rsf_" %+% an %+% "_rafael_m",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$P))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf$P),   "rsf_" %+% an %+% "_rafael_p",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf_ano))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(rsf_ano),   "rsf_" %+% an %+% "_rafael_ano",    temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
   
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_a", dplyr::as_data_frame(rsf$A))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_b", dplyr::as_data_frame(rsf$B))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_c", dplyr::as_data_frame(rsf$C))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_h", dplyr::as_data_frame(rsf$H))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_l", dplyr::as_data_frame(rsf$L))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_m", dplyr::as_data_frame(rsf$M))
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_p", dplyr::as_data_frame(rsf$P))
-  
-  DBI::dbWriteTable(con, "rsf_" %+% an %+% "_rafael_ano", dplyr::as_data_frame(rsf_ano))
-  
-  if (zip == T){
+  if (zip == T) {
     pmeasyr::adelete(p)
   }
 }
@@ -6764,25 +6825,30 @@ tbl_psy <- function(con, an, table){
 #' @param table La table R (tibble) a copier dans la db
 #' @param prefix prefixe de la table dans la db (ex : mco, rsf, ssr, ...)
 #' @param suffix suffixe de la table dans la db (ex : rum_rum, rha_actes, rapss_rapss, ...)
+#' @param indexes index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})
 #' 
 #' @return nothing
 #' 
 #'
-#' @usage db_generique(con, an, table, prefix, suffix, remove = T)
+#' @usage db_generique(con, an, table, prefix, suffix, indexes = list(), remove = T)
 #' @examples
 #' \dontrun{
 #' purrr::quietly(db_generique)(con, 16, ma_table, 'had', 'rapss_ano') -> statuts ; gc(); #
 #' # Result in db : had_16_rapss_ano
 #' }
 #' @export 
-db_generique <- function(con,  an, table, prefix, suffix, remove = T){
+db_generique <- function(con,  an, table, prefix, suffix, indexes = list(), remove = T){
   nom <- prefix %+% "_" %+% an %+% "_" %+% suffix
   if (remove == T){
-    DBI::dbListTables(con) -> u
+    #DBI::dbListTables(con) -> u
+    dplyr::src_tbls(con) -> u
     if (length(u[u == nom])>0){
-    DBI::dbRemoveTable(con, nom)}
+    DBI::dbRemoveTable(con$con, nom)}
   }
   
-  DBI::dbWriteTable(con, nom, dplyr::as_data_frame(table))
+  purrr::flatten_int(purrr::map(indexes, length)) -> t_1
+  purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(table))))) -> t_2
+  dplyr::copy_to(con, dplyr::as_data_frame(table),    nom,   temporary = FALSE, overwrite = TRUE,
+                 indexes = indexes[t_1 == t_2])
 }
 

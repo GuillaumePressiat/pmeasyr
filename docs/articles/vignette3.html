@@ -75,21 +75,21 @@
 <a href="#connexion-a-une-db-monetdblite" class="anchor"></a>0.1 - Connexion à une db MonetDBLite</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MonetDBLite)
 dbdir &lt;-<span class="st"> "~/Documents/data/monetdb"</span>
-con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(MonetDBLite<span class="op">::</span><span class="kw">MonetDBLite</span>(), dbdir)</code></pre></div>
+con &lt;-<span class="st"> </span><span class="kw">src_monetdblite</span>(dbdir)</code></pre></div>
 </div>
 <div id="connexion-a-une-db-sqlite" class="section level4">
 <h4 class="hasAnchor">
 <a href="#connexion-a-une-db-sqlite" class="anchor"></a>0.2 - Connexion à une db SQLite</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RSQLite)
 dbdir &lt;-<span class="st"> "~/Documents/data/sqlite/pmsi.sqlite"</span>
-m &lt;-<span class="st"> </span><span class="kw">dbDriver</span>(<span class="st">"SQLite"</span>)
-con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(m, <span class="dt">dbname =</span> dbdir)</code></pre></div>
+m &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDriver">dbDriver</a></span>(<span class="st">"SQLite"</span>)
+con &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(m, <span class="dt">dbname =</span> dbdir)</code></pre></div>
 </div>
 <div id="connexion-a-une-db-postgresql" class="section level4">
 <h4 class="hasAnchor">
 <a href="#connexion-a-une-db-postgresql" class="anchor"></a>0.3 - Connexion à une db PostgreSQL</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RPostgreSQL)
-con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(pg, <span class="dt">user =</span> <span class="st">"gui"</span>, <span class="dt">password =</span> <span class="st">"gui"</span>, <span class="dt">dbname =</span> <span class="st">"aphp"</span>,
+con &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(pg, <span class="dt">user =</span> <span class="st">"gui"</span>, <span class="dt">password =</span> <span class="st">"gui"</span>, <span class="dt">dbname =</span> <span class="st">"aphp"</span>,
                  <span class="dt">host =</span> <span class="st">"localhost"</span>, <span class="dt">port =</span> <span class="dv">5432</span>)</code></pre></div>
 </div>
 </div>
@@ -115,34 +115,34 @@ p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/noyau_pme
 <a href="#mco" class="anchor"></a>MCO</h4>
 <p>Avec les fonctions <code>db_mco_in</code> et <code>db_mco_out</code>, les tables rum, actes et diagnostics des rums, les tables rsa, actes, diagnostics et passages um et ano des rsa sont integrees dans la db, avec le fichier tra accole.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tables mco in 2011</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2011</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ok ?</span>
+purrr::<span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2011</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ok ?</span>
 <span class="co"># ... 2012 -- 2015</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
+purrr::<span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
 
 <span class="co"># Tables mco out 2016</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
+purrr::<span class="kw">quietly</span>(db_mco_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
 <span class="co"># ...</span></code></pre></div>
 </div>
 <div id="rsf" class="section level4">
 <h4 class="hasAnchor">
 <a href="#rsf" class="anchor"></a>RSF</h4>
 <p>Avec la fonction <code>db_rsf_out</code>, tous les rafael du out sont integrees dans la db, un par table (A, B, C, etc) et la table ano-ace.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/rsf"</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p$path &lt;-<span class="st"> "~/Documents/data/rsf"</span>
 
 <span class="co"># Tables rsf out 2016</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_rsf_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></code></pre></div>
+purrr::<span class="kw">quietly</span>(db_rsf_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></code></pre></div>
 </div>
 <div id="table-par-table" class="section level4">
 <h4 class="hasAnchor">
 <a href="#table-par-table" class="anchor"></a>Table par table</h4>
 <p>Un exemple pour la table rapss de l’had.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Exemple en had</span>
-p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/had"</span>
+p$path &lt;-<span class="st"> "~/Documents/data/had"</span>
 
 <span class="kw"><a href="../reference/irapss.html">irapss</a></span>(p, <span class="dt">annee =</span> <span class="dv">2015</span>) -&gt;<span class="st"> </span>tables_had
 
 <span class="co"># Table had rapss 2015</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_generique)(con, <span class="dt">an =</span> <span class="dv">15</span>, <span class="dt">table =</span> tables_had<span class="op">$</span>rapss, <span class="dt">prefix =</span> <span class="st">'had'</span>, <span class="dt">suffix =</span>  <span class="st">'rapss_rapss'</span>) -&gt;<span class="st"> </span>ok
+purrr::<span class="kw">quietly</span>(db_generique)(con, <span class="dt">an =</span> <span class="dv">15</span>, <span class="dt">table =</span> tables_had$rapss, <span class="dt">prefix =</span> <span class="st">'had'</span>, <span class="dt">suffix =</span>  <span class="st">'rapss_rapss'</span>) -&gt;<span class="st"> </span>ok
 <span class="co"># had_15_rapss_rapss</span></code></pre></div>
 </div>
 </div>

@@ -23,7 +23,7 @@ library(DBI)
 ```{r eval = F}
 library(MonetDBLite)
 dbdir <- "~/Documents/data/monetdb"
-con <- dbConnect(MonetDBLite::MonetDBLite(), dbdir)
+con <- src_monetdblite(dbdir)
 ```
 
 #### 0.2 - Connexion à une db SQLite

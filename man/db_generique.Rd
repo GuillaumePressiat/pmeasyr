@@ -4,7 +4,7 @@
 \alias{db_generique}
 \title{~ db - Copier un tibble dans une db}
 \usage{
-db_generique(con, an, table, prefix, suffix, remove = T)
+db_generique(con, an, table, prefix, suffix, indexes = list(), remove = T)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}
@@ -16,6 +16,8 @@ db_generique(con, an, table, prefix, suffix, remove = T)
 \item{prefix}{prefixe de la table dans la db (ex : mco, rsf, ssr, ...)}
 
 \item{suffix}{suffixe de la table dans la db (ex : rum_rum, rha_actes, rapss_rapss, ...)}
+
+\item{indexes}{index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})}
 }
 \value{
 nothing
