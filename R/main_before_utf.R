@@ -301,7 +301,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
           CONFCDRSS     = ifelse(NOVERG=='115', stringr::str_sub(RUM,139,140) , stringr::str_sub(RUM,150,150)),
           RDT_TYPMACH   = ifelse(NOVERG=='115', stringr::str_sub(RUM,141,141) , stringr::str_sub(RUM,151,151)),
           RDT_TYPDOSIM  = ifelse(NOVERG=='115', stringr::str_sub(RUM,142,142) , stringr::str_sub(RUM,152,152)),
-          NBFAISC       = ifelse(NOVERG=='115', stringr::str_sub(RUM,143,143) , stringr::str_sub(RUM,153,153)),
+          NBFAISC       = ifelse(NOVERG=='115', stringr::str_sub(RUM,143,143) , stringr::str_sub(RUM,153,153)) %>% as.integer(),
           ZAD           = ifelse(NOVERG=='115', stringr::str_sub(RUM,154,stringr::str_length(RUM))     , stringr::str_sub(RUM,181,stringr::str_length(RUM)))
         ) %>% dplyr::select(-RUM)
     }
