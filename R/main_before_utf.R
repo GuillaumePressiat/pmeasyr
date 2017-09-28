@@ -289,7 +289,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
           TYTRDS        = stringr::str_sub(RUM,100,100),
           CDRESI        = stringr::str_sub(RUM,101,105),
           PDNAIS        = stringr::str_sub(RUM,106,109) %>% as.numeric(),
-          AGEGEST       = stringr::str_sub(RUM,110,111),
+          AGEGEST       = stringr::str_sub(RUM,110,111) %>% as.integer(),
           DDR2          = ifelse(NOVERG=='115', ""                            , stringr::str_sub(RUM,112,119)),
           NBSEAN        = ifelse(NOVERG=='115', stringr::str_sub(RUM,112,113) , stringr::str_sub(RUM,120,121)),
           NBDAS         = ifelse(NOVERG=='115', stringr::str_sub(RUM,114,115) , stringr::str_sub(RUM,122,123)) %>% as.integer(),
