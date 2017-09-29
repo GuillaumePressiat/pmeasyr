@@ -3015,7 +3015,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   
   if (annee>2011){
     actes <- purrr::flatten_chr(rapss_i$lactes)
-    df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBZA)
+    df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBZA)
     df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
     actes <- dplyr::bind_cols(df,data.frame(ZACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
     actes <- dplyr::mutate(actes, CODE = 'A') %>% dplyr::select(-NBZA) %>% dplyr::mutate(
@@ -3028,19 +3028,19 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
       INDVAL = stringr::str_sub(ZACTES,19,19))
     
     da <- purrr::flatten_chr(rapss_i$lda)
-    df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDA)
+    df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     da <- dplyr::mutate(da, CODE = 'DA') %>% dplyr::select(-NBDA)
     
     dmpp <- purrr::flatten_chr(rapss_i$ldmpp)
-    df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDIAGMPP)
+    df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDIAGMPP)
     df <- as.data.frame(lapply(df, rep, df$NBDIAGMPP), stringsAsFactors = F) %>% dplyr::tbl_df()
     dmpp <- dplyr::bind_cols(df,data.frame(DMPP = stringr::str_trim(dmpp), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     dmpp <- dplyr::mutate(dmpp, CODE = 'DMPP') %>% dplyr::select(-NBDIAGMPP)
     
     dmpa <- purrr::flatten_chr(rapss_i$ldmpa)
-    df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDIAGMPA)
+    df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDIAGMPA)
     df <- as.data.frame(lapply(df, rep, df$NBDIAGMPA), stringsAsFactors = F) %>% dplyr::tbl_df()
     dmpa <- dplyr::bind_cols(df,data.frame(DMPA = stringr::str_trim(dmpa), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     dmpa <- dplyr::mutate(dmpa, CODE = 'DMPA') %>% dplyr::select(-NBDIAGMPA)
@@ -3052,7 +3052,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   
   if (annee==2011){
     actes <- purrr::flatten_chr(rapss_i$lactes)
-    df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBZA)
+    df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBZA)
     df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
     actes <- dplyr::bind_cols(df,data.frame(ZACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
     actes <- dplyr::mutate(actes, CODE = 'A') %>% dplyr::select(-NBZA) %>% dplyr::mutate(
@@ -3065,7 +3065,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
       INDVAL = stringr::str_sub(ZACTES,19,19))
     
     da <- purrr::flatten_chr(rapss_i$lda)
-    df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NBDA)
+    df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDA)
     df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
     da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df()
     da <- dplyr::mutate(da, CODE = 'DA') %>% dplyr::select(-NBDA)
@@ -3075,7 +3075,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   }
   
   etb_ght <- purrr::flatten_chr(rapss_i$letb_ght)
-  df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,NOVRPSS, VCLASS = ETB_VCLASS, CDRETR = ETB_CDRETR,
+  df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NOVRPSS, VCLASS = ETB_VCLASS, CDRETR = ETB_CDRETR,
                                   GHPC = ETB_GHPC, NBGHT = ETB_NBGHT)
   df <- as.data.frame(lapply(df, rep, df$NBGHT), stringsAsFactors = F) %>% dplyr::tbl_df()
   etb_ght <- dplyr::bind_cols(df,data.frame(etb_ght, stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>%
@@ -3085,7 +3085,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
     dplyr::select(-etb_ght)
   
   pap_ght <- purrr::flatten_chr(rapss_i$lpap_ght)
-  df <- rapss_i %>% dplyr::select(NOSEJHAD,NOSEQ,NOSOUSSEQ,VCLASS=PAPRICA_VCLASS, CDRETR = PAPRICA_CDRETR, GHPC = PAPRICA_GHPC,
+  df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,VCLASS=PAPRICA_VCLASS, CDRETR = PAPRICA_CDRETR, GHPC = PAPRICA_GHPC,
                                   NBGHT = PAPRICA_NBGHT )
   df <- as.data.frame(lapply(df, rep, df$NBGHT), stringsAsFactors = F) %>% dplyr::tbl_df()
   pap_ght <- dplyr::bind_cols(df,data.frame(pap_ght, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>%
@@ -3471,7 +3471,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   leg_i1 <- dplyr::data_frame(FINESS    = u[,1] %>% as.character(),
                               MOIS      = u[,2] %>% as.character(),
                               ANNEE     = u[,3] %>% as.character(),
-                              NOSEJHAD  = u[,4] %>% as.character(),
+                              NOSEQSEJ  = u[,4] %>% as.character(),
                               NOSEQ     = u[,5] %>% as.character(),
                               NOSOUSSEQ = u[,6] %>% as.character(),
                               NBERR     = u[,7] %>% as.integer())
@@ -3489,7 +3489,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   }
   
   leg_i1 %>% 
-    dplyr::group_by(FINESS, MOIS, ANNEE, NOSEJHAD, NOSEQ, NOSOUSSEQ, NBERR) %>%
+    dplyr::group_by(FINESS, MOIS, ANNEE, NOSEQSEJ, NOSEQ, NOSOUSSEQ, NBERR) %>%
     dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
   if (tolower_names){
     names(leg_i) <- tolower(names(leg_i))
