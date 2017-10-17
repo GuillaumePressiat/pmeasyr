@@ -21,19 +21,16 @@ library(DBI)
 #### 0.1 - Connexion à une db MonetDBLite
 
 ```{r eval = F}
-library(MonetDBLite)
 dbdir <- "~/Documents/data/monetdb"
-con <- dbConnect(MonetDBLite::MonetDBLite(), dbdir)
+con <- src_monetdblite(dbdir)
 ```
 
 #### 0.2 - Connexion à une db SQLite
 
 
 ```{r eval = F}
-library(RSQLite)
 dbdir <- "~/Documents/data/sqlite/pmsi.sqlite"
-m <- dbDriver("SQLite")
-con <- dbConnect(m, dbname = dbdir)
+con <- src_sqlite(dbdir)
 ```
 
 
@@ -41,9 +38,8 @@ con <- dbConnect(m, dbname = dbdir)
 
 
 ```{r eval = F}
-library(RPostgreSQL)
-con <- dbConnect(pg, user = "gui", password = "gui", dbname = "aphp",
-                 host = "localhost", port = 5432)
+con <- src_postgres(user = "gui", password = "gui", dbname = "aphp",
+                    host = "localhost", port = 5432)
 ```
 
 
