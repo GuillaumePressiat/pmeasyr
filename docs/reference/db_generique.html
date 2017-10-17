@@ -84,7 +84,7 @@
     <p>Copier une table R dans une db</p>
     
 
-    <pre class="usage"><span class='fu'>db_generique</span>(<span class='no'>con</span>, <span class='no'>an</span>, <span class='no'>table</span>, <span class='no'>prefix</span>, <span class='no'>suffix</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
+    <pre class="usage"><span class='fu'>db_generique</span>(<span class='no'>con</span>, <span class='no'>an</span>, <span class='no'>table</span>, <span class='no'>prefix</span>, <span class='no'>suffix</span>, <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>remove</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -109,6 +109,10 @@
       <th>suffix</th>
       <td><p>suffixe de la table dans la db (ex : rum_rum, rha_actes, rapss_rapss, ...)</p></td>
     </tr>
+    <tr>
+      <th>indexes</th>
+      <td><p>index a ajouter a la table dans la base (voir <code><a href='http://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></code>)</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -121,10 +125,10 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_generique</span>)(<span class='no'>con</span>, <span class='fl'>16</span>, <span class='no'>ma_table</span>, <span class='st'>'had'</span>, <span class='st'>'rapss_ano'</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#</span>
-  <span class='co'># Result in db : had_16_rapss_ano</span>
-})</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/safely'>quietly</a></span>(<span class='no'>db_generique</span>)(<span class='no'>con</span>, <span class='fl'>16</span>, <span class='no'>ma_table</span>, <span class='st'>'had'</span>, <span class='st'>'rapss_ano'</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#</span>
+<span class='co'># Result in db : had_16_rapss_ano</span>
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

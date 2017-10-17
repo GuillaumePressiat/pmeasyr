@@ -4,7 +4,7 @@
 \alias{db_ssr_out}
 \title{~ db - Copier les rha dans une db}
 \usage{
-db_ssr_out(con, p, remove = T, ...)
+db_ssr_out(con, p, remove = T, zip = T, indexes = list(), ...)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}
@@ -14,6 +14,8 @@ db_ssr_out(con, p, remove = T, ...)
 \item{remove}{a TRUE, les tables precedentes rha de l'annee sont effacees avant}
 
 \item{zip}{a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db}
+
+\item{indexes}{index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})}
 }
 \value{
 nothing
