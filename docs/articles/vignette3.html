@@ -142,6 +142,14 @@ purrr<span class="op">::</span><span class="kw">quietly</span>(db_generique)(con
 <span class="co"># had_15_rapss_rapss</span></code></pre></div>
 </div>
 </div>
+<div id="connections-tab-dans-rstudio" class="section level3">
+<h3 class="hasAnchor">
+<a href="#connections-tab-dans-rstudio" class="anchor"></a>3 - Connections Tab dans RStudio</h3>
+<p>Pour pouvoir profiter de l’onglet <a href="https://db.rstudio.com">Connections</a> dans RStudio v1.1, vous pouvez définir l’objet <code>con</code> comme suit :</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="st">"PostgreSQL"</span>)
+con &lt;-<span class="st"> </span>dbplyr<span class="op">::</span><span class="kw">src_dbi</span>(con)</code></pre></div>
+<p>Et vous pourrez alors naviguer dans les 1 000 premières lignes de chacune des tables.</p>
+</div>
 </div>
   </div>
 

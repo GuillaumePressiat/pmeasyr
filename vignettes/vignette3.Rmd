@@ -107,3 +107,13 @@ purrr::quietly(db_generique)(con, an = 15, table = tables_had$rapss, prefix = 'h
 # had_15_rapss_rapss
 ```
 
+### 3 - Connections Tab dans RStudio
+
+Pour pouvoir profiter de l'onglet [Connections](https://db.rstudio.com) dans RStudio v1.1, vous pouvez définir l'objet `con` comme suit :
+
+```{r, eval = F}
+con <- DBI::dbConnect(odbc::odbc(), "PostgreSQL")
+con <- dbplyr::src_dbi(con)
+```
+
+Et vous pourrez alors naviguer dans les 1 000 premières lignes de chacune des tables.
