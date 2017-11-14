@@ -6493,9 +6493,9 @@ db_had_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   rapss <- pmeasyr::irapss(p)
   rapss_ano <- pmeasyr::iano_had(p)
   tra <- pmeasyr::itra(p, champ = "had")
-  rapss$rapss <- pmeasyr::inner_tra(rapss$rapss, tra)
-  rapss$acdi <- pmeasyr::inner_tra(rapss$acdi, tra)
-  rapss_ano <- pmeasyr::inner_tra(rapss_ano, tra)
+  rapss$rapss <- pmeasyr::inner_tra(rapss$rapss, tra, champ = "had")
+  rapss$acdi <- pmeasyr::inner_tra(rapss$acdi, tra, champ = "had")
+  rapss_ano <- pmeasyr::inner_tra(rapss_ano, tra, champ = "had")
   
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   
