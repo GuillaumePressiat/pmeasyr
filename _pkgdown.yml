@@ -27,7 +27,17 @@ reference:
     - tdiag
     - dico
     - "%+%"
-    
+  - title: Requêteur
+    contents:
+    - requete
+    - requete_db
+    - lancer_requete
+    - lancer_requete_db
+    - prepare_rsa
+    - enrobeur
+    - collect_rsa_from_db
+    - creer_json
+
 navbar:
   title: pmeasyr
   type: default
