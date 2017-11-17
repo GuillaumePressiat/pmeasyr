@@ -4,7 +4,7 @@
 \alias{lancer_requete_db}
 \title{~ req : lancer une ou plusieurs requetes dans une db avec une ou des listes}
 \usage{
-lancer_requete_db(con, an, elements)
+lancer_requete_db(con, an, elements, vars = NULL)
 }
 \value{
 un tibble concatenant les resultats de toutes les requetes : les rsa qui ont un acte de la liste, un diag, une duree correspondante, etc.

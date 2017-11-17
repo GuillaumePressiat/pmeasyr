@@ -14,9 +14,9 @@ Imports:
     purrr,
     sjlabelled,
     knitr,
-    DBI
-Suggests:
-  sqldf
+    DBI,
+    jsonlite,
+    sqldf
 Author: Guillaume Pressiat
 Authors@R: c(person('Guillaume Pressiat', role = c("aut", "cre")))
 Maintainer: Guillaume Pressiat <guillaume.pressiat@aphp.fr>

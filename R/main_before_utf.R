@@ -7208,11 +7208,11 @@ requete_db <- function (con, an, elements, vars = NULL)
 #' @author G. Pressiat
 #' @importFrom dplyr mutate bind_rows
 #' @export
-lancer_requete_db <- function(con, an, elements){
+lancer_requete_db <- function(con, an, elements, vars = NULL){
   if (length(elements$nom) == 1){
     cat(elements$nom, "\n")
     return(elements %>%
-             requete_db(con, an, .) %>%
+             requete_db(con, an, ., vars) %>%
              dplyr::mutate(Requete = elements$nom,
                            Thematique = elements$thematique))}
   else {
@@ -7220,7 +7220,7 @@ lancer_requete_db <- function(con, an, elements){
                                    function(elements1){
                                      cat(elements1$nom, "\n")
                                      elements1 %>%
-                                       requete_db(con, an, .) %>%
+                                       requete_db(con, an, ., vars) %>%
                                        dplyr::mutate(Requete = elements1$nom,
                                                      Thematique = elements1$thematique)})))}
 }
@@ -7242,11 +7242,11 @@ lancer_requete_db <- function(con, an, elements){
 #' @author G. Pressiat
 #' @importFrom dplyr mutate bind_rows
 #' @export
-lancer_requete <- function(tables, elements){
+lancer_requete <- function(tables, elements, vars = NULL){
   if (length(elements$nom) == 1){
     cat(elements$nom, "\n")
     return(elements %>%
-             requete(tables, .) %>%
+             requete(tables, ., vars) %>%
              dplyr::mutate(Requete = elements$nom,
                            Thematique = elements$thematique))}
   else {
@@ -7254,7 +7254,7 @@ lancer_requete <- function(tables, elements){
                                    function(elements1){
                                      cat(elements1$nom, "\n")
                                      elements1 %>%
-                                       requete(tables, .) %>%
+                                       requete(tables, ., vars) %>%
                                        dplyr::mutate(Requete = elements1$nom,
                                                      Thematique = elements1$thematique)})))}
 }
@@ -7304,7 +7304,6 @@ prepare_rsa <- function(rsa){
 #'
 #' @return un liste rsa similaire à un import de pmeasyr
 #' @author G. Pressiat
-#' @importFrom jsonlite write_json
 #' @export
 collect_rsa_from_db <- function(con, an, n = Inf){
   rsa <- list()
