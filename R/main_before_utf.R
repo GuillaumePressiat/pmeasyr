@@ -6904,138 +6904,123 @@ enrobeur <- function(a, robe = "\'", colonne = F, interstice = ", ", symetrique 
 #' @importFrom purrr flatten_chr
 #' @importFrom sqldf sqldf
 #' @export
-requete <- function(tables, elements, vars = NULL){
-  # partie rsa
+requete <- function (tables, elements, vars = NULL) {
   chaine = list()
-  if (length(elements[["ghm"]]) > 0){
-    chaine$ghm <- paste0('grepl(\'', enrobeur(elements$ghm, robe = "", colonne = F, interstice = "|"), '\', ghm) ')
+  if (length(elements[["ghm"]]) > 0) {
+    chaine$ghm <- paste0("grepl('", enrobeur(elements$ghm, 
+                                             robe = "", colonne = F, interstice = "|"), "', ghm) ")
   }
-  if (length(elements[["ghm_exclus"]]) > 0){
-    chaine$ghm_exclus <- paste0('!grepl(\'', enrobeur(elements$ghm_exclus, robe = "", colonne = F, interstice = "|"), '\', ghm) ')
+  if (length(elements[["ghm_exclus"]]) > 0) {
+    chaine$ghm_exclus <- paste0("!grepl('", enrobeur(elements$ghm_exclus, 
+                                                     robe = "", colonne = F, interstice = "|"), "', ghm) ")
   }
-  if (length(elements[['diags_exclus']]) > 0){
-    chaine$diags_exclus = paste0('!grepl(\'', enrobeur(elements$diags_exclus, robe = "", colonne = F, interstice = "|"), '\', diags) ')
+  if (length(elements[["diags_exclus"]]) > 0) {
+    chaine$diags_exclus = paste0("!grepl('", enrobeur(elements$diags_exclus, 
+                                                      robe = "", colonne = F, interstice = "|"), "', diags) ")
   }
-  
-  if (length(elements[['agemin']]) > 0) {
-    chaine$agemin = paste0('agean >= ', elements$agemin)
+  if (length(elements[["agemin"]]) > 0) {
+    chaine$agemin = paste0("agean >= ", elements$agemin)
   }
-  if (length(elements[['agemax']]) > 0){
-    chaine$agemax = paste0('agean <= ', elements$agemax)
+  if (length(elements[["agemax"]]) > 0) {
+    chaine$agemax = paste0("agean <= ", elements$agemax)
   }
-  if ((length(elements[['agejrmin']]) > 0) & ((length(elements[['agemmax']])>0)|(length(elements[['agemin']]) > 0))){
-    chaine$agejrmin = paste0('agean >= ', elements$agejrmin/365.25)
+  if ((length(elements[["agejrmin"]]) > 0) & ((length(elements[["agemmax"]]) > 
+                                               0) | (length(elements[["agemin"]]) > 0))) {
+    chaine$agejrmin = paste0("agean >= ", elements$agejrmin/365.25)
   }
-  if ((length(elements[['agejrmax']]) > 0) & ((length(elements[['agemmax']])>0)|(length(elements[['agemin']]) > 0))){
-    chaine$agejrmax = paste0('agean <= ', elements$agejrmax/365.25)
+  if ((length(elements[["agejrmax"]]) > 0) & ((length(elements[["agemmax"]]) > 
+                                               0) | (length(elements[["agemin"]]) > 0))) {
+    chaine$agejrmax = paste0("agean <= ", elements$agejrmax/365.25)
   }
-  if (length(elements[['agejrmin']]) > 0 & (length(elements[['agemmax']])==0) & (length(elements[['agemin']]) == 0)) {
-    chaine$agejrmin = paste0('!is.na(agejr) & agejr >= ', elements$agejrmin)
+  if (length(elements[["agejrmin"]]) > 0 & (length(elements[["agemmax"]]) == 
+                                            0) & (length(elements[["agemin"]]) == 0)) {
+    chaine$agejrmin = paste0("!is.na(agejr) & agejr >= ", 
+                             elements$agejrmin)
   }
-  if (length(elements[['agejrmax']]) > 0 & (length(elements[['agemmax']])==0) & (length(elements[['agemin']]) == 0)) {
-    chaine$agejrmin = paste0('!is.na(agejr) & agejr <= ', elements$agejrmax)
+  if (length(elements[["agejrmax"]]) > 0 & (length(elements[["agemmax"]]) == 
+                                            0) & (length(elements[["agemin"]]) == 0)) {
+    chaine$agejrmin = paste0("!is.na(agejr) & agejr <= ", 
+                             elements$agejrmax)
   }
-  if (length(elements[['dureemax']]) > 0){
-    chaine$dureemax = paste0('duree <= ', elements$dureemax)
+  if (length(elements[["dureemax"]]) > 0) {
+    chaine$dureemax = paste0("duree <= ", elements$dureemax)
   }
-  if (length(elements[['dureemin']]) > 0){
-    chaine$dureemin <- paste0('duree >= ', elements$dureemin)
+  if (length(elements[["dureemin"]]) > 0) {
+    chaine$dureemin <- paste0("duree >= ", elements$dureemin)
   }
-  if (length(elements[['poidsmin']]) > 0){
-    chaine$poidsmin <- paste0('poids >= ', elements$poidsmin)
+  if (length(elements[["poidsmin"]]) > 0) {
+    chaine$poidsmin <- paste0("poids >= ", elements$poidsmin)
   }
-  if (length(elements[['poidsmax']]) > 0){
-    chaine$podsmax <- paste0('poids <= ', elements$poidsmax)
+  if (length(elements[["poidsmax"]]) > 0) {
+    chaine$podsmax <- paste0("poids <= ", elements$poidsmax)
   }
-  if (length(elements[['autres']]) > 0){
-    if (!identical(chaine, character())){
+  if (length(elements[["autres"]]) > 0) {
+    if (!identical(chaine, character())) {
       chaine$autres <- paste0(elements$autres)
     }
     else {
       chaine <- paste0(elements$autres)
     }
   }
-  if (length(chaine) == 0){chaine = list('TRUE')}
-  
-  rsa_filtre <- tables$rsa %>%
-    filter_(paste0(purrr::flatten_chr(chaine),  collapse = " & ")) %>%
-    select(cle_rsa)
-  
-  if (length(elements[['diags']]) > 0){
-    liste_diags = dplyr::data_frame(diag = elements$diags)
-    
-    if (nrow(liste_diags) > 20){
-      if (sum(elements[['positions_diags']] == "toutes") == 1 | sum(elements[['positions_diags']] == c(3,5)) == 2){
-        
-        d <- tables$diags
-        s <- paste0("select distinct cle_rsa from d where ", paste0('diag like \'', elements$diags, '%\'', collapse = " or "))
-        sqldf::sqldf(s) %>% dplyr::tbl_df()  -> diags
-      } else
-        if (elements[['positions_diags']][1] == "dp"){
-          #d <- tables$diags
-          #s <- paste0("select distinct CLE_RSA from d where (", paste0('diag like \'', elements$diags, '%\'', collapse = " or "), ') and position = 1')
-          d <- tables$rsa
-          s <- paste0("select cle_rsa from d where (", paste0('dp like \'', elements$diags, '%\'', collapse = " or "), ')')
-          sqldf::sqldf(s) %>% dplyr::tbl_df() %>% dplyr::select(cle_rsa) -> diags
-        }else {
-          d <- tables$diags
-          s <- paste0("select distinct cle_rsa from d where position in (" , paste0(elements$positions_diags,
-                                                                                    collapse = ", "),") and ( ", paste0('diag like \'', elements$diags, '%\'', collapse = " or "), ' )')
-          sqldf::sqldf(s) %>% dplyr::tbl_df()  -> diags
-        }
-    } else
-      if (nrow(liste_diags) <= 20){
-        if (sum(elements[['positions_diags']] == "toutes") == 1 | sum(elements[['positions_diags']] == c(3,5)) == 2){
-          
-          s <- enrobeur(elements$diags, robe = "", interstice = "|", colonne = F)
-          s <- paste0('grepl(\'', s, '\', diag)')
-          diags <- tables$diags %>% dplyr::filter_(s) %>%
-            dplyr::distinct(cle_rsa)
-        } else
-          if (elements[['positions_diags']] == "dp"){
-            s <- enrobeur(elements$diags, robe = "", interstice = "|", colonne = F)
-            s <- paste0('grepl(\'', s, '\', dp)')
-            diags <- tables$rsa %>% dplyr::filter_(s) %>% dplyr::select(cle_rsa)
-            
-          } else {
-            d <- tables$diags
-            s <- paste0("select distinct cle_rsa from d where position in (" ,
-                        paste0(elements$positions_diags,
-                               collapse = ", "),") and ( ",
-                        paste0('diag like \'', elements$diags, '%\'',
-                               collapse = " or "), ' )')
-            sqldf::sqldf(s) %>% dplyr::tbl_df()  -> diags
-          }
-      }
-  } else {diags = dplyr::tibble()}
-  
-  
-  if (length(elements[["actes"]]) > 0){
-    liste_actes = dplyr::data_frame(cdccam = elements$actes) %>% dplyr::tbl_df()
-    
-    if (length(elements[["activite_actes"]]) > 0){
-      actes = dplyr::inner_join(tables$actes %>% filter(act %in% elements[["activite_actes"]]), liste_actes, by = c('cdccam' = 'cdccam')) %>%
-        dplyr::distinct(cle_rsa)
-    } else {
-      actes = dplyr::inner_join(tables$actes, liste_actes, by = c('cdccam' = 'cdccam')) %>%
-        dplyr::distinct(cle_rsa)
-    }
-  } else {actes = dplyr::tibble()}
-  
-  resultat <- tables$rsa %>%
-    dplyr::inner_join(rsa_filtre, by = "cle_rsa")
-  
-  if (length(elements[["actes"]]) > 0){
-    resultat <- resultat %>%
-      dplyr::inner_join(actes, by = "cle_rsa")
+  if (length(chaine) == 0) {
+    chaine = list("TRUE")
   }
-  if (length(elements[["diags"]]) > 0){
-    resultat <- resultat %>%
-      dplyr::inner_join(diags, by = "cle_rsa")
+  rsa_filtre <- tables$rsa %>% filter_(paste0(purrr::flatten_chr(chaine), 
+                                              collapse = " & ")) %>% select(cle_rsa)
+  if (length(elements[["diags"]]) > 0) {
+    if (elements[["positions_diags"]][1] == "toutes") {
+      d <- tables$diags
+      s <- paste0("select distinct cle_rsa from d where ",
+                  paste0("diag like '", elements$diags, "%'",
+                         collapse = " or "))
+      diags <- sqldf::sqldf(s) %>% dplyr::tbl_df()
+    }
+    else if (elements[["positions_diags"]][1] == "dp") {
+      d <- tables$rsa
+      s <- paste0("select cle_rsa from d where (",
+                  paste0("dp like '", elements$diags, "%'",
+                         collapse = " or "), ")")
+      diags <- sqldf::sqldf(s) %>% dplyr::tbl_df() %>%
+        dplyr::select(cle_rsa)
+    }
+    else {
+      d <- tables$diags
+      s <- paste0("select distinct cle_rsa from d where position in (",
+                  paste0(elements$positions_diags, collapse = ", "),
+                  ") and ( ", paste0("diag like '", elements$diags,
+                                     "%'", collapse = " or "), " )")
+      diags <- sqldf::sqldf(s) %>% dplyr::tbl_df()    
+    }}
+  else {
+    diags = dplyr::tibble()
+    
+  }
+  if (length(elements[["actes"]]) > 0) {
+    liste_actes = dplyr::data_frame(cdccam = elements$actes) %>% 
+      dplyr::tbl_df()
+    if (length(elements[["activite_actes"]]) > 0) {
+      actes = dplyr::inner_join(tables$actes %>% filter(act %in% 
+                                                          elements[["activite_actes"]]), liste_actes, 
+                                by = c(cdccam = "cdccam")) %>% dplyr::distinct(cle_rsa)
+    }
+    else {
+      actes = dplyr::inner_join(tables$actes, liste_actes, 
+                                by = c(cdccam = "cdccam")) %>% dplyr::distinct(cle_rsa)
+    }
+  }
+  else {
+    actes = dplyr::tibble()
+  }
+  resultat <- tables$rsa %>% dplyr::inner_join(rsa_filtre, 
+                                               by = "cle_rsa")
+  if (length(elements[["actes"]]) > 0) {
+    resultat <- resultat %>% dplyr::inner_join(actes, by = "cle_rsa")
+  }
+  if (length(elements[["diags"]]) > 0) {
+    resultat <- resultat %>% dplyr::inner_join(diags, by = "cle_rsa")
   }
   resultat
-  
-  if (is.null(vars)){
+  if (is.null(vars)) {
     return(dplyr::distinct(resultat, cle_rsa))
   }
   else {
