@@ -5301,7 +5301,10 @@ adezip.default <- function(finess, annee, mois, path, liste = "", pathto="", typ
   liste <- unique(liste)
   u <- list.files(path)
   u <- u[grepl(paste0(type,'.zip'),u)]
-  u <- u[grepl(paste0(finess,'.',annee,'.',mois),u)]
+  
+  regex_fichier_selectionne <- paste0(finess, '\\.', annee, '\\.', mois, '\\.')
+  u <- u[grepl(regex_fichier_selectionne, u)]
+  
   lequel <- data.frame(archive = u,
                        type = unlist(lapply(stringr::str_split(u,'\\.'),'[',5) ),
                        Date.du.traitement = unlist(lapply(stringr::str_split(u,'\\.'),'[',4)))
