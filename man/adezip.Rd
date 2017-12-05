@@ -2,29 +2,38 @@
 % Please edit documentation in R/main_before_utf.R
 \name{adezip}
 \alias{adezip}
-\title{~ *.zip - Dezippe des fichiers de l'archive PMSI}
+\alias{adezip.pm_param}
+\alias{adezip.default}
+\title{~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI}
 \usage{
-adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
+adezip(...)
+
+\method{adezip}{pm_param}(.params, ...)
+
+\method{adezip}{default}(finess, annee, mois, path, liste = "", pathto = "",
+  type, recent = T)
 }
 \arguments{
-\item{finess}{Finess du fichier a dezipper}
+\item{.params}{Un noyau de paramètres définis par la fonction fonction \code{\link{noyau_pmeasyr}}}
 
-\item{annee}{Annee du fichier}
+\item{finess}{Finess du fichier à dezipper}
+
+\item{annee}{Année du fichier}
 
 \item{mois}{Mois du fichier}
 
-\item{path}{Chemin d'acces au fichier}
+\item{path}{Chemin d'accès au fichier}
 
-\item{liste}{des fichiers à dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive}
+\item{liste}{Vecteur de caractère avec le type de fichiers à dezipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive}
+
+\item{pathto}{par defaut à \code{""}, dezipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}}
 
 \item{type}{Type de l'archive : in / out}
 
-\item{recent}{par defaut a T, l'archive la plus recente sera utilisee, sinon propose a l'utilisateur de choisir quelle archive dezipper}
-
-\item{pathto}{par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)}
+\item{recent}{par défaut \code{T}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
 }
 \description{
-Dezipper une archive PMSI au besoin
+Recherche et dezippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 }
 \examples{
 \dontrun{
@@ -43,6 +52,20 @@ Dezipper une archive PMSI au besoin
             pathto = "~/Exemple",
             type = "in",
             recent = F)
+            
+     # Utilisation avec un noyau de paramtères
+     p <- noyau_pmeasyr(
+            finess = '750712184',
+            annee  = 2016,
+            mois   = 12,
+            path   = '~/Documents/data/mco',
+            progress = F
+            )
+     
+     adezip(p)
+     
+     # Modification d'un paramètre du noyay
+     adezip(p, mois = 11)
 }
 
 }

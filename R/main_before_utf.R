@@ -5212,20 +5212,19 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 }
 
 
-#' ~ *.zip - Dezippe des fichiers de l'archive PMSI
+#' ~ *.zip - Identifie et dézippe des fichiers de l'archive PMSI
 #'
-#' Dezipper une archive PMSI au besoin
+#' Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 #'
-#'
-#' @param finess Finess du fichier a dezipper
-#' @param annee Annee du fichier
+#' @param finess Finess du fichier à dézipper
+#' @param annee Année du fichier
 #' @param mois Mois du fichier
-#' @param path Chemin d'acces au fichier
-#' @param liste des fichiers à dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive
+#' @param path Chemin d'accès au fichier
+#' @param liste Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive
 #' @param type Type de l'archive : in / out
-#' @param recent par defaut a T, l'archive la plus recente sera utilisee, sinon propose a l'utilisateur de choisir quelle archive dezipper
-#' @param pathto par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)
-#'
+#' @param recent par défaut \code{T}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper
+#' @param pathto par defaut à \code{""}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}
+#' @param .params Un noyau de paramètres définis par la fonction fonction \code{\link{noyau_pmeasyr}}
 #' @examples
 #' \dontrun{
 #'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
@@ -5243,13 +5242,26 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #'             pathto = "~/Exemple",
 #'             type = "in",
 #'             recent = F)
+#'             
+#'      # Utilisation avec un noyau de paramtères
+#'      p <- noyau_pmeasyr(
+#'             finess = '750712184',
+#'             annee  = 2016,
+#'             mois   = 12,
+#'             path   = '~/Documents/data/mco',
+#'             progress = F
+#'             )
+#'      
+#'      adezip(p, type = "in")
+#'      
+#'      # Modification d'un paramètre du noyay
+#'      adezip(p, mois = 11, type = "in")
 #' }
 #'
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
 #' @export adezip
 #' @export
 adezip <- function(...){
@@ -5258,6 +5270,7 @@ adezip <- function(...){
 
 
 #' @export
+#' @rdname adezip
 adezip.pm_param <- function(.params, ...){
   new_par <- list(...)
   noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
@@ -5279,6 +5292,7 @@ adezip.list <- function(l, ...){
 }
 
 #' @export
+#' @rdname adezip
 adezip.default <- function(finess, annee, mois, path, liste = "", pathto="", type, recent=T){
   
   
