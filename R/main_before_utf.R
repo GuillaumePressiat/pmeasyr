@@ -5252,10 +5252,10 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #'             progress = F
 #'             )
 #'      
-#'      adezip(p)
+#'      adezip(p, type = "in")
 #'      
 #'      # Modification d'un paramètre du noyay
-#'      adezip(p, mois = 11)
+#'      adezip(p, mois = 11, type = "in")
 #' }
 #'
 #' @author G. Pressiat
