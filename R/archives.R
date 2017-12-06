@@ -103,15 +103,8 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #' ~ *.zip - Identifie et dézippe des fichiers de l'archive PMSI
 #'
 #' Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
-#'
-#' @param finess Finess du fichier à dézipper
-#' @param annee Année du fichier
-#' @param mois Mois du fichier
-#' @param path Chemin d'accès au fichier
-#' @param liste Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive
-#' @param type Type de l'archive : in / out
-#' @param recent par défaut \code{T}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper
-#' @param pathto par defaut à \code{""}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}
+#' @param ... Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.
+
 #' @param .params Un noyau de paramètres définis par la fonction fonction \code{\link{noyau_pmeasyr}}
 #' @examples
 #' \dontrun{
@@ -179,31 +172,65 @@ adezip.list <- function(l, ...){
   do.call(adezip.default, param2)
 }
 
+#' @param finess Finess du fichier à dézipper
+#' @param annee Année du fichier
+#' @param mois Mois du fichier
+#' @param path Chemin d'accès au répertoire contenant le fichier d'archive
+#' @param liste Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive
+#' @param type Type de l'archive : in / out
+#' @param recent par défaut \code{T}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper
+#' @param pathto par defaut à \code{""}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}
 #' @export
+#' @import lubridate
+#' @import stringr
 #' @rdname adezip
-adezip.default <- function(finess, annee, mois, path, liste = "", pathto="", type, recent=T){
+adezip.default <- function(finess, annee, mois, path, liste = "", 
+                           pathto = "", type, recent = TRUE){
   
+  # TODO: simplifier cette fonction
+  # Si aucun chemin de dossier pour décompresser n'est défini
+  # utiliser selui contenant les fichiers
+  if (pathto == ""){
+    pathto <- ifelse(
+      # Si le dernier caractère du chemin est un /
+      substr(path,nchar(path),nchar(path))=="/",
+      # alors le retirer
+      substr(path,1,nchar(path)-1),
+      # Sinon utiliser le chemin
+      path)
+    }
   
-  if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
-  
+  # liste des types de fichiers
   liste <- unique(liste)
-  u <- list.files(path)
-  u <- u[grepl(paste0(type,'.zip'),u)]
   
+  # Récuper les .zip
+  u <- list.files(path, pattern = "\\.zip$")
+  
+  # Sélectionner les fichiers d'archives correspondants aux critères
   regex_fichier_selectionne <- paste0(finess, '\\.', annee, '\\.', mois, '\\.')
   u <- u[grepl(regex_fichier_selectionne, u)]
   
+  # Créer une data.frame pour disposer de l'information de chaque fichier
+  # TODO: créer une fonction spécialisée pour parser les informations du nom
+  # de fichier d'archive (en particulier date et heure de traitement)
   lequel <- data.frame(archive = u,
                        type = unlist(lapply(stringr::str_split(u,'\\.'),'[',5) ),
                        Date.du.traitement = unlist(lapply(stringr::str_split(u,'\\.'),'[',4)))
   lequel <- lequel[lequel$type == type,]
   lequel <- lequel[rev(order(lequel$Date.du.traitement)),]
-  if (recent==T){
+  
+  # Si il ne faut prendre que le plus récent
+  if (recent) {
+    # Sélectionner le premier (en théorie le plus récent)
     file <- as.character(lequel[1,1])
     pat<- stringr::str_split(file,'\\.')
     if (liste[1]==""){
+      # TODO: écrire une fonction qui ne fait que écrire le chemin du
+      # fichier à dezipper
       unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file), exdir= pathto)}
     else{
+      # TODO: envoyer un message au lieu d'un cat et écrire une fonction
+      # pour éviter de répéter ceci 4 fois
       cat('Dézippage archive\n',
           'Type     :',pat[[1]][5],'\n',
           'Finess   :',pat[[1]][1],'\n',
@@ -236,7 +263,7 @@ adezip.default <- function(finess, annee, mois, path, liste = "", pathto="", typ
       
     }}
   
-  if (recent==F){
+  if (!recent){
     lequel$Date.du.traitement <- lubridate::parse_date_time(lequel$Date.du.traitement,'%d%m%y%h%m%s')
     lequel$Quelle <- 1:nrow(lequel)
     cat("Quelle archive ?\nEntrez la Quelle dézipper\n")
@@ -420,4 +447,41 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
   
   if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste,".txt"))}
   if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste))}
+}
+
+#' Extraire les informations d'un nom de fichier
+#' 
+#' @return Une liste avec les informations extraites du nom de fichier :
+#' * `nom_fichier` Le nom de fichier passé en arguement
+#' * `finess`
+#' * `annee`
+#' * `mois`
+#' * `horodatage_production` L'horodatage de production pour les fichiers *in* et *out* au format POSIXlt
+#' * `type` Type de fichier : *in*, *out*, *rss*...
+#' @param nom_fichier Une chaine de caractères du fichier à découper
+#' @export
+#' @import lubridate
+#' @md
+parse_nom_fichier <- function(nom_fichier, format_date_archive = '%d%m%Y%H%M%S') {
+  
+  if (length(nom_fichier) != 1) stop("nom_fichier doit être de longueur 1")
+  
+  # Initialiser le vecteur de résultat
+  x <- list(nom_fichier = nom_fichier)
+  
+  champs_separe <- unlist(strsplit(x = nom_fichier, split = ".", fixed = TRUE))
+  x$finess <- champs_separe[1]
+  x$annee <- champs_separe[2]
+  x$mois <- champs_separe[3]
+  
+  # Si le fichier est une archive, détecter l'horodatage de production et le type
+  if (champs_separe[length(champs_separe)] == "zip") {
+    x$horodatage_production <- strptime(champs_separe[4], 
+                                          format = format_date_archive) 
+    x$type <- champs_separe[5]
+  } else {
+    x$type <- champs_separe[4]
+  }
+  
+  x
 }

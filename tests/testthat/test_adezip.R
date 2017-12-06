@@ -10,3 +10,12 @@ test_that("adezip sélectionne le bon fichier", {
   expect_equal(dir(file.path(tmp_dir, archive_test)), "671234567.2016.1.12032016140012.rss.txt")
 }
 )
+
+test_that("Parse les noms de fichiers",{
+  x <- parse_nom_fichier("671234567.2016.1.12032016140012.in.zip")
+  expect_equal(x$finess, "671234567")
+  expect_equal(x$annee, "2016")
+  expect_equal(x$mois, "1")
+  expect_is(x$horodatage_production, "POSIXlt")
+  expect_equal(x$horodatage_production, as.POSIXlt("2016-03-12 14:00:12 CET"))
+})
