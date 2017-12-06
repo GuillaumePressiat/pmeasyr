@@ -475,7 +475,7 @@ parse_nom_fichier <- function(nom_fichier, format_date_archive = '%d%m%Y%H%M%S')
   x$mois <- champs_separe[3]
   
   # Si le fichier est une archive, détecter l'horodatage de production et le type
-  if (champs_separe[length(champs_separe)] == "zip") {
+  if (champs_separe[length(champs_separe)] %in% c("zip", "in", "out")) {
     x$horodatage_production <- strptime(champs_separe[4], 
                                           format = format_date_archive) 
     x$type <- champs_separe[5]
