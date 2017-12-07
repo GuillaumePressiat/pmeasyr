@@ -4,33 +4,40 @@
 
 #' ~ *.zip - Liste et volume des fichiers d'une archive PMSI
 #'
-#' Pour lister sans dezipper les fichiers d'une archive
+#' Pour lister sans dezipper les fichiers d'une archive.
+#' 
+#' @return Une `data.frame` contenant les colonnes :
+#' * *Name* Nom du fichier
+#' * *Date* Date de modification
+#' * *Taille (Mo)*
 #'
-#'
-#' @param path Chemin d'acces  a l'archive
-#' @param file Nom du fichier archive
-#' @param view par defaut a T : affiche la liste avec View(), a F retourne la table affichee a T
+#' @param path Chemin d'accès au dossier contenant les archives
+#' @param file Nom du fichier d'archive
+#' @param view par défaut `TRUE` : affiche la liste avec [utils::View()]  Sinon retourne la table dans la console.
 #'
 #' @examples
-#' \dontrun{
-#'    liste <- astat(path = '~/Documents/R/sources/2016/',
-#'                   file = "750712184.2016.2.05042016093044.in.zip",
-#'                   view = F)
-#' }
+#' test_files_dir <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
+#' astat(path = test_files_dir, file = "671234567.2016.1.12032016140012.in.zip", view = FALSE)
 #'
 #' @author G. Pressiat
 #'
-#' @seealso \code{\link{adezip}}, \code{\link{adezip2}}
-
+#' @seealso [adezip()] et [adezip2()] permettent de décompresser les fichiers. Cette fonction est basée sur [utils::unzip()] en utilisant l'argument `list = TRUE`
 #' @export
-astat <- function(path,file, view=T){
+#' @md
+astat <- function(path, file, view = TRUE){
   
   stat <- unzip(
-    zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file), list=T) %>%
-    dplyr::mutate(`Taille (Mo)` = round(Length/10e5,6)) %>% dplyr::select(-Length)
+    zipfile = file.path(path ,file), 
+    list = TRUE
+    ) %>%
+    dplyr::mutate(`Taille (Mo)` = round(Length / 10e5, 6)) %>% 
+    dplyr::select(-Length)
   
-  if (view==T){View(stat)}
-  if (view==F){return(stat)}
+  if (view) {
+    return(View(stat, title = file))
+  } else {
+    return(stat)
+  }
 }
 
 #' ~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive
@@ -181,8 +188,6 @@ adezip.list <- function(l, ...){
 #' @param recent par défaut \code{T}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper
 #' @param pathto par defaut à \code{""}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}
 #' @export
-#' @import lubridate
-#' @import stringr
 #' @rdname adezip
 adezip.default <- function(finess, annee, mois, path, liste = "", 
                            pathto = "", type, recent = TRUE){
@@ -460,7 +465,6 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
 #' * `type` Type de fichier : *in*, *out*, *rss*...
 #' @param nom_fichier Une chaine de caractères du fichier à découper
 #' @export
-#' @import lubridate
 #' @md
 parse_nom_fichier <- function(nom_fichier, format_date_archive = '%d%m%Y%H%M%S') {
   

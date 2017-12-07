@@ -16,7 +16,7 @@ Une liste avec les informations extraites du nom de fichier :
 \item \code{finess}
 \item \code{annee}
 \item \code{mois}
-\item \code{horodatage_production} L'horodatage de production pour les fichiers \emph{in} et \emph{out}
+\item \code{horodatage_production} L'horodatage de production pour les fichiers \emph{in} et \emph{out} au format POSIXlt
 \item \code{type} Type de fichier : \emph{in}, \emph{out}, \emph{rss}...
 }
 }

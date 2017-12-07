@@ -4,28 +4,33 @@
 \alias{astat}
 \title{~ *.zip - Liste et volume des fichiers d'une archive PMSI}
 \usage{
-astat(path, file, view = T)
+astat(path, file, view = TRUE)
 }
 \arguments{
-\item{path}{Chemin d'acces  a l'archive}
+\item{path}{Chemin d'accès au dossier contenant les archives}
 
-\item{file}{Nom du fichier archive}
+\item{file}{Nom du fichier d'archive}
 
-\item{view}{par defaut a T : affiche la liste avec View(), a F retourne la table affichee a T}
+\item{view}{par défaut \code{TRUE} : affiche la liste avec \code{\link[utils:View]{utils::View()}} et retourne de manière invisible la table. Sinon retourne la table dans la console.}
+}
+\value{
+Une \code{data.frame} contenant les colonnes :
+\itemize{
+\item \emph{Name} Nom du fichier
+\item \emph{Date} Date de modification
+\item \emph{Taille (Mo)}
+}
 }
 \description{
-Pour lister sans dezipper les fichiers d'une archive
+Pour lister sans dezipper les fichiers d'une archive.
 }
 \examples{
-\dontrun{
-   liste <- astat(path = '~/Documents/R/sources/2016/',
-                  file = "750712184.2016.2.05042016093044.in.zip",
-                  view = F)
-}
+test_files_dir <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
+astat(path = test_files_dir, file = "671234567.2016.1.12032016140012.in.zip", view = FALSE)
 
 }
 \seealso{
-\code{\link{adezip}}, \code{\link{adezip2}}
+\code{\link[=adezip]{adezip()}} et \code{\link[=adezip2]{adezip2()}} permettent de décompresser les fichiers. Cette fonction est basée sur \code{\link[utils:unzip]{utils::unzip()}} en utilisant l'argument \code{list = TRUE}
 }
 \author{
 G. Pressiat

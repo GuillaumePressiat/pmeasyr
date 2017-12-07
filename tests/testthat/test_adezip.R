@@ -19,3 +19,10 @@ test_that("Parse les noms de fichiers",{
   expect_is(x$horodatage_production, "POSIXlt")
   expect_equal(x$horodatage_production, as.POSIXlt("2016-03-12 14:00:12 CET"))
 })
+
+test_that("astat", {
+  test_files_dir <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
+  
+  x <- astat(path = test_files_dir, file = "671234567.2016.1.12032016140012.in.zip", view = FALSE)
+  expect_is(x, "data.frame")
+})
