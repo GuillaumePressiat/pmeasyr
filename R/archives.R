@@ -30,7 +30,7 @@ astat <- function(path, file, view = TRUE){
     zipfile = file.path(path ,file), 
     list = TRUE
     ) %>%
-    dplyr::mutate(`Taille (Mo)` = round(Length / 10e5, 6)) %>% 
+    dplyr::mutate(`Taille (Mo)` = round(Length / 10^6, 6)) %>% 
     dplyr::select(-Length)
   
   if (view) {
@@ -456,6 +456,7 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
 
 #' Extraire les informations d'un nom de fichier
 #' 
+#' Les noms de fichiers des archives PMSI ont toujours le même format, de la forme *finess.annee_envois.mois_envois.* suivi par *horodatage* pour les archives *in* et *ou* et enfin le *type* de fichier. Cette fonction permet d'extraire cette information.
 #' @return Une liste avec les informations extraites du nom de fichier :
 #' * `nom_fichier` Le nom de fichier passé en arguement
 #' * `finess`
@@ -464,10 +465,15 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
 #' * `horodatage_production` L'horodatage de production pour les fichiers *in* et *out* au format POSIXlt
 #' * `type` Type de fichier : *in*, *out*, *rss*...
 #' @param nom_fichier Une chaine de caractères du fichier à découper
+#' @param format_date_archive Format de date d'horodatage pour les fichiers archive avec la notation de [base::strptime()].
+#' @examples 
+#' parse_nom_fichier("671234567.2016.1.12032016140012.in.zip")
 #' @export
 #' @md
 parse_nom_fichier <- function(nom_fichier, format_date_archive = '%d%m%Y%H%M%S') {
-  
+  #TODO : permettre à cette fonction de gérer n noms (vectorisation)
+  # Sortira une liste avec un élément par fichier
+  # Cette liste pourra être empilée à l'aide de dplyr::bind_row
   if (length(nom_fichier) != 1) stop("nom_fichier doit être de longueur 1")
   
   # Initialiser le vecteur de résultat
