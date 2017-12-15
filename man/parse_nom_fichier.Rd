@@ -8,6 +8,8 @@ parse_nom_fichier(nom_fichier, format_date_archive = "\%d\%m\%Y\%H\%M\%S")
 }
 \arguments{
 \item{nom_fichier}{Une chaine de caractères du fichier à découper}
+
+\item{format_date_archive}{Format de date d'horodatage pour les fichiers archive avec la notation de \code{\link[base:strptime]{base::strptime()}}.}
 }
 \value{
 Une liste avec les informations extraites du nom de fichier :
@@ -21,5 +23,8 @@ Une liste avec les informations extraites du nom de fichier :
 }
 }
 \description{
-Extraire les informations d'un nom de fichier
+Les noms de fichiers des archives PMSI ont toujours le même format, de la forme \emph{finess.annee_envois.mois_envois.} suivi par \emph{horodatage} pour les archives \emph{in} et \emph{ou} et enfin le \emph{type} de fichier. Cette fonction permet d'extraire cette information.
+}
+\examples{
+parse_nom_fichier("671234567.2016.1.12032016140012.in.zip")
 }

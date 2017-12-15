@@ -11,7 +11,7 @@ astat(path, file, view = TRUE)
 
 \item{file}{Nom du fichier d'archive}
 
-\item{view}{par défaut \code{TRUE} : affiche la liste avec \code{\link[utils:View]{utils::View()}} et retourne de manière invisible la table. Sinon retourne la table dans la console.}
+\item{view}{par défaut \code{TRUE} : affiche la liste avec \code{\link[utils:View]{utils::View()}}  Sinon retourne la table dans la console.}
 }
 \value{
 Une \code{data.frame} contenant les colonnes :
