@@ -10,32 +10,37 @@ adezip(...)
 
 \method{adezip}{pm_param}(.params, ...)
 
-\method{adezip}{default}(finess, annee, mois, path, liste = "", pathto = "",
-  type, recent = TRUE)
+\method{adezip}{default}(finess, annee, mois, path, liste = NULL,
+  pathto = path, type = "in", recent = TRUE)
 }
 \arguments{
 \item{...}{Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.}
 
 \item{.params}{Un noyau de paramètres définis par la fonction fonction \code{\link{noyau_pmeasyr}}}
 
-\item{finess}{Finess du fichier à dézipper}
+\item{finess}{Finess de l'archive.}
 
-\item{annee}{Année du fichier}
+\item{annee}{Année de l'archive.}
 
-\item{mois}{Mois du fichier}
+\item{mois}{Mois de l'archive.}
 
-\item{path}{Chemin d'accès au répertoire contenant le fichier d'archive}
+\item{path}{Chemin d'accès au répertoire contenant l'archive à décompresser}
 
-\item{liste}{Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive}
+\item{liste}{Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive.}
 
-\item{pathto}{par defaut à \code{""}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}}
+\item{pathto}{Par defaut la même valeur que \code{path}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}.}
 
-\item{type}{Type de l'archive : in / out}
+\item{type}{Type de l'archive : \emph{in} ou \emph{out}.}
 
-\item{recent}{par défaut \code{T}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
+\item{recent}{par défaut \code{TRUE}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
+}
+\value{
+Un chemin vers où les fichiers ont été extraits, de manière invisible.
 }
 \description{
 Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
+
+Dézipper les fichiers sélectionnés d'une archive
 }
 \examples{
 \dontrun{
@@ -74,6 +79,8 @@ Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emp
 \seealso{
 \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
 utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+
+\code{\link[base:unzip]{base::unzip()}}
 }
 \author{
 G. Pressiat
