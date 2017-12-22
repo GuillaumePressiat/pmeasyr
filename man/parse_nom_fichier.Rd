@@ -2,29 +2,30 @@
 % Please edit documentation in R/archives.R
 \name{parse_nom_fichier}
 \alias{parse_nom_fichier}
-\title{Extraire les informations d'un nom de fichier}
+\title{Découpe un seul nom de fichier}
 \usage{
 parse_nom_fichier(nom_fichier, format_date_archive = "\%d\%m\%Y\%H\%M\%S")
 }
 \arguments{
-\item{nom_fichier}{Une chaine de caractères du fichier à découper}
+\item{nom_fichier}{Le nom du fichier à découper. Chaine de caractère de longueur 1.}
 
 \item{format_date_archive}{Format de date d'horodatage pour les fichiers archive avec la notation de \code{\link[base:strptime]{base::strptime()}}.}
 }
 \value{
-Une liste avec les informations extraites du nom de fichier :
+Une liste ou une table avec les informations extraites du nom de fichier :
 \itemize{
 \item \code{nom_fichier} Le nom de fichier passé en arguement
 \item \code{finess}
 \item \code{annee}
 \item \code{mois}
 \item \code{horodatage_production} L'horodatage de production pour les fichiers \emph{in} et \emph{out} au format POSIXlt
+Si il y a plusieurs fichiers, la liste peut être facilement transformée en table avec \code{\link[dplyr:bind_rows]{dplyr::bind_rows()}}.
 \item \code{type} Type de fichier : \emph{in}, \emph{out}, \emph{rss}...
 }
 }
 \description{
-Les noms de fichiers des archives PMSI ont toujours le même format, de la forme \emph{finess.annee_envois.mois_envois.} suivi par \emph{horodatage} pour les archives \emph{in} et \emph{ou} et enfin le \emph{type} de fichier. Cette fonction permet d'extraire cette information.
+Découpe un seul nom de fichier
 }
-\examples{
-parse_nom_fichier("671234567.2016.1.12032016140012.in.zip")
+\seealso{
+\code{\link[=parse_noms_fichiers]{parse_noms_fichiers()}} pour traiter plusieurs noms de fichiers.
 }
