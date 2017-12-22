@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' test_files_dir <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
-#' astat(path = test_files_dir, file = "671234567.2016.1.12032016140012.in.zip", view = FALSE)
+#' astat(path = test_files_dir, file = "123456789.2016.2.15032016152413.in.zip", view = FALSE)
 #'
 #' @author G. Pressiat
 #'
