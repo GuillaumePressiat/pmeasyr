@@ -189,7 +189,7 @@ adezip.list <- function(l, ...){
 #' @param recent par défaut `TRUE`, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper
 #' @param pathto Par defaut la même valeur que `path`, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par `pathto`.
 #' @return Un chemin vers où les fichiers ont été extraits, de manière invisible.
-#' @seealso [base::unzip()]
+#' @seealso [utils::unzip()]
 #' @export
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter arrange mutate select
@@ -521,6 +521,7 @@ creer_archives_vides <- function(chemins_archives) {
 #' @param dossier_cible Chemin vers le dossier où l'archive simulée sera stockée
 #' @param finess_simul Un numéro finess pour le fichier simulé
 #' @return `NULL`
+#' @importFrom utils zip
 #' @md
 creer_archive_vide <- function(chemin_archive, 
                                dossier_cible = "archive_simul/",
@@ -551,7 +552,7 @@ creer_archive_vide <- function(chemin_archive,
   file.create(file.path(chemin_archive_simule, noms_fichiers_simul))
   
   # Zipper
-  zip(zipfile = paste0(chemin_archive_simule, ".zip"), 
+  utils::zip(zipfile = paste0(chemin_archive_simule, ".zip"), 
       files = dir(chemin_archive_simule, full.names = T),
       # Sauvegarder uniquement les fichiers, pas le chemin complet
       flags = "-j")
@@ -568,6 +569,7 @@ creer_archive_vide <- function(chemin_archive,
 #' @param horodatage Une date au format *dmYHMS*
 #' @inherit adezip.default params
 #' @return Un nom d'archive compatible
+#' @importFrom stats runif
 #' @md
 creer_nom_archive <- function(
   finess,
@@ -579,7 +581,7 @@ creer_nom_archive <- function(
   if (is.null(horodatage)) {
     
     rdm <- function(min, max, width = 2)
-      formatC(x = as.integer(runif(1, min, max)), width = width, flag = "0")
+      formatC(x = as.integer(stats::runif(1, min, max)), width = width, flag = "0")
     # L'envois se fait entre le 20 et le 30 du mois qui suit. Donc faire M+1 entre le 15 et 28
     var_envois <- c(
       jour = rdm(15, 28),

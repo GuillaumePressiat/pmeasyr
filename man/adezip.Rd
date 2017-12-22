@@ -80,7 +80,7 @@ Dézipper les fichiers sélectionnés d'une archive
 \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
 utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 
-\code{\link[base:unzip]{base::unzip()}}
+\code{\link[utils:unzip]{utils::unzip()}}
 }
 \author{
 G. Pressiat
