@@ -11,7 +11,7 @@ adezip(...)
 \method{adezip}{pm_param}(.params, ...)
 
 \method{adezip}{default}(finess, annee, mois, path, liste = NULL,
-  pathto = path, type = "in", recent = TRUE)
+  pathto = path, type = "in", recent = TRUE, nom_archive = NULL)
 }
 \arguments{
 \item{...}{Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.}
@@ -33,9 +33,11 @@ adezip(...)
 \item{type}{Type de l'archive : \emph{in} ou \emph{out}.}
 
 \item{recent}{par défaut \code{TRUE}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
+
+\item{nom_archive}{Nom de l'archive à décompresser dans le dossier \code{path}. Par défaut, \code{NULL}, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres \code{finess}, \code{annee}, \code{mois} et \code{recent} ne sont pas utilisés.}
 }
 \value{
-Un chemin vers où les fichiers ont été extraits, de manière invisible.
+Les chemins d'accès des fichiers décompressés, de manière invisible.
 }
 \description{
 Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).

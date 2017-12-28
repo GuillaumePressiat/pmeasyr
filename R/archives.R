@@ -42,8 +42,7 @@ astat <- function(path, file, view = TRUE){
 
 #' ~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive
 #'
-#' Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'archive que l'on veut utiliser.
-#'
+#' Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'archive que l'on veut utiliser. `adezip2` est un simple wrapper autour de la fonction `adzip.default`. Cette fonction est dépréciée. En utilisant le paramètre `nom_archive` avec la fonciton [adezip()] on obtient le même résultat.
 #'
 #' @param path Chemin d'acces a l'archive
 #' @param file Nom de l'archive zip (ex: \code{750712184.2016.2.05042016093044.in.zip})
@@ -61,7 +60,6 @@ astat <- function(path, file, view = TRUE){
 #'      adezip2(path = '~/Documents/R/sources/2011/',
 #'              file = '750712184.2011.12.27012012141857.in.zip',
 #'              liste = '')
-
 #' }
 #'
 #' @author G. Pressiat
@@ -70,40 +68,8 @@ astat <- function(path, file, view = TRUE){
 
 #' @export
 adezip2 <- function(path, file, liste = "", pathto=""){
-  liste <- unique(liste)
-  if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
-  if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir= pathto)}
-  else{
-    
-    pat<- stringr::str_split(file,'\\.')
-    cat('Dézippage archive\n',
-        'Type     :',pat[[1]][5],'\n',
-        'Finess   :',pat[[1]][1],'\n',
-        'Période  :',paste(pat[[1]][2],paste0('M',pat[[1]][3])),'\n',
-        'Fichiers :', liste,'\n')
-    if (pat[[1]][5] == "in") {
-      unzip(
-        zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
-        files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste,'.txt'), exdir= pathto)
-    }
-    if (pat[[1]][5] == "out"){
-      if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
-        unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/', file), list=T)$Name -> l
-        l[grepl('tra',l)] -> typtra
-        if (length(typtra) > 1){
-          liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
-        }else{
-          one <- stringr::str_locate(typtra, 'tra')
-          stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
-          liste <- c(liste[!grepl("tra",liste)], typtra)
-        }
-      }
-      unzip(
-        zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
-        files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
-        exdir= pathto)
-    }
-  }
+  adezip.default(path = path, nom_archive = file,
+                 liste = liste, pathto = pathto)
 }
 
 
@@ -188,23 +154,45 @@ adezip.list <- function(l, ...){
 #' @param type Type de l'archive : *in* ou *out*.
 #' @param recent par défaut `TRUE`, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper
 #' @param pathto Par defaut la même valeur que `path`, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par `pathto`.
-#' @return Un chemin vers où les fichiers ont été extraits, de manière invisible.
+#' @param nom_archive Nom de l'archive à décompresser dans le dossier `path`. Par défaut, `NULL`, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres `finess`, `annee`, `mois` et `recent` ne sont pas utilisés.
+#' @return Les chemins d'accès des fichiers décompressés, de manière invisible.
+#' 
 #' @seealso [utils::unzip()]
 #' @export
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter arrange mutate select
 #' @rdname adezip
 #' @md
-adezip.default <- function(finess, annee, mois, path, liste = NULL, 
-                           pathto = path, type = "in", 
-                           recent = TRUE){
+adezip.default <- function(finess, annee, mois, 
+                           #TODO: renomme l'argument `path` par un terme plus
+                           # explicite (ex. : chemin_dossier_archives) tout en
+                           # prenant garde aux effets de bord sur les
+                           # autres fonctions
+                           path, 
+                           liste = NULL, 
+                           #TODO: renommer l'argument `pathto` en un terme
+                           # en Français afin d'avoir une constance dans les
+                           # règles de nommage des arguments
+                           pathto = path, 
+                           type = "in", recent = TRUE, nom_archive = NULL){
   
-  info_archive <- selectionne_archive(finess = finess, annee = annee, 
-                                      mois = mois, dossier_archives = path,
-                                      type_archive = type, recent = recent)
+  # Si le nom de l'archive n'est pas donné, alors rechercher l'archive
+  # qui correspond aux arguments finess, annee et mois
+  if (is.null(nom_archive)) {
+    info_archive <- selectionne_archive(finess = finess, annee = annee, 
+                                        mois = mois, dossier_archives = path,
+                                        type_archive = type, recent = recent)
+    
+    nom_archive <- info_archive$nom_fichier
+  } else {
+    info_archive <- parse_nom_fichier(nom_archive)
+  }
   
+  # Le chemin d'accès de l'archive est la concatenation du chemin d'accès au
+  # dossier contenant les archives avec le nom de l'archive
+  chemin_archive <- file.path(path, nom_archive)
   
-  chemin_archive <- file.path(path, info_archive$nom_fichier)
+  info_archive$taille_mo <- signif(file.size(chemin_archive)/10^6, 2)
   
   # Selection des fichiers à extraire
   if (is.null(liste) || liste == "") {
@@ -219,6 +207,7 @@ adezip.default <- function(finess, annee, mois, path, liste = NULL,
   message(
     'Dézippage archive\n',
     'Archive  : ', info_archive$nom_fichier, '\n',
+    'Taille   : ', info_archive$taille_mo, " Mo\n",
     'Type     : ', info_archive$type, '\n',
     'Finess   : ', info_archive$finess, '\n',
     'Période  : ', info_archive$annee, " M", info_archive$mois, '\n',

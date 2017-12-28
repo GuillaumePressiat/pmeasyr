@@ -1,5 +1,5 @@
 library(testthat)
-context("Dezippage")
+context("Fonctions de gestion des archives")
 
 dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
 
@@ -16,6 +16,18 @@ test_that("Sélectionne les fichiers dans une archive", {
   expect_is(x, "character")
   expect_length(x, 2)
  
+})
+
+test_that("Sélection manuelle d'une archive", {
+  tmp_dir <- tempdir()
+  nom_archive_test <- "123456789.2017.6.23072017183522.out.zip"
+  ch <- adezip.default(path = dossier_archives, nom_archive = nom_archive_test,
+                       pathto = tmp_dir)
+  expect_true(all(basename(ch) %in% dir(tmp_dir)))
+  # normalement, nous avons le même comportement avec le wrapper
+  ch2 <- adezip2(path = dossier_archives, file = nom_archive_test, 
+                 pathto = tmp_dir)
+  expect_equal(ch, ch2)
 })
 
 test_that("adezip sélectionne le bon fichier", {

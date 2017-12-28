@@ -16,7 +16,7 @@ adezip2(path, file, liste = "", pathto = "")
 \item{pathto}{Chemin ou deposer les fichiers dezippes, par defaut a "", les fichiers sont mis la ou se trouve l'archive}
 }
 \description{
-Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'archive que l'on veut utiliser.
+Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'archive que l'on veut utiliser. `adezip2` est un simple wrapper autour de la fonction `adzip.default`. Cette fonction est dépréciée. En utilisant le paramètre `nom_archive` avec la fonciton [adezip()] on obtient le même résultat.
 }
 \examples{
 \dontrun{
