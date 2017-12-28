@@ -78,39 +78,72 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #' Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 #' @param ... Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.
 
-#' @param .params Un noyau de paramètres définis par la fonction fonction \code{\link{noyau_pmeasyr}}
 #' @examples
-#' \dontrun{
-#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
-#'             liste = 'med',
-#'             pathto = "~/Exemple",
-#'             type = "out")
+#' # Chemin vers un dossier temporaire
+#' tmp_dir <- tempdir()
+#' 
+#' # Chemin vers un dossier contenant des archives simulées
+#' dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
+#' 
+#' # Décompresser en fonction du finess, année et mois du 
+#' # fichier med d'une archive out
+#'  adezip('123456789', 2016, 2, 
+#'         path = dossier_archives,
+#'         liste = 'med',
+#'         pathto = tmp_dir,
+#'         type = "out")
+#'  
+#' dir(tmp_dir)
 #'
-#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
-#'             liste = c('med','rapss', 'ano'),
-#'             pathto = "~/Exemple",
-#'             type = "in")
-#'
-#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
-#'             liste = c('rss', 'ano'),
-#'             pathto = "~/Exemple",
-#'             type = "in",
-#'             recent = F)
-#'             
-#'      # Utilisation avec un noyau de paramtères
-#'      p <- noyau_pmeasyr(
-#'             finess = '750712184',
-#'             annee  = 2016,
-#'             mois   = 12,
-#'             path   = '~/Documents/data/mco',
-#'             progress = F
-#'             )
-#'      
-#'      adezip(p, type = "in")
-#'      
-#'      # Modification d'un paramètre du noyay
-#'      adezip(p, mois = 11, type = "in")
-#' }
+#' # Décompresser plusieurs types de fichiers d'une archive in
+#'  adezip('123456789', 2016, 2, 
+#'         path = dossier_archives,
+#'         liste = c('med','rapss', 'ano'),
+#'         pathto = tmp_dir,
+#'         type = "in")
+#'         
+#' dir(tmp_dir)
+#' 
+#' # Utilisation avec un noyau de paramtères
+#' p <- noyau_pmeasyr(
+#'        finess = '123456789',
+#'        annee  = 2016,
+#'        mois   = 12,
+#'        path   = dossier_archives,
+#'        progress = FALSE
+#'        )
+#' 
+#' adezip(p, type = "in", pathto = tmp_dir)
+#' dir(tmp_dir)
+#' # Modification d'un paramètre du noyau
+#' adezip(p, mois = 11, type = "in",  pathto = tmp_dir)
+#' dir(tmp_dir)
+#' 
+#' # Pour une même période (année/mois), il peut y avoir plusieurs archives si 
+#' # il y a eu plusieurs envois. Par exemple il y a deux version de l'archive
+#' # out pour la période 2017.10 dans notre exemple simulé
+#' dir(dossier_archives, pattern = "2017\\.10.*out\\.zip")
+#' 
+#'  # Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip 
+#'  # sélectionne automatiquement l'archive la plus récente
+#'  adezip(123456789, 2017, 10,
+#'         path = dossier_archives,
+#'         liste = 'med',
+#'         pathto = tmp_dir,
+#'         type = "out") 
+#'  dir(tmp_dir, pattern = "med")
+#'  
+#'  # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
+#'  # à choisir
+#'  \dontrun{
+#'  adezip(123456789, 2017, 10,
+#'         path = dossier_archives,
+#'         liste = 'rsa',
+#'         pathto = tmp_dir,
+#'         recent = FALSE,
+#'         type = "out")
+#'  dir(tmp_dir, pattern = "rsa")
+#'  }
 #'
 #' @author G. Pressiat
 #'
@@ -122,8 +155,8 @@ adezip <- function(...){
   UseMethod('adezip')
 }
 
-
 #' @export
+#' @param .params Un noyau de paramètres définis par la fonction fonction \code{\link{noyau_pmeasyr}}
 #' @rdname adezip
 adezip.pm_param <- function(.params, ...){
   new_par <- list(...)
@@ -135,6 +168,7 @@ adezip.pm_param <- function(.params, ...){
 }
 
 #' @export
+#TODO : a déprécier puis supprimer ?
 adezip.list <- function(l, ...){
   .params <- l
   new_par <- list(...) 
@@ -205,12 +239,13 @@ adezip.default <- function(finess, annee, mois,
   }
   
   message(
-    'Dézippage archive\n',
-    'Archive  : ', info_archive$nom_fichier, '\n',
+    "\n",
+    "Dézippage de l'archive ", info_archive$nom_fichier, '\n',
     'Taille   : ', info_archive$taille_mo, " Mo\n",
     'Type     : ', info_archive$type, '\n',
     'Finess   : ', info_archive$finess, '\n',
-    'Période  : ', info_archive$annee, " M", info_archive$mois, '\n',
+    'Période  : ', info_archive$annee, ' M', info_archive$mois, '\n',
+    'Date prod: ', info_archive$horodatage_production, '\n',
     'Fichiers : ', liste,'\n'
   )
   

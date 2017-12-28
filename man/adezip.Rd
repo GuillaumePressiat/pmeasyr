@@ -45,37 +45,71 @@ Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emp
 Dézipper les fichiers sélectionnés d'une archive
 }
 \examples{
-\dontrun{
-     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
-            liste = 'med',
-            pathto = "~/Exemple",
-            type = "out")
+# Chemin vers un dossier temporaire
+tmp_dir <- tempdir()
 
-     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
-            liste = c('med','rapss', 'ano'),
-            pathto = "~/Exemple",
-            type = "in")
+# Chemin vers un dossier contenant des archives simulées
+dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
 
-     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
-            liste = c('rss', 'ano'),
-            pathto = "~/Exemple",
-            type = "in",
-            recent = F)
-            
-     # Utilisation avec un noyau de paramtères
-     p <- noyau_pmeasyr(
-            finess = '750712184',
-            annee  = 2016,
-            mois   = 12,
-            path   = '~/Documents/data/mco',
-            progress = F
-            )
-     
-     adezip(p, type = "in")
-     
-     # Modification d'un paramètre du noyay
-     adezip(p, mois = 11, type = "in")
-}
+# Décompresser en fonction du finess, année et mois du 
+# fichier med d'une archive out
+ adezip('123456789', 2016, 2, 
+        path = dossier_archives,
+        liste = 'med',
+        pathto = tmp_dir,
+        type = "out")
+ 
+dir(tmp_dir)
+
+# Décompresser plusieurs types de fichiers d'une archive in
+ adezip('123456789', 2016, 2, 
+        path = dossier_archives,
+        liste = c('med','rapss', 'ano'),
+        pathto = tmp_dir,
+        type = "in")
+        
+dir(tmp_dir)
+
+# Utilisation avec un noyau de paramtères
+p <- noyau_pmeasyr(
+       finess = '123456789',
+       annee  = 2016,
+       mois   = 12,
+       path   = dossier_archives,
+       progress = FALSE
+       )
+
+adezip(p, type = "in", pathto = tmp_dir)
+dir(tmp_dir)
+# Modification d'un paramètre du noyau
+adezip(p, mois = 11, type = "in",  pathto = tmp_dir)
+dir(tmp_dir)
+
+# Pour une même période (année/mois), il peut y avoir plusieurs archives si 
+# il y a eu plusieurs envois. Par exemple il y a deux version de l'archive
+# out pour la période 2017.10 dans notre exemple simulé
+dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
+
+ # Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip 
+ # sélectionne automatiquement l'archive la plus récente
+ adezip(123456789, 2017, 10,
+        path = dossier_archives,
+        liste = 'med',
+        pathto = tmp_dir,
+        type = "out") 
+ dir(tmp_dir, pattern = "med")
+ 
+ # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
+ # à choisir
+ \dontrun{
+ adezip(123456789, 2017, 10,
+        path = dossier_archives,
+        liste = 'rsa',
+        pathto = tmp_dir,
+        recent = FALSE,
+        type = "out")
+ dir(tmp_dir, pattern = "rsa")
+ }
 
 }
 \seealso{
