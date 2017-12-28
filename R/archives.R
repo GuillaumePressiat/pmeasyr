@@ -42,29 +42,31 @@ astat <- function(path, file, view = TRUE){
 
 #' ~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive
 #'
-#' Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'archive que l'on veut utiliser. `adezip2` est un simple wrapper autour de la fonction `adzip.default`. Cette fonction est dépréciée. En utilisant le paramètre `nom_archive` avec la fonciton [adezip()] on obtient le même résultat.
-#'
-#' @param path Chemin d'acces a l'archive
+#' Alternative à la fonction [adezip()], si on connait précisement l'archive que l'on veut utiliser. 
+#' 
+#' @details `adezip2` est un simple wrapper autour de la fonction `adzip.default`. Cette fonction est dépréciée. En utilisant le paramètre `nom_archive` avec la fonciton [adezip()] on obtient le même résultat.
+#' 
 #' @param file Nom de l'archive zip (ex: \code{750712184.2016.2.05042016093044.in.zip})
-#' @param liste Liste des fichiers a dezipper parmi l'archive ; si \code{liste = ""}, dezippe la totalite de l'archive
-#' @param pathto Chemin ou deposer les fichiers dezippes, par defaut a "", les fichiers sont mis la ou se trouve l'archive
-#'
+#' @inheritParams adezip
 #' @examples
-#' \dontrun{
-#'    # Fichier ano
-#'      adezip2(path = '~/Documents/R/sources/2011/',
-#'              file = '750712184.2011.12.27012012141857.in.zip',
-#'              liste = 'ano')
-#'
-#'    # Totalité de l'archive
-#'      adezip2(path = '~/Documents/R/sources/2011/',
-#'              file = '750712184.2011.12.27012012141857.in.zip',
-#'              liste = '')
-#' }
-#'
+#' # Chemin vers un dossier temporaire
+#' tmp_dir <- tempdir()
+#' 
+#' # Chemin vers un dossier contenant des archives simulées
+#' dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
+#' 
+#' # Décompresser en fonction du finess, année et mois du 
+#' # fichier med d'une archive out
+#'  adezip2(path = dossier_archives,
+#'          file = "123456789.2017.7.21082017091715.out.zip",
+#'          liste = 'med',
+#'          pathto = tmp_dir)
+#'  
+#' dir(tmp_dir, pattern = "2017\\.7.*med")
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
+#' @md
 
 #' @export
 adezip2 <- function(path, file, liste = "", pathto=""){

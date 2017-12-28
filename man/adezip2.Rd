@@ -7,30 +7,35 @@
 adezip2(path, file, liste = "", pathto = "")
 }
 \arguments{
-\item{path}{Chemin d'acces a l'archive}
+\item{path}{Chemin d'accès au répertoire contenant l'archive à décompresser}
 
 \item{file}{Nom de l'archive zip (ex: \code{750712184.2016.2.05042016093044.in.zip})}
 
-\item{liste}{Liste des fichiers a dezipper parmi l'archive ; si \code{liste = ""}, dezippe la totalite de l'archive}
+\item{liste}{Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive.}
 
-\item{pathto}{Chemin ou deposer les fichiers dezippes, par defaut a "", les fichiers sont mis la ou se trouve l'archive}
+\item{pathto}{Par defaut la même valeur que \code{path}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}.}
 }
 \description{
-Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'archive que l'on veut utiliser. `adezip2` est un simple wrapper autour de la fonction `adzip.default`. Cette fonction est dépréciée. En utilisant le paramètre `nom_archive` avec la fonciton [adezip()] on obtient le même résultat.
+Alternative à la fonction \code{\link[=adezip]{adezip()}}, si on connait précisement l'archive que l'on veut utiliser.
+}
+\details{
+\code{adezip2} est un simple wrapper autour de la fonction \code{adzip.default}. Cette fonction est dépréciée. En utilisant le paramètre \code{nom_archive} avec la fonciton \code{\link[=adezip]{adezip()}} on obtient le même résultat.
 }
 \examples{
-\dontrun{
-   # Fichier ano
-     adezip2(path = '~/Documents/R/sources/2011/',
-             file = '750712184.2011.12.27012012141857.in.zip',
-             liste = 'ano')
+# Chemin vers un dossier temporaire
+tmp_dir <- tempdir()
 
-   # Totalité de l'archive
-     adezip2(path = '~/Documents/R/sources/2011/',
-             file = '750712184.2011.12.27012012141857.in.zip',
-             liste = '')
-}
+# Chemin vers un dossier contenant des archives simulées
+dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
 
+# Décompresser en fonction du finess, année et mois du 
+# fichier med d'une archive out
+ adezip2(path = dossier_archives,
+         file = "123456789.2017.7.21082017091715.out.zip",
+         liste = 'med',
+         pathto = tmp_dir)
+ 
+dir(tmp_dir, pattern = "2017\\\\.7.*med")
 }
 \seealso{
 \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
