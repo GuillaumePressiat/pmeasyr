@@ -1,7 +1,7 @@
 Package: pmeasyr
 Type: Package
 Title: Donnees PMSI avec R
-Version: 0.2.1
+Version: 0.2.2
 Date: 2017-09-15
 Imports:
     readr,
@@ -26,3 +26,4 @@ LazyData: TRUE
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 Encoding: UTF-8
+Suggests: testthat
