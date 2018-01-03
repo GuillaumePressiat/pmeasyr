@@ -11,7 +11,8 @@ adezip(...)
 \method{adezip}{pm_param}(.params, ...)
 
 \method{adezip}{default}(finess, annee, mois, path, liste = NULL,
-  pathto = path, type = "in", recent = TRUE, nom_archive = NULL)
+  pathto = path, type = "in", recent = TRUE, nom_archive = NULL,
+  quiet = FALSE)
 }
 \arguments{
 \item{...}{Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.}
@@ -35,6 +36,8 @@ adezip(...)
 \item{recent}{par défaut \code{TRUE}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
 
 \item{nom_archive}{Nom de l'archive à décompresser dans le dossier \code{path}. Par défaut, \code{NULL}, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres \code{finess}, \code{annee}, \code{mois} et \code{recent} ne sont pas utilisés.}
+
+\item{quiet}{Affichage d'un message au dézippage \code{TRUE} / \code{FALSE}}
 }
 \value{
 Les chemins d'accès des fichiers décompressés, de manière invisible.
