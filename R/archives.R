@@ -162,7 +162,7 @@ adezip <- function(...){
 #' @rdname adezip
 adezip.pm_param <- function(.params, ...){
   new_par <- list(...)
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet')
   param2 <- utils::modifyList(.params, new_par)
   param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
@@ -175,7 +175,7 @@ adezip.list <- function(l, ...){
   .params <- l
   new_par <- list(...) 
   param2 <- utils::modifyList(.params, new_par)
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet')
   param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
   do.call(adezip.default, param2)
@@ -191,6 +191,7 @@ adezip.list <- function(l, ...){
 #' @param recent par défaut `TRUE`, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper
 #' @param pathto Par defaut la même valeur que `path`, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par `pathto`.
 #' @param nom_archive Nom de l'archive à décompresser dans le dossier `path`. Par défaut, `NULL`, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres `finess`, `annee`, `mois` et `recent` ne sont pas utilisés.
+#' @param quiet Affichage d'un message au dézippage `TRUE` / `FALSE`
 #' @return Les chemins d'accès des fichiers décompressés, de manière invisible.
 #' 
 #' @seealso [utils::unzip()]
@@ -210,7 +211,8 @@ adezip.default <- function(finess, annee, mois,
                            # en Français afin d'avoir une constance dans les
                            # règles de nommage des arguments
                            pathto = path, 
-                           type = "in", recent = TRUE, nom_archive = NULL){
+                           type = "in", recent = TRUE, nom_archive = NULL,
+                           quiet = FALSE){
   
   # Si le nom de l'archive n'est pas donné, alors rechercher l'archive
   # qui correspond aux arguments finess, annee et mois
@@ -240,17 +242,28 @@ adezip.default <- function(finess, annee, mois,
     )
   }
   
+  
+  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, 
+                                  paste(info_archive$finess,info_archive$annee, info_archive$mois, "txt", sep = "|"), "")
+  l_f <- stringr::str_replace_all(l_f, "\\.{2,}|\\.$", "")
+  liste_fichiers <- ifelse(is.null(selection_fichiers_a_extraire), "Tous", toString(l_f))
+  
+  if (liste_fichiers == ""){
+    stop("Aucun fichier dézippé : vérifier le paramètre liste")
+  }
+  
+  if (!quiet){
   message(
     "\n",
     "Dézippage de l'archive ", info_archive$nom_fichier, '\n',
-    'Taille   : ', info_archive$taille_mo, " Mo\n",
-    'Type     : ', info_archive$type, '\n',
-    'Finess   : ', info_archive$finess, '\n',
-    'Période  : ', info_archive$annee, ' M', info_archive$mois, '\n',
-    'Date prod: ', info_archive$horodatage_production, '\n',
-    'Fichiers : ', liste,'\n'
+    'Taille    : ', info_archive$taille_mo, " Mo\n",
+    'Type      : ', info_archive$type, '\n',
+    'Finess    : ', info_archive$finess, '\n',
+    'Période   : ', info_archive$annee, ' M', info_archive$mois, '\n',
+    'Date prod : ', info_archive$horodatage_production, '\n',
+    'Fichiers  : ', liste_fichiers,'\n'
   )
-  
+  }
   unzip(zipfile = chemin_archive,
         files = selection_fichiers_a_extraire,
         exdir = pathto)
@@ -358,10 +371,10 @@ adezip3 <- function(finess, path, file, liste = "", pathto=""){
     liste[grepl("tra",liste)] <- "tra.txt"
     pat<- stringr::str_split(file,'\\_')
     cat('Dézippage archive\n',
-        'Type     :',pat[[1]][2],'\n',
-        'Nohop    :',pat[[1]][3],'\n',
-        'Période  :',substr(pat[[1]][4],1,6),'\n',
-        'Fichiers :', liste,'\n')
+        'Type     : ',pat[[1]][2],'\n',
+        'Nohop    : ',pat[[1]][3],'\n',
+        'Période  : ',substr(pat[[1]][4],1,6),'\n',
+        'Fichiers : ', liste,'\n')
     if (pat[[1]][2]=="IN"){
       unzip(
         zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
