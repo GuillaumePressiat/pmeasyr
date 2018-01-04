@@ -6,6 +6,13 @@
 \usage{
 collect_rsa_from_db(con, an, n = Inf)
 }
+\arguments{
+\item{con}{Connexion à la base de données}
+
+\item{an}{année des rsa (ex: 17)}
+
+\item{n}{Nombre de lignes à importer (équivalent `head`)}
+}
 \value{
 un liste rsa similaire à un import de pmeasyr
 }

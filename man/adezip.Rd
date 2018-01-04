@@ -12,7 +12,7 @@ adezip(...)
 
 \method{adezip}{default}(finess, annee, mois, path, liste = NULL,
   pathto = path, type = "in", recent = TRUE, nom_archive = NULL,
-  quiet = FALSE)
+  quiet = FALSE, ...)
 }
 \arguments{
 \item{...}{Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.}

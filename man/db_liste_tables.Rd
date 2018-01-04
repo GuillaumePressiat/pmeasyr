@@ -4,7 +4,7 @@
 \alias{db_liste_tables}
 \title{~ db - Lister les tables d'une db en tableau}
 \usage{
-db_liste_table(con, nb = 15)
+db_liste_tables(con, nb = 15)
 }
 \arguments{
 \item{con}{la connexion a la base de donnees (src_..)}

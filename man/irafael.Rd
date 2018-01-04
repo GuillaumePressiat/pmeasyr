@@ -4,7 +4,8 @@
 \alias{irafael}
 \title{~ RSF - Import des Rafael}
 \usage{
-irafael(finess, annee, mois, path, lib = T, tolower_names = F, stat = T, lister = c("A", "B",
+irafael(finess, annee, mois, path, lib = T, tolower_names = F, 
+stat = T, lister = c("A", "B",
 "C", "H", "L", "M", "P"), lamda = F, ...)
 }
 \arguments{

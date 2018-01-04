@@ -7,7 +7,7 @@
 \usage{
 noyau_pmeasyr(...)
 
-\method{print}{pm_param}(p)
+\method{print}{pm_param}(x, ...)
 }
 \description{
 Définir un noyau de paramètres

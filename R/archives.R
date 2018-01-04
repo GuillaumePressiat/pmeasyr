@@ -212,7 +212,7 @@ adezip.default <- function(finess, annee, mois,
                            # règles de nommage des arguments
                            pathto = path, 
                            type = "in", recent = TRUE, nom_archive = NULL,
-                           quiet = FALSE){
+                           quiet = FALSE, ...){
   
   # Si le nom de l'archive n'est pas donné, alors rechercher l'archive
   # qui correspond aux arguments finess, annee et mois
@@ -410,7 +410,7 @@ adezip3 <- function(finess, path, file, liste = "", pathto=""){
 #' @param path Chemin d'acces aux fichiers
 #' @param liste Liste des fichiers a effacer : par defaut a "", efface tous les \code{fichiers finess.annee.mois.}
 #' @param type Type de fichier In / Out : par defaut a "", efface tous les fichiers \code{finess.annee.mois.}
-#'
+#' @usage adelete(finess, annee, mois, path, liste, type, ...)
 #' @examples
 #' \dontrun{
 #'    adelete('750712184',2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
@@ -422,7 +422,7 @@ adezip3 <- function(finess, path, file, liste = "", pathto=""){
 #'
 #' @seealso \code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage adelete(finess, annee, mois, path, liste, type)
+
 #' @export adelete
 #' @export
 adelete <- function(...){
@@ -452,7 +452,7 @@ adelete.list <- function(l, ...){
 }
 
 #' @export
-adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
+adelete.default <- function(finess, annee, mois, path, liste = "", type = "", ...){
   
   if (type == "" & liste == ""){
     liste <- list.files(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)))
@@ -545,6 +545,7 @@ parse_nom_fichier <- function(
 
 #' Créer des archives simulées à partir de plusieurs archives réelles
 #' @inherit creer_archive_vide
+#' @param chemins_archives Chemin vers les archives qui servira de modèle pour l'archive simulée
 #' @seealso [creer_archive_vide()]
 #' @md
 creer_archives_vides <- function(chemins_archives) {

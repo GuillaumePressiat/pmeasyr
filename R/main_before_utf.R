@@ -58,7 +58,7 @@
 #' @export irum
 #' @usage irum(finess, annee, mois, path, lib = T, typi = 3, tolower_names = F, ...)
 #' @export
-irum <- function(...){
+irum <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_names = F, ...){
   UseMethod("irum")
 }
 
@@ -123,7 +123,6 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -667,7 +666,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
 #' @usage irsa(finess, annee, mois, path, lib = T, typi = 4, tolower_names = F, ...)
 #' @export irsa
 #' @export
-irsa <- function(...){
+irsa <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_names = F, ...){
   UseMethod('irsa')
 }
 
@@ -732,7 +731,6 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -1395,7 +1393,6 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -1586,7 +1583,6 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -1689,7 +1685,6 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -1850,7 +1845,6 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -1929,7 +1923,6 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -2058,7 +2051,6 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -2111,7 +2103,6 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -2347,7 +2338,9 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irum}}, \code{\link{irsa}}
-#' @usage idiap(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, tolower_names = F, ...)
+#' @usage idiap(finess, annee, mois, path, 
+#' typdiap = c("out", "in"), 
+#' lib = T, tolower_names = F, ...)
 #' @export idiap
 #' @export
 idiap <- function(...){
@@ -2372,7 +2365,9 @@ idiap.list <- function(l , ...){
 }
 
 #' @export
-idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), lib = T, tolower_names = F, ...){
+idiap.default <- function(finess, annee, mois, path, 
+                          typdiap = c("out", "in"), lib = T, 
+                          tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -2406,7 +2401,6 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -2456,7 +2450,6 @@ idiap.default <- function(finess, annee, mois, path, typdiap = c("out", "in"), l
              c = readr::col_character(),
              D = readr::col_date(),
              d = readr::col_double(),
-             e = readr::col_euro_double(),
              i = readr::col_integer(),
              l = readr::col_logical(),
              n = readr::col_number(),
@@ -2578,7 +2571,6 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -2700,7 +2692,6 @@ if (typpo=="out"){
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -2751,7 +2742,6 @@ if (typpo=="in"){
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -2887,7 +2877,6 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -3176,7 +3165,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
 #' @usage iano_had(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export iano_had
 #' @export
-iano_had <- function(...){
+iano_had <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
   UseMethod('iano_had')
 }
 
@@ -3225,7 +3214,6 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -3370,7 +3358,6 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -3575,7 +3562,6 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -4081,7 +4067,6 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -4230,7 +4215,6 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -4457,7 +4441,6 @@ imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -4582,7 +4565,6 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -4704,7 +4686,6 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -4905,7 +4886,6 @@ ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -5044,7 +5024,6 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -5368,7 +5347,8 @@ tdiag <- function (d,  include = T){
 #'
 #' @seealso \code{\link{iano_rafael}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-#' @usage irafael(finess, annee, mois, path, lib = T, tolower_names = F, stat = T, lister = c("A", "B",
+#' @usage irafael(finess, annee, mois, path, lib = T, tolower_names = F, 
+#' stat = T, lister = c("A", "B",
 #' "C", "H", "L", "M", "P"), lamda = F, ...)
 #' @export irafael
 #' @export
@@ -5394,7 +5374,9 @@ irafael.list <- function(l, ...){
 }
 
 #' @export
-irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), lamda = F, tolower_names = F, ...){
+irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, 
+                            lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), 
+                            lamda = F, tolower_names = F, ...){
   if (annee<2011|annee>2017){
     stop('Année PMSI non prise en charge\n')
   }
@@ -5607,7 +5589,6 @@ iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, 
            c = readr::col_character(),
            D = readr::col_date(),
            d = readr::col_double(),
-           e = readr::col_euro_double(),
            i = readr::col_integer(),
            l = readr::col_logical(),
            n = readr::col_number(),
@@ -5711,8 +5692,8 @@ noyau_pmeasyr <- function(...){
 
 #' @rdname noyau_pmeasyr
 #' @export 
-print.pm_param <- function(p){
-  i <- unlist(p) %>% 
+print.pm_param <- function(x, ...){
+  i <- unlist(x) %>% 
     t() %>% 
     as.data.frame(stringsAsFactors=F)  %>% 
     tidyr::gather("parametre", "valeur")
@@ -6318,7 +6299,7 @@ db_rsf_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
 #' @return nothing
 #' @export
 #'
-#' @usage db_liste_table(con, nb = 15)
+#' @usage db_liste_tables(con, nb = 15)
 #' @examples
 #' \dontrun{
 #' db_liste_tables(con)
@@ -6335,8 +6316,10 @@ db_liste_tables <- function(con, nb = 15){
 
 #' ~ db - remote access aux tables mco
 #'
-#' 
-#' @return tibble
+#' @param con Connexion à la base de données
+#' @param an Année pmsi (ex: 16)
+#' @param table Table à requêter
+#' @return remote table
 #'
 #' @usage tbl_mco(con, an, table)
 #' @examples
@@ -6350,8 +6333,10 @@ tbl_mco <- function(con, an, table){
 
 #' ~ db - remote access aux tables rsf
 #'
-#'
-#' @return tibble
+#' @param con Connexion à la base de données
+#' @param an Année pmsi (ex: 16)
+#' @param table Table à requêter
+#' @return remote table
 #'
 #' @usage tbl_rsf(con, an, table)
 #' @examples
@@ -6365,8 +6350,10 @@ tbl_rsf <- function(con, an, table){
 
 #' ~ db - remote access aux tables ssr
 #'
-#'
-#' @return tibble
+#' @param con Connexion à la base de données
+#' @param an Année pmsi (ex: 16)
+#' @param table Table à requêter
+#' @return remote table
 #'
 #' @usage tbl_ssr(con, an, table)
 #' @examples
@@ -6380,7 +6367,10 @@ tbl_ssr <- function(con, an, table){
 
 #' ~ db - remote access aux tables had
 #'
-#'
+#' @param con Connexion à la base de données
+#' @param an Année pmsi (ex: 16)
+#' @param table Table à requêter
+#' @return remote table
 #' @return tibble
 #'
 #' @usage tbl_had(con, an, table)
@@ -6395,7 +6385,10 @@ tbl_had <- function(con, an, table){
 
 #' ~ db - remote access aux tables psy
 #'
-#'
+#' @param con Connexion à la base de données
+#' @param an Année pmsi (ex: 16)
+#' @param table Table à requêter
+#' @return remote table
 #' @return tibble
 #'
 #' @usage tbl_psy(con, an, table)
@@ -6876,6 +6869,9 @@ prepare_rsa <- function(rsa){
 #'
 #' On selectionne certaines variables et on en cree d'autres utiles lors de l'execution de la requete
 #'
+#' @param con Connexion à la base de données
+#' @param an année des rsa (ex: 17)
+#' @param n Nombre de lignes à importer (équivalent `head`)
 #' @examples
 #' \dontrun{
 #' rsa <- collect_rsa_from_db(con, 16, n = 1e5)
@@ -6895,11 +6891,11 @@ collect_rsa_from_db <- function(con, an, n = Inf){
   # das = DAS,
   # actes = ACTES, um = UM)
   
-  tbl_mco(con, an, 'rsa_rsa') %>% collect(n = n)   -> rsa$rsa
+  tbl_mco(con, an, 'rsa_rsa') %>% dplyr::collect(n = n)   -> rsa$rsa
   
-  tbl_mco(con, an, 'rsa_actes') %>% collect(n = n)   -> rsa$actes
-  tbl_mco(con, an, 'rsa_diags') %>% filter(position == 5) %>% collect(n = n)   %>% rename(DAS = DIAG) -> rsa$das
-  tbl_mco(con, an, 'rsa_um') %>% collect(n = n)  -> rsa$rsa_um
+  tbl_mco(con, an, 'rsa_actes') %>% dplyr::collect(n = n)   -> rsa$actes
+  tbl_mco(con, an, 'rsa_diags') %>% dplyr::filter(position == 5) %>% dplyr::collect(n = n)   %>% dplyr::rename(DAS = DIAG) -> rsa$das
+  tbl_mco(con, an, 'rsa_um') %>% dplyr::collect(n = n)  -> rsa$rsa_um
   
   rsa
 }
@@ -6908,6 +6904,8 @@ collect_rsa_from_db <- function(con, an, n = Inf){
 #'
 #' On selectionne certaines variables et on en cree d'autres utiles lors de l'execution de la requete
 #'
+#' @param requete `list` qui contient la requête
+#' @param chemin Nom du fichier json qui sera créé
 #' @examples
 #' \dontrun{
 #' liste = list(nom_abrege = "pac",

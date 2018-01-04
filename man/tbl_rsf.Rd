@@ -6,8 +6,15 @@
 \usage{
 tbl_rsf(con, an, table)
 }
+\arguments{
+\item{con}{Connexion à la base de données}
+
+\item{an}{Année pmsi (ex: 16)}
+
+\item{table}{Table à requêter}
+}
 \value{
-tibble
+remote table
 }
 \description{
 ~ db - remote access aux tables rsf

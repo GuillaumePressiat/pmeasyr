@@ -6,6 +6,9 @@
 \usage{
 creer_archives_vides(chemins_archives)
 }
+\arguments{
+\item{chemins_archives}{Chemin vers les archives qui servira de modèle pour l'archive simulée}
+}
 \value{
 \code{NULL}
 }

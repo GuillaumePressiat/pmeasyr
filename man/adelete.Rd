@@ -4,7 +4,7 @@
 \alias{adelete}
 \title{~ *.zip - Suppression des fichiers en fin de traitement}
 \usage{
-adelete(finess, annee, mois, path, liste, type)
+adelete(finess, annee, mois, path, liste, type, ...)
 }
 \arguments{
 \item{finess}{Finess du fichier a supprimer}

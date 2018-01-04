@@ -84,6 +84,6 @@ Une [page github](https://guillaumepressiat.github.io/) rassemble toutes les inf
 
 <p align="center">
   SIMAP / DOMU / AP-HP<br>
-  <img src="https://github.com/IM-APHP/pmeasyr/blob/master/logo.jpg" alt="AP-HP Logo" align ="center" style="width: 48"/>
+  <img src="https://github.com/IM-APHP/pmeasyr/blob/master/vignettes/logo.jpg" alt="AP-HP Logo" align ="center" style="width: 48"/>
 </p>
 

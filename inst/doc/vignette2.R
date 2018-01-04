@@ -1,6 +1,6 @@
 ## ----eval = F------------------------------------------------------------
 #  library(pmeasyr)
-#  library(dplyr)
+#  library(dplyr, warn.conflicts = F)
 
 ## ----eval = F------------------------------------------------------------
 #  p <- noyau_pmeasyr(
@@ -99,8 +99,8 @@
 #  # Coller des chaines de caracteres faon pipe
 #  `%+%` <- function(x,y){paste0(x,y)}
 #  
-#  # Le fichier se nomme : 750100042.2015.12.out.rds
-#  nom <- p$finess %+% '.' %+% p$annee %+% '.' %+% p$mois %+% '.' %+% 'out' %+% '.' %+% 'rds'
+#  # Le fichier se nomme : 750100042.2015.12.out.Rds
+#  nom <- p$finess %+% '.' %+% p$annee %+% '.' %+% p$mois %+% '.' %+% 'out' %+% '.' %+% 'Rds'
 #  readRDS(p$path %+% '/tables/' %+% nom) -> mydata
 #  
 #  View(mydata$rsa$rsa)
