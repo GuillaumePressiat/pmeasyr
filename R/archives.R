@@ -242,14 +242,12 @@ adezip.default <- function(finess, annee, mois,
     )
   }
   
-  
-  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, 
-                                  paste(info_archive$finess,info_archive$annee, info_archive$mois, "txt", sep = "|"), "")
-  l_f <- stringr::str_replace_all(l_f, "\\.{2,}|\\.$", "")
+  # Extraire les types de fichiers courts pour l'affichage
+  l_f <- extraire_types_fichiers(selection_fichiers_a_extraire, info_archive)
   liste_fichiers <- ifelse(is.null(selection_fichiers_a_extraire), "Tous", toString(l_f))
   
   if (liste_fichiers == ""){
-    stop("Aucun fichier dézippé : vérifier le paramètre liste")
+    warning("Aucun fichier dézippé : vérifier le paramètre liste")
   }
   
   if (!quiet){
@@ -636,3 +634,17 @@ creer_nom_archive <- function(
   
   paste(finess, annee, mois, horodatage, type, sep = ".")
 }
+
+
+#' Extraire les types de fichiers
+#' Permet d'afficher les types de fichiers d'une archive (ano, rss, rsa, ...)
+#' @param selection_fichiers_a_extraire Fichiers sélectionnés dans le zip (résultat de selectionne_fichiers)
+#' @param info_archive informatin de l'archive (résultat de selectionne_archive)
+#' @return un vecteur
+extraire_types_fichiers <- function(selection_fichiers_a_extraire, info_archive){
+  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, 
+                                  paste(info_archive$finess,info_archive$annee, info_archive$mois, "txt", sep = "|"), "")
+  l_f <- stringr::str_replace_all(l_f, "\\.{2,}|\\.$", "")
+  l_f
+}
+
