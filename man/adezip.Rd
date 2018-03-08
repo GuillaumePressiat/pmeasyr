@@ -17,28 +17,28 @@ adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
 
 \item{liste}{des fichiers à dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive}
 
-\item{pathto}{par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)}
-
 \item{type}{Type de l'archive : in / out}
 
 \item{recent}{par defaut a T, l'archive la plus recente sera utilisee, sinon propose a l'utilisateur de choisir quelle archive dezipper}
+
+\item{pathto}{par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)}
 }
 \description{
-Dézipper une archive PMSI au besoin
+Dezipper une archive PMSI au besoin
 }
 \examples{
 \dontrun{
-     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
             liste = 'med',
             pathto = "~/Exemple",
             type = "out")
 
-     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
             liste = c('med','rapss', 'ano'),
             pathto = "~/Exemple",
             type = "in")
 
-     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+     adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
             liste = c('rss', 'ano'),
             pathto = "~/Exemple",
             type = "in",
@@ -47,7 +47,8 @@ Dézipper une archive PMSI au besoin
 
 }
 \seealso{
-adezip2, astat, adelete
+\code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
+utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
 }
 \author{
 G. Pressiat

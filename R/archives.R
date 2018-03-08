@@ -5,7 +5,7 @@
 
 #' ~ *.zip - Liste et volume des fichiers d'une archive PMSI
 #'
-#' Pour lister sans dézipper les fichiers d'une archive
+#' Pour lister sans dezipper les fichiers d'une archive
 #'
 #'
 #' @param path Chemin d'acces  a l'archive
@@ -21,13 +21,13 @@
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip,adezip2
+#' @seealso \code{\link{adezip}}, \code{\link{adezip2}}
 
 #' @export
 astat <- function(path,file, view=T){
   
   stat <- unzip(
-    zipfile = paste0(path,file), list=T) %>%
+    zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file), list=T) %>%
     dplyr::mutate(`Taille (Mo)` = round(Length/10e5,6)) %>% dplyr::select(-Length)
   
   if (view==T){View(stat)}
@@ -60,17 +60,15 @@ astat <- function(path,file, view=T){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip, astat, adelete
+#' @seealso \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 
 #' @export
-adezip2 <- function(path, file, liste, pathto=""){
-  
+adezip2 <- function(path, file, liste = "", pathto=""){
+  liste <- unique(liste)
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
   if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir= pathto)}
   else{
     
-    
-    liste[grepl("tra",liste)] <- "tra.txt"
     pat<- stringr::str_split(file,'\\.')
     cat('Dézippage archive\n',
         'Type     :',pat[[1]][5],'\n',
@@ -79,12 +77,23 @@ adezip2 <- function(path, file, liste, pathto=""){
         'Fichiers :', liste,'\n')
     if (pat[[1]][5] == "in") {
       unzip(
-        zipfile = paste0(path,'/',file),
+        zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
         files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste,'.txt'), exdir= pathto)
     }
     if (pat[[1]][5] == "out"){
+      if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+        unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/', file), list=T)$Name -> l
+        l[grepl('tra',l)] -> typtra
+        if (length(typtra) > 1){
+          liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+        }else{
+          one <- stringr::str_locate(typtra, 'tra')
+          stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+          liste <- c(liste[!grepl("tra",liste)], typtra)
+        }
+      }
       unzip(
-        zipfile = paste0(path,'/',file),
+        zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
         files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
         exdir= pathto)
     }
@@ -94,7 +103,7 @@ adezip2 <- function(path, file, liste, pathto=""){
 
 #' ~ *.zip - Dezippe des fichiers de l'archive PMSI
 #'
-#' Dézipper une archive PMSI au besoin
+#' Dezipper une archive PMSI au besoin
 #'
 #'
 #' @param finess Finess du fichier a dezipper
@@ -108,17 +117,17 @@ adezip2 <- function(path, file, liste, pathto=""){
 #'
 #' @examples
 #' \dontrun{
-#'      adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
 #'             liste = 'med',
 #'             pathto = "~/Exemple",
 #'             type = "out")
 #'
-#'      adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
 #'             liste = c('med','rapss', 'ano'),
 #'             pathto = "~/Exemple",
 #'             type = "in")
 #'
-#'      adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+#'      adezip('750712184',2016,2, path = '~/Documents/R/sources/2016',
 #'             liste = c('rss', 'ano'),
 #'             pathto = "~/Exemple",
 #'             type = "in",
@@ -127,15 +136,44 @@ adezip2 <- function(path, file, liste, pathto=""){
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip2, astat, adelete
+#' @seealso \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
+#' @export adezip
+#' @export
+adezip <- function(...){
+  UseMethod('adezip')
+}
+
 
 #' @export
-adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
+adezip.pm_param <- function(.params, ...){
+  new_par <- list(...)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
+  param2 <- utils::modifyList(.params, new_par)
+  param2 <- param2[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adezip.default, param2)
+}
+
+#' @export
+adezip.list <- function(l, ...){
+  .params <- l
+  new_par <- list(...) 
+  param2 <- utils::modifyList(.params, new_par)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto')
+  param2 <- param2[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adezip.default, param2)
+}
+
+#' @export
+adezip.default <- function(finess, annee, mois, path, liste = "", pathto="", type, recent=T){
   
   
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
   
-  liste[grepl("tra",liste)] <- "tra.txt"
+  liste <- unique(liste)
   u <- list.files(path)
   u <- u[grepl(paste0(type,'.zip'),u)]
   u <- u[grepl(paste0(finess,'.',annee,'.',mois),u)]
@@ -148,7 +186,7 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
     file <- as.character(lequel[1,1])
     pat<- stringr::str_split(file,'\\.')
     if (liste[1]==""){
-      unzip(zipfile = paste0(path,'/',file), exdir= pathto)}
+      unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file), exdir= pathto)}
     else{
       cat('Dézippage archive\n',
           'Type     :',pat[[1]][5],'\n',
@@ -156,14 +194,26 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
           'Période  :',paste(pat[[1]][2],paste0('M',pat[[1]][3])),'\n',
           'Fichiers :', liste,'\n')
       if (type=="out"){
+        if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+          unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/', file), list=T)$Name -> l
+          l[grepl('tra',l)] -> typtra
+          if (length(typtra) > 1){
+            liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+          }else{
+            one <- stringr::str_locate(typtra, 'tra')
+            stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+            liste <- c(liste[!grepl("tra",liste)], typtra)
+          }
+        }
+        
         unzip(
-          zipfile = paste0(path,'/',file),
+          zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
           exdir= pathto)
       }
       if (type=="in"){
         unzip(
-          zipfile = paste0(path,'/',file),
+          zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste,".txt"),
           exdir= pathto)
       }
@@ -187,14 +237,27 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
           'Période  :',paste(pat[[1]][2],paste0('M',pat[[1]][3])),'\n',
           'Fichiers :', liste,'\n')
       if (type=="out"){
+        if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+          unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/', file), list=T)$Name -> l
+          l[grepl('tra',l)] -> typtra
+          if (length(typtra) > 1){
+            liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+          }else{
+            one <- stringr::str_locate(typtra, 'tra')
+            stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+            liste <- c(liste[!grepl("tra",liste)], typtra)
+          }
+        }
+        
+        
         unzip(
-          zipfile = paste0(path,'/',file),
+          zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste),
           exdir= pathto)
       }
       if (type=="in"){
         unzip(
-          zipfile = paste0(path,'/',file),
+          zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
           files = paste0(pat[[1]][1],'.',pat[[1]][2],'.',pat[[1]][3],'.',liste,".txt"),
           exdir= pathto)
       }
@@ -202,7 +265,7 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
   }
 }
 
-#' ~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet, avec en parametre le nom de l'archive
+#' ~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet AP-HP, avec en parametre le nom de l'archive
 #'
 #' Version de la fonction \code{\link{adezip2}} pour des archives au format Intranet du DIM Siège de l'AP-HP,
 #' \url{http://dime.aphp.fr/}.
@@ -210,10 +273,9 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
 #'
 #' @param finess Finess du fichier a dezipper
 #' @param path Chemin d'acces au fichier
-#' @param file Nom de l'archive zip (ex: MCO_IN_00000_201603.zip)
-#' @param liste des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dézippe la totalite de l'archive
-
-#' @param pathto Chemin où déposer les fichiers dézippés, par défaut à "", les fichiers sont mis là où se trouve l'archive
+#' @param file Nom de l'archive zip (ex: \samp{MCO_IN_00000_201603.zip})
+#' @param liste des fichiers a dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive
+#' @param pathto Chemin ou deposer les fichiers dezippes, par defaut à "", les fichiers sont mis la ou se trouve l'archive
 #'
 #' @examples
 #' \dontrun{
@@ -223,20 +285,20 @@ adezip <- function(finess, annee, mois, path, liste, pathto="",type, recent=T){
 #'             liste = 'ano')
 #'
 #'     # Totalité de l'archive
-#'     adezip2(path = '~/Downloads',
+#'     adezip3(path = '~/Downloads',
 #'             file = 'MCO_IN_00000_201603.zip',
 #'             liste = '')
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip2,adezip, astat, adelete
+#' @seealso \code{\link{adezip2}}, \code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 
 #' @export
-adezip3 <- function(finess, path, file, liste, pathto=""){
+adezip3 <- function(finess, path, file, liste = "", pathto=""){
   
   if (pathto==""){pathto<-ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)}
-  
+  liste <- unique(liste)
   if (liste[1]==""){unzip(zipfile = paste0(path,'/',file), exdir = pathto)}
   else{
     
@@ -250,13 +312,24 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
         'Fichiers :', liste,'\n')
     if (pat[[1]][2]=="IN"){
       unzip(
-        zipfile = paste0(path,'/',file),
+        zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
         files = paste0(finess,'.',substr(pat[[1]][4],1,4),'.',as.numeric(substr(pat[[1]][4],5,7)),'.',liste,'.txt'),
         exdir = pathto)
     }
     if (pat[[1]][2]=="OUT"){
+      if (!(is.integer(grep("tra",liste)) && length(grep("tra",liste)) == 0L)){
+        unzip(zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/', file), list=T)$Name -> l
+        l[grepl('tra',l)] -> typtra
+        if (length(typtra) > 1){
+          liste <- c(liste[!grepl('tra', liste)], 'tra.txt', 'tra.raa.txt')
+        }else{
+          one <- stringr::str_locate(typtra, 'tra')
+          stringr::str_sub(typtra, one[1,1], stringr::str_length(typtra)) -> typtra
+          liste <- c(liste[!grepl("tra",liste)], typtra)
+        }
+      }
       unzip(
-        zipfile = paste0(path,'/',file),
+        zipfile = paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',file),
         files = paste0(finess,'.',substr(pat[[1]][4],1,4),'.',as.numeric(substr(pat[[1]][4],5,7)),'.',liste), exdir= pathto)
     }
     
@@ -265,29 +338,71 @@ adezip3 <- function(finess, path, file, liste, pathto=""){
 
 #' ~ *.zip - Suppression des fichiers en fin de traitement
 #'
-#' Supprime les fichiers de l'archive PMSI dézippés en début de traitement
+#' Supprime les fichiers de l'archive PMSI dezippes en début de traitement
 #'
 #'
 #' @param finess Finess du fichier a supprimer
 #' @param annee Annee du fichier
 #' @param mois Mois du fichier
 #' @param path Chemin d'acces aux fichiers
-#' @param liste Liste des fichiers a effacer
-#' @param type Type de fichier In / Out
+#' @param liste Liste des fichiers a effacer : par defaut a "", efface tous les \code{fichiers finess.annee.mois.}
+#' @param type Type de fichier In / Out : par defaut a "", efface tous les fichiers \code{finess.annee.mois.}
 #'
 #' @examples
 #' \dontrun{
-#'    adelete(750712184,2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
+#'    adelete('750712184',2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
+#'    
+#'    adelete('750712184',2016,2, path = '~/Exemple')
 #' }
 #'
 #' @author G. Pressiat
 #'
-#' @seealso adezip,adezip2, astat
+#' @seealso \code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage adelete(finess, annee, mois, path, liste, type)
+#' @export adelete
+#' @export
+adelete <- function(...){
+  UseMethod('adelete')
+}
+
 
 #' @export
-adelete <- function(finess,annee,mois,path, liste, type){
+adelete.pm_param <- function(.params, ...){
+  new_par <- list(...)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
+  param2 <- utils::modifyList(.params, new_par)
+  param2 <- param2[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adelete.default, param2)
+}
+
+#' @export
+adelete.list <- function(l, ...){
+  .params <- l
+  new_par <- list(...)
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type')
+  param2 <- utils::modifyList(.params, new_par)
+  param2 <- param2[noms]
+  param2 <- param2[!is.na(names(param2))]
+  do.call(adelete.default, param2)
+}
+
+#' @export
+adelete.default <- function(finess, annee, mois, path, liste = "", type = ""){
+  
+  if (type == "" & liste == ""){
+    liste <- list.files(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)))
+    liste <- liste[grepl(paste0(finess,'.',annee,'.',mois,'.'), liste) & !grepl('\\.zip', liste)]
+    if (length(liste) == 0){stop('Aucun fichier correspondant.')}
+    file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',liste))
+    return(TRUE)
+  }
+  
+  if ((type != "" & liste == "" )||( type == "" & liste != "")){stop("Type et liste doivent etre vides ensemble ou precises ensemble.")}
   liste[grepl("tra",liste)] <- "tra.txt"
-  if (type == "in") { file.remove(paste0(path,'/',finess,'.',annee,'.',mois,'.',liste,".txt"))}
-  if (type == "out"){ file.remove(paste0(path,'/',finess,'.',annee,'.',mois,'.',liste))}
+  
+  if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste,".txt"))}
+  if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste))}
 }
 

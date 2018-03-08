@@ -4,7 +4,7 @@
 \alias{adezip2}
 \title{~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive}
 \usage{
-adezip2(path, file, liste, pathto = "")
+adezip2(path, file, liste = "", pathto = "")
 }
 \arguments{
 \item{path}{Chemin d'acces a l'archive}
@@ -33,7 +33,7 @@ Alternative à la fonction \code{\link{adezip}}, si on connait précisement l'ar
 
 }
 \seealso{
-adezip, astat, adelete
+\code{\link{adezip}}, \code{\link{astat}}, \code{\link{adelete}}
 }
 \author{
 G. Pressiat

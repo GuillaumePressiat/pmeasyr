@@ -14,7 +14,7 @@ astat(path, file, view = T)
 \item{view}{par defaut a T : affiche la liste avec View(), a F retourne la table affichee a T}
 }
 \description{
-Pour lister sans dézipper les fichiers d'une archive
+Pour lister sans dezipper les fichiers d'une archive
 }
 \examples{
 \dontrun{
@@ -25,7 +25,7 @@ Pour lister sans dézipper les fichiers d'une archive
 
 }
 \seealso{
-adezip,adezip2
+\code{\link{adezip}}, \code{\link{adezip2}}
 }
 \author{
 G. Pressiat
