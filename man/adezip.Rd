@@ -2,124 +2,52 @@
 % Please edit documentation in R/archives.R
 \name{adezip}
 \alias{adezip}
-\alias{adezip.pm_param}
-\alias{adezip.default}
-\title{~ *.zip - Identifie et dézippe des fichiers de l'archive PMSI}
+\title{~ *.zip - Dezippe des fichiers de l'archive PMSI}
 \usage{
-adezip(...)
-
-\method{adezip}{pm_param}(.params, ...)
-
-\method{adezip}{default}(finess, annee, mois, path, liste = NULL,
-  pathto = path, type = "in", recent = TRUE, nom_archive = NULL,
-  quiet = FALSE, ...)
+adezip(finess, annee, mois, path, liste, pathto = "", type, recent = T)
 }
 \arguments{
-\item{...}{Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.}
+\item{finess}{Finess du fichier a dezipper}
 
-\item{.params}{Un noyau de paramètres définis par la fonction fonction \code{\link{noyau_pmeasyr}}}
+\item{annee}{Annee du fichier}
 
-\item{finess}{Finess de l'archive.}
+\item{mois}{Mois du fichier}
 
-\item{annee}{Année de l'archive.}
+\item{path}{Chemin d'acces au fichier}
 
-\item{mois}{Mois de l'archive.}
+\item{liste}{des fichiers à dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive}
 
-\item{path}{Chemin d'accès au répertoire contenant l'archive à décompresser}
+\item{pathto}{par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)}
 
-\item{liste}{Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, \code{liste = ""} dezippe la totalite de l'archive.}
+\item{type}{Type de l'archive : in / out}
 
-\item{pathto}{Par defaut la même valeur que \code{path}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}.}
-
-\item{type}{Type de l'archive : \emph{in} ou \emph{out}.}
-
-\item{recent}{par défaut \code{TRUE}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
-
-\item{nom_archive}{Nom de l'archive à décompresser dans le dossier \code{path}. Par défaut, \code{NULL}, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres \code{finess}, \code{annee}, \code{mois} et \code{recent} ne sont pas utilisés.}
-
-\item{quiet}{Affichage d'un message au dézippage \code{TRUE} / \code{FALSE}}
-}
-\value{
-Les chemins d'accès des fichiers décompressés, de manière invisible.
+\item{recent}{par defaut a T, l'archive la plus recente sera utilisee, sinon propose a l'utilisateur de choisir quelle archive dezipper}
 }
 \description{
-Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
-
-Dézipper les fichiers sélectionnés d'une archive
+Dézipper une archive PMSI au besoin
 }
 \examples{
-# Chemin vers un dossier temporaire
-tmp_dir <- tempdir()
+\dontrun{
+     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+            liste = 'med',
+            pathto = "~/Exemple",
+            type = "out")
 
-# Chemin vers un dossier contenant des archives simulées
-dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
+     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+            liste = c('med','rapss', 'ano'),
+            pathto = "~/Exemple",
+            type = "in")
 
-# Décompresser en fonction du finess, année et mois du 
-# fichier med d'une archive out
- adezip('123456789', 2016, 2, 
-        path = dossier_archives,
-        liste = 'med',
-        pathto = tmp_dir,
-        type = "out")
- 
-dir(tmp_dir)
-
-# Décompresser plusieurs types de fichiers d'une archive in
- adezip('123456789', 2016, 2, 
-        path = dossier_archives,
-        liste = c('med','rapss', 'ano'),
-        pathto = tmp_dir,
-        type = "in")
-        
-dir(tmp_dir)
-
-# Utilisation avec un noyau de paramtères
-p <- noyau_pmeasyr(
-       finess = '123456789',
-       annee  = 2016,
-       mois   = 12,
-       path   = dossier_archives,
-       progress = FALSE
-       )
-
-adezip(p, type = "in", pathto = tmp_dir)
-dir(tmp_dir)
-# Modification d'un paramètre du noyau
-adezip(p, mois = 11, type = "in",  pathto = tmp_dir)
-dir(tmp_dir)
-
-# Pour une même période (année/mois), il peut y avoir plusieurs archives si 
-# il y a eu plusieurs envois. Par exemple il y a deux version de l'archive
-# out pour la période 2017.10 dans notre exemple simulé
-dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
-
- # Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip 
- # sélectionne automatiquement l'archive la plus récente
- adezip(123456789, 2017, 10,
-        path = dossier_archives,
-        liste = 'med',
-        pathto = tmp_dir,
-        type = "out") 
- dir(tmp_dir, pattern = "med")
- 
- # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
- # à choisir
- \dontrun{
- adezip(123456789, 2017, 10,
-        path = dossier_archives,
-        liste = 'rsa',
-        pathto = tmp_dir,
-        recent = FALSE,
-        type = "out")
- dir(tmp_dir, pattern = "rsa")
- }
+     adezip(750712184,2016,2, path = '~/Documents/R/sources/2016',
+            liste = c('rss', 'ano'),
+            pathto = "~/Exemple",
+            type = "in",
+            recent = F)
+}
 
 }
 \seealso{
-\code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
-utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-
-\code{\link[utils:unzip]{utils::unzip()}}
+adezip2, astat, adelete
 }
 \author{
 G. Pressiat

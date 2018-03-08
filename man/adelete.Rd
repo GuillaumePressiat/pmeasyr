@@ -4,7 +4,7 @@
 \alias{adelete}
 \title{~ *.zip - Suppression des fichiers en fin de traitement}
 \usage{
-adelete(finess, annee, mois, path, liste, type, ...)
+adelete(finess, annee, mois, path, liste, type)
 }
 \arguments{
 \item{finess}{Finess du fichier a supprimer}
@@ -15,24 +15,21 @@ adelete(finess, annee, mois, path, liste, type, ...)
 
 \item{path}{Chemin d'acces aux fichiers}
 
-\item{liste}{Liste des fichiers a effacer : par defaut a "", efface tous les \code{fichiers finess.annee.mois.}}
+\item{liste}{Liste des fichiers a effacer}
 
-\item{type}{Type de fichier In / Out : par defaut a "", efface tous les fichiers \code{finess.annee.mois.}}
+\item{type}{Type de fichier In / Out}
 }
 \description{
-Supprime les fichiers de l'archive PMSI dezippes en début de traitement
+Supprime les fichiers de l'archive PMSI dézippés en début de traitement
 }
 \examples{
 \dontrun{
-   adelete('750712184',2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
-   
-   adelete('750712184',2016,2, path = '~/Exemple')
+   adelete(750712184,2016,2, path = '~/Exemple',  liste = c("rss","ano"), type = "in")
 }
 
 }
 \seealso{
-\code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}},
-utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+adezip,adezip2, astat
 }
 \author{
 G. Pressiat
