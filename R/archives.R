@@ -29,7 +29,7 @@ astat <- function(path, file, view = TRUE){
   stat <- unzip(
     zipfile = file.path(path ,file), 
     list = TRUE
-    ) %>%
+  ) %>%
     dplyr::mutate(`Taille (Mo)` = round(Length / 10^6, 6)) %>% 
     dplyr::select(-Length)
   
@@ -75,7 +75,7 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 }
 
 
-#' ~ *.zip - Identifie et dézippe des fichiers de l'archive PMSI
+#' ~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI
 #'
 #' Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 #' @param ... Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.
@@ -146,7 +146,12 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #'         type = "out")
 #'  dir(tmp_dir, pattern = "rsa")
 #'  }
-#'
+#' 
+#' # Dézipper les logs
+#' \dontrun{
+#' adezip(p, type = "out", liste = c('chainage.log', 'comp.log', 'log.txt'))
+#' }
+#' 
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
@@ -181,7 +186,7 @@ adezip.list <- function(l, ...){
   do.call(adezip.default, param2)
 }
 
-#' Dézipper les fichiers sélectionnés d'une archive
+#' Dezipper les fichiers selectionnes d'une archive
 #' @param finess Finess de l'archive.
 #' @param annee Année de l'archive.
 #' @param mois Mois de l'archive.
@@ -236,9 +241,9 @@ adezip.default <- function(finess, annee, mois,
   if (is.null(liste) || liste == "") {
     selection_fichiers_a_extraire <- NULL
   } else {
-  selection_fichiers_a_extraire <- selectionne_fichiers(
-    chemin_archive = chemin_archive, 
-    types_fichier = liste
+    selection_fichiers_a_extraire <- selectionne_fichiers(
+      chemin_archive = chemin_archive, 
+      types_fichier = liste
     )
   }
   
@@ -251,16 +256,16 @@ adezip.default <- function(finess, annee, mois,
   }
   
   if (!quiet){
-  message(
-    "\n",
-    "Dézippage de l'archive ", info_archive$nom_fichier, '\n',
-    'Taille    : ', info_archive$taille_mo, " Mo\n",
-    'Type      : ', info_archive$type, '\n',
-    'Finess    : ', info_archive$finess, '\n',
-    'Période   : ', info_archive$annee, ' M', info_archive$mois, '\n',
-    'Date prod : ', info_archive$horodatage_production, '\n',
-    'Fichiers  : ', liste_fichiers,'\n'
-  )
+    message(
+      "\n",
+      "Dézippage de l'archive ", info_archive$nom_fichier, '\n',
+      'Taille    : ', info_archive$taille_mo, " Mo\n",
+      'Type      : ', info_archive$type, '\n',
+      'Finess    : ', info_archive$finess, '\n',
+      'Période   : ', info_archive$annee, ' M', info_archive$mois, '\n',
+      'Date prod : ', info_archive$horodatage_production, '\n',
+      'Fichiers  : ', liste_fichiers,'\n'
+    )
   }
   unzip(zipfile = chemin_archive,
         files = selection_fichiers_a_extraire,
@@ -289,7 +294,7 @@ selectionne_archive <- function(finess, mois, annee, dossier_archives,
            mois == !!mois, type == !!type_archive) %>%
     # Trier du plus récent au plus ancien
     arrange(desc(horodatage_production))
-
+  
   # Si il ne faut prendre que le plus récent
   if (recent) {
     ligne_zip_a_selectionner <- 1
@@ -322,8 +327,17 @@ selectionne_fichiers <- function(chemin_archive, types_fichier) {
   
   tableau_fichiers <- parse_noms_fichiers(fichiers_dans_archive)
   
+  #  types_fichier_grep <- paste0(types_fichier, collapse = "|")
+  
+  if (any('tra' == types_fichier)){
+    types_fichier <- c(types_fichier, 'tra.txt', 'tra.raa.txt')
+  }
+  
   fichiers_selectionne <- dplyr::filter(
     tableau_fichiers, type %in% types_fichier)
+  
+  # fichiers_selectionne <- dplyr::filter(
+  #   tableau_fichiers, grepl(types_fichier_grep, type))
   
   fichiers_selectionne$nom_fichier
 }
@@ -498,7 +512,7 @@ parse_noms_fichiers <- function(noms_fichiers, return_tibble = TRUE) {
     liste_fichiers
   }
 }
-  
+
 #' Découpe un seul nom de fichier
 #' @param nom_fichier Le nom du fichier à découper. Chaine de caractère de longueur 1.
 #' @param format_date_archive Format de date d'horodatage pour les fichiers archive avec la notation de [base::strptime()].
@@ -508,10 +522,10 @@ parse_noms_fichiers <- function(noms_fichiers, return_tibble = TRUE) {
 parse_nom_fichier <- function(
   nom_fichier, 
   format_date_archive = '%d%m%Y%H%M%S'
-  ) {
+) {
   
   # Vérifier la longueur de l'argument
- if (length(nom_fichier) != 1) stop("nom_fichier doit être de longueur 1")
+  if (length(nom_fichier) != 1) stop("nom_fichier doit être de longueur 1")
   
   # Initialiser le vecteur de résultat
   x <- list(nom_fichier = nom_fichier)
@@ -533,9 +547,10 @@ parse_nom_fichier <- function(
     x$type <- champs_separe[5]
   } else {
     # Si ce n'est pas une archive in/out
-    x$type <- champs_separe[4]
+    # Ajout condition sur la longueur de champs_separe pour ajouter le champ 5 auquel cas
+    x$type <- paste(champs_separe[4:length(champs_separe)], collapse = ".")
   }
- 
+  
   # Si le type est NA alors probablement pas un fichier avec bon format
   # Ne retourner que le nom de fichier
   if (is.na(x$type)) x <- x[1]
@@ -591,9 +606,9 @@ creer_archive_vide <- function(chemin_archive,
   
   # Zipper
   utils::zip(zipfile = paste0(chemin_archive_simule, ".zip"), 
-      files = dir(chemin_archive_simule, full.names = T),
-      # Sauvegarder uniquement les fichiers, pas le chemin complet
-      flags = "-j")
+             files = dir(chemin_archive_simule, full.names = T),
+             # Sauvegarder uniquement les fichiers, pas le chemin complet
+             flags = "-j")
   
   # Supprimer le répertoire temporaire
   unlink(chemin_archive_simule, recursive = TRUE)
@@ -643,9 +658,11 @@ creer_nom_archive <- function(
 #' @param info_archive informatin de l'archive (résultat de selectionne_archive)
 #' @return un vecteur
 extraire_types_fichiers <- function(selection_fichiers_a_extraire, info_archive){
-  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, 
-                                  paste(info_archive$finess,info_archive$annee, info_archive$mois, "txt", sep = "|"), "")
-  l_f <- stringr::str_replace_all(l_f, "\\.{2,}|\\.$", "")
+  # l_f <- stringr::str_replace_all(selection_fichiers_a_extraire,
+  #                                 paste(info_archive$finess,info_archive$annee, info_archive$mois, "txt", sep = "|"), "")
+  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, paste(info_archive$finess, "txt", sep = "|"), "")
+  l_f <- stringr::str_replace_all(l_f, "[0-9]+|\\.$", "")
+  l_f <- stringr::str_replace_all(l_f, "\\.{2,}", "")
   l_f
 }
 
