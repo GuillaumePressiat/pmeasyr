@@ -147,16 +147,9 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #'  dir(tmp_dir, pattern = "rsa")
 #'  }
 #' 
-#' # Utilisation d'expressions régulières pour sélectionner les fichiers à dézipper
-#' # Tester les différences entre les commandes suivantes :
+#' # Dézipper les logs
 #' \dontrun{
-#' adezip(p, type = "out", liste = '^log')
-#' adezip(p, type = "out", liste = 'log')
-#' adezip(p, type = "out", liste = 'log$')
-#' }
-#' # Plusieurs fichiers avec des regexp
-#' \dontrun{
-#' adezip(p, type = "out", liste = c('med', '^ano', 'rha', 'ium$'))
+#' adezip(p, type = "out", liste = c('chainage.log', 'comp.log', 'log.txt'))
 #' }
 #' 
 #' @author G. Pressiat
@@ -337,14 +330,14 @@ selectionne_fichiers <- function(chemin_archive, types_fichier) {
   fichiers_selectionne <- dplyr::filter(
     tableau_fichiers, type %in% types_fichier)
   
-  types_fichier_grep <- paste0(types_fichier, collapse = "|")
-  
-  # fichiers_selectionne <- dplyr::filter(
-  #   tableau_fichiers, type %in% types_fichier)
+#  types_fichier_grep <- paste0(types_fichier, collapse = "|")
   
   fichiers_selectionne <- dplyr::filter(
-    tableau_fichiers, grepl(types_fichier_grep, type))
-  
+    tableau_fichiers, type %in% types_fichier)
+
+  # fichiers_selectionne <- dplyr::filter(
+  #   tableau_fichiers, grepl(types_fichier_grep, type))
+
   fichiers_selectionne$nom_fichier
 }
 
