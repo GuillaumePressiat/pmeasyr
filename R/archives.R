@@ -75,7 +75,7 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 }
 
 
-#' ~ *.zip - Identifie et dézippe des fichiers de l'archive PMSI
+#' ~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI
 #'
 #' Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 #' @param ... Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.
@@ -146,7 +146,19 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #'         type = "out")
 #'  dir(tmp_dir, pattern = "rsa")
 #'  }
-#'
+#' 
+#' # Utilisation d'expressions régulières pour sélectionner les fichiers à dézipper
+#' # Tester les différences entre les commandes suivantes :
+#' \dontrun{
+#' adezip(p, type = "out", liste = '^log')
+#' adezip(p, type = "out", liste = 'log')
+#' adezip(p, type = "out", liste = 'log$')
+#' }
+#' # Plusieurs fichiers avec des regexp
+#' \dontrun{
+#' adezip(p, type = "out", liste = c('med', '^ano', 'rha', 'ium$'))
+#' }
+#' 
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{adezip2}}, \code{\link{astat}}, \code{\link{adelete}},
@@ -181,7 +193,7 @@ adezip.list <- function(l, ...){
   do.call(adezip.default, param2)
 }
 
-#' Dézipper les fichiers sélectionnés d'une archive
+#' Dezipper les fichiers selectionnes d'une archive
 #' @param finess Finess de l'archive.
 #' @param annee Année de l'archive.
 #' @param mois Mois de l'archive.
@@ -324,6 +336,14 @@ selectionne_fichiers <- function(chemin_archive, types_fichier) {
   
   fichiers_selectionne <- dplyr::filter(
     tableau_fichiers, type %in% types_fichier)
+  
+  types_fichier_grep <- paste0(types_fichier, collapse = "|")
+  
+  # fichiers_selectionne <- dplyr::filter(
+  #   tableau_fichiers, type %in% types_fichier)
+  
+  fichiers_selectionne <- dplyr::filter(
+    tableau_fichiers, grepl(types_fichier_grep, type))
   
   fichiers_selectionne$nom_fichier
 }
@@ -533,7 +553,13 @@ parse_nom_fichier <- function(
     x$type <- champs_separe[5]
   } else {
     # Si ce n'est pas une archive in/out
-    x$type <- champs_separe[4]
+    # Ajout condition sur la longueur de champs_separe pour ajouter le champ 5 auquel cas
+    if (length(champs_separe) > 4){
+      x$type <- paste0(champs_separe[4], '.', champs_separe[5])
+    } else 
+      if (length(champs_separe) <= 4){
+        x$type <- champs_separe[4]
+      }
   }
  
   # Si le type est NA alors probablement pas un fichier avec bon format

@@ -4,7 +4,7 @@
 \alias{adezip}
 \alias{adezip.pm_param}
 \alias{adezip.default}
-\title{~ *.zip - Identifie et dézippe des fichiers de l'archive PMSI}
+\title{~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI}
 \usage{
 adezip(...)
 
@@ -45,7 +45,7 @@ Les chemins d'accès des fichiers décompressés, de manière invisible.
 \description{
 Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 
-Dézipper les fichiers sélectionnés d'une archive
+Dezipper les fichiers selectionnes d'une archive
 }
 \examples{
 # Chemin vers un dossier temporaire
@@ -113,6 +113,18 @@ dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
         type = "out")
  dir(tmp_dir, pattern = "rsa")
  }
+
+# Utilisation d'expressions régulières pour sélectionner les fichiers à dézipper
+# Tester les différences entre les commandes suivantes :
+\dontrun{
+adezip(p, type = "out", liste = '^log')
+adezip(p, type = "out", liste = 'log')
+adezip(p, type = "out", liste = 'log$')
+}
+# Plusieurs fichiers avec des regexp
+\dontrun{
+adezip(p, type = "out", liste = c('^med', '^ano', 'rha', 'ium$'))
+}
 
 }
 \seealso{
