@@ -327,10 +327,11 @@ selectionne_fichiers <- function(chemin_archive, types_fichier) {
   
   tableau_fichiers <- parse_noms_fichiers(fichiers_dans_archive)
   
-  fichiers_selectionne <- dplyr::filter(
-    tableau_fichiers, type %in% types_fichier)
-  
   #  types_fichier_grep <- paste0(types_fichier, collapse = "|")
+  
+  if (any('tra' == types_fichier)){
+    types_fichier <- c(types_fichier, 'tra.txt', 'tra.raa.txt')
+  }
   
   fichiers_selectionne <- dplyr::filter(
     tableau_fichiers, type %in% types_fichier)
@@ -547,13 +548,8 @@ parse_nom_fichier <- function(
   } else {
     # Si ce n'est pas une archive in/out
     # Ajout condition sur la longueur de champs_separe pour ajouter le champ 5 auquel cas
-    if (length(champs_separe) > 4){
-      x$type <- paste0(champs_separe[4], '.', champs_separe[5])
-    } else 
-      if (length(champs_separe) <= 4){
-        x$type <- champs_separe[4]
-      }
-  }
+      x$type <- paste(champs_separe[4:length(champs_separe)], collapse = ".")
+    }
   
   # Si le type est NA alors probablement pas un fichier avec bon format
   # Ne retourner que le nom de fichier
