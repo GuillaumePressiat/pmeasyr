@@ -114,9 +114,16 @@ dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
  dir(tmp_dir, pattern = "rsa")
  }
 
-# Dézipper les logs
+# Utilisation d'expressions régulières pour sélectionner les fichiers à dézipper
+# Tester les différences entre les commandes suivantes :
 \dontrun{
-adezip(p, type = "out", liste = c('chainage.log', 'comp.log', 'log.txt'))
+adezip(p, type = "out", liste = '^log')
+adezip(p, type = "out", liste = 'log')
+adezip(p, type = "out", liste = 'log$')
+}
+# Plusieurs fichiers avec des regexp
+\dontrun{
+adezip(p, type = "out", liste = c('med', '^ano', 'rha', 'ium$'))
 }
 
 }
