@@ -81,39 +81,54 @@
     </div>
 
     
-    <p>Pour lister sans dezipper les fichiers d'une archive</p>
+    <p>Pour lister sans dezipper les fichiers d'une archive.</p>
     
 
-    <pre class="usage"><span class='fu'>astat</span>(<span class='no'>path</span>, <span class='no'>file</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
+    <pre class="usage"><span class='fu'>astat</span>(<span class='no'>path</span>, <span class='no'>file</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path</th>
-      <td><p>Chemin d'acces  a l'archive</p></td>
+      <td><p>Chemin d'accès au dossier contenant les archives</p></td>
     </tr>
     <tr>
       <th>file</th>
-      <td><p>Nom du fichier archive</p></td>
+      <td><p>Nom du fichier d'archive</p></td>
     </tr>
     <tr>
       <th>view</th>
-      <td><p>par defaut a T : affiche la liste avec View(), a F retourne la table affichee a T</p></td>
+      <td><p>par défaut <code>TRUE</code> : affiche la liste avec <code><a href='http://www.rdocumentation.org/packages/utils/topics/View'>utils::View()</a></code>  Sinon retourne la table dans la console.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Une <code>data.frame</code> contenant les colonnes :</p><ul>
+<li><p><em>Name</em> Nom du fichier</p></li>
+<li><p><em>Date</em> Date de modification</p></li>
+<li><p><em>Taille (Mo)</em></p></li>
+</ul>
+
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='adezip.html'>adezip</a></code>, <code><a href='adezip2.html'>adezip2</a></code></p>
+    <p><code><a href='adezip.html'>adezip()</a></code> et <code><a href='adezip2.html'>adezip2()</a></code> permettent de décompresser les fichiers. Cette fonction est basée sur <code><a href='http://www.rdocumentation.org/packages/utils/topics/unzip'>utils::unzip()</a></code> en utilisant l'argument <code>list = TRUE</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-   <span class='no'>liste</span> <span class='kw'>&lt;-</span> <span class='fu'>astat</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>'~/Documents/R/sources/2016/'</span>,
-                  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"750712184.2016.2.05042016093044.in.zip"</span>,
-                  <span class='kw'>view</span> <span class='kw'>=</span> <span class='no'>F</span>)
-<span class='co'># }</span><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>test_files_dir</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"test_data"</span>, <span class='st'>"test_adezip"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pmeasyr"</span>)
+<span class='fu'>astat</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>test_files_dir</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"123456789.2016.2.15032016152413.in.zip"</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;                           Name                Date Taille (Mo)
+#&gt; 1     123456789.2016.2.ano.txt 2017-12-22 15:44:00           0
+#&gt; 2    123456789.2016.2.diap.txt 2017-12-22 15:44:00           0
+#&gt; 3     123456789.2016.2.dmi.txt 2017-12-22 15:44:00           0
+#&gt; 4     123456789.2016.2.ium.txt 2017-12-22 15:44:00           0
+#&gt; 5 123456789.2016.2.med.ini.txt 2017-12-22 15:44:00           0
+#&gt; 6     123456789.2016.2.med.txt 2017-12-22 15:44:00           0
+#&gt; 7    123456789.2016.2.porg.txt 2017-12-22 15:44:00           0
+#&gt; 8 123456789.2016.2.rss.ini.txt 2017-12-22 15:44:00           0
+#&gt; 9     123456789.2016.2.rss.txt 2017-12-22 15:44:00           0</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -121,6 +136,8 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

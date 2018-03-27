@@ -92,14 +92,13 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>liste</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>actes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'EBLA003'</span>, <span class='st'>'EQLF002'</span>))
-<span class='fu'>requete_db</span>(<span class='no'>con</span>, <span class='no'>an</span>, <span class='no'>liste</span>)
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>liste</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>actes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'EBLA003'</span>, <span class='st'>'EQLF002'</span>))
+  <span class='fu'>requete_db</span>(<span class='no'>con</span>, <span class='no'>an</span>, <span class='no'>liste</span>)
 
-<span class='no'>liste</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>actes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'EBLA003'</span>, <span class='st'>'EQLF002'</span>), <span class='kw'>dureemax</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='fu'>requete_db</span>(<span class='no'>con</span>, <span class='fl'>16</span>, <span class='no'>liste</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+  <span class='no'>liste</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>actes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'EBLA003'</span>, <span class='st'>'EQLF002'</span>), <span class='kw'>dureemax</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+  <span class='fu'>requete_db</span>(<span class='no'>con</span>, <span class='fl'>16</span>, <span class='no'>liste</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

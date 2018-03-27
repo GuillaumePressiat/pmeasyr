@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ db - Copier les rha dans une db — db_ssr_out • pmeasyr</title>
+<title>Créer une archive vide à partir d'une archive réelle — creer_archive_vide • pmeasyr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,55 +77,38 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ db - Copier les rha dans une db</h1>
+    <h1>Créer une archive vide à partir d'une archive réelle</h1>
     </div>
 
     
-    <p>Copier les rha, les actes, les diagnostics des rha, ssrha et ano dans une db</p>
+    <p>Créer une archive vide à partir d'une archive réelle</p>
     
 
-    <pre class="usage"><span class='fu'>db_ssr_out</span>(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>zip</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>creer_archive_vide</span>(<span class='no'>chemin_archive</span>, <span class='kw'>dossier_cible</span> <span class='kw'>=</span> <span class='st'>"archive_simul/"</span>,
+  <span class='kw'>finess_simul</span> <span class='kw'>=</span> <span class='st'>"123456789"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>con</th>
-      <td><p>la connexion a la base de donnees (src_..)</p></td>
+      <th>chemin_archive</th>
+      <td><p>Chemin vers une archive réelle qui servira de modèle pour l'archive simulée</p></td>
     </tr>
     <tr>
-      <th>p</th>
-      <td><p>le noyau pmeasyr</p></td>
+      <th>dossier_cible</th>
+      <td><p>Chemin vers le dossier où l'archive simulée sera stockée</p></td>
     </tr>
     <tr>
-      <th>remove</th>
-      <td><p>a TRUE, les tables precedentes rha de l'annee sont effacees avant</p></td>
-    </tr>
-    <tr>
-      <th>zip</th>
-      <td><p>a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db</p></td>
-    </tr>
-    <tr>
-      <th>indexes</th>
-      <td><p>index a ajouter a la table dans la base (voir <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/copy_to'>copy_to</a></code>)</p></td>
+      <th>finess_simul</th>
+      <td><p>Un numéro finess pour le fichier simulé</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>nothing</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Les tables sont importées dans R puis copiées dans la db.
-Le tra est ajouté aux tables.</p>
+    <p><code>NULL</code></p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_ssr_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#ok</span>
-  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_ssr_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>annee</span> <span class='kw'>=</span> <span class='fl'>2017</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>7</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#..</span>
-})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -133,11 +116,7 @@ Le tra est ajouté aux tables.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

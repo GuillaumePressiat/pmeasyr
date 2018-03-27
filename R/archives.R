@@ -149,7 +149,7 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #' 
 #' # Dézipper les logs
 #' \dontrun{
-#' adezip(p, type = "out", liste = c('chainage.log', 'comp.log', 'log.txt'))
+#' adezip(p, type = "out", liste = c('chainage.log.txt', 'comp.log.txt', 'log.txt'))
 #' }
 #' 
 #' @author G. Pressiat

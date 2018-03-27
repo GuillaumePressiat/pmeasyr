@@ -85,20 +85,38 @@
     
 
     <pre class="usage"><span class='fu'>tbl_mco</span>(<span class='no'>con</span>, <span class='no'>an</span>, <span class='no'>table</span>)</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>con</th>
+      <td><p>Connexion à la base de données</p></td>
+    </tr>
+    <tr>
+      <th>an</th>
+      <td><p>Année pmsi (ex: 16)</p></td>
+    </tr>
+    <tr>
+      <th>table</th>
+      <td><p>Table à requêter</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble</p>
+    <p>remote table</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>tbl_mco</span>(<span class='no'>con</span>, <span class='fl'>16</span>, <span class='st'>'rsa_rsa'</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='fu'>tbl_mco</span>(<span class='no'>con</span>, <span class='fl'>16</span>, <span class='st'>'rsa_rsa'</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
       

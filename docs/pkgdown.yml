@@ -1,8 +1,2 @@
-urls:
-  reference: https://im-aphp.github.io/pmeasyr//reference
-  article: https://im-aphp.github.io/pmeasyr//articles
-articles:
-  vignette2: vignette2.html
-  vignette3: vignette3.html
-  vignette: vignette.html
+reference_url: https://im-aphp.github.io/pmeasyr//reference
 

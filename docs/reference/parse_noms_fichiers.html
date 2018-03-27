@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ db - Copier les rha dans une db — db_ssr_out • pmeasyr</title>
+<title>Extraire les informations d'un nom de fichier — parse_noms_fichiers • pmeasyr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,55 +77,51 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ db - Copier les rha dans une db</h1>
+    <h1>Extraire les informations d'un nom de fichier</h1>
     </div>
 
     
-    <p>Copier les rha, les actes, les diagnostics des rha, ssrha et ano dans une db</p>
+    <p>Les noms de fichiers des archives PMSI ont toujours le même format, de la forme <em>finess.annee_envois.mois_envois.</em> suivi par <em>horodatage</em> pour les archives <em>in</em> et <em>ou</em> et enfin le <em>type</em> de fichier. Cette fonction permet d'extraire cette information.</p>
     
 
-    <pre class="usage"><span class='fu'>db_ssr_out</span>(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>zip</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>parse_noms_fichiers</span>(<span class='no'>noms_fichiers</span>, <span class='kw'>return_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>con</th>
-      <td><p>la connexion a la base de donnees (src_..)</p></td>
+      <th>noms_fichiers</th>
+      <td><p>Des noms de fichiers d'archive sous la forme d'un vecteur de caractères.</p></td>
     </tr>
     <tr>
-      <th>p</th>
-      <td><p>le noyau pmeasyr</p></td>
-    </tr>
-    <tr>
-      <th>remove</th>
-      <td><p>a TRUE, les tables precedentes rha de l'annee sont effacees avant</p></td>
-    </tr>
-    <tr>
-      <th>zip</th>
-      <td><p>a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db</p></td>
-    </tr>
-    <tr>
-      <th>indexes</th>
-      <td><p>index a ajouter a la table dans la base (voir <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/copy_to'>copy_to</a></code>)</p></td>
+      <th>return_tible</th>
+      <td><p>Retourne une table si <code>TRUE</code>, sinon retourne une liste.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>nothing</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>Une liste ou une table avec les informations extraites du nom de fichier :</p><ul>
+<li><p><code>nom_fichier</code> Le nom de fichier passé en arguement</p></li>
+<li><p><code>finess</code></p></li>
+<li><p><code>annee</code></p></li>
+<li><p><code>mois</code></p></li>
+<li><p><code>horodatage_production</code> L'horodatage de production pour les fichiers <em>in</em> et <em>out</em> au format POSIXlt
+Si il y a plusieurs fichiers, la liste peut être facilement transformée en table avec <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/bind'>dplyr::bind_rows()</a></code>.</p></li>
+<li><p><code>type</code> Type de fichier : <em>in</em>, <em>out</em>, <em>rss</em>...</p></li>
+</ul>
 
-    <p>Les tables sont importées dans R puis copiées dans la db.
-Le tra est ajouté aux tables.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_ssr_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#ok</span>
-  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_ssr_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>annee</span> <span class='kw'>=</span> <span class='fl'>2017</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>7</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#..</span>
-})</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>noms_de_fichiers</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"671234567.2016.1.12032016140012.in.zip"</span>,
+                      <span class='st'>"671234567.2016.1.rum.txt"</span>)
+ <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>parse_noms_fichiers</span>(<span class='no'>noms_de_fichiers</span>)
+<span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>bind_rows</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 6
+#&gt;   nom_fichier                  finess   annee mois  horodatage_producti… type  
+#&gt;   &lt;chr&gt;                        &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;               &lt;chr&gt; 
+#&gt; 1 671234567.2016.1.1203201614… 6712345… 2016  1     2016-03-12 14:00:12.000000 in    
+#&gt; 2 671234567.2016.1.rum.txt     6712345… 2016  1     NA                   rum.t…</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -133,8 +129,6 @@ Le tra est ajouté aux tables.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

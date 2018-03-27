@@ -85,27 +85,40 @@
     
 
     <pre class="usage"><span class='fu'>creer_json</span>(<span class='no'>requete</span>, <span class='no'>chemin</span>)</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>requete</th>
+      <td><p>`list` qui contient la requête</p></td>
+    </tr>
+    <tr>
+      <th>chemin</th>
+      <td><p>Nom du fichier json qui sera créé</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>un objet de classe rsa de pmeasyr</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>liste</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nom_abrege</span> <span class='kw'>=</span> <span class='st'>"pac"</span>,
-             <span class='kw'>thematique</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
-             <span class='kw'>actes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'EBLA003'</span>, <span class='st'>'EQLF002'</span>),
-             <span class='kw'>dureemax</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-             <span class='kw'>auteur</span> <span class='kw'>=</span> <span class='st'>"John Doe"</span>,
-             <span class='kw'>date_saisie</span> <span class='kw'>=</span> <span class='st'>"1960-01-01"</span>)
-<span class='fu'>creer_json</span>(<span class='no'>liste</span>, <span class='fu'>paste0</span>(<span class='st'>'~/Documents/listes/'</span>, <span class='no'>liste</span>$<span class='no'>nom_abrege</span>, <span class='st'>'.json'</span>))
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>liste</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nom_abrege</span> <span class='kw'>=</span> <span class='st'>"pac"</span>,
+               <span class='kw'>thematique</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
+               <span class='kw'>actes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'EBLA003'</span>, <span class='st'>'EQLF002'</span>),
+               <span class='kw'>dureemax</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+               <span class='kw'>auteur</span> <span class='kw'>=</span> <span class='st'>"John Doe"</span>,
+               <span class='kw'>date_saisie</span> <span class='kw'>=</span> <span class='st'>"1960-01-01"</span>)
+  <span class='fu'>creer_json</span>(<span class='no'>liste</span>, <span class='fu'>paste0</span>(<span class='st'>'~/Documents/listes/'</span>, <span class='no'>liste</span>$<span class='no'>nom_abrege</span>, <span class='st'>'.json'</span>))
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
       

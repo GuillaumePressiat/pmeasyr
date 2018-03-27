@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ *.zip - Dezippe des fichiers de l'archive PMSI — adezip • pmeasyr</title>
+<title>~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI — adezip • pmeasyr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,83 +77,262 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ *.zip - Dezippe des fichiers de l'archive PMSI</h1>
+    <h1>~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI</h1>
     </div>
 
     
-    <p>Dezipper une archive PMSI au besoin</p>
+    <p>Recherche et dézippe (décompresse) les fichiers contenus dans une archive <em>*.in</em> ou <em>*.out</em> du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code>).</p>
+<p>Dezipper les fichiers selectionnes d'une archive</p>
     
 
-    <pre class="usage"><span class='fu'>adezip</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='no'>liste</span>, <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>type</span>, <span class='kw'>recent</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
+    <pre class="usage"><span class='fu'>adezip</span>(<span class='no'>...</span>)
+
+<span class='co'># S3 method for pm_param</span>
+<span class='fu'>adezip</span>(<span class='no'>.params</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>adezip</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>liste</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>path</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>, <span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nom_archive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>...</th>
+      <td><p>Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.</p></td>
+    </tr>
+    <tr>
+      <th>.params</th>
+      <td><p>Un noyau de paramètres définis par la fonction fonction <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p></td>
+    </tr>
+    <tr>
       <th>finess</th>
-      <td><p>Finess du fichier a dezipper</p></td>
+      <td><p>Finess de l'archive.</p></td>
     </tr>
     <tr>
       <th>annee</th>
-      <td><p>Annee du fichier</p></td>
+      <td><p>Année de l'archive.</p></td>
     </tr>
     <tr>
       <th>mois</th>
-      <td><p>Mois du fichier</p></td>
+      <td><p>Mois de l'archive.</p></td>
     </tr>
     <tr>
       <th>path</th>
-      <td><p>Chemin d'acces au fichier</p></td>
+      <td><p>Chemin d'accès au répertoire contenant l'archive à décompresser</p></td>
     </tr>
     <tr>
       <th>liste</th>
-      <td><p>des fichiers à dezipper ex: ano, rss, rsa, dmi, ... ; si liste = "", dezippe la totalite de l'archive</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>Type de l'archive : in / out</p></td>
-    </tr>
-    <tr>
-      <th>recent</th>
-      <td><p>par defaut a T, l'archive la plus recente sera utilisee, sinon propose a l'utilisateur de choisir quelle archive dezipper</p></td>
+      <td><p>Vecteur de caractère avec le type de fichiers à dézipper (ex: ano, rss, rsa, dmi, ...). Par défaut, <code>liste = ""</code> dezippe la totalite de l'archive.</p></td>
     </tr>
     <tr>
       <th>pathto</th>
-      <td><p>par defaut a "", dezipper la ou est l'archive, sinon preciser le chemin ou dezipper les fichiers (ailleurs)</p></td>
+      <td><p>Par defaut la même valeur que <code>path</code>, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par <code>pathto</code>.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Type de l'archive : <em>in</em> ou <em>out</em>.</p></td>
+    </tr>
+    <tr>
+      <th>recent</th>
+      <td><p>par défaut <code>TRUE</code>, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper</p></td>
+    </tr>
+    <tr>
+      <th>nom_archive</th>
+      <td><p>Nom de l'archive à décompresser dans le dossier <code>path</code>. Par défaut, <code>NULL</code>, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres <code>finess</code>, <code>annee</code>, <code>mois</code> et <code>recent</code> ne sont pas utilisés.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>Affichage d'un message au dézippage <code>TRUE</code> / <code>FALSE</code></p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Les chemins d'accès des fichiers décompressés, de manière invisible.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p><code><a href='adezip2.html'>adezip2</a></code>, <code><a href='astat.html'>astat</a></code>, <code><a href='adelete.html'>adelete</a></code>,
-utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p>
+utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code>
+    <code><a href='http://www.rdocumentation.org/packages/utils/topics/unzip'>utils::unzip()</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-     <span class='fu'>adezip</span>(<span class='st'>'750712184'</span>,<span class='fl'>2016</span>,<span class='fl'>2</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>'~/Documents/R/sources/2016'</span>,
-            <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
-            <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='st'>"~/Exemple"</span>,
-            <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)
+    <pre class="examples"><div class='input'><span class='co'># Chemin vers un dossier temporaire</span>
+<span class='no'>tmp_dir</span> <span class='kw'>&lt;-</span> <span class='fu'>tempdir</span>()
 
-     <span class='fu'>adezip</span>(<span class='st'>'750712184'</span>,<span class='fl'>2016</span>,<span class='fl'>2</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>'~/Documents/R/sources/2016'</span>,
-            <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'med'</span>,<span class='st'>'rapss'</span>, <span class='st'>'ano'</span>),
-            <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='st'>"~/Exemple"</span>,
-            <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>)
+<span class='co'># Chemin vers un dossier contenant des archives simulées</span>
+<span class='no'>dossier_archives</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"test_data"</span>, <span class='st'>"test_adezip"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pmeasyr"</span>)
 
-     <span class='fu'>adezip</span>(<span class='st'>'750712184'</span>,<span class='fl'>2016</span>,<span class='fl'>2</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>'~/Documents/R/sources/2016'</span>,
-            <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'rss'</span>, <span class='st'>'ano'</span>),
-            <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='st'>"~/Exemple"</span>,
-            <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>,
-            <span class='kw'>recent</span> <span class='kw'>=</span> <span class='no'>F</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+<span class='co'># Décompresser en fonction du finess, année et mois du </span>
+<span class='co'># fichier med d'une archive out</span>
+ <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
+        <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
+        <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
+        <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
+        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.18032016182636.out.zip</span>
+#&gt; <span class='message'>Taille    : 0.0072 Mo</span>
+#&gt; <span class='message'>Type      : out</span>
+#&gt; <span class='message'>Finess    : 123456789</span>
+#&gt; <span class='message'>Période   : 2016 M2</span>
+#&gt; <span class='message'>Date prod : 2016-03-18 18:26:36</span>
+#&gt; <span class='message'>Fichiers  : med</span></div><div class='input'>
+<span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.med"                                       
+#&gt; [2] "libloc_213_8f8c4eafe9e43f75.rds"                            
+#&gt; [3] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"
+#&gt; [4] "rs-graphics-3a430348-1866-4c7d-ad72-aaec73679a1c"           </div><div class='input'>
+<span class='co'># Décompresser plusieurs types de fichiers d'une archive in</span>
+ <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
+        <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
+        <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'med'</span>,<span class='st'>'rapss'</span>, <span class='st'>'ano'</span>),
+        <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
+        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Aucun fichier dézippé : vérifier le paramètre liste</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.15032016152413.in.zip</span>
+#&gt; <span class='message'>Taille    : 0.0023 Mo</span>
+#&gt; <span class='message'>Type      : in</span>
+#&gt; <span class='message'>Finess    : 123456789</span>
+#&gt; <span class='message'>Période   : 2016 M2</span>
+#&gt; <span class='message'>Date prod : 2016-03-15 15:24:13</span>
+#&gt; <span class='message'>Fichiers  : </span></div><div class='input'>
+<span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.2.ano.txt"                                   
+#&gt;  [2] "123456789.2016.2.diap.txt"                                  
+#&gt;  [3] "123456789.2016.2.dmi.txt"                                   
+#&gt;  [4] "123456789.2016.2.ium.txt"                                   
+#&gt;  [5] "123456789.2016.2.med"                                       
+#&gt;  [6] "123456789.2016.2.med.ini.txt"                               
+#&gt;  [7] "123456789.2016.2.med.txt"                                   
+#&gt;  [8] "123456789.2016.2.porg.txt"                                  
+#&gt;  [9] "123456789.2016.2.rss.ini.txt"                               
+#&gt; [10] "123456789.2016.2.rss.txt"                                   
+#&gt; [11] "libloc_213_8f8c4eafe9e43f75.rds"                            
+#&gt; [12] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"
+#&gt; [13] "rs-graphics-3a430348-1866-4c7d-ad72-aaec73679a1c"           </div><div class='input'>
+<span class='co'># Utilisation avec un noyau de paramtères</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></span>(
+       <span class='kw'>finess</span> <span class='kw'>=</span> <span class='st'>'123456789'</span>,
+       <span class='kw'>annee</span>  <span class='kw'>=</span> <span class='fl'>2016</span>,
+       <span class='kw'>mois</span>   <span class='kw'>=</span> <span class='fl'>12</span>,
+       <span class='kw'>path</span>   <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
+       <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+       )
+
+<span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>, <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.12.16132016131502.in.zip</span>
+#&gt; <span class='message'>Taille    : 0.0023 Mo</span>
+#&gt; <span class='message'>Type      : in</span>
+#&gt; <span class='message'>Finess    : 123456789</span>
+#&gt; <span class='message'>Période   : 2016 M12</span>
+#&gt; <span class='message'>Date prod : NA</span>
+#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.12.ano.txt"                                  
+#&gt;  [2] "123456789.2016.12.diap.txt"                                 
+#&gt;  [3] "123456789.2016.12.dmi.txt"                                  
+#&gt;  [4] "123456789.2016.12.ium.txt"                                  
+#&gt;  [5] "123456789.2016.12.med.ini.txt"                              
+#&gt;  [6] "123456789.2016.12.med.txt"                                  
+#&gt;  [7] "123456789.2016.12.porg.txt"                                 
+#&gt;  [8] "123456789.2016.12.rss.ini.txt"                              
+#&gt;  [9] "123456789.2016.12.rss.txt"                                  
+#&gt; [10] "123456789.2016.2.ano.txt"                                   
+#&gt; [11] "123456789.2016.2.diap.txt"                                  
+#&gt; [12] "123456789.2016.2.dmi.txt"                                   
+#&gt; [13] "123456789.2016.2.ium.txt"                                   
+#&gt; [14] "123456789.2016.2.med"                                       
+#&gt; [15] "123456789.2016.2.med.ini.txt"                               
+#&gt; [16] "123456789.2016.2.med.txt"                                   
+#&gt; [17] "123456789.2016.2.porg.txt"                                  
+#&gt; [18] "123456789.2016.2.rss.ini.txt"                               
+#&gt; [19] "123456789.2016.2.rss.txt"                                   
+#&gt; [20] "libloc_213_8f8c4eafe9e43f75.rds"                            
+#&gt; [21] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"
+#&gt; [22] "rs-graphics-3a430348-1866-4c7d-ad72-aaec73679a1c"           </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
+<span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>,  <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
+#&gt; <span class='message'>Taille    : 0.0023 Mo</span>
+#&gt; <span class='message'>Type      : in</span>
+#&gt; <span class='message'>Finess    : 123456789</span>
+#&gt; <span class='message'>Période   : 2016 M11</span>
+#&gt; <span class='message'>Date prod : 2016-12-25 15:46:08</span>
+#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.11.ano.txt"                                  
+#&gt;  [2] "123456789.2016.11.diap.txt"                                 
+#&gt;  [3] "123456789.2016.11.dmi.txt"                                  
+#&gt;  [4] "123456789.2016.11.ium.txt"                                  
+#&gt;  [5] "123456789.2016.11.med.ini.txt"                              
+#&gt;  [6] "123456789.2016.11.med.txt"                                  
+#&gt;  [7] "123456789.2016.11.porg.txt"                                 
+#&gt;  [8] "123456789.2016.11.rss.ini.txt"                              
+#&gt;  [9] "123456789.2016.11.rss.txt"                                  
+#&gt; [10] "123456789.2016.12.ano.txt"                                  
+#&gt; [11] "123456789.2016.12.diap.txt"                                 
+#&gt; [12] "123456789.2016.12.dmi.txt"                                  
+#&gt; [13] "123456789.2016.12.ium.txt"                                  
+#&gt; [14] "123456789.2016.12.med.ini.txt"                              
+#&gt; [15] "123456789.2016.12.med.txt"                                  
+#&gt; [16] "123456789.2016.12.porg.txt"                                 
+#&gt; [17] "123456789.2016.12.rss.ini.txt"                              
+#&gt; [18] "123456789.2016.12.rss.txt"                                  
+#&gt; [19] "123456789.2016.2.ano.txt"                                   
+#&gt; [20] "123456789.2016.2.diap.txt"                                  
+#&gt; [21] "123456789.2016.2.dmi.txt"                                   
+#&gt; [22] "123456789.2016.2.ium.txt"                                   
+#&gt; [23] "123456789.2016.2.med"                                       
+#&gt; [24] "123456789.2016.2.med.ini.txt"                               
+#&gt; [25] "123456789.2016.2.med.txt"                                   
+#&gt; [26] "123456789.2016.2.porg.txt"                                  
+#&gt; [27] "123456789.2016.2.rss.ini.txt"                               
+#&gt; [28] "123456789.2016.2.rss.txt"                                   
+#&gt; [29] "libloc_213_8f8c4eafe9e43f75.rds"                            
+#&gt; [30] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"
+#&gt; [31] "rs-graphics-3a430348-1866-4c7d-ad72-aaec73679a1c"           </div><div class='input'>
+<span class='co'># Pour une même période (année/mois), il peut y avoir plusieurs archives si </span>
+<span class='co'># il y a eu plusieurs envois. Par exemple il y a deux version de l'archive</span>
+<span class='co'># out pour la période 2017.10 dans notre exemple simulé</span>
+<span class='fu'>dir</span>(<span class='no'>dossier_archives</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"2017\\.10.*out\\.zip"</span>)</div><div class='output co'>#&gt; [1] "123456789.2017.10.21112017162343.out.zip"
+#&gt; [2] "123456789.2017.10.24112017182343.out.zip"</div><div class='input'>
+ <span class='co'># Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip </span>
+ <span class='co'># sélectionne automatiquement l'archive la plus récente</span>
+ <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
+        <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
+        <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
+        <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
+        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2017.10.24112017182343.out.zip</span>
+#&gt; <span class='message'>Taille    : 0.0067 Mo</span>
+#&gt; <span class='message'>Type      : out</span>
+#&gt; <span class='message'>Finess    : 123456789</span>
+#&gt; <span class='message'>Période   : 2017 M10</span>
+#&gt; <span class='message'>Date prod : 2017-11-24 18:23:43</span>
+#&gt; <span class='message'>Fichiers  : med</span></div><div class='input'> <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"med"</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.11.med.ini.txt" "123456789.2016.11.med.txt"    
+#&gt; [3] "123456789.2016.12.med.ini.txt" "123456789.2016.12.med.txt"    
+#&gt; [5] "123456789.2016.2.med"          "123456789.2016.2.med.ini.txt" 
+#&gt; [7] "123456789.2016.2.med.txt"      "123456789.2017.10.med"        </div><div class='input'>
+ <span class='co'># Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité</span>
+ <span class='co'># à choisir</span>
+ <span class='fu'>not_run</span>({
+   <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
+          <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
+          <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'rsa'</span>,
+          <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
+          <span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+          <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)
+   <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"rsa"</span>)
+
+})
+
+<span class='co'># Dézipper les logs</span>
+<span class='fu'>not_run</span>({
+  <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>, <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'chainage.log.txt'</span>, <span class='st'>'comp.log.txt'</span>, <span class='st'>'log.txt'</span>))
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

@@ -84,7 +84,7 @@
     <p>~ req : lancer une ou plusieurs requetes avec une ou des listes</p>
     
 
-    <pre class="usage"><span class='fu'>lancer_requete</span>(<span class='no'>tables</span>, <span class='no'>elements</span>)</pre>
+    <pre class="usage"><span class='fu'>lancer_requete</span>(<span class='no'>tables</span>, <span class='no'>elements</span>, <span class='kw'>vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
         
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -92,15 +92,14 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='prepare_rsa.html'>prepare_rsa</a></span>(<span class='no'>rsa</span>) <span class='kw'>-&gt;</span> <span class='no'>rsa</span>
-<span class='fu'>get_all_listes</span>(<span class='st'>'Recours Exceptionnel'</span>) <span class='kw'>-&gt;</span> <span class='no'>listes_re</span>
-<span class='fu'>lancer_requete</span>(<span class='no'>rsa</span>, <span class='no'>listes_re</span>)
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='fu'><a href='prepare_rsa.html'>prepare_rsa</a></span>(<span class='no'>rsa</span>) <span class='kw'>-&gt;</span> <span class='no'>rsa</span>
+  <span class='fu'>get_all_listes</span>(<span class='st'>'Recours Exceptionnel'</span>) <span class='kw'>-&gt;</span> <span class='no'>listes_re</span>
+  <span class='fu'>lancer_requete</span>(<span class='no'>rsa</span>, <span class='no'>listes_re</span>)
 
-<span class='fu'>get_liste</span>(<span class='st'>'chir_bariatrique_total'</span>) <span class='kw'>-&gt;</span> <span class='no'>liste_bari</span>
-<span class='fu'>lancer_requete</span>(<span class='no'>rsa</span>, <span class='no'>liste_bari</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+  <span class='fu'>get_liste</span>(<span class='st'>'chir_bariatrique_total'</span>) <span class='kw'>-&gt;</span> <span class='no'>liste_bari</span>
+  <span class='fu'>lancer_requete</span>(<span class='no'>rsa</span>, <span class='no'>liste_bari</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

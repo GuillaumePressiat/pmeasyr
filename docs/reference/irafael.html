@@ -84,7 +84,8 @@
     <p>Import des Rafael et des Rafael reprises</p>
     
 
-    <pre class="usage"><span class='fu'>irafael</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>lister</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>,
+    <pre class="usage"><span class='fu'>irafael</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>,
+<span class='kw'>stat</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>lister</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>,
 <span class='st'>"C"</span>, <span class='st'>"H"</span>, <span class='st'>"L"</span>, <span class='st'>"M"</span>, <span class='st'>"P"</span>), <span class='kw'>lamda</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -148,11 +149,10 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-   <span class='fu'>irafael</span>(<span class='st'>'750712184'</span>,<span class='fl'>2015</span>,<span class='fl'>12</span>,<span class='st'>'~/Documents/data/rsf'</span>) <span class='kw'>-&gt;</span> <span class='no'>rsfa15</span>
-   <span class='fu'>irafael</span>(<span class='st'>'750712184'</span>,<span class='fl'>2015</span>,<span class='fl'>12</span>,<span class='st'>'~/Documents/data/rsf'</span>, <span class='kw'>lister</span> <span class='kw'>=</span> <span class='st'>'C'</span>, <span class='kw'>lamda</span> <span class='kw'>=</span> <span class='no'>T</span>) <span class='kw'>-&gt;</span> <span class='no'>rsfa14_lamda</span>
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+     <span class='fu'>irafael</span>(<span class='st'>'750712184'</span>,<span class='fl'>2015</span>,<span class='fl'>12</span>,<span class='st'>'~/Documents/data/rsf'</span>) <span class='kw'>-&gt;</span> <span class='no'>rsfa15</span>
+     <span class='fu'>irafael</span>(<span class='st'>'750712184'</span>,<span class='fl'>2015</span>,<span class='fl'>12</span>,<span class='st'>'~/Documents/data/rsf'</span>, <span class='kw'>lister</span> <span class='kw'>=</span> <span class='st'>'C'</span>, <span class='kw'>lamda</span> <span class='kw'>=</span> <span class='no'>T</span>) <span class='kw'>-&gt;</span> <span class='no'>rsfa14_lamda</span>
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

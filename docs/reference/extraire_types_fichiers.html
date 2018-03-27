@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ db - Copier les rha dans une db — db_ssr_out • pmeasyr</title>
+<title>Extraire les types de fichiers
+Permet d'afficher les types de fichiers d'une archive (ano, rss, rsa, ...) — extraire_types_fichiers • pmeasyr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,55 +78,35 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ db - Copier les rha dans une db</h1>
+    <h1>Extraire les types de fichiers
+Permet d'afficher les types de fichiers d'une archive (ano, rss, rsa, ...)</h1>
     </div>
 
     
-    <p>Copier les rha, les actes, les diagnostics des rha, ssrha et ano dans une db</p>
+    <p>Extraire les types de fichiers
+Permet d'afficher les types de fichiers d'une archive (ano, rss, rsa, ...)</p>
     
 
-    <pre class="usage"><span class='fu'>db_ssr_out</span>(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>zip</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>extraire_types_fichiers</span>(<span class='no'>selection_fichiers_a_extraire</span>, <span class='no'>info_archive</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>con</th>
-      <td><p>la connexion a la base de donnees (src_..)</p></td>
+      <th>selection_fichiers_a_extraire</th>
+      <td><p>Fichiers sélectionnés dans le zip (résultat de selectionne_fichiers)</p></td>
     </tr>
     <tr>
-      <th>p</th>
-      <td><p>le noyau pmeasyr</p></td>
-    </tr>
-    <tr>
-      <th>remove</th>
-      <td><p>a TRUE, les tables precedentes rha de l'annee sont effacees avant</p></td>
-    </tr>
-    <tr>
-      <th>zip</th>
-      <td><p>a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db</p></td>
-    </tr>
-    <tr>
-      <th>indexes</th>
-      <td><p>index a ajouter a la table dans la base (voir <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/copy_to'>copy_to</a></code>)</p></td>
+      <th>info_archive</th>
+      <td><p>informatin de l'archive (résultat de selectionne_archive)</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>nothing</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Les tables sont importées dans R puis copiées dans la db.
-Le tra est ajouté aux tables.</p>
+    <p>un vecteur</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_ssr_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#ok</span>
-  <span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>quietly</span>(<span class='no'>db_ssr_out</span>)(<span class='no'>con</span>, <span class='no'>p</span>, <span class='kw'>annee</span> <span class='kw'>=</span> <span class='fl'>2017</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>7</span>) <span class='kw'>-&gt;</span> <span class='no'>statuts</span> ; <span class='fu'>gc</span>(); <span class='co'>#..</span>
-})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -133,11 +114,7 @@ Le tra est ajouté aux tables.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

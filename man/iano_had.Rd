@@ -4,7 +4,7 @@
 \alias{iano_had}
 \title{~ HAD - Import des Anohosp}
 \usage{
-iano_had(...)
+iano_had(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 }
 \arguments{
 \item{finess}{Finess du Out a importer : dans le nom du fichier}
