@@ -149,7 +149,7 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #' 
 #' # Dézipper les logs
 #' \dontrun{
-#' adezip(p, type = "out", liste = c('chainage.log.txt', 'comp.log.txt', 'log.txt'))
+#' adezip(p, type = "out", liste = c('chainage.log', 'comp.log', 'log'))
 #' }
 #' 
 #' @author G. Pressiat
@@ -325,20 +325,12 @@ selectionne_fichiers <- function(chemin_archive, types_fichier) {
   
   fichiers_dans_archive <- unzip(zipfile = chemin_archive, list = TRUE)$Name
   
-  tableau_fichiers <- parse_noms_fichiers(fichiers_dans_archive)
-  
-  #  types_fichier_grep <- paste0(types_fichier, collapse = "|")
-  
-  if (any('tra' == types_fichier)){
-    types_fichier <- c(types_fichier, 'tra.txt', 'tra.raa.txt')
-  }
+  tableau_fichiers <- parse_noms_fichiers(fichiers_dans_archive) %>% 
+    mutate(type = gsub("\\.txt", "", type))
   
   fichiers_selectionne <- dplyr::filter(
     tableau_fichiers, type %in% types_fichier)
-  
-  # fichiers_selectionne <- dplyr::filter(
-  #   tableau_fichiers, grepl(types_fichier_grep, type))
-  
+
   fichiers_selectionne$nom_fichier
 }
 

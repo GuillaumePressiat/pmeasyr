@@ -6122,7 +6122,7 @@ db_psy_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   }
   if (zip == T) {
     pmeasyr::adezip(p, type = "out", liste = c("rpsa", "ano",
-                                               "tra", "r3a"))
+                                               "tra", "tra.raa", "r3a"))
   }
   
   rpsa <- pmeasyr::irpsa(p)
