@@ -327,7 +327,7 @@ selectionne_fichiers <- function(chemin_archive, types_fichier) {
   
   tableau_fichiers <- parse_noms_fichiers(fichiers_dans_archive) %>% 
     dplyr::mutate(type = gsub("\\.txt", "", type))
-  
+
   fichiers_selectionne <- dplyr::filter(
     tableau_fichiers, type %in% types_fichier)
 
