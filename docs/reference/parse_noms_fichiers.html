@@ -107,7 +107,7 @@
 <li><p><code>annee</code></p></li>
 <li><p><code>mois</code></p></li>
 <li><p><code>horodatage_production</code> L'horodatage de production pour les fichiers <em>in</em> et <em>out</em> au format POSIXlt
-Si il y a plusieurs fichiers, la liste peut être facilement transformée en table avec <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/bind'>dplyr::bind_rows()</a></code>.</p></li>
+Si il y a plusieurs fichiers, la liste peut être facilement transformée en table avec <code><a href='http://dplyr.tidyverse.org/reference/bind.html'>dplyr::bind_rows()</a></code>.</p></li>
 <li><p><code>type</code> Type de fichier : <em>in</em>, <em>out</em>, <em>rss</em>...</p></li>
 </ul>
 
@@ -117,10 +117,10 @@ Si il y a plusieurs fichiers, la liste peut être facilement transformée en tab
     <pre class="examples"><div class='input'><span class='no'>noms_de_fichiers</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"671234567.2016.1.12032016140012.in.zip"</span>,
                       <span class='st'>"671234567.2016.1.rum.txt"</span>)
  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>parse_noms_fichiers</span>(<span class='no'>noms_de_fichiers</span>)
-<span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>bind_rows</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 6
+<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 6
 #&gt;   nom_fichier                  finess   annee mois  horodatage_producti… type  
 #&gt;   &lt;chr&gt;                        &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;               &lt;chr&gt; 
-#&gt; 1 671234567.2016.1.1203201614… 6712345… 2016  1     2016-03-12 14:00:12.000000 in    
+#&gt; 1 671234567.2016.1.1203201614… 6712345… 2016  1     2016-03-12 14:00:12  in    
 #&gt; 2 671234567.2016.1.rum.txt     6712345… 2016  1     NA                   rum.t…</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

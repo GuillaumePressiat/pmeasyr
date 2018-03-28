@@ -116,7 +116,7 @@ dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
 
 # Dézipper les logs
 \dontrun{
-adezip(p, type = "out", liste = c('chainage.log.txt', 'comp.log.txt', 'log.txt'))
+adezip(p, type = "out", liste = c('chainage.log', 'comp.log', 'log'))
 }
 
 }
