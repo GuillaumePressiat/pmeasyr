@@ -3588,6 +3588,10 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                   MMP = stringr::str_trim(MMP),
                   AE = stringr::str_trim(AE))
   
+  # if (annee > 2016){
+  #   rha_i <- rha_i %>% dplyr::mutate(RR = as.numeric(RR) / 100)
+  # }
+  # 
   if (annee >  2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
