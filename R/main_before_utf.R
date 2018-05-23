@@ -780,12 +780,12 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     #cat("(Seule la partie fixe du RSA a été chargée)\n")
     Fillers <- names(rsa_i)
     Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
-    rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)]
+    rsa_i <- rsa_i[,!(names(rsa_i) %in% Fillers)] %>% dplyr::select(-ZA)
     # Libelles
     if (lib==T){
       v <- libelles
       v <- v[!is.na(v)]
-      rsa_i <- rsa_i  %>% dplyr::select(-ZA) %>%  sjlabelled::set_label(c(v, 'Ghm', 'Année séq. de tarifs'))
+      rsa_i <- rsa_i   %>%  sjlabelled::set_label(c(v, 'Ghm', 'Année séq. de tarifs'))
     }
     if (tolower_names){
       names(rsa_i) <- tolower(names(rsa_i))
