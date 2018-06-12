@@ -1,0 +1,107 @@
+---
+title: "Valoriser des rsa (RAV + SV)"
+author: "Guillaume Pressiat"
+date: 12/06/2017
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{database migration with pmeasyr}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r  eval = F}
+library(pmeasyr)
+library(dplyr, warn.conflicts = F)
+```
+
+
+## Préparer les tables nécessaires
+
+
+Il faut au moins disposer des rsa et des données anohosp.
+Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.
+
+### Import avec pmeasyr et noyau
+
+```{r eval = F}
+library(pmeasyr)
+
+noyau_pmeasyr(
+  finess = '750100042',
+  annee  = 2016,
+  mois   = 12,
+  path   = '~/Documents/data/mco',
+  progress = FALSE,
+  lib = FALSE, 
+  tolower_names = TRUE
+  ) -> p
+
+adezip(p, type = "out")
+
+vrsa <- vvr_rsa(p)
+vano <- vvr_ano_mco(p)
+
+
+```
+
+
+### Collecte des données depuis une db
+
+```{r eval = F}
+
+library(MonetDBLite)
+dbdir <- "~/Documents/data/monetdb"
+con <- src_monetdblite(dbdir)
+
+vrsa <- vvr_rsa(con, 16)
+vano <- vvr_ano_mco(con,  16)
+
+```
+
+
+## Récupérer les tarifs GHS et suppléments
+
+```{r eval = F}
+# devtools::install_github('GuillaumePressiat/nomensland')
+library(nomensland)
+
+```
+
+## Cas d'une valorisation base + Extrême haut - Extrême bas
+
+```{r eval = F} 
+resu <- vvr_mco(
+vvr_ghs_supp(vrsa, vano, tarifs = get_table('tarifs_mco_ghs')),
+vvr_mco_sv(vrsa, vano)
+)
+```
+
+## Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)
+
+```{r eval = F} 
+resu <- vvr_mco(
+vvr_ghs_supp(vrsa, 
+             get_table('tarifs_mco_ghs'), 
+             get_table('tarifs_mco_supplements'), 
+             vano, 
+             ipo(p),
+             idiap(p), 
+             bee = FALSE),
+vvr_mco_sv(vrsa, vano, ipo(p))
+)
+```
+
+### Générer des tableaux type epmsi pour comparaison avec les valo officielles
+
+#### Séjours valorisés
+
+```{r eval = F}
+epmsi_mco_sv(resu)
+```
+
+#### Récapitulation activité - valorisation
+
+```{r}
+epmsi_mco_rav(resu)
+```
+

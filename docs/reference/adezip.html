@@ -182,9 +182,11 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt; <span class='message'>Fichiers  : med</span></div><div class='input'>
 <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.med"                                                                
 #&gt; [2] "123456789.2017.7.med"                                                                
-#&gt; [3] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
-#&gt; [4] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"                         
-#&gt; [5] "rs-graphics-29c5b26a-02f3-4db6-8ebb-8203a2b07b81"                                    </div><div class='input'>
+#&gt; [3] "libloc_169_8f48fc7d1db1bb3e.rds"                                                     
+#&gt; [4] "libloc_194_fe46b3ae8ced79c4.rds"                                                     
+#&gt; [5] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
+#&gt; [6] "repos_https%3A%2F%2Fcloud.r-project.org%2Fsrc%2Fcontrib.rds"                         
+#&gt; [7] "rs-graphics-9be2e147-5db4-4e5b-b5ad-9355ca345a80"                                    </div><div class='input'>
 <span class='co'># Décompresser plusieurs types de fichiers d'une archive in</span>
  <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
@@ -202,9 +204,11 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt; [2] "123456789.2016.2.med"                                                                
 #&gt; [3] "123456789.2016.2.med.txt"                                                            
 #&gt; [4] "123456789.2017.7.med"                                                                
-#&gt; [5] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
-#&gt; [6] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"                         
-#&gt; [7] "rs-graphics-29c5b26a-02f3-4db6-8ebb-8203a2b07b81"                                    </div><div class='input'>
+#&gt; [5] "libloc_169_8f48fc7d1db1bb3e.rds"                                                     
+#&gt; [6] "libloc_194_fe46b3ae8ced79c4.rds"                                                     
+#&gt; [7] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
+#&gt; [8] "repos_https%3A%2F%2Fcloud.r-project.org%2Fsrc%2Fcontrib.rds"                         
+#&gt; [9] "rs-graphics-9be2e147-5db4-4e5b-b5ad-9355ca345a80"                                    </div><div class='input'>
 <span class='co'># Utilisation avec un noyau de paramtères</span>
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></span>(
        <span class='kw'>finess</span> <span class='kw'>=</span> <span class='st'>'123456789'</span>,
@@ -234,9 +238,11 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt; [11] "123456789.2016.2.med"                                                                
 #&gt; [12] "123456789.2016.2.med.txt"                                                            
 #&gt; [13] "123456789.2017.7.med"                                                                
-#&gt; [14] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
-#&gt; [15] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"                         
-#&gt; [16] "rs-graphics-29c5b26a-02f3-4db6-8ebb-8203a2b07b81"                                    </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
+#&gt; [14] "libloc_169_8f48fc7d1db1bb3e.rds"                                                     
+#&gt; [15] "libloc_194_fe46b3ae8ced79c4.rds"                                                     
+#&gt; [16] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
+#&gt; [17] "repos_https%3A%2F%2Fcloud.r-project.org%2Fsrc%2Fcontrib.rds"                         
+#&gt; [18] "rs-graphics-9be2e147-5db4-4e5b-b5ad-9355ca345a80"                                    </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
 <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>,  <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Dézippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
@@ -266,9 +272,11 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt; [20] "123456789.2016.2.med"                                                                
 #&gt; [21] "123456789.2016.2.med.txt"                                                            
 #&gt; [22] "123456789.2017.7.med"                                                                
-#&gt; [23] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
-#&gt; [24] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"                         
-#&gt; [25] "rs-graphics-29c5b26a-02f3-4db6-8ebb-8203a2b07b81"                                    </div><div class='input'>
+#&gt; [23] "libloc_169_8f48fc7d1db1bb3e.rds"                                                     
+#&gt; [24] "libloc_194_fe46b3ae8ced79c4.rds"                                                     
+#&gt; [25] "repos_https%3A%2F%2Fbioconductor.org%2Fpackages%2Frelease%2Fbioc%2Fsrc%2Fcontrib.rds"
+#&gt; [26] "repos_https%3A%2F%2Fcloud.r-project.org%2Fsrc%2Fcontrib.rds"                         
+#&gt; [27] "rs-graphics-9be2e147-5db4-4e5b-b5ad-9355ca345a80"                                    </div><div class='input'>
 <span class='co'># Pour une même période (année/mois), il peut y avoir plusieurs archives si </span>
 <span class='co'># il y a eu plusieurs envois. Par exemple il y a deux version de l'archive</span>
 <span class='co'># out pour la période 2017.10 dans notre exemple simulé</span>
@@ -330,7 +338,7 @@ G. Pressiat
 
       <footer>
       <div class="copyright">
-  <p>Developed by Guillaume Pressiat.</p>
+  <p>Developed by Guillaume Pressiat, Joris Muller.</p>
 </div>
 
 <div class="pkgdown">

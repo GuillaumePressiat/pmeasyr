@@ -1,0 +1,854 @@
+
+
+
+#' ~ VVR - preparer les rsa pour la valorisation
+#'
+#' Importer ou collecter les variables des rsa nécessaires à leur valorisation GHS + suppléments
+#'
+#' 
+#' Deux méthodes sont disponibles : une utilisant l'import avec un noyau pmeasyr (p), l'autre utilisant les rsa stockés
+#' dans une base de données (con)
+#' 
+#' @return Un tibble contenant les variables des rsa nécessaires pour calculer les recettes ghs et suppléments
+#'
+#' @examples
+#' \dontrun{
+#' # avec un noyau pmeasyr (importer les données)
+#' p <- noyau_pmeasyr(
+#'   finess   = '750712184',
+#'   annee    = 2000 + 18,
+#'   mois     = 4,
+#'   path     = '~/Documents/data/mco',
+#'   progress = FALSE,
+#'   n_max    = Inf,
+#'   lib      = FALSE,
+#'   tolower_names = TRUE)
+#' 
+#' vrsa <- vvr_rsa(p)
+#' 
+#' # depuis une base de données (collecter les données)
+#' dbdir <- "~/Documents/data/monetdb"
+#' con <- src_monetdblite(dbdir)
+#' 
+#' vrsa <- vvr_rsa(con, annee)
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{epmsi_mco_sv}}, \code{\link{vvr_ano_mco}}, \code{\link{vvr_mco}}
+#' @export vvr_rsa
+#' @export
+vvr_rsa <- function(...){
+  UseMethod('vvr_rsa')
+}
+
+#' @export
+vvr_rsa.pm_param <- function(p, ...){
+  
+  new_par <- list(..., typi = 4)
+  p2 <- utils::modifyList(p, new_par)
+  
+  pmeasyr::irsa(p2)$rsa %>% 
+    dplyr::select_all(tolower) %>% 
+    dplyr::select(cle_rsa, duree, rsacmd, ghm, typesej, noghs, moissor,sexe, agean, agejr,
+           anseqta, nbjrbs, nbjrexb, sejinfbi, agean, agejr, 
+           dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
+           nb_rdth, nbacte9615,
+           echpmsi, prov, dest, schpmsi,
+           rdth, nb_rdth)
+
+}
+
+#' @export
+vvr_rsa.src <- function(con, an,  ...){
+  pmeasyr::tbl_mco(con, an, 'rsa_rsa')  %>% 
+    dplyr::select_all(tolower) %>% 
+    dplyr::select(cle_rsa, duree, rsacmd, ghm, typesej, noghs, moissor,sexe, agean, agejr,
+           anseqta, nbjrbs, nbjrexb, sejinfbi, agean, agejr, 
+           dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
+           nb_rdth, nbacte9615,
+           echpmsi, prov, dest, schpmsi,
+           rdth, nb_rdth) %>% 
+    dplyr::collect()
+  
+}
+
+
+
+
+
+
+#' ~ VVR - preparer les ano pour valoriser les rsa
+#'
+#' Importer ou collecter les variables des anohosp out nécessaires pour attribuer le caractère facturable d'un séjour
+#' 
+#' Deux méthodes sont disponibles : une utilisant l'import avec un noyau pmeasyr (p), l'autre utilisant les rsa stockés
+#' dans une base de données (con)
+#' 
+#' @return Un tibble contenant les variables ano
+#'
+#' @examples
+#' \dontrun{
+#' # avec un noyau pmeasyr (importer les données)
+#' p <- noyau_pmeasyr(
+#'   finess   = '750712184',
+#'   annee    = 2000 + 18,
+#'   mois     = 4,
+#'   path     = '~/Documents/data/mco',
+#'   progress = FALSE,
+#'   n_max    = Inf,
+#'   lib      = FALSE,
+#'   tolower_names = TRUE)
+#' 
+#' vano <- vvr_ano_mco(p)
+#' 
+#' # depuis une base de données (collecter les données)
+#' dbdir <- "~/Documents/data/monetdb"
+#' con <- src_monetdblite(dbdir)
+#' 
+#' vano <- vvr_ano_mco(con, 18)
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{epmsi_mco_sv}}, \code{\link{vvr_rsa}}, \code{\link{vvr_mco}}
+#' @export vvr_ano_mco
+#' @export
+vvr_ano_mco <- function(...){
+  UseMethod('vvr_ano_mco')
+}
+
+#' @export
+vvr_ano_mco.pm_param <- function(p, ...){
+  new_par <- list(...)
+  p2 <- utils::modifyList(p, new_par)
+  iano_mco(p) %>% 
+    dplyr::select_all(tolower)
+}
+
+#' @export
+vvr_ano_mco.src <- function(con, an, ...){
+  pmeasyr::tbl_mco(con, an, 'rsa_ano') %>% 
+    dplyr::collect() %>% 
+    dplyr::select_all(tolower)
+}
+
+#' ~ VVR - Attribuer les recettes GHS et suppléments sur des rsa
+#'
+#' Reproduire la valorisation BR et coefficients géo/prudentiels du tableau RAV d'epmsi, à partir des tables résultant des fonctions
+#' \code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}}, et de tables contenant les fichcomp PO et DIAP
+#' 
+#' Pour l'heure cette fonction ne tient pas compte de fichcomp PIE
+#' 
+#' @return Un tibble contenant les différentes rubriques de valorisation, une ligne par clé rsa
+#'
+#' @examples
+#' \dontrun{
+#' # Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
+#' tarifs      <- nomensland::get_table('tarifs_mco_ghs')
+#' supplements <- nomensland::get_table('tarifs_mco_supplements')
+#' 
+#' # Recette GHS de base et suppléments EXB, EXH
+#' vvr_ghs_supp(vrsa, tarifs)
+#' 
+#' # Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)
+#' vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{vvr_ano_mco}}, \code{\link{vvr_rsa}}, \code{\link{vvr_mco}}
+#' @export vvr_mco_sv
+#' @export
+vvr_ghs_supp <- function(rsa, 
+                         tarifs, supplements = NULL, 
+                         ano = NULL, 
+                         porg = NULL, diap = NULL,  
+                         full = FALSE, cgeo = 1.07, prudent = NULL,
+                         bee = TRUE) {
+  
+  
+  # Partie GHS
+  rsa_2 <- rsa %>% 
+    dplyr::mutate(cprudent = ifelse(is.null(prudent),
+                             dplyr::case_when(
+      anseqta == '2018'    ~ 0.9930,
+      anseqta == '2017'    ~ 0.9930,
+      anseqta == '2016'    ~ 0.9950,
+      anseqta == '2015'    ~ 0.9965,
+      anseqta == '2014'    ~ 0.9965,
+      anseqta == '2013'    ~ 0.9965,
+      TRUE                 ~ 1
+    )), 1) %>% 
+    dplyr::left_join(tarifs, by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
+    dplyr::mutate(
+      t_base  = tarif_base                 * cgeo * cprudent,
+      t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent, 
+      t_bas   = dplyr::case_when(
+             sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
+             sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
+             sejinfbi == '0' ~ 0),
+      rec_bee = (t_base + t_haut - t_bas),
+      rec_totale = rec_bee)
+  if (bee == TRUE){
+    return(rsa_2 %>% dplyr::select(cle_rsa, rec_totale, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, rec_bee))
+  }
+  
+  # Info suppléments ghs radiothérapie
+  rsa_i <- rsa %>% dplyr::select(cle_rsa, rdth, nb_rdth) %>% 
+    dplyr::mutate(lrdh = stringr::str_extract_all(rdth, '.{7}'))
+  
+  rdth <- purrr::flatten_chr(rsa_i$lrdh) %>% stringr::str_trim()
+  df <- rsa_i %>% dplyr::select(cle_rsa, nb_rdth)
+  df <- as.data.frame(lapply(df, rep, df$nb_rdth), stringsAsFactors = F) %>% dplyr::tbl_df()
+  rdth <- dplyr::bind_cols(df,data.frame(r = rdth, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+  
+  rdth <- rdth %>% 
+    dplyr::mutate(codsupra = stringr::str_sub(r, 1,4),
+           nbsupra = stringr::str_sub(r, 5,7) %>% as.integer()) %>% 
+    dplyr::select(-nb_rdth, -r)
+  
+  
+  rdth <- rdth %>% 
+    dplyr::mutate(
+      nbacte9610 = nbsupra * (codsupra == '9610'),
+      nbacte9619 = nbsupra * (codsupra == '9619'),
+      nbacte9620 = nbsupra * (codsupra == '9620'),
+      nbacte9621 = nbsupra * (codsupra == '9621'),
+      nbacte9622 = nbsupra * (codsupra == '9622'),
+      nbacte9625 = nbsupra * (codsupra == '9625'),
+      nbacte9631 = nbsupra * (codsupra == '9631'),
+      nbacte9632 = nbsupra * (codsupra == '9632'),
+      nbacte9633 = nbsupra * (codsupra == '9633'),
+      nbacte6523 = nbsupra * (codsupra == '6523'),
+      nbacte9623 = nbsupra * (codsupra == '9623')
+    ) %>% 
+    dplyr::group_by(cle_rsa) %>% 
+    dplyr::summarise_at(vars(starts_with('nbacte')), sum) %>% 
+    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>% 
+    dplyr::mutate_if(is.numeric, function(x)ifelse(is.na(x), 0, x))
+  
+  
+  rsa_2 <- rsa_2 %>% 
+    dplyr::left_join(rdth, by = 'cle_rsa')
+  
+  # rehosp
+  ano <- ano %>% 
+    dplyr::select(noanon, cok, cle_rsa, moissort, dtent, dtsort)
+  
+  
+  reh <- rsa %>% 
+    dplyr::inner_join(ano, by = 'cle_rsa') %>% 
+    dplyr::filter(cok, moissor == moissort, rsacmd != '28', noghs != '9999') %>% 
+    dplyr::mutate(mdentr = paste0(echpmsi, prov),
+           mdsort = paste0(schpmsi, dest)) %>% 
+    dplyr::arrange(noanon, dtent, dtsort)
+  
+  reh <- reh %>% 
+    dplyr::mutate(lag_mdsort = dplyr::lag(mdsort),
+           lag_noanon = dplyr::lag(noanon),
+           lag_noghs  = dplyr::lag(noghs),
+           lag_sexe   = dplyr::lag(sexe),
+           lag_agean  = dplyr::lag(agean),
+           lag_dtsort = dplyr::lag(dtsort)) %>% #
+    dplyr::filter(mdentr == '71', mdentr == lag_mdsort,  noanon == lag_noanon,  
+           lag_agean <= agean, agean <= lag_agean + 1,
+           lag_noghs == noghs, lag_sexe == sexe, lag_dtsort + 2 < dtent, dtent <= lag_dtsort + 10) %>% 
+    dplyr::select(cle_rsa) %>% 
+    dplyr::mutate(rehosp_ghm = 1)
+  
+  
+  
+  # Import dip
+  dip <- diap %>% 
+    dplyr::group_by(cle_rsa) %>% 
+    dplyr::summarise(nbdip = sum(nbsup))
+  
+  # Importer po
+  po <- porg %>% 
+    dplyr::mutate(
+      nb_poi    = (cdpo == "PO1"),	
+      nb_poii   = (cdpo == "PO2"),	
+      nb_poiii  = (cdpo == "PO3"),
+      nb_poiv   = (cdpo == "PO4"),	
+      nb_pov    = (cdpo == "PO5"),	
+      nb_povi   = (cdpo == "PO6"),
+      nb_povii  = (cdpo == "PO7"),	
+      nb_poviii = (cdpo == "PO8"),	
+      nb_poix   = (cdpo == "PO9"), 
+      nb_poa    = (cdpo == "POA")
+    )
+  po_synthese <- po %>% 
+    dplyr::group_by(cle_rsa) %>% 
+    dplyr::summarise_at(dplyr::vars(dplyr::starts_with('nb_')), sum)
+  
+  
+  for (i in 1:nrow(po_synthese)){
+    if (po_synthese[i,]$nb_poiv > 0){
+      po_synthese[i,]$nb_poi   <- 0 
+      po_synthese[i,]$nb_poii  <- 0
+      po_synthese[i,]$nb_poiii <- 0
+    }
+  }
+  
+  po_synthese <- dplyr::distinct(rsa, cle_rsa) %>% 
+    dplyr::left_join(po_synthese, by = 'cle_rsa') %>% 
+    dplyr::mutate_if(is.numeric, function(x){ifelse(is.na(x), 0, x)})
+  
+  
+  if (max(unique(rsa_2$anseqta)) < '2016'){
+    rsa_2 <- rsa_2 %>% 
+      dplyr::mutate(suppdefcard = '0')
+  }
+  
+  # Partie suppléments
+  rsa_3 <- rsa_2 %>% 
+    dplyr::left_join(dip, by = 'cle_rsa') %>% 
+    dplyr::left_join(reh, by = 'cle_rsa') %>% 
+    dplyr::mutate(nbdip = ifelse(is.na(nbdip), 0, nbdip),
+           rehosp_ghm = ifelse(is.na(rehosp_ghm), 0, rehosp_ghm)) %>% 
+    dplyr::left_join(po_synthese, by = 'cle_rsa') %>% 
+    dplyr::left_join(supplements, by = c('anseqta' = 'anseqta')) %>% 
+    # suppléments structures
+    dplyr::mutate(rec_rep = pmax(trep * nbsuprep, 0) * cgeo * cprudent,
+           rec_rea = pmax(trea * nbsuprea, 0) * cgeo * cprudent,
+           rec_stf = pmax(tsi  * nbsupstf, 0) * cgeo * cprudent,
+           rec_src = pmax(tsc  * nbsupsrc, 0) * cgeo * cprudent,
+           rec_nn1 = pmax(tnn1 * nbsupnn1, 0) * cgeo * cprudent,
+           rec_nn2 = pmax(tnn2 * nbsupnn2, 0) * cgeo * cprudent,
+           rec_nn3 = pmax(tnn3 * nbsupnn3, 0) * cgeo * cprudent) %>% 
+    # suppléments dialyse hors séances
+    dplyr::mutate(rec_hhs      = pmax(thhs     * nbsuphs,  0) * cgeo * cprudent, 
+           rec_edpahs   = pmax(tedpahs  * nbsupahs, 0) * cgeo * cprudent,
+           rec_edpcahs  = pmax(tedpcahs * nbsupchs, 0) * cgeo * cprudent,
+           rec_ehhs     = pmax(tehhs    * nbsupehs, 0) * cgeo * cprudent,
+           rec_dip      = pmax(tdip     * nbdip,    0) * cgeo * cprudent,
+           rec_dialhosp = rec_hhs + rec_edpahs + rec_edpcahs + rec_ehhs + rec_dip) %>% 
+    #  autres suppléments
+    dplyr::mutate(rec_caishyp = pmax(tcaishyp  * nbsupcaisson, 0) * cgeo * cprudent,
+           rec_aph     = pmax(taph_9615 * nbacte9615,   0) * cgeo * cprudent,
+           rec_ant     = pmax(tant      * nbsupatpart,  0) * cgeo * cprudent,
+           rec_rap     = pmax(trap      * nbsupreaped,  0) * cgeo * cprudent,
+           rec_sdc     = pmax(sdc       * (suppdefcard == '1'), 0) * cgeo * cprudent) %>% 
+    # supplements irradiation hors séances 
+    dplyr::mutate(
+      rec_rdt5    = pmax(trdt5_9610  * nbacte9610, 0) * cgeo * cprudent,
+      rec_prot    = pmax(tprot_9619  * nbacte9619, 0) * cgeo * cprudent,
+      rec_ict     = pmax(tict_9620   * nbacte9620, 0) * cgeo * cprudent,
+      rec_cyb     = pmax(tcyb_9621   * nbacte9621, 0) * cgeo * cprudent,
+      rec_gam     = pmax(tgam_6523   * nbacte6523, 0) * cgeo * cprudent,
+      rec_rcon1   = pmax(trconf_9622 * nbacte9622, 0) * cgeo * cprudent,
+      rec_rcon2   = pmax(trconf_9625 * nbacte9625, 0) * cgeo * cprudent,
+      rec_tciea   = pmax(ttciea_9631 * nbacte9631, 0) * cgeo * cprudent,
+      rec_tcies   = pmax(ttcies_9632 * nbacte9632, 0) * cgeo * cprudent,
+      rec_aie     = pmax(taie_9633   * nbacte9633, 0) * cgeo * cprudent,
+      rec_rcon3   = pmax(trconf_9623 * nbacte9623, 0) * cgeo * cprudent,
+      rec_rdt_tot = rec_rdt5 + rec_prot + rec_ict + rec_cyb + rec_gam +
+        rec_rcon1 + rec_rcon2 + rec_tciea +
+        rec_tcies + rec_aie + rec_rcon3) %>% 
+    # po
+    dplyr::mutate(
+      rec_poi    = pmax(tpoi    * nb_poi,    0) * cgeo * cprudent,
+      rec_poii   = pmax(tpoii   * nb_poii,   0) * cgeo * cprudent,
+      rec_poiii  = pmax(tpoiii  * nb_poiii,  0) * cgeo * cprudent,
+      rec_poiv   = pmax(tpoiv   * nb_poiv,   0) * cgeo * cprudent,
+      rec_pov    = pmax(tpov    * nb_pov,    0) * cgeo * cprudent,
+      rec_povi   = pmax(tpovi   * nb_povi,   0) * cgeo * cprudent,
+      rec_povii  = pmax(tpovii  * nb_povii,  0) * cgeo * cprudent,
+      rec_poviii = pmax(tpoviii * nb_poviii, 0) * cgeo * cprudent,
+      rec_poix   = pmax(tpoix   * nb_poix,   0) * cgeo * cprudent,
+      rec_poa    = pmax(tpoa    * nb_poa,    0) * cgeo * cprudent,
+      rec_po_tot = rec_poi + rec_poii + rec_poiii + rec_poiv + 
+        rec_pov + rec_povi + rec_povii + rec_poviii + rec_poix + rec_poa) %>% 
+    
+    # rehosp
+    dplyr::mutate(rec_rehosp_ghm = - pmax(rehosp_ghm * ((t_base + t_bas)/2),0) * cgeo * cprudent) %>% 
+    # calcul recette totale
+    dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
+             rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm + 
+             rec_rdt_tot +rec_sdc + rec_po_tot)
+  
+  if (full){
+    return(rsa_3)
+  } else if (!full){
+    rsa_3 %>% dplyr::select(cle_rsa, moissor, anseqta, rec_totale, rec_bee, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, 
+                     rec_rep, rec_rea, rec_stf, rec_src, rec_nn1, rec_nn2, rec_nn3, 
+                     rec_dialhosp, rec_caishyp, rec_aph, rec_ant, rec_rap, rec_rehosp_ghm, 
+                     rec_rdt_tot,rec_sdc, rec_po_tot)
+  }
+}
+
+
+#' ~ VVR - Attribuer le caractere facturable par cle_rsa
+#'
+#' Reproduire les catégories du tableau SV d'epmsi, à partir des tables résultant des fonctions
+#' \code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}} et éventuellement d'une table contenant le fichcomp PO
+#' 
+#' @return Un tibble contenant la catégorie du tableau SV epmsi, une ligne par clé rsa
+#'
+#' @examples
+#' \dontrun{
+#' # Tenir compte des porg
+#' vvr_mco_sv(vrsa, vano, porg = ipo(p))
+#' 
+#' # ne pas tenir compte des porg
+#' vvr_mco_sv(vrsa, vano)
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{vvr_ano_mco}}, \code{\link{vvr_rsa}}, \code{\link{vvr_mco}}
+#' @export vvr_mco_sv
+#' @export
+vvr_mco_sv <- function(rsa, ano, porg = NULL){
+  
+  # CM 90
+  # Séjours en CM 90 : nombre de RSA groupés dans la CM 90 (groupage en erreur)
+  un <- rsa %>% dplyr::filter(rsacmd == '90') %>% 
+    dplyr::select(cle_rsa)
+  
+  # PIE
+  # Séjours de prestation inter-établissement (PIE)
+  # : nombre de RSA avec type de séjour=’B’ (hors séances de RDTH, dialyse et chimiothérapie, car les PIE sont valorisés pour ces RSA). . Sont 
+  # ainsi dénombrés les séjours effectués dans l’établissement de santé prestataire (type de séjour = ‘B’) à la demande d’un établissement (type de séjour = ‘A’) pour la réalisation d’un acte
+  # médicotechnique ou d’une autre prestation.
+  deux <- rsa %>% dplyr::filter(typesej == 'B', !(ghm %in% c("28Z03Z","28Z04Z","28Z07Z","28Z08Z","28Z09Z","28Z10Z","28Z11Z","28Z12Z","28Z13Z","28Z17Z","28Z18Z",
+                                                      "28Z19Z","28Z20Z","28Z21Z","28Z22Z","28Z23Z","28Z23Z","28Z24Z","28Z25Z")))%>% 
+    dplyr::select(cle_rsa)
+  
+  # RSA avec GHS 9999 : nombre de RSA avec GHS = 9999
+  trois <- rsa %>% dplyr::filter(noghs == '9999') %>% 
+    dplyr::anti_join(un, by = 'cle_rsa') %>% 
+    dplyr::select(cle_rsa)
+  
+  # Table intermédiaire
+  autres1 <- rsa %>% 
+    dplyr::filter(! substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25') |
+             !((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))) %>% 
+    dplyr::select(cle_rsa) %>% 
+    dplyr::anti_join(un, by = 'cle_rsa') %>% 
+    dplyr::anti_join(deux, by = 'cle_rsa') %>% 
+    dplyr::anti_join(porg, by = 'cle_rsa') %>% 
+    dplyr::anti_join(trois, by = 'cle_rsa') %>% 
+    dplyr::select(cle_rsa)
+  
+  # Table intermédiaire 2
+  autres2 <- rsa %>% 
+    dplyr::anti_join(un, by = 'cle_rsa') %>% 
+    dplyr::anti_join(deux, by = 'cle_rsa') %>% 
+    dplyr::anti_join(porg, by = 'cle_rsa') %>% 
+    dplyr::anti_join(trois, by = 'cle_rsa') %>% 
+    dplyr::select(cle_rsa)
+  
+  # Forfait journalier non applicable
+  fjnap <- rsa %>% 
+    dplyr::filter(
+      (rsacmd == '28')| 
+        (duree == 0) |
+        ghm == '14Z08Z' | ghm == '23K02Z' |
+        ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))) %>% 
+    dplyr::select(cle_rsa) %>% 
+    dplyr::mutate(fjnap = 1)
+  
+  # séjours avec pb de chaînage (hors NN, rdth et PO)
+  quatre <- ano %>% dplyr::filter((crfushosp != '0' | crfuspmsi != '0') & cdgestion != '65') %>% 
+    dplyr::select(cle_rsa) %>% 
+    dplyr::inner_join(autres1, by = "cle_rsa") %>% 
+    dplyr::anti_join(rsa %>% 
+                       dplyr::filter( substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25') | 
+                          ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = "cle_rsa") %>%
+    dplyr::select(cle_rsa)
+  
+  # attente de décision sur les droits du patient (hors NN, rdth et PO)
+  six <- ano %>% 
+    dplyr::filter(factam == '3') %>% 
+    dplyr::inner_join(autres1, by = "cle_rsa") %>% 
+    dplyr::anti_join(rsa %>% 
+                       dplyr::filter( substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25') | 
+                          ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = "cle_rsa") %>% 
+    dplyr::select(cle_rsa)
+  
+  # séjours non facturables à l AM (sejours sans PO)
+  sept <- ano %>% 
+    dplyr::filter(factam == '0')  %>% 
+    dplyr::anti_join(six, by = "cle_rsa") %>% 
+    dplyr::anti_join(deux, by = "cle_rsa") %>% 
+    dplyr::anti_join(trois, by = "cle_rsa") %>% 
+    dplyr::anti_join(un, by = "cle_rsa") %>% 
+    dplyr::anti_join(porg, by = "cle_rsa") %>% 
+    dplyr::select(cle_rsa)
+  
+  # séjours avec PO sur patient arrivé décédé ou avec PO non facturables à l AM
+  huit <- ano %>% 
+    dplyr::filter(factam == '0')  %>% 
+    dplyr::anti_join(six, by = "cle_rsa") %>% 
+    dplyr::anti_join(deux, by = "cle_rsa") %>% 
+    dplyr::anti_join(trois, by = "cle_rsa") %>% 
+    dplyr::anti_join(un, by = "cle_rsa") %>% 
+    dplyr::semi_join(porg, by = "cle_rsa") %>% 
+    dplyr::select(cle_rsa)
+  
+  test <- ano %>% 
+    dplyr::left_join(fjnap, by = 'cle_rsa')
+  test <- test %>% dplyr::inner_join(rsa %>% dplyr::select(cle_rsa, agean, agejr, ghm, rsacmd, duree), by = "cle_rsa")
+  
+  
+  caractere_bloquant <- 
+    dplyr::bind_rows(
+      test %>% 
+        dplyr::filter(factam == '0') %>% 
+        dplyr::mutate(typvidhosp = 1, 
+               bextic = (cdexticm == 'X'), 
+               bfojo = (cdprfojo == 'X'), 
+               bnatass = (natass == 'XX'),
+               beven = is.integer(nbeven)),
+      test %>% 
+        dplyr::filter(factam == '3') %>% 
+        dplyr::mutate(typvidhosp = 2,
+               bextic = (cdexticm == 'X'), 
+               bfojo = (cdprfojo == 'X'), 
+               bnatass = (natass == 'XX'),
+               beven = is.integer(nbeven)),
+      test %>% 
+        dplyr::filter(factam == '2') %>% 
+        dplyr::mutate(typvidhosp = 3,
+               bextic = (cdexticm %in% c('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', 'X')),
+               bfojo =  (cdprfojo %in% c('A', 'L', 'R', 'X')),
+               bnatass = (natass %in% c('10', '13', '30', '41', '90', 'XX')),
+               beven = is.integer(nbeven)),
+      test %>% 
+        dplyr::filter(factam == '1', # nv-né
+               ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))
+               #duree == 0 & ! rsacmd == '28' & ! ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))
+        ) %>% 
+        dplyr::mutate(typvidhosp = 4,
+               bextic = (cdexticm == 'X'),
+               bfojo = (cdprfojo == 'X'),
+               bnatass = (natass == 'XX'),
+               beven = (nbeven == 1)),
+      test %>% 
+        dplyr::filter(factam == '1', # radiotherapie
+               substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25'),
+               !((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))) %>% 
+        dplyr::mutate(typvidhosp = 5,
+               bextic = (cdexticm %in% c('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', 'X')),
+               bfojo = (cdprfojo == 'X'),
+               bnatass = (natass %in% c('10', '13', '30', '41', '90', 'XX')),
+               beven = is.integer(nbeven)),
+      test %>% 
+        dplyr::filter(factam == '1', # séances hors radiot
+               rsacmd == '28' & ! substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25') & ! ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))) %>% 
+        dplyr::mutate(typvidhosp = 6, # séances hors radiot
+               bextic = (cdexticm %in% c('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'C')),
+               bfojo = (cdprfojo == 'X'),
+               bnatass = (natass %in% c('10', '13', '30', '41', '90')),
+               beven = is.integer(nbeven)),
+      test %>% 
+        dplyr::filter(factam == '1', # durée = 0 jour
+               duree == 0 & rsacmd != '28' & ! substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25') & ! ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))) %>% 
+        dplyr::mutate(typvidhosp = 7,
+               bextic = (cdexticm %in% c('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'C')),
+               bfojo = (cdprfojo == 'X'),
+               bnatass = (natass %in% c('10', '13', '30', '41', '90')),
+               beven = is.integer(nbeven)),
+      test %>% 
+        dplyr::filter(factam == '1') %>% 
+        dplyr::filter(! (rsacmd == '28')) %>% 
+        dplyr::filter(! ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))) %>% 
+        dplyr::filter(! duree == 0) %>% 
+        dplyr::mutate(typvidhosp = 8,
+               bextic = (cdexticm %in% c('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'C')),
+               bfojo = (cdprfojo %in% c('A', 'L', 'R')),
+               bnatass = (natass %in% c('10', '13', '30', '41', '90')),
+               beven = (nbeven == 1))) %>% 
+    dplyr::select(cle_rsa, typvidhosp, bextic, bfojo, bnatass, beven)
+  
+  test %>% 
+    dplyr::inner_join(caractere_bloquant, by = "cle_rsa") -> resu
+  
+  
+  bloq <- resu %>% 
+    dplyr::filter(tauxrm %in% c(80, 90, 100), 
+           (is.na(fjnap) & bfojo == FALSE)) %>% #  | beven == FALSE
+    dplyr::bind_rows(
+      resu %>% 
+        filter(! tauxrm %in% c(80, 90, 100), 
+               (is.na(fjnap) & bfojo == FALSE)  | bnatass == FALSE | bextic == FALSE )) #| beven == FALSE
+  
+  
+  ok <- dplyr::bind_rows(un %>% dplyr::mutate(type = 1),
+                  deux %>% dplyr::mutate(type = 2),
+                  trois %>% dplyr::mutate(type = 3),
+                  quatre %>% dplyr::mutate(type = 4),
+                  six %>% dplyr::mutate(type = 6),
+                  sept %>% dplyr::mutate(type = 7),
+                  huit %>% dplyr::mutate(type = 8))
+  
+  bloq %>% 
+    dplyr::anti_join(ok, by = "cle_rsa") %>% 
+    dplyr::anti_join(rsa %>% 
+                       dplyr::filter(
+                  ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = 'cle_rsa') %>% 
+    dplyr::anti_join(porg, by = 'cle_rsa') %>% 
+    dplyr::anti_join(ano %>% filter(cdgestion == '65'), by = 'cle_rsa') -> bloq1
+  
+  fin <- dplyr::select(test, cle_rsa) %>% 
+    dplyr::left_join(dplyr::select(ok, cle_rsa, type), by = 'cle_rsa') %>% 
+    dplyr::left_join(dplyr::select(bloq1, cle_rsa, typvidhosp) %>% dplyr::mutate(bloq = 1), by = 'cle_rsa') 
+  
+  fin <- fin %>% 
+    dplyr::mutate(
+      type_fin = dplyr::case_when(
+        is.na(type)  & !is.na(bloq) ~ 5,
+        !is.na(type) & !is.na(bloq) ~ type,
+        !is.na(type) & is.na(bloq) ~ type,
+        TRUE ~ 0
+      )
+    )
+  
+  return(dplyr::select(fin, cle_rsa, type_fin, typvidhosp))
+}
+
+
+#' ~ VVR - Croiser parties GHS / supplements et ano
+#'
+#' On ajoute les données facturation (vvr_mco_sv) aux données de valorisation 100% T2A (vvr_ghs_supp)
+#' 
+#' C'est un left join
+#' 
+#' @return Un tibble final contenant la catégorie du tableau SV epmsi, et les variables rec_ de recette par séjour
+#'
+#' @examples
+#' \dontrun{
+# resu_valo <- vvr_mco(
+#   vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE),
+#   vvr_mco_sv(vrsa, vano, porg = ipo(p))
+#   )
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @export vvr_mco
+#' @export
+vvr_mco <- function(rsa_v, ano_sv){
+  dplyr::left_join(rsa_v, ano_sv, by = 'cle_rsa')
+}
+
+#' ~ VVR - Libelles des rubriques de valorisation et de types de rsa
+#'
+#' Fonction pour obtenir les tables de libellés du tableau SV, RAV, et le type de caractère bloquant des données VIDHOSP.
+#' 
+#' 
+#' @return Un tibble avec les codes et libellés
+#'
+#' @examples
+#' \dontrun{
+#' # Libellés des types de séjours (tableau SV)
+#' vvr_libelles_valo('lib_type_sej')
+#' 
+#' # Libellés des types de vidhosp
+#' vvr_libelles_valo('lib_vidhosp')
+#'
+#' # Libellés des types de valo (tableau RAV)
+#' vvr_libelles_valo('lib_valo')
+#   )
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @export vvr_libelles_valo
+#' @export
+vvr_libelles_valo <- function(wich){
+  
+  lib_vidhosp <- tibble::tribble(
+    ~typvidhosp , ~lib_typvidhosp,
+    1L,"0 : non pris en charge",
+    2L,"3 : En attente des droits du patient",
+    3L,"2 : En attente sur le taux de prise en charge",
+    4L,"1 : Nouveau-né",
+    5L,"1 : Radiothérapie",
+    6L,"1 : Séances hors radiothérapie",
+    7L,"1 : Durée de séjour = 0",
+    8L,"1 : Autre type de séjour"
+  )
+  
+  lib_type_sej <- tibble::tribble(
+    ~type_fin , ~lib_type,
+    0L,"Séjours valorisés",
+    1L,"Séjours en CM 90",
+    2L,"Séjours en prestation inter-établissement",
+    3L,"Séjours en GHS 9999",
+    4L,"Séjours avec pb de chainage (hors NN, rdth et PO)",
+    5L,"Séjours avec pb de codage des variables bloquantes",
+    6L,"Séjours en attente de décision sur les droits du patient",
+    7L,"Séjours non facturable à l'AM hors PO",
+    8L,"Séjours avec PO sur patient arrivé décédé ou avec PO non facturables à l'AM"
+  )
+  
+  lib_valo <- 
+    tibble::tribble(
+      ~var,                                                        ~lib_valo,
+      "rec_totale",                                  "Valorisation 100% T2A globale",
+      "rec_base",                                   "Valorisation des GHS de base",
+      "rec_bee",                                   "Valorisation base + exb + exh",
+      "rec_exb",                           "Valorisation extrême bas (à déduire)",
+      "rec_rehosp_ghm",                 "Valorisation séjours avec rehosp dans même GHM",
+      "rec_mino_sus",  "Valorisation séjours avec minoration forfaitaire liste en sus",
+      "rec_exh",                             "Valorisation journées extrême haut",
+      "rec_aph",                         "Valorisation actes GHS 9615 en Hospit.",
+      "rec_rap",             "Valorisation suppléments radiothérapie pédiatrique",
+      "rec_ant",                            "Valorisation suppléments antepartum",
+      "rec_rdt_tot",                             "Valorisation actes RDTH en Hospit.",
+      "rec_rea",                        "Valorisation suppléments de réanimation",
+      "rec_rep",                    "Valorisation suppléments de réa pédiatrique",
+      "rec_nn1",                     "Valorisation suppléments de néonat sans SI",
+      "rec_nn2",                     "Valorisation suppléments de néonat avec SI",
+      "rec_nn3",                 "Valorisation suppléments de réanimation néonat",
+      "rec_po_tot",                             "Valorisation prélévements d organe",
+      "rec_caishyp",           "Valorisation des actes de caissons hyperbares en sus",
+      "rec_dialhosp",                            "Valorisation suppléments de dialyse",
+      "rec_src",              "Valorisation suppléments de surveillance continue",
+      "rec_stf",                    "Valorisation suppléments de soins intensifs",
+      "rec_sdc",                "Valorisation supplément défibrilateur cardiaque"
+    )
+  
+  return(list(lib_valo = lib_valo, lib_type_sej = lib_type_sej, lib_vidhosp = lib_vidhosp)[[wich]])
+}
+
+#' ~ VVR - Reproduire le tableau SV
+#'
+#' 
+#' @return Un tibble similaire au tableau SV epmsi
+#'
+#' @examples
+#' \dontrun{
+#' epmsi_mco_sv(valo)
+#  
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @export epmsi_mco_sv
+#' @export
+epmsi_mco_sv <- function(valo){
+  valo %>% 
+    dplyr::group_by(type_fin) %>% 
+    dplyr::summarise(n = n(),
+              rec = sum(rec_totale)) %>% 
+    dplyr::left_join(vvr_libelles_valo('lib_type_sej'), by = c('type_fin' = 'type_fin'))
+}
+
+#' ~ VVR - Reproduire le tableau SV
+#'
+#' 
+#' @return Un tibble similaire au tableau RAV epmsi
+#'
+#' @examples
+#' \dontrun{
+#' epmsi_mco_rav(valo)
+# 
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @export epmsi_mco_rav
+#' @export
+epmsi_mco_rav <- function(valo){
+  valo %>% dplyr::select(cle_rsa, dplyr::starts_with('rec_'), type_fin) %>% 
+    tidyr::gather(var, val, - cle_rsa, - type_fin) %>%
+    dplyr::filter(abs(val) > 1e-7,!is.na(val)) %>%
+    dplyr::left_join(vvr_libelles_valo('lib_type_sej'), by = "type_fin") %>%
+    dplyr::left_join(vvr_libelles_valo('lib_valo'), by = "var") %>%
+    dplyr::group_by(lib_type, lib_valo, var) %>%
+    dplyr::summarise(n = n(),
+              v = sum(val))
+}
+
+# 
+# annee = 17
+# 
+# library(pmeasyr)
+# p <- noyau_pmeasyr(
+#   finess   = '750712184',
+#   annee    = 2000 + annee,
+#   mois     = 12,
+#   path     = '~/Documents/data/mco',
+#   progress = FALSE,
+#   n_max    = Inf,
+#   lib      = FALSE,
+#   tolower_names = TRUE)
+# 
+# 
+# 
+# library(MonetDBLite)
+# library(dplyr, warn.conflicts = F)
+# 
+# dbdir <- "~/Documents/data/monetdb"
+# con <- src_monetdblite(dbdir)
+# 
+# 
+# vrsa <- vvr_rsa(con, annee)
+# vano <- vvr_ano_mco(con, annee)
+# 
+# # vrsa <- vvr_rsa(p)
+# # vano <- vvr_ano_mco(p)
+# 
+# adezip(p, type = "out", liste = "porg")
+# adezip(p, type = "out", liste = c("porg", "diap"))
+# 
+# resu <- vvr_mco(
+#   vvr_ghs_supp(vrsa, tarifs),
+#   vvr_mco_sv(vrsa, vano)
+# )
+# 
+# resu %>% 
+#   group_by(type_fin) %>% 
+#   summarise(n = n(),
+#             rec = sum(rec_totale)) %>% 
+#   left_join(lib_type_sej, by = c('type_fin' = 'type_fin'))
+# 
+# p <- noyau_pmeasyr(
+#   finess   = '750712184',
+#   annee    = 2000 + 18,
+#   mois     = 4,
+#   path     = '~/Documents/data/mco',
+#   progress = FALSE,
+#   n_max    = Inf,
+#   lib      = FALSE,
+#   tolower_names = TRUE)
+# 
+# 
+# vrsa <- vvr_rsa(p)
+# vano <- vvr_ano_mco(p)
+# 
+# 
+# adezip(p, type = "out", liste = "porg")
+# adezip(p, type = "out", liste = c("porg", "diap"))
+# 
+# # resu <- vvr_mco(
+# #   vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE),
+# #   vvr_mco_sv(vrsa, vano, porg = ipo(p))
+# #   )
+# 
+# epmsi_mco_sv <- function(valo){
+#   valo %>% 
+#     group_by(type_fin) %>% 
+#     summarise(n = n(),
+#               rec = sum(rec_totale)) %>% 
+#     left_join(vvr_libelles_valo('lib_type_sej'), by = c('type_fin' = 'type_fin'))
+# }
+# 
+# epmsi_mco_rav <- function(valo){
+#   valo %>% select(cle_rsa, starts_with('rec_'), type_fin) %>% 
+#     tidyr::gather(var, val, - cle_rsa, - type_fin) %>%
+#     filter(abs(val) > 1e-7,!is.na(val)) %>%
+#     left_join(vvr_libelles_valo('lib_type_sej'), by = "type_fin") %>%
+#     left_join(vvr_libelles_valo('lib_valo'), by = "var") %>%
+#     group_by(lib_type, lib_valo, var) %>%
+#     summarise(n = n(),
+#               v = sum(val))
+# }
+# 
+# 
+# epmsi_mco_sv(resu)
+# epmsi_mco_rav(resu)

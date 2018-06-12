@@ -37,6 +37,16 @@ reference:
     - enrobeur
     - collect_rsa_from_db
     - creer_json
+  - title: Valorisation des séjours MCO
+    contents:
+    - vvr_ano_mco
+    - vvr_ghs_supp
+    - vvr_libelles_valo
+    - vvr_mco
+    - vvr_mco_sv
+    - vvr_rsa
+    - epmsi_mco_sv
+    - epmsi_mco_rav
 
 navbar:
   title: pmeasyr
