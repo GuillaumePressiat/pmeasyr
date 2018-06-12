@@ -15,13 +15,13 @@ library(dplyr, warn.conflicts = F)
 ```
 
 
-## Préparer les tables nécessaires
+### Préparer les tables nécessaires
 
 
 Il faut au moins disposer des rsa et des données anohosp.
 Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.
 
-### Import avec pmeasyr et noyau
+#### Import avec pmeasyr et noyau
 
 ```{r eval = F}
 library(pmeasyr)
@@ -45,7 +45,7 @@ vano <- vvr_ano_mco(p)
 ```
 
 
-### Collecte des données depuis une db
+#### Collecte des données depuis une db
 
 ```{r eval = F}
 
@@ -59,7 +59,7 @@ vano <- vvr_ano_mco(con,  16)
 ```
 
 
-## Récupérer les tarifs GHS et suppléments
+### Récupérer les tarifs GHS et suppléments
 
 ```{r eval = F}
 # devtools::install_github('GuillaumePressiat/nomensland')
@@ -67,7 +67,7 @@ library(nomensland)
 
 ```
 
-## Cas d'une valorisation base + Extrême haut - Extrême bas
+### Cas d'une valorisation base + Extrême haut - Extrême bas
 
 ```{r eval = F} 
 resu <- vvr_mco(
@@ -76,7 +76,7 @@ vvr_mco_sv(vrsa, vano)
 )
 ```
 
-## Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)
+### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)
 
 ```{r eval = F} 
 resu <- vvr_mco(
@@ -101,7 +101,7 @@ epmsi_mco_sv(resu)
 
 #### Récapitulation activité - valorisation
 
-```{r}
+```{r eval = F}
 epmsi_mco_rav(resu)
 ```
 

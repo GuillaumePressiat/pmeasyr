@@ -65,13 +65,13 @@
 <div class="contents">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pmeasyr)
 <span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> F)</code></pre></div>
-<div id="preparer-les-tables-necessaires" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preparer-les-tables-necessaires" class="anchor"></a>Préparer les tables nécessaires</h2>
-<p>Il faut au moins disposer des rsa et des données anohosp. Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.</p>
-<div id="import-avec-pmeasyr-et-noyau" class="section level3">
+<div id="preparer-les-tables-necessaires" class="section level3">
 <h3 class="hasAnchor">
-<a href="#import-avec-pmeasyr-et-noyau" class="anchor"></a>Import avec pmeasyr et noyau</h3>
+<a href="#preparer-les-tables-necessaires" class="anchor"></a>Préparer les tables nécessaires</h3>
+<p>Il faut au moins disposer des rsa et des données anohosp. Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.</p>
+<div id="import-avec-pmeasyr-et-noyau" class="section level4">
+<h4 class="hasAnchor">
+<a href="#import-avec-pmeasyr-et-noyau" class="anchor"></a>Import avec pmeasyr et noyau</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pmeasyr)
 
 <span class="kw"><a href="../reference/noyau_pmeasyr.html">noyau_pmeasyr</a></span>(
@@ -89,9 +89,9 @@
 vrsa &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_rsa.html">vvr_rsa</a></span>(p)
 vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_ano_mco.html">vvr_ano_mco</a></span>(p)</code></pre></div>
 </div>
-<div id="collecte-des-donnees-depuis-une-db" class="section level3">
-<h3 class="hasAnchor">
-<a href="#collecte-des-donnees-depuis-une-db" class="anchor"></a>Collecte des données depuis une db</h3>
+<div id="collecte-des-donnees-depuis-une-db" class="section level4">
+<h4 class="hasAnchor">
+<a href="#collecte-des-donnees-depuis-une-db" class="anchor"></a>Collecte des données depuis une db</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MonetDBLite)
 dbdir &lt;-<span class="st"> "~/Documents/data/monetdb"</span>
 con &lt;-<span class="st"> </span><span class="kw">src_monetdblite</span>(dbdir)
@@ -100,23 +100,23 @@ vrsa &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_rs
 vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_ano_mco.html">vvr_ano_mco</a></span>(con,  <span class="dv">16</span>)</code></pre></div>
 </div>
 </div>
-<div id="recuperer-les-tarifs-ghs-et-supplements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#recuperer-les-tarifs-ghs-et-supplements" class="anchor"></a>Récupérer les tarifs GHS et suppléments</h2>
+<div id="recuperer-les-tarifs-ghs-et-supplements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#recuperer-les-tarifs-ghs-et-supplements" class="anchor"></a>Récupérer les tarifs GHS et suppléments</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools::install_github('GuillaumePressiat/nomensland')</span>
 <span class="kw">library</span>(nomensland)</code></pre></div>
 </div>
-<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas</h2>
+<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level3">
+<h3 class="hasAnchor">
+<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
 <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, vano, <span class="dt">tarifs =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>)),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano)
 )</code></pre></div>
 </div>
-<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h2>
+<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie" class="section level3">
+<h3 class="hasAnchor">
+<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
 <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, 
              <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), 
@@ -127,6 +127,7 @@ vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_an
              <span class="dt">bee =</span> <span class="ot">FALSE</span>),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))
 )</code></pre></div>
+</div>
 <div id="generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="section level3">
 <h3 class="hasAnchor">
 <a href="#generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="anchor"></a>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h3>
@@ -142,20 +143,9 @@ vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_an
 </div>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#preparer-les-tables-necessaires">Préparer les tables nécessaires</a></li>
-      <li><a href="#recuperer-les-tarifs-ghs-et-supplements">Récupérer les tarifs GHS et suppléments</a></li>
-      <li><a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas">Cas d’une valorisation base + Extrême haut - Extrême bas</a></li>
-      <li><a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie">Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</a></li>
-      </ul>
-</div>
       </div>
 
 </div>
