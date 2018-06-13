@@ -7,10 +7,12 @@
 epmsi_mco_sv(valo)
 }
 \value{
-Un tibble similaire au tableau SV epmsi
+Un tibble similaire au tableau RAV epmsi
+
+Il s'agit d'un tableau similaire au tableau "Récapitulation Activité - Valorisation"
 }
 \description{
-~ VVR - Reproduire le tableau SV
+Il s'agit d'un tableau similaire au tableau "Séjours Valorisés"
 }
 \examples{
 \dontrun{

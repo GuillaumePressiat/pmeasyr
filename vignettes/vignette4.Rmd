@@ -21,7 +21,14 @@ library(dplyr, warn.conflicts = F)
 Il faut au moins disposer des rsa et des données anohosp.
 Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.
 
+
 #### Import avec pmeasyr et noyau
+
+Deux possibilités pour préparer les données rsa et ano afin de calculer la valorisation : les importer spécifiquement, ou les collecter depuis une base de données, voir pour cela éventuellement les fonctions autour des bases de données dans `pmeasyr`.
+
+### Import avec pmeasyr et noyau
+
+Ici, on utilise les fonctions `vvr_rsa` et `vvr_ano_mco` pour importer les données depuis les fichiers bruts du *out* et sélectionner les variables dont nous avons besoins. 
 
 ```{r eval = F}
 library(pmeasyr)
@@ -44,8 +51,11 @@ vano <- vvr_ano_mco(p)
 
 ```
 
+Cela produit deux tables `vrsa` et `vano`.
 
 #### Collecte des données depuis une db
+
+Autre possibilité donc, le recours à une base de données où les tables préexistent, ici, on les collecte en ne sélectionnant que les variables utiles.
 
 ```{r eval = F}
 
@@ -58,16 +68,25 @@ vano <- vvr_ano_mco(con,  16)
 
 ```
 
+Cela produit de manière identique deux tables `vrsa` et `vano`.
 
 ### Récupérer les tarifs GHS et suppléments
+
+Pour valoriser les séjours, nous avons besoin des tarifs officiels. Comme d'autres tables référentiels classiques du PMSI, on peut trouver ces informations tarifaires pour les établissements ex-DGF dans le package [nomensland](https://github.com/GuillaumePressiat/nomensland).
 
 ```{r eval = F}
 # devtools::install_github('GuillaumePressiat/nomensland')
 library(nomensland)
-
 ```
 
+
 ### Cas d'une valorisation base + Extrême haut - Extrême bas
+
+Charger le package donne accès aux fonctions `get_table` et  `get_dictionnaire_tables`.
+
+## Cas d'une valorisation base + Extrême haut - Extrême bas
+
+Ici, on se concentre sur la valorisation dite BEE pour "Base + Extrême haut - Extrême bas". En effet par défaut le paramètre `bee` est à `TRUE` dans l'appel de fonction, et les tables vano, porg et diap sont renseignés à vide.
 
 ```{r eval = F} 
 resu <- vvr_mco(
@@ -76,7 +95,25 @@ vvr_mco_sv(vrsa, vano)
 )
 ```
 
+
 ### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)
+
+La table `resu` contient une ligne par rsa avec les variables suivantes : 
+
+```
+cle_rsa
+rec_totale
+rec_base
+rec_exb
+rec_exh
+rec_bee
+type_fin
+typvidhosp
+```
+
+On peut libeller ces variables en faisant appel à la fonction `vvr_libelles_valo`.
+
+## Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)
 
 ```{r eval = F} 
 resu <- vvr_mco(
@@ -91,7 +128,57 @@ vvr_mco_sv(vrsa, vano, ipo(p))
 )
 ```
 
+
+La table `resu` contient une ligne par rsa avec les variables suivantes : 
+
+```
+cle_rsa
+moissor
+anseqta
+rec_totale
+rec_bee
+rec_base
+rec_exb
+rec_exh
+rec_rep
+rec_rea
+rec_stf
+rec_src
+rec_nn1
+rec_nn2
+rec_nn3
+rec_dialhosp
+rec_caishyp
+rec_aph
+rec_ant
+rec_rap
+rec_rehosp_ghm
+rec_rdt_tot
+rec_sdc
+rec_po_tot
+type_fin
+typvidhosp
+```
+
+On peut libeller ces variables en faisant appel à la fonction `vvr_libelles_valo`.
+
+
 ### Générer des tableaux type epmsi pour comparaison avec les valo officielles
+
+Les variables présentes dans la table `resu` permettent à la fois de dénombrer les séjours par type de valorisation, c'est-à-dire :
+
+```
+Séjours valorisés                                                              
+Séjours en CM 90                                                                
+Séjours en prestation inter-établissement                                      
+Séjours en GHS 9999                                                             
+Séjours avec pb de codage des variables bloquantes                              
+Séjours en attente de décision sur les droits du patient                       
+Séjours non facturable à  l'AM hors PO                                          
+Séjours avec PO sur patient arrivé décédé ou avec PO non facturables Ã  l'AM
+```
+
+
 
 #### Séjours valorisés
 

@@ -4,7 +4,7 @@
 \alias{vvr_mco_sv}
 \title{~ VVR - Attribuer le caractere facturable par cle_rsa}
 \usage{
-vvr_mco_sv(rsa, ano, porg = NULL)
+vvr_mco_sv(rsa, ano, porg = tibble(cle_rsa = ""))
 }
 \value{
 Un tibble contenant la catégorie du tableau SV epmsi, une ligne par clé rsa

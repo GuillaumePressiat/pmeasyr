@@ -4,8 +4,9 @@
 \alias{vvr_ghs_supp}
 \title{~ VVR - Attribuer les recettes GHS et suppléments sur des rsa}
 \usage{
-vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = NULL, porg = NULL,
-  diap = NULL, full = FALSE, cgeo = 1.07, prudent = NULL, bee = TRUE)
+vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = tibble(cle_rsa = ""),
+  porg = tibble(cle_rsa = ""), diap = tibble(cle_rsa = ""), full = FALSE,
+  cgeo = 1.07, prudent = NULL, bee = TRUE)
 }
 \value{
 Un tibble contenant les différentes rubriques de valorisation, une ligne par clé rsa

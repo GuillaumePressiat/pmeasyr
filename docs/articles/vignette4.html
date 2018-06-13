@@ -72,6 +72,13 @@
 <div id="import-avec-pmeasyr-et-noyau" class="section level4">
 <h4 class="hasAnchor">
 <a href="#import-avec-pmeasyr-et-noyau" class="anchor"></a>Import avec pmeasyr et noyau</h4>
+<p>Deux possibilités pour préparer les données rsa et ano afin de calculer la valorisation : les importer spécifiquement, ou les collecter depuis une base de données, voir pour cela éventuellement les fonctions autour des bases de données dans <code>pmeasyr</code>.</p>
+</div>
+</div>
+<div id="import-avec-pmeasyr-et-noyau-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#import-avec-pmeasyr-et-noyau-1" class="anchor"></a>Import avec pmeasyr et noyau</h3>
+<p>Ici, on utilise les fonctions <code>vvr_rsa</code> et <code>vvr_ano_mco</code> pour importer les données depuis les fichiers bruts du <em>out</em> et sélectionner les variables dont nous avons besoins.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pmeasyr)
 
 <span class="kw"><a href="../reference/noyau_pmeasyr.html">noyau_pmeasyr</a></span>(
@@ -88,35 +95,58 @@
 
 vrsa &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_rsa.html">vvr_rsa</a></span>(p)
 vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_ano_mco.html">vvr_ano_mco</a></span>(p)</code></pre></div>
-</div>
+<p>Cela produit deux tables <code>vrsa</code> et <code>vano</code>.</p>
 <div id="collecte-des-donnees-depuis-une-db" class="section level4">
 <h4 class="hasAnchor">
 <a href="#collecte-des-donnees-depuis-une-db" class="anchor"></a>Collecte des données depuis une db</h4>
+<p>Autre possibilité donc, le recours à une base de données où les tables préexistent, ici, on les collecte en ne sélectionnant que les variables utiles.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MonetDBLite)
 dbdir &lt;-<span class="st"> "~/Documents/data/monetdb"</span>
 con &lt;-<span class="st"> </span><span class="kw">src_monetdblite</span>(dbdir)
 
 vrsa &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_rsa.html">vvr_rsa</a></span>(con, <span class="dv">16</span>)
 vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_ano_mco.html">vvr_ano_mco</a></span>(con,  <span class="dv">16</span>)</code></pre></div>
+<p>Cela produit de manière identique deux tables <code>vrsa</code> et <code>vano</code>.</p>
 </div>
 </div>
 <div id="recuperer-les-tarifs-ghs-et-supplements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#recuperer-les-tarifs-ghs-et-supplements" class="anchor"></a>Récupérer les tarifs GHS et suppléments</h3>
+<p>Pour valoriser les séjours, nous avons besoin des tarifs officiels. Comme d’autres tables référentiels classiques du PMSI, on peut trouver ces informations tarifaires pour les établissements ex-DGF dans le package <a href="https://github.com/GuillaumePressiat/nomensland">nomensland</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools::install_github('GuillaumePressiat/nomensland')</span>
 <span class="kw">library</span>(nomensland)</code></pre></div>
 </div>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
+<p>Charger le package donne accès aux fonctions <code>get_table</code> et <code>get_dictionnaire_tables</code>.</p>
+</div>
+<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-1" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas</h2>
+<p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
 <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, vano, <span class="dt">tarifs =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>)),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano)
 )</code></pre></div>
-</div>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h3>
+<p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
+<pre><code>cle_rsa
+rec_totale
+rec_base
+rec_exb
+rec_exh
+rec_bee
+type_fin
+typvidhosp</code></pre>
+<p>On peut libeller ces variables en faisant appel à la fonction <code>vvr_libelles_valo</code>.</p>
+</div>
+</div>
+<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie-1" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
 <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, 
              <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), 
@@ -127,10 +157,46 @@ vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_an
              <span class="dt">bee =</span> <span class="ot">FALSE</span>),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))
 )</code></pre></div>
-</div>
+<p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
+<pre><code>cle_rsa
+moissor
+anseqta
+rec_totale
+rec_bee
+rec_base
+rec_exb
+rec_exh
+rec_rep
+rec_rea
+rec_stf
+rec_src
+rec_nn1
+rec_nn2
+rec_nn3
+rec_dialhosp
+rec_caishyp
+rec_aph
+rec_ant
+rec_rap
+rec_rehosp_ghm
+rec_rdt_tot
+rec_sdc
+rec_po_tot
+type_fin
+typvidhosp</code></pre>
+<p>On peut libeller ces variables en faisant appel à la fonction <code>vvr_libelles_valo</code>.</p>
 <div id="generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="section level3">
 <h3 class="hasAnchor">
 <a href="#generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="anchor"></a>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h3>
+<p>Les variables présentes dans la table <code>resu</code> permettent à la fois de dénombrer les séjours par type de valorisation, c’est-à-dire :</p>
+<pre><code>Séjours valorisés                                                              
+Séjours en CM 90                                                                
+Séjours en prestation inter-établissement                                      
+Séjours en GHS 9999                                                             
+Séjours avec pb de codage des variables bloquantes                              
+Séjours en attente de décision sur les droits du patient                       
+Séjours non facturable à  l'AM hors PO                                          
+Séjours avec PO sur patient arrivé décédé ou avec PO non facturables Ã  l'AM</code></pre>
 <div id="sejours-valorises" class="section level4">
 <h4 class="hasAnchor">
 <a href="#sejours-valorises" class="anchor"></a>Séjours valorisés</h4>
@@ -143,9 +209,18 @@ vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_an
 </div>
 </div>
 </div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-1">Cas d’une valorisation base + Extrême haut - Extrême bas</a></li>
+      <li><a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie-1">Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

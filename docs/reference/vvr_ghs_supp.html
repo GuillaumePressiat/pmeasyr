@@ -85,8 +85,9 @@
 <code><a href='vvr_rsa.html'>vvr_rsa</a></code>, <code><a href='vvr_ano_mco.html'>vvr_ano_mco</a></code>, et de tables contenant les fichcomp PO et DIAP</p>
     
 
-    <pre class="usage"><span class='fu'>vvr_ghs_supp</span>(<span class='no'>rsa</span>, <span class='no'>tarifs</span>, <span class='kw'>supplements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ano</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>porg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>diap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cgeo</span> <span class='kw'>=</span> <span class='fl'>1.07</span>, <span class='kw'>prudent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bee</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>vvr_ghs_supp</span>(<span class='no'>rsa</span>, <span class='no'>tarifs</span>, <span class='kw'>supplements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ano</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>),
+  <span class='kw'>porg</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>diap</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cgeo</span> <span class='kw'>=</span> <span class='fl'>1.07</span>, <span class='kw'>prudent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bee</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
         
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
