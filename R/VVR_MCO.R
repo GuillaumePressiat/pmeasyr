@@ -162,8 +162,9 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' @export
 vvr_ghs_supp <- function(rsa, 
                          tarifs, supplements = NULL, 
-                         ano = NULL, 
-                         porg = NULL, diap = NULL,  
+                         ano = tibble(cle_rsa = ""), 
+                         porg = tibble(cle_rsa = ""), 
+                         diap = tibble(cle_rsa = ""),  
                          full = FALSE, cgeo = 1.07, prudent = NULL,
                          bee = TRUE) {
   
@@ -296,7 +297,7 @@ vvr_ghs_supp <- function(rsa,
     dplyr::mutate_if(is.numeric, function(x){ifelse(is.na(x), 0, x)})
   
   
-  if (max(unique(rsa_2$anseqta)) < '2016'){
+  if (max(unique(rsa_2$anseqta)) < '2017'){
     rsa_2 <- rsa_2 %>% 
       dplyr::mutate(suppdefcard = '0')
   }
@@ -400,7 +401,7 @@ vvr_ghs_supp <- function(rsa,
 #' @seealso \code{\link{vvr_ano_mco}}, \code{\link{vvr_rsa}}, \code{\link{vvr_mco}}
 #' @export vvr_mco_sv
 #' @export
-vvr_mco_sv <- function(rsa, ano, porg = NULL){
+vvr_mco_sv <- function(rsa, ano, porg = tibble(cle_rsa = "")){
   
   # CM 90
   # Séjours en CM 90 : nombre de RSA groupés dans la CM 90 (groupage en erreur)
@@ -717,9 +718,11 @@ vvr_libelles_valo <- function(wich){
 
 #' ~ VVR - Reproduire le tableau SV
 #'
+#' Il s'agit d'un tableau similaire au tableau "Séjours Valorisés"
 #' 
-#' @return Un tibble similaire au tableau SV epmsi
+#' @return Un tibble similaire au tableau RAV epmsi
 #'
+#' Il s'agit d'un tableau similaire au tableau "Récapitulation Activité - Valorisation"
 #' @examples
 #' \dontrun{
 #' epmsi_mco_sv(valo)

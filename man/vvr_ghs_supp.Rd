@@ -4,8 +4,9 @@
 \alias{vvr_ghs_supp}
 \title{~ VVR - Attribuer les recettes GHS et suppléments sur des rsa}
 \usage{
-vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = NULL, porg = NULL,
-  diap = NULL, full = FALSE, cgeo = 1.07, prudent = NULL, bee = TRUE)
+vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = tibble(cle_rsa = ""),
+  porg = tibble(cle_rsa = ""), diap = tibble(cle_rsa = ""), full = FALSE,
+  cgeo = 1.07, prudent = NULL, bee = TRUE)
 }
 \value{
 Un tibble contenant les différentes rubriques de valorisation, une ligne par clé rsa
@@ -19,14 +20,14 @@ Pour l'heure cette fonction ne tient pas compte de fichcomp PIE
 }
 \examples{
 \dontrun{
-# Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
+# RÃ©cupÃ©rer les tarifs GHS et des supplÃ©ments (ex-DGF) : 
 tarifs      <- nomensland::get_table('tarifs_mco_ghs')
 supplements <- nomensland::get_table('tarifs_mco_supplements')
 
-# Recette GHS de base et suppléments EXB, EXH
+# Recette GHS de base et supplÃ©ments EXB, EXH
 vvr_ghs_supp(vrsa, tarifs)
 
-# Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)
+# Recette GHS de base et supplÃ©ments EXB, EXH, et des supplÃ©ments (hors PIE)
 vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)
 }
 
