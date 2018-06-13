@@ -35,7 +35,6 @@
 ## ----eval = F------------------------------------------------------------
 #  # devtools::install_github('GuillaumePressiat/nomensland')
 #  library(nomensland)
-#  
 
 ## ----eval = F------------------------------------------------------------
 #  resu <- vvr_mco(
@@ -54,6 +53,15 @@
 #               bee = FALSE),
 #  vvr_mco_sv(vrsa, vano, ipo(p))
 #  )
+
+## ----eval = TRUE---------------------------------------------------------
+knitr::kable(pmeasyr::vvr_libelles_valo('lib_type_sej'))
+
+## ----eval = TRUE---------------------------------------------------------
+knitr::kable(pmeasyr::vvr_libelles_valo('lib_valo'))
+
+## ----eval = TRUE---------------------------------------------------------
+knitr::kable(pmeasyr::vvr_libelles_valo('lib_vidhosp'))
 
 ## ----eval = F------------------------------------------------------------
 #  epmsi_mco_sv(resu)

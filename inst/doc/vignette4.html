@@ -14,7 +14,7 @@
 
 <meta name="date" content="2017-12-06" />
 
-<title>Valoriser des rsa (RAV + SV)</title>
+<title>Valoriser les rsa</title>
 
 
 
@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Valoriser des rsa (RAV + SV)</h1>
+<h1 class="title toc-ignore">Valoriser les rsa</h1>
 <h4 class="author"><em>Guillaume Pressiat</em></h4>
 <h4 class="date"><em>12/06/2017</em></h4>
 
@@ -76,11 +76,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pmeasyr)
 <span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> F)</code></pre></div>
-<div id="preparer-les-tables-necessaires" class="section level3">
-<h3>Préparer les tables nécessaires</h3>
+<div id="preparer-les-tables-necessaires" class="section level2">
+<h2>Préparer les tables nécessaires</h2>
 <p>Il faut au moins disposer des rsa et des données anohosp. Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.</p>
-<div id="import-avec-pmeasyr-et-noyau" class="section level4">
-<h4>Import avec pmeasyr et noyau</h4>
+<div id="import-avec-pmeasyr-et-noyau" class="section level3">
+<h3>Import avec pmeasyr et noyau</h3>
+<p>Deux possibilités pour préparer les données rsa et ano afin de calculer la valorisation : les importer spécifiquement, ou les collecter depuis une base de données, voir pour cela éventuellement les fonctions autour des bases de données dans <code>pmeasyr</code>.</p>
+</div>
+<div id="import-avec-pmeasyr-et-noyau-1" class="section level3">
+<h3>Import avec pmeasyr et noyau</h3>
+<p>Ici, on utilise les fonctions <code>vvr_rsa</code> et <code>vvr_ano_mco</code> pour importer les données depuis les fichiers bruts du <em>out</em> et sélectionner les variables dont nous avons besoins.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pmeasyr)
 
 <span class="kw">noyau_pmeasyr</span>(
@@ -97,30 +102,52 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 vrsa &lt;-<span class="st"> </span><span class="kw">vvr_rsa</span>(p)
 vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(p)</code></pre></div>
+<p>Cela produit deux tables <code>vrsa</code> et <code>vano</code>.</p>
 </div>
-<div id="collecte-des-donnees-depuis-une-db" class="section level4">
-<h4>Collecte des données depuis une db</h4>
+<div id="collecte-des-donnees-depuis-une-db" class="section level3">
+<h3>Collecte des données depuis une db</h3>
+<p>Autre possibilité donc, le recours à une base de données où les tables préexistent, ici, on les collecte en ne sélectionnant que les variables utiles.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MonetDBLite)
 dbdir &lt;-<span class="st"> &quot;~/Documents/data/monetdb&quot;</span>
 con &lt;-<span class="st"> </span><span class="kw">src_monetdblite</span>(dbdir)
 
 vrsa &lt;-<span class="st"> </span><span class="kw">vvr_rsa</span>(con, <span class="dv">16</span>)
 vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(con,  <span class="dv">16</span>)</code></pre></div>
+<p>Cela produit de manière identique deux tables <code>vrsa</code> et <code>vano</code>.</p>
 </div>
 </div>
-<div id="recuperer-les-tarifs-ghs-et-supplements" class="section level3">
-<h3>Récupérer les tarifs GHS et suppléments</h3>
+<div id="recuperer-les-tarifs-ghs-et-supplements" class="section level2">
+<h2>Récupérer les tarifs GHS et suppléments</h2>
+<p>Pour valoriser les séjours, nous avons besoin des tarifs officiels. Comme d’autres tables référentiels classiques du PMSI, on peut trouver ces informations tarifaires pour les établissements ex-DGF dans le package <a href="https://github.com/GuillaumePressiat/nomensland">nomensland</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools::install_github('GuillaumePressiat/nomensland')</span>
 <span class="kw">library</span>(nomensland)</code></pre></div>
+<p>Il reste possible d’utiliser des tables tarifs et suppléments provenant d’une autre source, mais cela nécessite d’avoir les mêmes noms de colonnes que dans les tables de nomensland.</p>
+<p>Charger ce package donne accès aux fonctions <code>get_table</code> et <code>get_dictionnaire_tables</code>.</p>
 </div>
+<div id="valoriser-les-rsa" class="section level2">
+<h2>Valoriser les rsa</h2>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
+<p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(vrsa, vano, <span class="dt">tarifs =</span> <span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>)),
 <span class="kw">vvr_mco_sv</span>(vrsa, vano)
 )</code></pre></div>
 </div>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie" class="section level3">
+<h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h3>
+<p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
+<pre><code>cle_rsa
+rec_totale
+rec_base
+rec_exb
+rec_exh
+rec_bee
+type_fin
+typvidhosp</code></pre>
+<p>On peut libeller ces variables en faisant appel à la fonction <code>vvr_libelles_valo</code>, voir ci-dessous.</p>
+</div>
+<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie-1" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(vrsa, 
@@ -132,15 +159,241 @@ vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(con,  <sp
              <span class="dt">bee =</span> <span class="ot">FALSE</span>),
 <span class="kw">vvr_mco_sv</span>(vrsa, vano, <span class="kw">ipo</span>(p))
 )</code></pre></div>
+<p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
+<pre><code>cle_rsa
+moissor
+anseqta
+rec_totale
+rec_bee
+rec_base
+rec_exb
+rec_exh
+rec_rep
+rec_rea
+rec_stf
+rec_src
+rec_nn1
+rec_nn2
+rec_nn3
+rec_dialhosp
+rec_caishyp
+rec_aph
+rec_ant
+rec_rap
+rec_rehosp_ghm
+rec_rdt_tot
+rec_sdc
+rec_po_tot
+type_fin
+typvidhosp</code></pre>
+<p>On peut libeller ces variables en faisant appel à la fonction <code>vvr_libelles_valo</code>, voir ci-dessous.</p>
 </div>
-<div id="generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="section level3">
-<h3>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h3>
-<div id="sejours-valorises" class="section level4">
-<h4>Séjours valorisés</h4>
+</div>
+<div id="generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="section level2">
+<h2>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h2>
+<p>Les variables présentes dans la table <code>resu</code> permettent à la fois de dénombrer les séjours par type de valorisation, c’est-à-dire :</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_type_sej'</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">type_fin</th>
+<th align="left">lib_type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Séjours valorisés</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Séjours en CM 90</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">Séjours en prestation inter-établissement</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="left">Séjours en GHS 9999</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="left">Séjours avec pb de chainage (hors NN, rdth et PO)</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="left">Séjours avec pb de codage des variables bloquantes</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="left">Séjours en attente de décision sur les droits du patient</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="left">Séjours non facturable à l’AM hors PO</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="left">Séjours avec PO sur patient arrivé décédé ou avec PO non facturables à l’AM</td>
+</tr>
+</tbody>
+</table>
+<p>et de reproduire les rubriques de valorisation par type de recette:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_valo'</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">var</th>
+<th align="left">lib_valo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">rec_totale</td>
+<td align="left">Valorisation 100% T2A globale</td>
+</tr>
+<tr class="even">
+<td align="left">rec_base</td>
+<td align="left">Valorisation des GHS de base</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_bee</td>
+<td align="left">Valorisation base + exb + exh</td>
+</tr>
+<tr class="even">
+<td align="left">rec_exb</td>
+<td align="left">Valorisation extrême bas (à déduire)</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_rehosp_ghm</td>
+<td align="left">Valorisation séjours avec rehosp dans même GHM</td>
+</tr>
+<tr class="even">
+<td align="left">rec_mino_sus</td>
+<td align="left">Valorisation séjours avec minoration forfaitaire liste en sus</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_exh</td>
+<td align="left">Valorisation journées extrême haut</td>
+</tr>
+<tr class="even">
+<td align="left">rec_aph</td>
+<td align="left">Valorisation actes GHS 9615 en Hospit.</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_rap</td>
+<td align="left">Valorisation suppléments radiothérapie pédiatrique</td>
+</tr>
+<tr class="even">
+<td align="left">rec_ant</td>
+<td align="left">Valorisation suppléments antepartum</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_rdt_tot</td>
+<td align="left">Valorisation actes RDTH en Hospit.</td>
+</tr>
+<tr class="even">
+<td align="left">rec_rea</td>
+<td align="left">Valorisation suppléments de réanimation</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_rep</td>
+<td align="left">Valorisation suppléments de réa pédiatrique</td>
+</tr>
+<tr class="even">
+<td align="left">rec_nn1</td>
+<td align="left">Valorisation suppléments de néonat sans SI</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_nn2</td>
+<td align="left">Valorisation suppléments de néonat avec SI</td>
+</tr>
+<tr class="even">
+<td align="left">rec_nn3</td>
+<td align="left">Valorisation suppléments de réanimation néonat</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_po_tot</td>
+<td align="left">Valorisation prélévements d organe</td>
+</tr>
+<tr class="even">
+<td align="left">rec_caishyp</td>
+<td align="left">Valorisation des actes de caissons hyperbares en sus</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_dialhosp</td>
+<td align="left">Valorisation suppléments de dialyse</td>
+</tr>
+<tr class="even">
+<td align="left">rec_src</td>
+<td align="left">Valorisation suppléments de surveillance continue</td>
+</tr>
+<tr class="odd">
+<td align="left">rec_stf</td>
+<td align="left">Valorisation suppléments de soins intensifs</td>
+</tr>
+<tr class="even">
+<td align="left">rec_sdc</td>
+<td align="left">Valorisation supplément défibrilateur cardiaque</td>
+</tr>
+</tbody>
+</table>
+<div id="types-de-vidhosp" class="section level3">
+<h3>Types de vidhosp</h3>
+<p>La table resu contient également une colonne <code>typvidhosp</code> qui correspond à un type de séjour, croisant plusieurs modalités (factam, nouveaux-nés, séances, 0 jour, autres, etc.)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_vidhosp'</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">typvidhosp</th>
+<th align="left">lib_typvidhosp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">0 : non pris en charge</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">3 : En attente des droits du patient</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">2 : En attente sur le taux de prise en charge</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">1 : Nouveau-né</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">1 : Radiothérapie</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="left">1 : Séances hors radiothérapie</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="left">1 : Durée de séjour = 0</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="left">1 : Autre type de séjour</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sejours-valorises" class="section level3">
+<h3>Séjours valorisés</h3>
+<p>Les séjours sont distribués et les recettes BR * coeffs sont sommées en fonction du type de séjours (lib_type_sej).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmsi_mco_sv</span>(resu)</code></pre></div>
 </div>
-<div id="recapitulation-activite---valorisation" class="section level4">
-<h4>Récapitulation activité - valorisation</h4>
+<div id="recapitulation-activite---valorisation" class="section level3">
+<h3>Récapitulation activité - valorisation</h3>
+<p>Les séjours sont distribués et les recettes BR * coeffs sont sommées en fonction du type de séjours et du type de recette (lib_type_sej * lib_valo).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmsi_mco_rav</span>(resu)</code></pre></div>
 </div>
 </div>
