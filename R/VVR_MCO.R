@@ -169,18 +169,17 @@ vvr_ghs_supp <- function(rsa,
                          bee = TRUE) {
   
   
+  if (is.null(prudent)){
   # Partie GHS
   rsa_2 <- rsa %>% 
-    dplyr::mutate(cprudent = ifelse(is.null(prudent),
-                             dplyr::case_when(
+    dplyr::mutate(cprudent = dplyr::case_when(
       anseqta == '2018'    ~ 0.9930,
       anseqta == '2017'    ~ 0.9930,
       anseqta == '2016'    ~ 0.9950,
       anseqta == '2015'    ~ 0.9965,
       anseqta == '2014'    ~ 0.9965,
       anseqta == '2013'    ~ 0.9965,
-      TRUE                 ~ 1
-    )), 1) %>% 
+      TRUE    ~ 1)) %>% 
     dplyr::left_join(tarifs, by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
     dplyr::mutate(
       t_base  = tarif_base                 * cgeo * cprudent,
@@ -191,6 +190,22 @@ vvr_ghs_supp <- function(rsa,
              sejinfbi == '0' ~ 0),
       rec_bee = (t_base + t_haut - t_bas),
       rec_totale = rec_bee)
+  } else {
+      # Partie GHS
+      rsa_2 <- rsa %>% 
+        mutate(cprudent = prudent) %>% 
+        dplyr::left_join(tarifs, by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
+        dplyr::mutate(
+          t_base  = tarif_base                 * cgeo * cprudent,
+          t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent, 
+          t_bas   = dplyr::case_when(
+            sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
+            sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
+            sejinfbi == '0' ~ 0),
+          rec_bee = (t_base + t_haut - t_bas),
+          rec_totale = rec_bee)
+    }
+
   if (bee == TRUE){
     return(rsa_2 %>% dplyr::select(cle_rsa, rec_totale, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, rec_bee))
   }
@@ -251,7 +266,7 @@ vvr_ghs_supp <- function(rsa,
            lag_noghs  = dplyr::lag(noghs),
            lag_sexe   = dplyr::lag(sexe),
            lag_agean  = dplyr::lag(agean),
-           lag_dtsort = dplyr::lag(dtsort)) %>% #
+           lag_dtsort = dplyr::lag(dtsort)) %>% 
     dplyr::filter(mdentr == '71', mdentr == lag_mdsort,  noanon == lag_noanon,  
            lag_agean <= agean, agean <= lag_agean + 1,
            lag_noghs == noghs, lag_sexe == sexe, lag_dtsort + 2 < dtent, dtent <= lag_dtsort + 10) %>% 
