@@ -37,15 +37,18 @@
 #  library(nomensland)
 
 ## ----eval = F------------------------------------------------------------
+#  
+#  tarifs_ghs <- dplyr::distinct(get_table('tarifs_mco_ghs'), ghs, anseqta, .keep_all = TRUE)
+#  
 #  resu <- vvr_mco(
-#  vvr_ghs_supp(vrsa, vano, tarifs = get_table('tarifs_mco_ghs')),
+#  vvr_ghs_supp(vrsa, vano, tarifs = tarifs_ghs),
 #  vvr_mco_sv(vrsa, vano)
 #  )
 
 ## ----eval = F------------------------------------------------------------
 #  resu <- vvr_mco(
 #  vvr_ghs_supp(vrsa,
-#               get_table('tarifs_mco_ghs'),
+#               tarifs_ghs,
 #               get_table('tarifs_mco_supplements'),
 #               vano,
 #               ipo(p),

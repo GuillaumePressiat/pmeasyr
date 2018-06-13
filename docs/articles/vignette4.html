@@ -125,8 +125,10 @@ vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_an
 <h3 class="hasAnchor">
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
-<span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, vano, <span class="dt">tarifs =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>)),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
+
+resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
+<span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, vano, <span class="dt">tarifs =</span> tarifs_ghs),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano)
 )</code></pre></div>
 </div>
@@ -149,7 +151,7 @@ typvidhosp</code></pre>
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-hormis-pie-1" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
 <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, 
-             <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), 
+             tarifs_ghs, 
              <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_supplements'</span>), 
              vano, 
              <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p),

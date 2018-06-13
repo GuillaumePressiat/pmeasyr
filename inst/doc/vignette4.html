@@ -129,8 +129,10 @@ vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(con,  <sp
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
-<span class="kw">vvr_ghs_supp</span>(vrsa, vano, <span class="dt">tarifs =</span> <span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>)),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
+
+resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
+<span class="kw">vvr_ghs_supp</span>(vrsa, vano, <span class="dt">tarifs =</span> tarifs_ghs),
 <span class="kw">vvr_mco_sv</span>(vrsa, vano)
 )</code></pre></div>
 </div>
@@ -151,7 +153,7 @@ typvidhosp</code></pre>
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(vrsa, 
-             <span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), 
+             tarifs_ghs, 
              <span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>), 
              vano, 
              <span class="kw">ipo</span>(p),

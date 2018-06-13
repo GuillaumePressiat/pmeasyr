@@ -21,7 +21,7 @@ Pour l'heure cette fonction ne tient pas compte de fichcomp PIE
 \examples{
 \dontrun{
 # Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
-tarifs      <- nomensland::get_table('tarifs_mco_ghs')
+tarifs      <- nomensland::get_table('tarifs_mco_ghs') \%>\% distinct(ghs, anseqta, .keep_all = TRUE)
 supplements <- nomensland::get_table('tarifs_mco_supplements')
 
 # Recette GHS de base et suppléments EXB, EXH

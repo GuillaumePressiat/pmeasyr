@@ -602,30 +602,30 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># En utilisant le package dplyr</span>
 <span class="kw">library</span>(dplyr)
 <span class="co"># acte EBLA003</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'EBLA003'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'EBLA003'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># actes EBLA001 ou EBLA002 ou EBLA003</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'EBLA'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'EBLA'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># actes EBLA003 ou EPLF002</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'EBLA003|EPLF002'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'EBLA003|EPLF002'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># directement dans la table actes </span>
-rsa15$actes %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(CDCCAM %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">'EBLA003'</span>, <span class="st">'EPLF002'</span>))  %&gt;%<span class="st"> </span>
+rsa15$actes %&gt;%<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(CDCCAM %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">'EBLA003'</span>, <span class="st">'EPLF002'</span>))  %&gt;%<span class="st"> </span>
 <span class="st">  </span>.$CLE_RSA %&gt;%<span class="st"> </span><span class="kw">unique</span>() %&gt;%<span class="st"> </span><span class="kw">length</span>()</code></pre></div>
 </div>
 <div id="nombre-de-rsa-avec-un-diagnostic" class="section level3">
 <h3 class="hasAnchor">
 <a href="#nombre-de-rsa-avec-un-diagnostic" class="anchor"></a>Nombre de rsa avec un diagnostic</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Diagnostic categorie cancer du colon en toutes positions</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, dpdrum)|<span class="kw">grepl</span>(<span class="st">'C18'</span>, das)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15$rsa %&gt;%<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, dpdrum)|<span class="kw">grepl</span>(<span class="st">'C18'</span>, das)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># Autrement apres avoir utilise tdiag() :</span>
-rsa15$diags %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag)) %&gt;%<span class="st"> </span>
+rsa15$diags %&gt;%<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag)) %&gt;%<span class="st"> </span>
 <span class="st">  </span>.$CLE_RSA %&gt;%<span class="st"> </span><span class="kw">unique</span>() %&gt;%<span class="st"> </span><span class="kw">length</span>()
 
 <span class="co"># En restreignant au dp dr du sejour (avec la variable position)</span>
-rsa15$diags %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag), position &lt;<span class="st"> </span><span class="dv">3</span>) %&gt;%<span class="st"> </span>
+rsa15$diags %&gt;%<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag), position &lt;<span class="st"> </span><span class="dv">3</span>) %&gt;%<span class="st"> </span>
 <span class="st">  </span>.$CLE_RSA %&gt;%<span class="st"> </span><span class="kw">unique</span>() %&gt;%<span class="st"> </span><span class="kw">length</span>()</code></pre></div>
 </div>
 </div>
