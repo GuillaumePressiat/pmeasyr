@@ -738,7 +738,7 @@ epmsi_mco_sv <- function(valo){
     dplyr::left_join(vvr_libelles_valo('lib_type_sej'), by = c('type_fin' = 'type_fin'))
 }
 
-#' ~ VVR - Reproduire le tableau SV
+#' ~ VVR - Reproduire le tableau RAV
 #'
 #' 
 #' @return Un tibble similaire au tableau RAV epmsi

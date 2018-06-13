@@ -2,7 +2,7 @@
 % Please edit documentation in R/VVR_MCO.R
 \name{epmsi_mco_rav}
 \alias{epmsi_mco_rav}
-\title{~ VVR - Reproduire le tableau SV}
+\title{~ VVR - Reproduire le tableau RAV}
 \usage{
 epmsi_mco_rav(valo)
 }
@@ -10,7 +10,7 @@ epmsi_mco_rav(valo)
 Un tibble similaire au tableau RAV epmsi
 }
 \description{
-~ VVR - Reproduire le tableau SV
+~ VVR - Reproduire le tableau RAV
 }
 \examples{
 \dontrun{
