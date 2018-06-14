@@ -165,6 +165,7 @@ vvr_ghs_supp <- function(rsa,
                          ano = tibble(cle_rsa = ""), 
                          porg = tibble(cle_rsa = ""), 
                          diap = tibble(cle_rsa = ""),  
+                         pie  = tibble(cle_rsa = ""),
                          full = FALSE, cgeo = 1.07, prudent = NULL,
                          bee = TRUE) {
   
@@ -248,6 +249,23 @@ vvr_ghs_supp <- function(rsa,
   rsa_2 <- rsa_2 %>% 
     dplyr::left_join(rdth, by = 'cle_rsa')
   
+  
+  # pie
+  
+  trans_pie <- pie %>% 
+    group_by(cle_rsa, code_pie) %>% 
+    summarise(nbsuppie = sum(nbsuppie)) %>% 
+    ungroup() %>% 
+    right_join(tibble(liste_pie = c('STF', 'SRC', 'REA', 'REP', 'NN1', 'NN2', 'NN3')), by = c('code_pie' = 'liste_pie')) %>% 
+    tidyr::complete(cle_rsa, code_pie, fill = list(nbsuppie = 0)) %>% 
+    mutate(code_pie = paste0('pie_', tolower(code_pie))) %>% 
+    tidyr::spread(code_pie, nbsuppie, fill = 0) %>% 
+    filter(!is.na(cle_rsa))
+  trans_pie <- trans_pie %>% 
+    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>% 
+    dplyr::mutate_if(is.numeric, function(x)dplyr::if_else(is.na(x), 0, x))
+  
+  
   # rehosp
   ano <- ano %>% 
     dplyr::select(noanon, cok, cle_rsa, moissort, dtent, dtsort)
@@ -321,6 +339,7 @@ vvr_ghs_supp <- function(rsa,
   rsa_3 <- rsa_2 %>% 
     dplyr::left_join(dip, by = 'cle_rsa') %>% 
     dplyr::left_join(reh, by = 'cle_rsa') %>% 
+    dplyr::left_join(trans_pie, by = 'cle_rsa') %>% 
     dplyr::mutate(nbdip = ifelse(is.na(nbdip), 0, nbdip),
            rehosp_ghm = ifelse(is.na(rehosp_ghm), 0, rehosp_ghm)) %>% 
     dplyr::left_join(po_synthese, by = 'cle_rsa') %>% 
@@ -379,6 +398,22 @@ vvr_ghs_supp <- function(rsa,
     
     # rehosp
     dplyr::mutate(rec_rehosp_ghm = - pmax(rehosp_ghm * ((t_base + t_bas)/2),0) * cgeo * cprudent) %>% 
+    # suppléments pie
+    dplyr::mutate(rec_pie_src = pie_src * tsc * cgeo * cprudent,
+                  rec_pie_stf = pie_stf * tsi * cgeo * cprudent,
+                  rec_pie_rea = pie_rea * trea * cgeo * cprudent,
+                  rec_pie_rep = pie_rep * trep * cgeo * cprudent,
+                  rec_pie_nn1 = pie_nn1 * tnn1 * cgeo * cprudent,
+                  rec_pie_nn2 = pie_nn2 * tnn2 * cgeo * cprudent,
+                  rec_pie_nn3 = pie_nn3 * tnn3 * cgeo * cprudent) %>% 
+    # ajout des pie aux supp structures classiques
+    dplyr::mutate(rec_rep = rec_rep + rec_pie_rep,
+                  rec_rea = rec_rea + rec_pie_rea,
+                  rec_stf = rec_stf + rec_pie_stf,
+                  rec_src = rec_src + rec_pie_src,
+                  rec_nn1 = rec_nn1 + rec_pie_nn1,
+                  rec_nn2 = rec_nn2 + rec_pie_nn2,
+                  rec_nn3 = rec_nn3 + rec_pie_nn3) %>% 
     # calcul recette totale
     dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
              rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm + 
