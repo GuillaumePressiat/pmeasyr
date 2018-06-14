@@ -51,10 +51,10 @@ Dezipper les fichiers selectionnes d'une archive
 # Chemin vers un dossier temporaire
 tmp_dir <- tempdir()
 
-# Chemin vers un dossier contenant des archives simulÃ©es
+# Chemin vers un dossier contenant des archives simulées
 dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
 
-# DÃ©compresser en fonction du finess, annÃ©e et mois du 
+# Décompresser en fonction du finess, année et mois du 
 # fichier med d'une archive out
  adezip('123456789', 2016, 2, 
         path = dossier_archives,
@@ -64,7 +64,7 @@ dossier_archives <- system.file("extdata", "test_data", "test_adezip", package =
  
 dir(tmp_dir)
 
-# DÃ©compresser plusieurs types de fichiers d'une archive in
+# Décompresser plusieurs types de fichiers d'une archive in
  adezip('123456789', 2016, 2, 
         path = dossier_archives,
         liste = c('med','rapss', 'ano'),
@@ -73,7 +73,7 @@ dir(tmp_dir)
         
 dir(tmp_dir)
 
-# Utilisation avec un noyau de paramtÃ¨res
+# Utilisation avec un noyau de paramtères
 p <- noyau_pmeasyr(
        finess = '123456789',
        annee  = 2016,
@@ -84,17 +84,17 @@ p <- noyau_pmeasyr(
 
 adezip(p, type = "in", pathto = tmp_dir)
 dir(tmp_dir)
-# Modification d'un paramÃ¨tre du noyau
+# Modification d'un paramètre du noyau
 adezip(p, mois = 11, type = "in",  pathto = tmp_dir)
 dir(tmp_dir)
 
-# Pour une mÃªme pÃ©riode (annÃ©e/mois), il peut y avoir plusieurs archives si 
+# Pour une même période (année/mois), il peut y avoir plusieurs archives si 
 # il y a eu plusieurs envois. Par exemple il y a deux version de l'archive
-# out pour la pÃ©riode 2017.10 dans notre exemple simulÃ©
+# out pour la période 2017.10 dans notre exemple simulé
 dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
 
  # Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip 
- # sÃ©lectionne automatiquement l'archive la plus rÃ©cente
+ # sélectionne automatiquement l'archive la plus récente
  adezip(123456789, 2017, 10,
         path = dossier_archives,
         liste = 'med',
@@ -102,8 +102,8 @@ dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
         type = "out") 
  dir(tmp_dir, pattern = "med")
  
- # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invitÃ©
- # Ã  choisir
+ # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
+ # à choisir
  \dontrun{
  adezip(123456789, 2017, 10,
         path = dossier_archives,
@@ -114,7 +114,7 @@ dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
  dir(tmp_dir, pattern = "rsa")
  }
 
-# DÃ©zipper les logs
+# Dézipper les logs
 \dontrun{
 adezip(p, type = "out", liste = c('chainage.log', 'comp.log', 'log'))
 }

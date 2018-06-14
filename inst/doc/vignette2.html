@@ -92,9 +92,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Par defaut la fonction <code>adezip()</code> dezippe la totalite des fichiers de l’archive PMSI, on pourra egalement effacer tous les fichiers avec <code>adelete()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tout dezipper</span>
 <span class="co"># out</span>
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">adezip</span>(<span class="dt">type =</span> <span class="st">&quot;out&quot;</span>)
+p %&gt;%<span class="st"> </span><span class="kw">adezip</span>(<span class="dt">type =</span> <span class="st">&quot;out&quot;</span>)
 <span class="co"># in</span>
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">adezip</span>(<span class="dt">type =</span> <span class="st">&quot;in&quot;</span>)</code></pre></div>
+p %&gt;%<span class="st"> </span><span class="kw">adezip</span>(<span class="dt">type =</span> <span class="st">&quot;in&quot;</span>)</code></pre></div>
 </div>
 <div id="importer" class="section level2">
 <h2>3 - Importer</h2>
@@ -102,35 +102,35 @@ p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">adezip
 <h3>Syntaxe explicite</h3>
 <p>On importe toutes les tables du MCO, la syntaxe est plus concise et va de gauche à droite :</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># out</span>
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">irsa</span>()     -&gt;<span class="st"> </span>rsa
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">iano_mco</span>() -&gt;<span class="st"> </span>ano_out
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">iium</span>()     -&gt;<span class="st"> </span>ium
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">idiap</span>()    -&gt;<span class="st"> </span>diap_out
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">imed_mco</span>() -&gt;<span class="st"> </span>med_out
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">idmi_mco</span>() -&gt;<span class="st"> </span>dmi_out
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ipo</span>()      -&gt;<span class="st"> </span>po_out
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ileg_mco</span>() -&gt;<span class="st"> </span>leg
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">itra</span>()     -&gt;<span class="st"> </span>tra
+p %&gt;%<span class="st"> </span><span class="kw">irsa</span>()     -&gt;<span class="st"> </span>rsa
+p %&gt;%<span class="st"> </span><span class="kw">iano_mco</span>() -&gt;<span class="st"> </span>ano_out
+p %&gt;%<span class="st"> </span><span class="kw">iium</span>()     -&gt;<span class="st"> </span>ium
+p %&gt;%<span class="st"> </span><span class="kw">idiap</span>()    -&gt;<span class="st"> </span>diap_out
+p %&gt;%<span class="st"> </span><span class="kw">imed_mco</span>() -&gt;<span class="st"> </span>med_out
+p %&gt;%<span class="st"> </span><span class="kw">idmi_mco</span>() -&gt;<span class="st"> </span>dmi_out
+p %&gt;%<span class="st"> </span><span class="kw">ipo</span>()      -&gt;<span class="st"> </span>po_out
+p %&gt;%<span class="st"> </span><span class="kw">ileg_mco</span>() -&gt;<span class="st"> </span>leg
+p %&gt;%<span class="st"> </span><span class="kw">itra</span>()     -&gt;<span class="st"> </span>tra
 
 <span class="co"># rsa type 6 : </span>
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">irsa</span>(<span class="dt">typi =</span> <span class="dv">6</span>) -&gt;<span class="st"> </span>rsa
+p %&gt;%<span class="st"> </span><span class="kw">irsa</span>(<span class="dt">typi =</span> <span class="dv">6</span>) -&gt;<span class="st"> </span>rsa
 <span class="co"># rsa d'une autre annee :</span>
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">irsa</span>(<span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>rsa
+p %&gt;%<span class="st"> </span><span class="kw">irsa</span>(<span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>rsa
 <span class="co"># rsa d'une autre annee, lire les dix premiers rsa :</span>
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">irsa</span>(<span class="dt">annee =</span> <span class="dv">2016</span>, <span class="dt">n_max =</span> <span class="dv">10</span>) -&gt;<span class="st"> </span>rsa
+p %&gt;%<span class="st"> </span><span class="kw">irsa</span>(<span class="dt">annee =</span> <span class="dv">2016</span>, <span class="dt">n_max =</span> <span class="dv">10</span>) -&gt;<span class="st"> </span>rsa
 
 <span class="co"># in</span>
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">irum</span>()                    -&gt;<span class="st"> </span>rum
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">iano_mco</span>(<span class="dt">typano  =</span> <span class="st">&quot;in&quot;</span>)  -&gt;<span class="st"> </span>ano_in
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">imed_mco</span>(<span class="dt">typmed  =</span> <span class="st">&quot;in&quot;</span>)  -&gt;<span class="st"> </span>med_in
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">idmi_mco</span>(<span class="dt">typdmi  =</span> <span class="st">&quot;in&quot;</span>)  -&gt;<span class="st"> </span>dmi_in
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">idiap</span>(<span class="dt">typdiap =</span> <span class="st">&quot;in&quot;</span>)     -&gt;<span class="st"> </span>diap_in
-p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ipo</span>(<span class="dt">typpo   =</span> <span class="st">&quot;in&quot;</span>)       -&gt;<span class="st"> </span>po_in</code></pre></div>
+p %&gt;%<span class="st"> </span><span class="kw">irum</span>()                    -&gt;<span class="st"> </span>rum
+p %&gt;%<span class="st"> </span><span class="kw">iano_mco</span>(<span class="dt">typano  =</span> <span class="st">&quot;in&quot;</span>)  -&gt;<span class="st"> </span>ano_in
+p %&gt;%<span class="st"> </span><span class="kw">imed_mco</span>(<span class="dt">typmed  =</span> <span class="st">&quot;in&quot;</span>)  -&gt;<span class="st"> </span>med_in
+p %&gt;%<span class="st"> </span><span class="kw">idmi_mco</span>(<span class="dt">typdmi  =</span> <span class="st">&quot;in&quot;</span>)  -&gt;<span class="st"> </span>dmi_in
+p %&gt;%<span class="st"> </span><span class="kw">idiap</span>(<span class="dt">typdiap =</span> <span class="st">&quot;in&quot;</span>)     -&gt;<span class="st"> </span>diap_in
+p %&gt;%<span class="st"> </span><span class="kw">ipo</span>(<span class="dt">typpo   =</span> <span class="st">&quot;in&quot;</span>)       -&gt;<span class="st"> </span>po_in</code></pre></div>
 </div>
 <div id="importer-plusieurs-annees-avec-une-boucle" class="section level3">
 <h3>Importer plusieurs annees avec une boucle</h3>
 <p>On dezippe et on importe les rsa de 2011 a 2015. Les rsa seront dans l’environnement R avec comme nom :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rsa_<span class="dv">2011</span>  rsa_<span class="dv">2012</span>  rsa_<span class="dv">2013</span>  rsa_<span class="dv">2014</span>  rsa_<span class="dv">2015</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rsa_2011  rsa_2012  rsa_2013  rsa_2014  rsa_2015</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">noyau_pmeasyr</span>(
   <span class="dt">finess =</span> <span class="st">'750100042'</span>,
   <span class="dt">mois   =</span> <span class="dv">12</span>,
@@ -138,9 +138,9 @@ p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ipo</s
   <span class="dt">progress =</span> F
 )
 
-<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2011</span><span class="op">:</span><span class="dv">2015</span>){
-  p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">adezip</span>(<span class="dt">annee =</span> i, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>, <span class="dt">liste =</span> <span class="st">&quot;rsa&quot;</span>)
-  p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">irsa</span>(<span class="dt">annee =</span> i) -&gt;<span class="st"> </span>temp
+for (i in <span class="dv">2011</span>:<span class="dv">2015</span>){
+  p %&gt;%<span class="st"> </span><span class="kw">adezip</span>(<span class="dt">annee =</span> i, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>, <span class="dt">liste =</span> <span class="st">&quot;rsa&quot;</span>)
+  p %&gt;%<span class="st"> </span><span class="kw">irsa</span>(<span class="dt">annee =</span> i) -&gt;<span class="st"> </span>temp
   <span class="kw">assign</span>(<span class="kw">paste</span>(<span class="st">&quot;rsa&quot;</span>, i, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>), temp)
 }</code></pre></div>
 <p>On peut aussi envisager un import mois par mois si besoin, ou boucler sur une liste de finess (entites geographiques).</p>
@@ -151,7 +151,7 @@ p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ipo</s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># On liste les fonctions MCO du package :</span>
 fout &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'irsa'</span>, <span class="st">'iano_mco'</span>, <span class="st">'iium'</span>, <span class="st">'idiap'</span>, <span class="st">'imed_mco'</span>, <span class="st">'idmi_mco'</span>, <span class="st">'ipo'</span>, <span class="st">'ileg_mco'</span>, <span class="st">'itra'</span>)
 
-<span class="kw">sapply</span>(fout, <span class="cf">function</span>(x)<span class="kw">get</span>(x)(p)) -&gt;<span class="st"> </span>liste_tables_mco_out
+<span class="kw">sapply</span>(fout, function(x)<span class="kw">get</span>(x)(p)) -&gt;<span class="st"> </span>liste_tables_mco_out
 <span class="kw">names</span>(liste_tables_mco_out)
 <span class="co"># enlever les i des noms des tables</span>
 <span class="kw">names</span>(liste_tables_mco_out) &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">names</span>(liste_tables_mco_out),<span class="dv">2</span>, <span class="kw">nchar</span>(<span class="kw">names</span>(liste_tables_mco_out)))</code></pre></div>
@@ -161,35 +161,35 @@ fout &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'i
 <div id="sauvegarde-library-rds" class="section level2">
 <h2>4 - Sauvegarde (~ library Rds)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Coller des chaines de caracteres facon pipe</span>
-<span class="st">`</span><span class="dt">%+%</span><span class="st">`</span> &lt;-<span class="st"> </span><span class="cf">function</span>(x,y){<span class="kw">paste0</span>(x,y)}
+<span class="st">`</span><span class="dt">%+%</span><span class="st">`</span> &lt;-<span class="st"> </span>function(x,y){<span class="kw">paste0</span>(x,y)}
 
-<span class="kw">dir.create</span>(p<span class="op">$</span>path <span class="op">%+%</span><span class="st"> '/tables'</span>)</code></pre></div>
+<span class="kw">dir.create</span>(p$path %+%<span class="st"> '/tables'</span>)</code></pre></div>
 <p>Le repertoire suivant est cree :</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">'~/Documents/data/mco/tables/'</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nom &lt;-<span class="st"> </span>p<span class="op">$</span>finess <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> </span>p<span class="op">$</span>annee <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> </span>p<span class="op">$</span>mois <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> 'out'</span> <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> 'rds'</span>
-<span class="kw">saveRDS</span>(liste_tables_mco_out, p<span class="op">$</span>path <span class="op">%+%</span><span class="st"> '/tables/'</span> <span class="op">%+%</span><span class="st"> </span>nom)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nom &lt;-<span class="st"> </span>p$finess %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$annee %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$mois %+%<span class="st"> '.'</span> %+%<span class="st"> 'out'</span> %+%<span class="st"> '.'</span> %+%<span class="st"> 'rds'</span>
+<span class="kw">saveRDS</span>(liste_tables_mco_out, p$path %+%<span class="st"> '/tables/'</span> %+%<span class="st"> </span>nom)</code></pre></div>
 <p>Le fichier rds se nomme :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="fl">750100042.2015</span>.<span class="fl">12.</span>out.rds</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="fl">750100042.2015.12</span>.out.rds</code></pre></div>
 </div>
 <div id="effacer" class="section level2">
 <h2>5 - Effacer</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tout effacer sauf les zip : </span>
-p <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">adelete</span>()</code></pre></div>
+p %&gt;%<span class="st">  </span><span class="kw">adelete</span>()</code></pre></div>
 </div>
 <div id="relire-les-tables-sauvegardees-en-rds" class="section level2">
 <h2>6 - Relire les tables sauvegardees en rds</h2>
 <p>Avec le noyau de parametres <code>p</code> defini tout en haut de cette page, on a les elements necessaires pour reconstruire le nom du fichier : <code>750100042.2015.12.out.Rds</code> :</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Coller des chaines de caracteres faon pipe</span>
-<span class="st">`</span><span class="dt">%+%</span><span class="st">`</span> &lt;-<span class="st"> </span><span class="cf">function</span>(x,y){<span class="kw">paste0</span>(x,y)}
+<span class="st">`</span><span class="dt">%+%</span><span class="st">`</span> &lt;-<span class="st"> </span>function(x,y){<span class="kw">paste0</span>(x,y)}
 
 <span class="co"># Le fichier se nomme : 750100042.2015.12.out.Rds</span>
-nom &lt;-<span class="st"> </span>p<span class="op">$</span>finess <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> </span>p<span class="op">$</span>annee <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> </span>p<span class="op">$</span>mois <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> 'out'</span> <span class="op">%+%</span><span class="st"> '.'</span> <span class="op">%+%</span><span class="st"> 'Rds'</span>
-<span class="kw">readRDS</span>(p<span class="op">$</span>path <span class="op">%+%</span><span class="st"> '/tables/'</span> <span class="op">%+%</span><span class="st"> </span>nom) -&gt;<span class="st"> </span>mydata
+nom &lt;-<span class="st"> </span>p$finess %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$annee %+%<span class="st"> '.'</span> %+%<span class="st"> </span>p$mois %+%<span class="st"> '.'</span> %+%<span class="st"> 'out'</span> %+%<span class="st"> '.'</span> %+%<span class="st"> 'Rds'</span>
+<span class="kw">readRDS</span>(p$path %+%<span class="st"> '/tables/'</span> %+%<span class="st"> </span>nom) -&gt;<span class="st"> </span>mydata
 
-<span class="kw">View</span>(mydata<span class="op">$</span>rsa<span class="op">$</span>rsa)
-<span class="kw">View</span>(mydata<span class="op">$</span>rsa<span class="op">$</span>actes)
+<span class="kw">View</span>(mydata$rsa$rsa)
+<span class="kw">View</span>(mydata$rsa$actes)
 
-<span class="kw">View</span>(mydata<span class="op">$</span>leg_mco)</code></pre></div>
+<span class="kw">View</span>(mydata$leg_mco)</code></pre></div>
 <p>Les donnees sont de nouveau dans l’environnement R.</p>
 </div>
 

@@ -1,3 +1,9 @@
+# pmeasyr 0.2.4
+
+* Ajout de fonctions pour la valorisation des rsa, voir vignette correspondante
+* Ajout d'une fonction pour importer les pie out
+* Lien possible vers le package [nomensland](https://guillaumepressiat.github.io/nomensland/index.html)
+
 # pmeasyr 0.2.0
 
 

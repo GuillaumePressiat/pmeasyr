@@ -1,9 +1,12 @@
-urls:
-  reference: https://im-aphp.github.io/pmeasyr//reference
-  article: https://im-aphp.github.io/pmeasyr//articles
+pandoc: 1.17.2
+pkgdown: 1.1.0
+pkgdown_sha: ~
 articles:
   vignette1: vignette1.html
   vignette2: vignette2.html
   vignette3: vignette3.html
   vignette4: vignette4.html
+urls:
+  reference: https://im-aphp.github.io/pmeasyr//reference
+  article: https://im-aphp.github.io/pmeasyr//articles
 

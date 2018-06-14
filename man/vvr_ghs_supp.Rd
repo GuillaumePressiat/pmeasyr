@@ -21,14 +21,14 @@ Pour l'heure cette fonction ne tient pas compte de fichcomp PIE
 }
 \examples{
 \dontrun{
-# RÃ©cupÃ©rer les tarifs GHS et des supplÃ©ments (ex-DGF) : 
+# Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
 tarifs      <- nomensland::get_table('tarifs_mco_ghs') \%>\% distinct(ghs, anseqta, .keep_all = TRUE)
 supplements <- nomensland::get_table('tarifs_mco_supplements')
 
-# Recette GHS de base et supplÃ©ments EXB, EXH
+# Recette GHS de base et suppléments EXB, EXH
 vvr_ghs_supp(vrsa, tarifs)
 
-# Recette GHS de base et supplÃ©ments EXB, EXH, et des supplÃ©ments (hors PIE)
+# Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)
 vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)
 }
 

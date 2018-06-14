@@ -68,20 +68,42 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Références / Fonctions</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles / Vignettes</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/vignette1.html">pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette2.html">Flux d'import avec pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette3.html">Vers la database avec pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette4.html">Valoriser les rsa</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/IM-APHP/pmeasyr">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -114,13 +136,13 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># LibellÃ©s des types de sÃ©jours (tableau SV)</span>
+<span class='co'># Libellés des types de séjours (tableau SV)</span>
 <span class='fu'>vvr_libelles_valo</span>(<span class='st'>'lib_type_sej'</span>)
 
-<span class='co'># LibellÃ©s des types de vidhosp</span>
+<span class='co'># Libellés des types de vidhosp</span>
 <span class='fu'>vvr_libelles_valo</span>(<span class='st'>'lib_vidhosp'</span>)
 
-<span class='co'># LibellÃ©s des types de valo (tableau RAV)</span>
+<span class='co'># Libellés des types de valo (tableau RAV)</span>
 <span class='fu'>vvr_libelles_valo</span>(<span class='st'>'lib_valo'</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>

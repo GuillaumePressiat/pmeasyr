@@ -36,20 +36,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../reference/index.html">Références / Fonctions</a>
-</li>
-<li>
-  <a href="../articles/index.html">Articles / Vignettes</a>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/IM-APHP/pmeasyr">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
+<li>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/vignette1.html">pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette2.html">Flux d'import avec pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette3.html">Vers la database avec pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette4.html">Valoriser les rsa</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -136,16 +156,12 @@ vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_an
 <h3 class="hasAnchor">
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
 
 resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
 <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, vano, <span class="dt">tarifs =</span> tarifs_ghs),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano)
 )</code></pre></div>
-</div>
-<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
-<h3 class="hasAnchor">
-<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
 <p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
 <pre><code>cle_rsa
 rec_totale
@@ -157,9 +173,9 @@ type_fin
 typvidhosp</code></pre>
 <p>On peut libeller ces variables en faisant appel à la fonction <code>vvr_libelles_valo</code>, voir ci-dessous.</p>
 </div>
-<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-1" class="section level3">
+<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
 <h3 class="hasAnchor">
-<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-1" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
+<a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
 <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, 
              tarifs_ghs, 
@@ -205,7 +221,7 @@ typvidhosp</code></pre>
 <h2 class="hasAnchor">
 <a href="#generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="anchor"></a>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h2>
 <p>Les variables présentes dans la table <code>resu</code> permettent à la fois de dénombrer les séjours par type de valorisation, c’est-à-dire :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/pmeasyr/topics/vvr_libelles_valo">vvr_libelles_valo</a></span>(<span class="st">'lib_type_sej'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw"><a href="../reference/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_type_sej'</span>))</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">type_fin</th>
@@ -251,7 +267,7 @@ typvidhosp</code></pre>
 </tbody>
 </table>
 <p>et de reproduire les rubriques de valorisation par type de recette:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/pmeasyr/topics/vvr_libelles_valo">vvr_libelles_valo</a></span>(<span class="st">'lib_valo'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw"><a href="../reference/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_valo'</span>))</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">var</th>
@@ -352,7 +368,7 @@ typvidhosp</code></pre>
 <h3 class="hasAnchor">
 <a href="#types-de-vidhosp" class="anchor"></a>Types de vidhosp</h3>
 <p>La table resu contient également une colonne <code>typvidhosp</code> qui correspond à un type de séjour, croisant plusieurs modalités (factam, nouveaux-nés, séances, 0 jour, autres, etc.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/pmeasyr/topics/vvr_libelles_valo">vvr_libelles_valo</a></span>(<span class="st">'lib_vidhosp'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw"><a href="../reference/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_vidhosp'</span>))</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">typvidhosp</th>

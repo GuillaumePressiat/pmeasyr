@@ -69,20 +69,42 @@ Dezipper les fichiers selectionnes d'une archive" />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Références / Fonctions</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles / Vignettes</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/vignette1.html">pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette2.html">Flux d'import avec pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette3.html">Vers la database avec pmeasyr</a>
+    </li>
+    <li>
+      <a href="../articles/vignette4.html">Valoriser les rsa</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/IM-APHP/pmeasyr">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -185,151 +207,40 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
     <pre class="examples"><div class='input'><span class='co'># Chemin vers un dossier temporaire</span>
 <span class='no'>tmp_dir</span> <span class='kw'>&lt;-</span> <span class='fu'>tempdir</span>()
 
-<span class='co'># Chemin vers un dossier contenant des archives simulÃ©es</span>
+<span class='co'># Chemin vers un dossier contenant des archives simulées</span>
 <span class='no'>dossier_archives</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"test_data"</span>, <span class='st'>"test_adezip"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pmeasyr"</span>)
 
-<span class='co'># DÃ©compresser en fonction du finess, annÃ©e et mois du </span>
+<span class='co'># Décompresser en fonction du finess, année et mois du </span>
 <span class='co'># fichier med d'une archive out</span>
  <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
         <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
         <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
         <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.2.18032016182636.out.zip</span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.18032016182636.out.zip</span>
 #&gt; <span class='message'>Taille    : 0.0072 Mo</span>
 #&gt; <span class='message'>Type      : out</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>PÃ©riode   : 2016 M2</span>
+#&gt; <span class='message'>Période   : 2016 M2</span>
 #&gt; <span class='message'>Date prod : 2016-03-18 18:26:36</span>
 #&gt; <span class='message'>Fichiers  : med</span></div><div class='input'>
-<span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.2.med"                                                                  
-#&gt;  [2] "3736331f7ad34b17aae187b3372a8adb.png"                                                  
-#&gt;  [3] "d4627929553e46689caa878c36aa2c54.png"                                                  
-#&gt;  [4] "file139418fffb7"                                                                       
-#&gt;  [5] "file139419c438e0"                                                                      
-#&gt;  [6] "file1394213e6247"                                                                      
-#&gt;  [7] "file13942d644dde"                                                                      
-#&gt;  [8] "file13942d937c10"                                                                      
-#&gt;  [9] "file13942df2757"                                                                       
-#&gt; [10] "file13942df34efb"                                                                      
-#&gt; [11] "file13942f4214d3"                                                                      
-#&gt; [12] "file139432b26a00"                                                                      
-#&gt; [13] "file139434dc1dc1"                                                                      
-#&gt; [14] "file139439a23900"                                                                      
-#&gt; [15] "file13943a1745f6"                                                                      
-#&gt; [16] "file13943ccb47c9"                                                                      
-#&gt; [17] "file13943cf37f85"                                                                      
-#&gt; [18] "file13943f29a51"                                                                       
-#&gt; [19] "file139441715dc4"                                                                      
-#&gt; [20] "file139443be5ca8"                                                                      
-#&gt; [21] "file139447365c74"                                                                      
-#&gt; [22] "file139448643613"                                                                      
-#&gt; [23] "file1394491665cb"                                                                      
-#&gt; [24] "file139449677460"                                                                      
-#&gt; [25] "file13944ab913f2"                                                                      
-#&gt; [26] "file13944c2d6155"                                                                      
-#&gt; [27] "file13944e815a2d"                                                                      
-#&gt; [28] "file13944f09370f"                                                                      
-#&gt; [29] "file13944ff81ba"                                                                       
-#&gt; [30] "file1394542b143b"                                                                      
-#&gt; [31] "file139456496144"                                                                      
-#&gt; [32] "file13945849658d"                                                                      
-#&gt; [33] "file1394588c589"                                                                       
-#&gt; [34] "file13945de767e1"                                                                      
-#&gt; [35] "file13945ff61148"                                                                      
-#&gt; [36] "file139460882d75"                                                                      
-#&gt; [37] "file1394613a1d04"                                                                      
-#&gt; [38] "file1394676c2f27"                                                                      
-#&gt; [39] "file1394688258fa"                                                                      
-#&gt; [40] "file13946be66f92"                                                                      
-#&gt; [41] "file13946cc27994"                                                                      
-#&gt; [42] "file13946d2a293e"                                                                      
-#&gt; [43] "file13947385763f"                                                                      
-#&gt; [44] "file1394772e6cb6"                                                                      
-#&gt; [45] "file139478ae1566"                                                                      
-#&gt; [46] "file139478c7bdd"                                                                       
-#&gt; [47] "file13947b01f02"                                                                       
-#&gt; [48] "file13947c58463f"                                                                      
-#&gt; [49] "file13947dd245de"                                                                      
-#&gt; [50] "file13947ffb4f2b"                                                                      
-#&gt; [51] "file139496a73bf"                                                                       
-#&gt; [52] "file1394a2042d4"                                                                       
-#&gt; [53] "libloc_185_c2774112.rds"                                                               
-#&gt; [54] "repos_http%3A%2F%2Fwww.stats.ox.ac.uk%2Fpub%2FRWin%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"
-#&gt; [55] "repos_https%3A%2F%2Fcran.rstudio.com%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"              
-#&gt; [56] "rs-graphics-f0490e65-ec4d-44db-a539-52935a7d28be"                                      </div><div class='input'>
-<span class='co'># DÃ©compresser plusieurs types de fichiers d'une archive in</span>
+<span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.med"</div><div class='input'>
+<span class='co'># Décompresser plusieurs types de fichiers d'une archive in</span>
  <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
         <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'med'</span>,<span class='st'>'rapss'</span>, <span class='st'>'ano'</span>),
         <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
         <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.2.15032016152413.in.zip</span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.15032016152413.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>PÃ©riode   : 2016 M2</span>
+#&gt; <span class='message'>Période   : 2016 M2</span>
 #&gt; <span class='message'>Date prod : 2016-03-15 15:24:13</span>
 #&gt; <span class='message'>Fichiers  : ano, med</span></div><div class='input'>
-<span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.2.ano.txt"                                                              
-#&gt;  [2] "123456789.2016.2.med"                                                                  
-#&gt;  [3] "123456789.2016.2.med.txt"                                                              
-#&gt;  [4] "3736331f7ad34b17aae187b3372a8adb.png"                                                  
-#&gt;  [5] "d4627929553e46689caa878c36aa2c54.png"                                                  
-#&gt;  [6] "file139418fffb7"                                                                       
-#&gt;  [7] "file139419c438e0"                                                                      
-#&gt;  [8] "file1394213e6247"                                                                      
-#&gt;  [9] "file13942d644dde"                                                                      
-#&gt; [10] "file13942d937c10"                                                                      
-#&gt; [11] "file13942df2757"                                                                       
-#&gt; [12] "file13942df34efb"                                                                      
-#&gt; [13] "file13942f4214d3"                                                                      
-#&gt; [14] "file139432b26a00"                                                                      
-#&gt; [15] "file139434dc1dc1"                                                                      
-#&gt; [16] "file139439a23900"                                                                      
-#&gt; [17] "file13943a1745f6"                                                                      
-#&gt; [18] "file13943ccb47c9"                                                                      
-#&gt; [19] "file13943cf37f85"                                                                      
-#&gt; [20] "file13943f29a51"                                                                       
-#&gt; [21] "file139441715dc4"                                                                      
-#&gt; [22] "file139443be5ca8"                                                                      
-#&gt; [23] "file139447365c74"                                                                      
-#&gt; [24] "file139448643613"                                                                      
-#&gt; [25] "file1394491665cb"                                                                      
-#&gt; [26] "file139449677460"                                                                      
-#&gt; [27] "file13944ab913f2"                                                                      
-#&gt; [28] "file13944c2d6155"                                                                      
-#&gt; [29] "file13944e815a2d"                                                                      
-#&gt; [30] "file13944f09370f"                                                                      
-#&gt; [31] "file13944ff81ba"                                                                       
-#&gt; [32] "file1394542b143b"                                                                      
-#&gt; [33] "file139456496144"                                                                      
-#&gt; [34] "file13945849658d"                                                                      
-#&gt; [35] "file1394588c589"                                                                       
-#&gt; [36] "file13945de767e1"                                                                      
-#&gt; [37] "file13945ff61148"                                                                      
-#&gt; [38] "file139460882d75"                                                                      
-#&gt; [39] "file1394613a1d04"                                                                      
-#&gt; [40] "file1394676c2f27"                                                                      
-#&gt; [41] "file1394688258fa"                                                                      
-#&gt; [42] "file13946be66f92"                                                                      
-#&gt; [43] "file13946cc27994"                                                                      
-#&gt; [44] "file13946d2a293e"                                                                      
-#&gt; [45] "file13947385763f"                                                                      
-#&gt; [46] "file1394772e6cb6"                                                                      
-#&gt; [47] "file139478ae1566"                                                                      
-#&gt; [48] "file139478c7bdd"                                                                       
-#&gt; [49] "file13947b01f02"                                                                       
-#&gt; [50] "file13947c58463f"                                                                      
-#&gt; [51] "file13947dd245de"                                                                      
-#&gt; [52] "file13947ffb4f2b"                                                                      
-#&gt; [53] "file139496a73bf"                                                                       
-#&gt; [54] "file1394a2042d4"                                                                       
-#&gt; [55] "libloc_185_c2774112.rds"                                                               
-#&gt; [56] "repos_http%3A%2F%2Fwww.stats.ox.ac.uk%2Fpub%2FRWin%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"
-#&gt; [57] "repos_https%3A%2F%2Fcran.rstudio.com%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"              
-#&gt; [58] "rs-graphics-f0490e65-ec4d-44db-a539-52935a7d28be"                                      </div><div class='input'>
-<span class='co'># Utilisation avec un noyau de paramtÃ¨res</span>
+<span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.ano.txt" "123456789.2016.2.med"    
+#&gt; [3] "123456789.2016.2.med.txt"</div><div class='input'>
+<span class='co'># Utilisation avec un noyau de paramtères</span>
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></span>(
        <span class='kw'>finess</span> <span class='kw'>=</span> <span class='st'>'123456789'</span>,
        <span class='kw'>annee</span>  <span class='kw'>=</span> <span class='fl'>2016</span>,
@@ -339,186 +250,60 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
        )
 
 <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>, <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.12.16132016131502.in.zip</span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.12.16132016131502.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>PÃ©riode   : 2016 M12</span>
+#&gt; <span class='message'>Période   : 2016 M12</span>
 #&gt; <span class='message'>Date prod : NA</span>
-#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.12.ano.txt"                                                             
-#&gt;  [2] "123456789.2016.12.diap.txt"                                                            
-#&gt;  [3] "123456789.2016.12.dmi.txt"                                                             
-#&gt;  [4] "123456789.2016.12.ium.txt"                                                             
-#&gt;  [5] "123456789.2016.12.med.ini.txt"                                                         
-#&gt;  [6] "123456789.2016.12.med.txt"                                                             
-#&gt;  [7] "123456789.2016.12.porg.txt"                                                            
-#&gt;  [8] "123456789.2016.12.rss.ini.txt"                                                         
-#&gt;  [9] "123456789.2016.12.rss.txt"                                                             
-#&gt; [10] "123456789.2016.2.ano.txt"                                                              
-#&gt; [11] "123456789.2016.2.med"                                                                  
-#&gt; [12] "123456789.2016.2.med.txt"                                                              
-#&gt; [13] "3736331f7ad34b17aae187b3372a8adb.png"                                                  
-#&gt; [14] "d4627929553e46689caa878c36aa2c54.png"                                                  
-#&gt; [15] "file139418fffb7"                                                                       
-#&gt; [16] "file139419c438e0"                                                                      
-#&gt; [17] "file1394213e6247"                                                                      
-#&gt; [18] "file13942d644dde"                                                                      
-#&gt; [19] "file13942d937c10"                                                                      
-#&gt; [20] "file13942df2757"                                                                       
-#&gt; [21] "file13942df34efb"                                                                      
-#&gt; [22] "file13942f4214d3"                                                                      
-#&gt; [23] "file139432b26a00"                                                                      
-#&gt; [24] "file139434dc1dc1"                                                                      
-#&gt; [25] "file139439a23900"                                                                      
-#&gt; [26] "file13943a1745f6"                                                                      
-#&gt; [27] "file13943ccb47c9"                                                                      
-#&gt; [28] "file13943cf37f85"                                                                      
-#&gt; [29] "file13943f29a51"                                                                       
-#&gt; [30] "file139441715dc4"                                                                      
-#&gt; [31] "file139443be5ca8"                                                                      
-#&gt; [32] "file139447365c74"                                                                      
-#&gt; [33] "file139448643613"                                                                      
-#&gt; [34] "file1394491665cb"                                                                      
-#&gt; [35] "file139449677460"                                                                      
-#&gt; [36] "file13944ab913f2"                                                                      
-#&gt; [37] "file13944c2d6155"                                                                      
-#&gt; [38] "file13944e815a2d"                                                                      
-#&gt; [39] "file13944f09370f"                                                                      
-#&gt; [40] "file13944ff81ba"                                                                       
-#&gt; [41] "file1394542b143b"                                                                      
-#&gt; [42] "file139456496144"                                                                      
-#&gt; [43] "file13945849658d"                                                                      
-#&gt; [44] "file1394588c589"                                                                       
-#&gt; [45] "file13945de767e1"                                                                      
-#&gt; [46] "file13945ff61148"                                                                      
-#&gt; [47] "file139460882d75"                                                                      
-#&gt; [48] "file1394613a1d04"                                                                      
-#&gt; [49] "file1394676c2f27"                                                                      
-#&gt; [50] "file1394688258fa"                                                                      
-#&gt; [51] "file13946be66f92"                                                                      
-#&gt; [52] "file13946cc27994"                                                                      
-#&gt; [53] "file13946d2a293e"                                                                      
-#&gt; [54] "file13947385763f"                                                                      
-#&gt; [55] "file1394772e6cb6"                                                                      
-#&gt; [56] "file139478ae1566"                                                                      
-#&gt; [57] "file139478c7bdd"                                                                       
-#&gt; [58] "file13947b01f02"                                                                       
-#&gt; [59] "file13947c58463f"                                                                      
-#&gt; [60] "file13947dd245de"                                                                      
-#&gt; [61] "file13947ffb4f2b"                                                                      
-#&gt; [62] "file139496a73bf"                                                                       
-#&gt; [63] "file1394a2042d4"                                                                       
-#&gt; [64] "libloc_185_c2774112.rds"                                                               
-#&gt; [65] "repos_http%3A%2F%2Fwww.stats.ox.ac.uk%2Fpub%2FRWin%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"
-#&gt; [66] "repos_https%3A%2F%2Fcran.rstudio.com%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"              
-#&gt; [67] "rs-graphics-f0490e65-ec4d-44db-a539-52935a7d28be"                                      </div><div class='input'><span class='co'># Modification d'un paramÃ¨tre du noyau</span>
+#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.12.ano.txt"     "123456789.2016.12.diap.txt"   
+#&gt;  [3] "123456789.2016.12.dmi.txt"     "123456789.2016.12.ium.txt"    
+#&gt;  [5] "123456789.2016.12.med.ini.txt" "123456789.2016.12.med.txt"    
+#&gt;  [7] "123456789.2016.12.porg.txt"    "123456789.2016.12.rss.ini.txt"
+#&gt;  [9] "123456789.2016.12.rss.txt"     "123456789.2016.2.ano.txt"     
+#&gt; [11] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
 <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>,  <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>PÃ©riode   : 2016 M11</span>
+#&gt; <span class='message'>Période   : 2016 M11</span>
 #&gt; <span class='message'>Date prod : 2016-12-25 15:46:08</span>
-#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.11.ano.txt"                                                             
-#&gt;  [2] "123456789.2016.11.diap.txt"                                                            
-#&gt;  [3] "123456789.2016.11.dmi.txt"                                                             
-#&gt;  [4] "123456789.2016.11.ium.txt"                                                             
-#&gt;  [5] "123456789.2016.11.med.ini.txt"                                                         
-#&gt;  [6] "123456789.2016.11.med.txt"                                                             
-#&gt;  [7] "123456789.2016.11.porg.txt"                                                            
-#&gt;  [8] "123456789.2016.11.rss.ini.txt"                                                         
-#&gt;  [9] "123456789.2016.11.rss.txt"                                                             
-#&gt; [10] "123456789.2016.12.ano.txt"                                                             
-#&gt; [11] "123456789.2016.12.diap.txt"                                                            
-#&gt; [12] "123456789.2016.12.dmi.txt"                                                             
-#&gt; [13] "123456789.2016.12.ium.txt"                                                             
-#&gt; [14] "123456789.2016.12.med.ini.txt"                                                         
-#&gt; [15] "123456789.2016.12.med.txt"                                                             
-#&gt; [16] "123456789.2016.12.porg.txt"                                                            
-#&gt; [17] "123456789.2016.12.rss.ini.txt"                                                         
-#&gt; [18] "123456789.2016.12.rss.txt"                                                             
-#&gt; [19] "123456789.2016.2.ano.txt"                                                              
-#&gt; [20] "123456789.2016.2.med"                                                                  
-#&gt; [21] "123456789.2016.2.med.txt"                                                              
-#&gt; [22] "3736331f7ad34b17aae187b3372a8adb.png"                                                  
-#&gt; [23] "d4627929553e46689caa878c36aa2c54.png"                                                  
-#&gt; [24] "file139418fffb7"                                                                       
-#&gt; [25] "file139419c438e0"                                                                      
-#&gt; [26] "file1394213e6247"                                                                      
-#&gt; [27] "file13942d644dde"                                                                      
-#&gt; [28] "file13942d937c10"                                                                      
-#&gt; [29] "file13942df2757"                                                                       
-#&gt; [30] "file13942df34efb"                                                                      
-#&gt; [31] "file13942f4214d3"                                                                      
-#&gt; [32] "file139432b26a00"                                                                      
-#&gt; [33] "file139434dc1dc1"                                                                      
-#&gt; [34] "file139439a23900"                                                                      
-#&gt; [35] "file13943a1745f6"                                                                      
-#&gt; [36] "file13943ccb47c9"                                                                      
-#&gt; [37] "file13943cf37f85"                                                                      
-#&gt; [38] "file13943f29a51"                                                                       
-#&gt; [39] "file139441715dc4"                                                                      
-#&gt; [40] "file139443be5ca8"                                                                      
-#&gt; [41] "file139447365c74"                                                                      
-#&gt; [42] "file139448643613"                                                                      
-#&gt; [43] "file1394491665cb"                                                                      
-#&gt; [44] "file139449677460"                                                                      
-#&gt; [45] "file13944ab913f2"                                                                      
-#&gt; [46] "file13944c2d6155"                                                                      
-#&gt; [47] "file13944e815a2d"                                                                      
-#&gt; [48] "file13944f09370f"                                                                      
-#&gt; [49] "file13944ff81ba"                                                                       
-#&gt; [50] "file1394542b143b"                                                                      
-#&gt; [51] "file139456496144"                                                                      
-#&gt; [52] "file13945849658d"                                                                      
-#&gt; [53] "file1394588c589"                                                                       
-#&gt; [54] "file13945de767e1"                                                                      
-#&gt; [55] "file13945ff61148"                                                                      
-#&gt; [56] "file139460882d75"                                                                      
-#&gt; [57] "file1394613a1d04"                                                                      
-#&gt; [58] "file1394676c2f27"                                                                      
-#&gt; [59] "file1394688258fa"                                                                      
-#&gt; [60] "file13946be66f92"                                                                      
-#&gt; [61] "file13946cc27994"                                                                      
-#&gt; [62] "file13946d2a293e"                                                                      
-#&gt; [63] "file13947385763f"                                                                      
-#&gt; [64] "file1394772e6cb6"                                                                      
-#&gt; [65] "file139478ae1566"                                                                      
-#&gt; [66] "file139478c7bdd"                                                                       
-#&gt; [67] "file13947b01f02"                                                                       
-#&gt; [68] "file13947c58463f"                                                                      
-#&gt; [69] "file13947dd245de"                                                                      
-#&gt; [70] "file13947ffb4f2b"                                                                      
-#&gt; [71] "file139496a73bf"                                                                       
-#&gt; [72] "file1394a2042d4"                                                                       
-#&gt; [73] "libloc_185_c2774112.rds"                                                               
-#&gt; [74] "repos_http%3A%2F%2Fwww.stats.ox.ac.uk%2Fpub%2FRWin%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"
-#&gt; [75] "repos_https%3A%2F%2Fcran.rstudio.com%2Fbin%2Fwindows%2Fcontrib%2F3.4.rds"              
-#&gt; [76] "rs-graphics-f0490e65-ec4d-44db-a539-52935a7d28be"                                      </div><div class='input'>
-<span class='co'># Pour une mÃªme pÃ©riode (annÃ©e/mois), il peut y avoir plusieurs archives si </span>
+#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.11.ano.txt"     "123456789.2016.11.diap.txt"   
+#&gt;  [3] "123456789.2016.11.dmi.txt"     "123456789.2016.11.ium.txt"    
+#&gt;  [5] "123456789.2016.11.med.ini.txt" "123456789.2016.11.med.txt"    
+#&gt;  [7] "123456789.2016.11.porg.txt"    "123456789.2016.11.rss.ini.txt"
+#&gt;  [9] "123456789.2016.11.rss.txt"     "123456789.2016.12.ano.txt"    
+#&gt; [11] "123456789.2016.12.diap.txt"    "123456789.2016.12.dmi.txt"    
+#&gt; [13] "123456789.2016.12.ium.txt"     "123456789.2016.12.med.ini.txt"
+#&gt; [15] "123456789.2016.12.med.txt"     "123456789.2016.12.porg.txt"   
+#&gt; [17] "123456789.2016.12.rss.ini.txt" "123456789.2016.12.rss.txt"    
+#&gt; [19] "123456789.2016.2.ano.txt"      "123456789.2016.2.med"         
+#&gt; [21] "123456789.2016.2.med.txt"     </div><div class='input'>
+<span class='co'># Pour une même période (année/mois), il peut y avoir plusieurs archives si </span>
 <span class='co'># il y a eu plusieurs envois. Par exemple il y a deux version de l'archive</span>
-<span class='co'># out pour la pÃ©riode 2017.10 dans notre exemple simulÃ©</span>
+<span class='co'># out pour la période 2017.10 dans notre exemple simulé</span>
 <span class='fu'>dir</span>(<span class='no'>dossier_archives</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"2017\\.10.*out\\.zip"</span>)</div><div class='output co'>#&gt; [1] "123456789.2017.10.21112017162343.out.zip"
 #&gt; [2] "123456789.2017.10.24112017182343.out.zip"</div><div class='input'>
  <span class='co'># Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip </span>
- <span class='co'># sÃ©lectionne automatiquement l'archive la plus rÃ©cente</span>
+ <span class='co'># sélectionne automatiquement l'archive la plus récente</span>
  <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
         <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
         <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
         <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2017.10.24112017182343.out.zip</span>
+#&gt; <span class='message'>Dézippage de l'archive 123456789.2017.10.24112017182343.out.zip</span>
 #&gt; <span class='message'>Taille    : 0.0067 Mo</span>
 #&gt; <span class='message'>Type      : out</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>PÃ©riode   : 2017 M10</span>
+#&gt; <span class='message'>Période   : 2017 M10</span>
 #&gt; <span class='message'>Date prod : 2017-11-24 18:23:43</span>
 #&gt; <span class='message'>Fichiers  : med</span></div><div class='input'> <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"med"</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.11.med.ini.txt" "123456789.2016.11.med.txt"    
 #&gt; [3] "123456789.2016.12.med.ini.txt" "123456789.2016.12.med.txt"    
 #&gt; [5] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     
 #&gt; [7] "123456789.2017.10.med"        </div><div class='input'> 
- # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invitÃ©
- # Ã  choisir
+ # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
+ # à choisir
  </div><span class='co'># NOT RUN {</span>
  <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
@@ -529,7 +314,7 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
  <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"rsa"</span>)
 
 <span class='co'># }</span><div class='input'>
-# DÃ©zipper les logs
+# Dézipper les logs
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>, <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'chainage.log'</span>, <span class='st'>'comp.log'</span>, <span class='st'>'log'</span>))
 <span class='co'># }</span><div class='input'>

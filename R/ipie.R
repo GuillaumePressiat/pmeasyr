@@ -1,6 +1,6 @@
 #' ~ MCO - Import des PIE
 #'
-#' Imports des fichiers PIE In / Out
+#' Imports des fichiers PIE Out
 #'
 #' Formats depuis 2011 pris en charge
 #'
@@ -8,14 +8,14 @@
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param typpie Type de donnees In / Out
+#' @param typpie Type de donnees In / Out (seulement out pour le moment)
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les dialyses péritonéales In ou Out.
+#' @return Une table (data.frame, tbl_df) contenant les prestation inter-établissement Out.
 #'
 #' @examples
 #' \dontrun{
@@ -25,9 +25,7 @@
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{irsa}}, \code{\link{irum}}
-#' @usage ipie(finess, annee, mois, path, 
-#' typpie = c("out", "in"), 
-#' lib = T, tolower_names = F, ...)
+#' @usage ipie(finess, annee, mois, path, typpie = c("out", "in"), lib = T, tolower_names = F, ...)
 #' @export ipie
 #' @export
 ipie <- function(...){

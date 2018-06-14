@@ -7,7 +7,7 @@
 epmsi_mco_rav(valo)
 }
 \value{
-Un tibble similaire au tableau RAV epmsi
+Un tibble similaire au tableau RAV epmsi (montant BR* ou BR si coeff prud = 1)
 }
 \description{
 ~ VVR - Reproduire le tableau RAV

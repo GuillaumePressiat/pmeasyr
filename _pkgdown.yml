@@ -2,12 +2,14 @@ url: https://im-aphp.github.io/pmeasyr/
 
 templates:
   params:
-    bootswatch: cerulean
+    bootswatch: flatly
 reference:
-  - title: Gestion des archives
+  - title: "Gestion des archives"
+    desc: "Dézipper, effacer des archives in / out PMSI"
     contents:
     - starts_with("a")
   - title: Import des données
+    desc: "Importer les fichiers in / out des archives PMSI"
     contents:
     - starts_with("i")
   - title: Formats et labels
@@ -15,10 +17,12 @@ reference:
     - formats
     - labeleasier
   - title: Noyau de paramètres
+    desc: "Alléger les scripts en rassemblant les différents paramètres"
     contents:
     - noyau_pmeasyr
     - noyau_skeleton
-  - title: Vers la base de données 
+  - title: Vers la base de données
+    desc: "Voir vignette"
     contents:
     - starts_with("db_")
     - starts_with("tbl_")
@@ -26,7 +30,6 @@ reference:
     contents:
     - tdiag
     - dico
-    - "%+%"
   - title: Requêteur
     contents:
     - requete
@@ -38,6 +41,7 @@ reference:
     - collect_rsa_from_db
     - creer_json
   - title: Valorisation des séjours MCO
+    desc: "Voir vignette"
     contents:
     - vvr_ano_mco
     - vvr_ghs_supp
@@ -48,14 +52,36 @@ reference:
     - epmsi_mco_sv
     - epmsi_mco_rav
 
+
 navbar:
-  title: pmeasyr
-  type: default
-  left:
-  - text: Références / Fonctions
-    href: reference/index.html
-  - text: Articles / Vignettes
-    href: articles/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/IM-APHP/pmeasyr
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: pmeasyr
+        href: articles/vignette1.html
+      - text: Flux d'import avec pmeasyr
+        href: articles/vignette2.html
+      - text: Vers la database avec pmeasyr
+        href: articles/vignette3.html
+      - text: Valoriser les rsa
+        href: articles/vignette4.html
+    news:
+      text: Changelog
+      href: news/index.html
+

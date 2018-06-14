@@ -12,6 +12,7 @@
 
 <meta name="author" content="Guillaume Pressiat" />
 
+<meta name="date" content="2017-12-09" />
 
 <title>Vers la database avec pmeasyr</title>
 
@@ -114,40 +115,40 @@ p &lt;-<span class="st"> </span><span class="kw">noyau_pmeasyr</span>(
 <h4>MCO</h4>
 <p>Avec les fonctions <code>db_mco_in</code> et <code>db_mco_out</code>, les tables rum, actes et diagnostics des rums, les tables rsa, actes, diagnostics et passages um et ano des rsa sont integrees dans la db, avec le fichier tra accole.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tables mco in 2011</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2011</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ok ?</span>
+purrr::<span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2011</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ok ?</span>
 <span class="co"># ... 2012 -- 2015</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
+purrr::<span class="kw">quietly</span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
 
 <span class="co"># Tables mco out 2016</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_mco_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
+purrr::<span class="kw">quietly</span>(db_mco_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
 <span class="co"># ...</span></code></pre></div>
 </div>
 <div id="rsf" class="section level4">
 <h4>RSF</h4>
 <p>Avec la fonction <code>db_rsf_out</code>, tous les rafael du out sont integrees dans la db, un par table (A, B, C, etc) et la table ano-ace.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p<span class="op">$</span>path &lt;-<span class="st"> &quot;~/Documents/data/rsf&quot;</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p$path &lt;-<span class="st"> &quot;~/Documents/data/rsf&quot;</span>
 
 <span class="co"># Tables rsf out 2016</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_rsf_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></code></pre></div>
+purrr::<span class="kw">quietly</span>(db_rsf_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></code></pre></div>
 </div>
 <div id="table-par-table" class="section level4">
 <h4>Table par table</h4>
 <p>Un exemple pour la table rapss de l’had.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Exemple en had</span>
-p<span class="op">$</span>path &lt;-<span class="st"> &quot;~/Documents/data/had&quot;</span>
+p$path &lt;-<span class="st"> &quot;~/Documents/data/had&quot;</span>
 
 <span class="kw">irapss</span>(p, <span class="dt">annee =</span> <span class="dv">2015</span>) -&gt;<span class="st"> </span>tables_had
 
 <span class="co"># Table had rapss 2015</span>
-purrr<span class="op">::</span><span class="kw">quietly</span>(db_generique)(con, <span class="dt">an =</span> <span class="dv">15</span>, <span class="dt">table =</span> tables_had<span class="op">$</span>rapss, <span class="dt">prefix =</span> <span class="st">'had'</span>, <span class="dt">suffix =</span>  <span class="st">'rapss_rapss'</span>) -&gt;<span class="st"> </span>ok
+purrr::<span class="kw">quietly</span>(db_generique)(con, <span class="dt">an =</span> <span class="dv">15</span>, <span class="dt">table =</span> tables_had$rapss, <span class="dt">prefix =</span> <span class="st">'had'</span>, <span class="dt">suffix =</span>  <span class="st">'rapss_rapss'</span>) -&gt;<span class="st"> </span>ok
 <span class="co"># had_15_rapss_rapss</span></code></pre></div>
 </div>
 </div>
 <div id="connections-tab-dans-rstudio" class="section level3">
 <h3>3 - Connections Tab dans RStudio</h3>
 <p>Pour pouvoir profiter de l’onglet <a href="https://db.rstudio.com">Connections</a> dans RStudio v1.1, vous pouvez définir l’objet <code>con</code> comme suit :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="st">&quot;PostgreSQL&quot;</span>)
-con &lt;-<span class="st"> </span>dbplyr<span class="op">::</span><span class="kw">src_dbi</span>(con)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span>DBI::<span class="kw">dbConnect</span>(odbc::<span class="kw">odbc</span>(), <span class="st">&quot;PostgreSQL&quot;</span>)
+con &lt;-<span class="st"> </span>dbplyr::<span class="kw">src_dbi</span>(con)</code></pre></div>
 <p>Et vous pourrez alors naviguer dans les 1 000 premières lignes de chacune des tables.</p>
 </div>
 

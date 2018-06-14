@@ -102,8 +102,6 @@ vvr_mco_sv(vrsa, vano)
 ```
 
 
-### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments
-
 La table `resu` contient une ligne par rsa avec les variables suivantes : 
 
 ```

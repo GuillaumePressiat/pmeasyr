@@ -130,15 +130,12 @@ vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(con,  <sp
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
 
 resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(vrsa, vano, <span class="dt">tarifs =</span> tarifs_ghs),
 <span class="kw">vvr_mco_sv</span>(vrsa, vano)
 )</code></pre></div>
-</div>
-<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
-<h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
 <p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
 <pre><code>cle_rsa
 rec_totale
@@ -150,7 +147,7 @@ type_fin
 typvidhosp</code></pre>
 <p>On peut libeller ces variables en faisant appel à la fonction <code>vvr_libelles_valo</code>, voir ci-dessous.</p>
 </div>
-<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements-1" class="section level3">
+<div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(vrsa, 
@@ -196,7 +193,7 @@ typvidhosp</code></pre>
 <div id="generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="section level2">
 <h2>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h2>
 <p>Les variables présentes dans la table <code>resu</code> permettent à la fois de dénombrer les séjours par type de valorisation, c’est-à-dire :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(pmeasyr<span class="op">::</span><span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_type_sej'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_type_sej'</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -207,44 +204,44 @@ typvidhosp</code></pre>
 <tbody>
 <tr class="odd">
 <td align="right">0</td>
-<td align="left">SÃ©jours valorisÃ©s</td>
+<td align="left">Séjours valorisés</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="left">SÃ©jours en CM 90</td>
+<td align="left">Séjours en CM 90</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
-<td align="left">SÃ©jours en prestation inter-Ã©tablissement</td>
+<td align="left">Séjours en prestation inter-établissement</td>
 </tr>
 <tr class="even">
 <td align="right">3</td>
-<td align="left">SÃ©jours en GHS 9999</td>
+<td align="left">Séjours en GHS 9999</td>
 </tr>
 <tr class="odd">
 <td align="right">4</td>
-<td align="left">SÃ©jours avec pb de chainage (hors NN, rdth et PO)</td>
+<td align="left">Séjours avec pb de chainage (hors NN, rdth et PO)</td>
 </tr>
 <tr class="even">
 <td align="right">5</td>
-<td align="left">SÃ©jours avec pb de codage des variables bloquantes</td>
+<td align="left">Séjours avec pb de codage des variables bloquantes</td>
 </tr>
 <tr class="odd">
 <td align="right">6</td>
-<td align="left">SÃ©jours en attente de dÃ©cision sur les droits du patient</td>
+<td align="left">Séjours en attente de décision sur les droits du patient</td>
 </tr>
 <tr class="even">
 <td align="right">7</td>
-<td align="left">SÃ©jours non facturable Ã  l’AM hors PO</td>
+<td align="left">Séjours non facturable à l’AM hors PO</td>
 </tr>
 <tr class="odd">
 <td align="right">8</td>
-<td align="left">SÃ©jours avec PO sur patient arrivÃ© dÃ©cÃ©dÃ© ou avec PO non facturables Ã  l’AM</td>
+<td align="left">Séjours avec PO sur patient arrivé décédé ou avec PO non facturables à l’AM</td>
 </tr>
 </tbody>
 </table>
 <p>et de reproduire les rubriques de valorisation par type de recette:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(pmeasyr<span class="op">::</span><span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_valo'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_valo'</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -267,19 +264,19 @@ typvidhosp</code></pre>
 </tr>
 <tr class="even">
 <td align="left">rec_exb</td>
-<td align="left">Valorisation extrÃªme bas (Ã  dÃ©duire)</td>
+<td align="left">Valorisation extrême bas (à déduire)</td>
 </tr>
 <tr class="odd">
 <td align="left">rec_rehosp_ghm</td>
-<td align="left">Valorisation sÃ©jours avec rehosp dans mÃªme GHM</td>
+<td align="left">Valorisation séjours avec rehosp dans même GHM</td>
 </tr>
 <tr class="even">
 <td align="left">rec_mino_sus</td>
-<td align="left">Valorisation sÃ©jours avec minoration forfaitaire liste en sus</td>
+<td align="left">Valorisation séjours avec minoration forfaitaire liste en sus</td>
 </tr>
 <tr class="odd">
 <td align="left">rec_exh</td>
-<td align="left">Valorisation journÃ©es extrÃªme haut</td>
+<td align="left">Valorisation journées extrême haut</td>
 </tr>
 <tr class="even">
 <td align="left">rec_aph</td>
@@ -287,11 +284,11 @@ typvidhosp</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">rec_rap</td>
-<td align="left">Valorisation supplÃ©ments radiothÃ©rapie pÃ©diatrique</td>
+<td align="left">Valorisation suppléments radiothérapie pédiatrique</td>
 </tr>
 <tr class="even">
 <td align="left">rec_ant</td>
-<td align="left">Valorisation supplÃ©ments antepartum</td>
+<td align="left">Valorisation suppléments antepartum</td>
 </tr>
 <tr class="odd">
 <td align="left">rec_rdt_tot</td>
@@ -299,27 +296,27 @@ typvidhosp</code></pre>
 </tr>
 <tr class="even">
 <td align="left">rec_rea</td>
-<td align="left">Valorisation supplÃ©ments de rÃ©animation</td>
+<td align="left">Valorisation suppléments de réanimation</td>
 </tr>
 <tr class="odd">
 <td align="left">rec_rep</td>
-<td align="left">Valorisation supplÃ©ments de rÃ©a pÃ©diatrique</td>
+<td align="left">Valorisation suppléments de réa pédiatrique</td>
 </tr>
 <tr class="even">
 <td align="left">rec_nn1</td>
-<td align="left">Valorisation supplÃ©ments de nÃ©onat sans SI</td>
+<td align="left">Valorisation suppléments de néonat sans SI</td>
 </tr>
 <tr class="odd">
 <td align="left">rec_nn2</td>
-<td align="left">Valorisation supplÃ©ments de nÃ©onat avec SI</td>
+<td align="left">Valorisation suppléments de néonat avec SI</td>
 </tr>
 <tr class="even">
 <td align="left">rec_nn3</td>
-<td align="left">Valorisation supplÃ©ments de rÃ©animation nÃ©onat</td>
+<td align="left">Valorisation suppléments de réanimation néonat</td>
 </tr>
 <tr class="odd">
 <td align="left">rec_po_tot</td>
-<td align="left">Valorisation prÃ©lÃ©vements d organe</td>
+<td align="left">Valorisation prélévements d organe</td>
 </tr>
 <tr class="even">
 <td align="left">rec_caishyp</td>
@@ -327,26 +324,26 @@ typvidhosp</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">rec_dialhosp</td>
-<td align="left">Valorisation supplÃ©ments de dialyse</td>
+<td align="left">Valorisation suppléments de dialyse</td>
 </tr>
 <tr class="even">
 <td align="left">rec_src</td>
-<td align="left">Valorisation supplÃ©ments de surveillance continue</td>
+<td align="left">Valorisation suppléments de surveillance continue</td>
 </tr>
 <tr class="odd">
 <td align="left">rec_stf</td>
-<td align="left">Valorisation supplÃ©ments de soins intensifs</td>
+<td align="left">Valorisation suppléments de soins intensifs</td>
 </tr>
 <tr class="even">
 <td align="left">rec_sdc</td>
-<td align="left">Valorisation supplÃ©ment dÃ©fibrilateur cardiaque</td>
+<td align="left">Valorisation supplément défibrilateur cardiaque</td>
 </tr>
 </tbody>
 </table>
 <div id="types-de-vidhosp" class="section level3">
 <h3>Types de vidhosp</h3>
 <p>La table resu contient également une colonne <code>typvidhosp</code> qui correspond à un type de séjour, croisant plusieurs modalités (factam, nouveaux-nés, séances, 0 jour, autres, etc.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(pmeasyr<span class="op">::</span><span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_vidhosp'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_vidhosp'</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -369,23 +366,23 @@ typvidhosp</code></pre>
 </tr>
 <tr class="even">
 <td align="right">4</td>
-<td align="left">1 : Nouveau-nÃ©</td>
+<td align="left">1 : Nouveau-né</td>
 </tr>
 <tr class="odd">
 <td align="right">5</td>
-<td align="left">1 : RadiothÃ©rapie</td>
+<td align="left">1 : Radiothérapie</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
-<td align="left">1 : SÃ©ances hors radiothÃ©rapie</td>
+<td align="left">1 : Séances hors radiothérapie</td>
 </tr>
 <tr class="odd">
 <td align="right">7</td>
-<td align="left">1 : DurÃ©e de sÃ©jour = 0</td>
+<td align="left">1 : Durée de séjour = 0</td>
 </tr>
 <tr class="even">
 <td align="right">8</td>
-<td align="left">1 : Autre type de sÃ©jour</td>
+<td align="left">1 : Autre type de séjour</td>
 </tr>
 </tbody>
 </table>
