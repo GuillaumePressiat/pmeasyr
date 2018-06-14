@@ -28,7 +28,7 @@ Version de la fonction \code{\link{adezip2}} pour des archives au format Intrane
             file = 'MCO_IN_00000_201603.zip',
             liste = 'ano')
 
-    # Totalité de l'archive
+    # TotalitÃ© de l'archive
     adezip3(path = '~/Downloads',
             file = 'MCO_IN_00000_201603.zip',
             liste = '')

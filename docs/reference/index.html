@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Function reference" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">pmeasyr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">pmeasyr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.4</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -67,6 +80,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -74,492 +88,494 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.2.4</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-gestion-des-archives" class="hasAnchor"><a href="#section-gestion-des-archives" class="anchor"></a>Gestion des archives</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="adelete.html">adelete</a></code> </p>
-          </td>
-          <td><p>~ *.zip - Suppression des fichiers en fin de traitement</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="adezip2.html">adezip2</a></code> </p>
-          </td>
-          <td><p>~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="adezip3.html">adezip3</a></code> </p>
-          </td>
-          <td><p>~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet AP-HP, avec en parametre le nom de l'archive</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="adezip.html">adezip</a></code> </p>
-          </td>
-          <td><p>~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="astat.html">astat</a></code> </p>
-          </td>
-          <td><p>~ *.zip - Liste et volume des fichiers d'une archive PMSI</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-import-des-donn-es" class="hasAnchor"><a href="#section-import-des-donn-es" class="anchor"></a>Import des données</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="iano_had.html">iano_had</a></code> </p>
-          </td>
-          <td><p>~ HAD - Import des Anohosp</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="iano_mco.html">iano_mco</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des Anohosp</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="iano_psy.html">iano_psy</a></code> </p>
-          </td>
-          <td><p>~ PSY - Import des Anohosp</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="iano_rafael.html">iano_rafael</a></code> </p>
-          </td>
-          <td><p>~ RSF - Import des Anohosp RSFA</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="iano_ssr.html">iano_ssr</a></code> </p>
-          </td>
-          <td><p>~ SSR - Import des Anohosp</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="idiap.html">idiap</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des DIAP</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="idmi_mco.html">idmi_mco</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des DMI</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="iium.html">iium</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des donnees UM du Out</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="iium_ssr.html">iium_ssr</a></code> </p>
-          </td>
-          <td><p>~ SSR - Import des donnees UM du Out</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="ileg_had.html">ileg_had</a></code> </p>
-          </td>
-          <td><p>~ HAD - Import des erreurs Leg</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="ileg_mco.html">ileg_mco</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des erreurs Leg</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="ileg_ssr.html">ileg_ssr</a></code> </p>
-          </td>
-          <td><p>~ SSR - Import des erreurs Leg</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="imed_had.html">imed_had</a></code> </p>
-          </td>
-          <td><p>~ HAD - Import des Med</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="imed_mco.html">imed_mco</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des Med</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="imed_ssr.html">imed_ssr</a></code> </p>
-          </td>
-          <td><p>~ SSR - Import des Med</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="inner_tra.html">inner_tra</a></code> </p>
-          </td>
-          <td><p>~ TRA - Ajout du TRA aux donnees Out</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="ipo.html">ipo</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des PO</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="ir3a.html">ir3a</a></code> </p>
-          </td>
-          <td><p>~ PSY - Import des R3A</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="irafael.html">irafael</a></code> </p>
-          </td>
-          <td><p>~ RSF - Import des Rafael</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="irapss.html">irapss</a></code> </p>
-          </td>
-          <td><p>~ HAD - Import des RAPSS</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="irha.html">irha</a></code> </p>
-          </td>
-          <td><p>~ SSR - Import des RHA</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="irpsa.html">irpsa</a></code> </p>
-          </td>
-          <td><p>~ PSY - Import des RPSA</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="irsa.html">irsa</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des RSA</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="irum.html">irum</a></code> </p>
-          </td>
-          <td><p>~ MCO - Import des RUM</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="issrha.html">issrha</a></code> </p>
-          </td>
-          <td><p>~ SSR - Import des SSRHA</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="itra.html">itra</a></code> </p>
-          </td>
-          <td><p>~ TRA - Import du TRA</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-formats-et-labels" class="hasAnchor"><a href="#section-formats-et-labels" class="anchor"></a>Formats et labels</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p></p>
-          </td>
-          <td><p>Table des formats</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="labeleasier.html">labeleasier</a></code> </p>
-          </td>
-          <td><p>~ Labels pour le PMSI</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-noyau-de-param-tres" class="hasAnchor"><a href="#section-noyau-de-param-tres" class="anchor"></a>Noyau de paramètres</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="noyau_pmeasyr.html">noyau_pmeasyr</a></code> <code><a href="noyau_pmeasyr.html">print</a></code> </p>
-          </td>
-          <td><p>~ par - Noyau de parametres</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="noyau_skeleton.html">noyau_skeleton</a></code> </p>
-          </td>
-          <td><p>~ par - Noyau de parametres</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-vers-la-base-de-donn-es" class="hasAnchor"><a href="#section-vers-la-base-de-donn-es" class="anchor"></a>Vers la base de données</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_generique.html">db_generique</a></code> </p>
-          </td>
-          <td><p>~ db - Copier un tibble dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_had_out.html">db_had_out</a></code> </p>
-          </td>
-          <td><p>~ db - Copier les rapss dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_liste_tables.html">db_liste_tables</a></code> </p>
-          </td>
-          <td><p>~ db - Lister les tables d'une db en tableau</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_mco_in.html">db_mco_in</a></code> </p>
-          </td>
-          <td><p>~ db - Copier les rum dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_mco_out.html">db_mco_out</a></code> </p>
-          </td>
-          <td><p>~ db - Copier les rsa dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_psy_out.html">db_psy_out</a></code> </p>
-          </td>
-          <td><p>~ db - Copier les rpsa dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_rsf_out.html">db_rsf_out</a></code> </p>
-          </td>
-          <td><p>~ db - Copier les rsf dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="db_ssr_out.html">db_ssr_out</a></code> </p>
-          </td>
-          <td><p>~ db - Copier les rha dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tbl_had.html">tbl_had</a></code> </p>
-          </td>
-          <td><p>~ db - remote access aux tables had</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tbl_mco.html">tbl_mco</a></code> </p>
-          </td>
-          <td><p>~ db - remote access aux tables mco</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tbl_psy.html">tbl_psy</a></code> </p>
-          </td>
-          <td><p>~ db - remote access aux tables psy</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tbl_rsf.html">tbl_rsf</a></code> </p>
-          </td>
-          <td><p>~ db - remote access aux tables rsf</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tbl_ssr.html">tbl_ssr</a></code> </p>
-          </td>
-          <td><p>~ db - remote access aux tables ssr</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-autres" class="hasAnchor"><a href="#section-autres" class="anchor"></a>Autres</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tdiag.html">tdiag</a></code> </p>
-          </td>
-          <td><p>~ Tidy - Tidy Diagnostics</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="dico.html">dico</a></code> </p>
-          </td>
-          <td><p>~ Dico - Dictionnaire des tables</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p></p>
-          </td>
-          <td><p>~ ... paste0 comme un pipe</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-requ-teur" class="hasAnchor"><a href="#section-requ-teur" class="anchor"></a>Requêteur</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="requete.html">requete</a></code> </p>
-          </td>
-          <td><p>~ req : requeter les rsa avec une liste</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="requete_db.html">requete_db</a></code> </p>
-          </td>
-          <td><p>~ req : requeter les rsa dans une db avec une liste</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="lancer_requete.html">lancer_requete</a></code> </p>
-          </td>
-          <td><p>~ req : lancer une ou plusieurs requetes avec une ou des listes</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="lancer_requete_db.html">lancer_requete_db</a></code> </p>
-          </td>
-          <td><p>~ req : lancer une ou plusieurs requetes dans une db avec une ou des listes</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="prepare_rsa.html">prepare_rsa</a></code> </p>
-          </td>
-          <td><p>~ req : preparer les rsa pour la requete</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="enrobeur.html">enrobeur</a></code> </p>
-          </td>
-          <td><p>~ req : mise en forme d'une liste de codes</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="collect_rsa_from_db.html">collect_rsa_from_db</a></code> </p>
-          </td>
-          <td><p>~ req : collecter les rsa présents dans une db</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="creer_json.html">creer_json</a></code> </p>
-          </td>
-          <td><p>~ req : creer un json pour partager une liste</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-valorisation-des-s-jours-mco" class="hasAnchor"><a href="#section-valorisation-des-s-jours-mco" class="anchor"></a>Valorisation des séjours MCO</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="vvr_ano_mco.html">vvr_ano_mco</a></code> </p>
-          </td>
-          <td><p>~ VVR - preparer les ano pour valoriser les rsa</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="vvr_ghs_supp.html">vvr_ghs_supp</a></code> </p>
-          </td>
-          <td><p>~ VVR - Attribuer les recettes GHS et suppléments sur des rsa</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="vvr_libelles_valo.html">vvr_libelles_valo</a></code> </p>
-          </td>
-          <td><p>~ VVR - Libelles des rubriques de valorisation et de types de rsa</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="vvr_mco.html">vvr_mco</a></code> </p>
-          </td>
-          <td><p>~ VVR - Croiser parties GHS / supplements et ano</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="vvr_mco_sv.html">vvr_mco_sv</a></code> </p>
-          </td>
-          <td><p>~ VVR - Attribuer le caractere facturable par cle_rsa</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="vvr_rsa.html">vvr_rsa</a></code> </p>
-          </td>
-          <td><p>~ VVR - preparer les rsa pour la valorisation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="epmsi_mco_sv.html">epmsi_mco_sv</a></code> </p>
-          </td>
-          <td><p>~ VVR - Reproduire le tableau SV</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="epmsi_mco_rav.html">epmsi_mco_rav</a></code> </p>
-          </td>
-          <td><p>~ VVR - Reproduire le tableau RAV</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-gestion-des-archives" class="hasAnchor"><a href="#section-gestion-des-archives" class="anchor"></a>Gestion des archives</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="adelete.html">adelete()</a></code> </p>
+        </td>
+        <td><p>~ *.zip - Suppression des fichiers en fin de traitement</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="adezip.html">adezip()</a></code> </p>
+        </td>
+        <td><p>~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="adezip2.html">adezip2()</a></code> </p>
+        </td>
+        <td><p>~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="adezip3.html">adezip3()</a></code> </p>
+        </td>
+        <td><p>~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet AP-HP, avec en parametre le nom de l'archive</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="astat.html">astat()</a></code> </p>
+        </td>
+        <td><p>~ *.zip - Liste et volume des fichiers d'une archive PMSI</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-import-des-donn-es" class="hasAnchor"><a href="#section-import-des-donn-es" class="anchor"></a>Import des données</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="iano_had.html">iano_had()</a></code> </p>
+        </td>
+        <td><p>~ HAD - Import des Anohosp</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iano_mco.html">iano_mco()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des Anohosp</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iano_psy.html">iano_psy()</a></code> </p>
+        </td>
+        <td><p>~ PSY - Import des Anohosp</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iano_rafael.html">iano_rafael()</a></code> </p>
+        </td>
+        <td><p>~ RSF - Import des Anohosp RSFA</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iano_ssr.html">iano_ssr()</a></code> </p>
+        </td>
+        <td><p>~ SSR - Import des Anohosp</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="idiap.html">idiap()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des DIAP</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="idmi_mco.html">idmi_mco()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des DMI</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iium.html">iium()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des donnees UM du Out</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="iium_ssr.html">iium_ssr()</a></code> </p>
+        </td>
+        <td><p>~ SSR - Import des donnees UM du Out</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ileg_had.html">ileg_had()</a></code> </p>
+        </td>
+        <td><p>~ HAD - Import des erreurs Leg</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ileg_mco.html">ileg_mco()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des erreurs Leg</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ileg_ssr.html">ileg_ssr()</a></code> </p>
+        </td>
+        <td><p>~ SSR - Import des erreurs Leg</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="imed_had.html">imed_had()</a></code> </p>
+        </td>
+        <td><p>~ HAD - Import des Med</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="imed_mco.html">imed_mco()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des Med</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="imed_ssr.html">imed_ssr()</a></code> </p>
+        </td>
+        <td><p>~ SSR - Import des Med</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="inner_tra.html">inner_tra()</a></code> </p>
+        </td>
+        <td><p>~ TRA - Ajout du TRA aux donnees Out</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ipie.html">ipie()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des PIE</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ipo.html">ipo()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des PO</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ir3a.html">ir3a()</a></code> </p>
+        </td>
+        <td><p>~ PSY - Import des R3A</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="irafael.html">irafael()</a></code> </p>
+        </td>
+        <td><p>~ RSF - Import des Rafael</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="irapss.html">irapss()</a></code> </p>
+        </td>
+        <td><p>~ HAD - Import des RAPSS</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="irha.html">irha()</a></code> </p>
+        </td>
+        <td><p>~ SSR - Import des RHA</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="irpsa.html">irpsa()</a></code> </p>
+        </td>
+        <td><p>~ PSY - Import des RPSA</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="irsa.html">irsa()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des RSA</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="irum.html">irum()</a></code> </p>
+        </td>
+        <td><p>~ MCO - Import des RUM</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="issrha.html">issrha()</a></code> </p>
+        </td>
+        <td><p>~ SSR - Import des SSRHA</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="itra.html">itra()</a></code> </p>
+        </td>
+        <td><p>~ TRA - Import du TRA</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-formats-et-labels" class="hasAnchor"><a href="#section-formats-et-labels" class="anchor"></a>Formats et labels</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="formats.html">formats</a></code> </p>
+        </td>
+        <td><p>Table des formats</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="labeleasier.html">labeleasier()</a></code> </p>
+        </td>
+        <td><p>~ Labels pour le PMSI</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-noyau-de-param-tres" class="hasAnchor"><a href="#section-noyau-de-param-tres" class="anchor"></a>Noyau de paramètres</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="noyau_pmeasyr.html">noyau_pmeasyr()</a></code> <code><a href="noyau_pmeasyr.html">print(<i>&lt;pm_param&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>~ par - Noyau de parametres</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="noyau_skeleton.html">noyau_skeleton()</a></code> </p>
+        </td>
+        <td><p>~ par - Noyau de parametres</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-vers-la-base-de-donn-es" class="hasAnchor"><a href="#section-vers-la-base-de-donn-es" class="anchor"></a>Vers la base de données</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="db_generique.html">db_generique()</a></code> </p>
+        </td>
+        <td><p>~ db - Copier un tibble dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="db_had_out.html">db_had_out()</a></code> </p>
+        </td>
+        <td><p>~ db - Copier les rapss dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="db_liste_tables.html">db_liste_tables()</a></code> </p>
+        </td>
+        <td><p>~ db - Lister les tables d'une db en tableau</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="db_mco_in.html">db_mco_in()</a></code> </p>
+        </td>
+        <td><p>~ db - Copier les rum dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="db_mco_out.html">db_mco_out()</a></code> </p>
+        </td>
+        <td><p>~ db - Copier les rsa dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="db_psy_out.html">db_psy_out()</a></code> </p>
+        </td>
+        <td><p>~ db - Copier les rpsa dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="db_rsf_out.html">db_rsf_out()</a></code> </p>
+        </td>
+        <td><p>~ db - Copier les rsf dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="db_ssr_out.html">db_ssr_out()</a></code> </p>
+        </td>
+        <td><p>~ db - Copier les rha dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tbl_had.html">tbl_had()</a></code> </p>
+        </td>
+        <td><p>~ db - remote access aux tables had</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tbl_mco.html">tbl_mco()</a></code> </p>
+        </td>
+        <td><p>~ db - remote access aux tables mco</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tbl_psy.html">tbl_psy()</a></code> </p>
+        </td>
+        <td><p>~ db - remote access aux tables psy</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tbl_rsf.html">tbl_rsf()</a></code> </p>
+        </td>
+        <td><p>~ db - remote access aux tables rsf</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tbl_ssr.html">tbl_ssr()</a></code> </p>
+        </td>
+        <td><p>~ db - remote access aux tables ssr</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-autres" class="hasAnchor"><a href="#section-autres" class="anchor"></a>Autres</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="tdiag.html">tdiag()</a></code> </p>
+        </td>
+        <td><p>~ Tidy - Tidy Diagnostics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dico.html">dico()</a></code> </p>
+        </td>
+        <td><p>~ Dico - Dictionnaire des tables</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="grapes-plus-grapes.html">x</a></code> </p>
+        </td>
+        <td><p>~ ... paste0 comme un pipe</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-requ-teur" class="hasAnchor"><a href="#section-requ-teur" class="anchor"></a>Requêteur</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="requete.html">requete()</a></code> </p>
+        </td>
+        <td><p>~ req : requeter les rsa avec une liste</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="requete_db.html">requete_db()</a></code> </p>
+        </td>
+        <td><p>~ req : requeter les rsa dans une db avec une liste</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="lancer_requete.html">lancer_requete()</a></code> </p>
+        </td>
+        <td><p>~ req : lancer une ou plusieurs requetes avec une ou des listes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="lancer_requete_db.html">lancer_requete_db()</a></code> </p>
+        </td>
+        <td><p>~ req : lancer une ou plusieurs requetes dans une db avec une ou des listes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="prepare_rsa.html">prepare_rsa()</a></code> </p>
+        </td>
+        <td><p>~ req : preparer les rsa pour la requete</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="enrobeur.html">enrobeur()</a></code> </p>
+        </td>
+        <td><p>~ req : mise en forme d'une liste de codes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="collect_rsa_from_db.html">collect_rsa_from_db()</a></code> </p>
+        </td>
+        <td><p>~ req : collecter les rsa présents dans une db</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="creer_json.html">creer_json()</a></code> </p>
+        </td>
+        <td><p>~ req : creer un json pour partager une liste</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-valorisation-des-s-jours-mco" class="hasAnchor"><a href="#section-valorisation-des-s-jours-mco" class="anchor"></a>Valorisation des séjours MCO</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="vvr_ano_mco.html">vvr_ano_mco()</a></code> </p>
+        </td>
+        <td><p>~ VVR - preparer les ano pour valoriser les rsa</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vvr_ghs_supp.html">vvr_ghs_supp()</a></code> </p>
+        </td>
+        <td><p>~ VVR - Attribuer les recettes GHS et suppléments sur des rsa</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vvr_libelles_valo.html">vvr_libelles_valo()</a></code> </p>
+        </td>
+        <td><p>~ VVR - Libelles des rubriques de valorisation et de types de rsa</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vvr_mco.html">vvr_mco()</a></code> </p>
+        </td>
+        <td><p>~ VVR - Croiser parties GHS / supplements et ano</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vvr_mco_sv.html">vvr_mco_sv()</a></code> </p>
+        </td>
+        <td><p>~ VVR - Attribuer le caractere facturable par cle_rsa</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vvr_rsa.html">vvr_rsa()</a></code> </p>
+        </td>
+        <td><p>~ VVR - preparer les rsa pour la valorisation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="epmsi_mco_sv.html">epmsi_mco_sv()</a></code> </p>
+        </td>
+        <td><p>~ VVR - Reproduire le tableau SV</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="epmsi_mco_rav.html">epmsi_mco_rav()</a></code> </p>
+        </td>
+        <td><p>~ VVR - Reproduire le tableau RAV</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -583,11 +599,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

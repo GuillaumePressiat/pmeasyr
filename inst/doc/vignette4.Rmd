@@ -85,6 +85,7 @@ Charger ce package donne accès aux fonctions `get_table` et  `get_dictionnaire_
 
 ## Valoriser les rsa
 
+**Nous ne tenons pas compte de la rubrique "minoration forfaitaire liste en SUS" volontairement car cela nécessite de maintenir la liste des MO en SUS pour 2016 et 2017**.
 
 ### Cas d'une valorisation base + Extrême haut - Extrême bas
 
@@ -101,7 +102,7 @@ vvr_mco_sv(vrsa, vano)
 ```
 
 
-### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)
+### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments
 
 La table `resu` contient une ligne par rsa avec les variables suivantes : 
 
@@ -119,7 +120,7 @@ typvidhosp
 On peut libeller ces variables en faisant appel à la fonction `vvr_libelles_valo`, voir ci-dessous.
 
 
-### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments (hormis PIE)
+### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments
 
 ```{r eval = F} 
 resu <- vvr_mco(
@@ -129,6 +130,7 @@ vvr_ghs_supp(vrsa,
              vano, 
              ipo(p),
              idiap(p), 
+             ipie(p),
              bee = FALSE),
 vvr_mco_sv(vrsa, vano, ipo(p))
 )

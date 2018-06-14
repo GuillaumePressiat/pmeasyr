@@ -53,6 +53,7 @@
 #               vano,
 #               ipo(p),
 #               idiap(p),
+#               ipie(p),
 #               bee = FALSE),
 #  vvr_mco_sv(vrsa, vano, ipo(p))
 #  )

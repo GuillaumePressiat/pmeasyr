@@ -16,7 +16,7 @@ Voir exemple
 \dontrun{
 
 noyau_skeleton()
-## résultat : 
+## rÃ©sultat : 
 ## noyau_pmeasyr(
 ##   finess = '.........',
 ##   annee  = ....,
