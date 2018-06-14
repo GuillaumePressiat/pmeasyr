@@ -794,7 +794,7 @@ epmsi_mco_sv <- function(valo){
 #' ~ VVR - Reproduire le tableau RAV
 #'
 #' 
-#' @return Un tibble similaire au tableau RAV epmsi
+#' @return Un tibble similaire au tableau RAV epmsi (montant BR* ou BR si coeff prud = 1)
 #'
 #' @examples
 #' \dontrun{
@@ -807,14 +807,23 @@ epmsi_mco_sv <- function(valo){
 #' @export epmsi_mco_rav
 #' @export
 epmsi_mco_rav <- function(valo){
-  valo %>% dplyr::select(cle_rsa, dplyr::starts_with('rec_'), type_fin) %>% 
+  valo %>% dplyr::select(cle_rsa, dplyr::starts_with('rec_'), type_fin, -rec_totale, -rec_bee) %>% 
+    dplyr::mutate(rec_exb = -rec_exb) %>% 
     tidyr::gather(var, val, - cle_rsa, - type_fin) %>%
     dplyr::filter(abs(val) > 1e-7,!is.na(val)) %>%
-    dplyr::left_join(vvr_libelles_valo('lib_type_sej'), by = "type_fin") %>%
+    tidyr::spread(type_fin, val, fill = 0) %>% 
+    dplyr::mutate(`0` = ifelse(var == "rec_po_tot", `0` + `8`, `0`)) %>% 
+    select(cle_rsa, var, val = `0`) %>% 
+    tidyr::gather(type_fin, val, - cle_rsa, - var) %>% 
     dplyr::left_join(vvr_libelles_valo('lib_valo'), by = "var") %>%
-    dplyr::group_by(lib_type, lib_valo, var) %>%
-    dplyr::summarise(n = n(),
-              v = sum(val))
+    dplyr::group_by(lib_valo, var) %>%
+    dplyr::summarise(n = n_distinct(cle_rsa),
+                     v = sum(val)) %>% 
+    arrange(lib_valo) %>% 
+    dplyr::bind_rows(tibble(lib_valo = "Total valorisation 100% T2A", var = "rec_totale", n = nrow(valo),
+                            v = sum(.$v))) %>% 
+    dplyr::mutate(n = formatC(n, format = "f", big.mark = " ", digits = 0),
+                  v = formatC(v, format = "f", big.mark = " ", decimal.mark = ",", digits = 3) %>% paste0('€'))
 }
 
 # 

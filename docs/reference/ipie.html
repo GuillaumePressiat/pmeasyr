@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ req : creer un json pour partager une liste — creer_json • pmeasyr</title>
+<title>~ MCO - Import des PIE — ipie • pmeasyr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="~ req : creer un json pour partager une liste — creer_json" />
+<meta property="og:title" content="~ MCO - Import des PIE — ipie" />
 
-<meta property="og:description" content="On selectionne certaines variables et on en cree d'autres utiles lors de l'execution de la requete" />
+<meta property="og:description" content="Imports des fichiers PIE In / Out" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -94,46 +94,76 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ req : creer un json pour partager une liste</h1>
+    <h1>~ MCO - Import des PIE</h1>
     
-    <div class="hidden name"><code>creer_json.Rd</code></div>
+    <div class="hidden name"><code>ipie.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>On selectionne certaines variables et on en cree d'autres utiles lors de l'execution de la requete</p>
+    <p>Imports des fichiers PIE In / Out</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>creer_json</span>(<span class='no'>requete</span>, <span class='no'>chemin</span>)</pre>
+    <pre class="usage"><span class='fu'>ipie</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>,
+<span class='kw'>typpie</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"out"</span>, <span class='st'>"in"</span>),
+<span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>requete</th>
-      <td><p>`list` qui contient la requête</p></td>
+      <th>finess</th>
+      <td><p>Finess du Out a importer : dans le nom du fichier</p></td>
     </tr>
     <tr>
-      <th>chemin</th>
-      <td><p>Nom du fichier json qui sera créé</p></td>
+      <th>annee</th>
+      <td><p>Annee PMSI (nb) des donnees sur 4 caracteres (2016)</p></td>
+    </tr>
+    <tr>
+      <th>mois</th>
+      <td><p>Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>Localisation du fichier de donnees</p></td>
+    </tr>
+    <tr>
+      <th>typpie</th>
+      <td><p>Type de donnees In / Out</p></td>
+    </tr>
+    <tr>
+      <th>lib</th>
+      <td><p>Ajout des libelles de colonnes aux tables, par defaut a <code>TRUE</code> ; necessite le package <code>sjlabelled</code></p></td>
+    </tr>
+    <tr>
+      <th>tolower_names</th>
+      <td><p>a TRUE les noms de colonnes sont tous en minuscules</p></td>
+    </tr>
+    <tr>
+      <th>~...</th>
+      <td><p>parametres supplementaires a passer
+dans la fonction <code><a href='http://www.rdocumentation.org/packages/readr/topics/read_fwf'>read_fwf</a></code>, par exemple
+<code>n_max = 1e3</code> pour lire les 1000 premieres lignes,  <code>progress = F, skip = 1e3</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>un objet de classe rsa de pmeasyr</p>
+    <p>Une table (data.frame, tbl_df) contenant les dialyses péritonéales In ou Out.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Formats depuis 2011 pris en charge</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='irsa.html'>irsa</a></code>, <code><a href='irum.html'>irum</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>liste</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nom_abrege</span> <span class='kw'>=</span> <span class='st'>"pac"</span>,
-             <span class='kw'>thematique</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
-             <span class='kw'>actes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'EBLA003'</span>, <span class='st'>'EQLF002'</span>),
-             <span class='kw'>dureemax</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-             <span class='kw'>auteur</span> <span class='kw'>=</span> <span class='st'>"John Doe"</span>,
-             <span class='kw'>date_saisie</span> <span class='kw'>=</span> <span class='st'>"1960-01-01"</span>)
-<span class='fu'>creer_json</span>(<span class='no'>liste</span>, <span class='fu'>paste0</span>(<span class='st'>'~/Documents/listes/'</span>, <span class='no'>liste</span>$<span class='no'>nom_abrege</span>, <span class='st'>'.json'</span>))
+   <span class='no'>pie</span> <span class='kw'>&lt;-</span> <span class='fu'>ipie</span>(<span class='st'>'750712184'</span>,<span class='fl'>2018</span>,<span class='fl'>4</span>,<span class='st'>"~/Documents/data/mco"</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
@@ -143,6 +173,10 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="~ MCO - Import des RUM — irum" />
+
+<meta property="og:description" content="Import des RUM. 4 types d'imports possibles." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">pmeasyr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">pmeasyr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.4</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -67,6 +83,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -74,19 +91,23 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>~ MCO - Import des RUM</h1>
+    
+    <div class="hidden name"><code>irum.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Import des RUM. 4 types d'imports possibles.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>irum</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>lib</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>typi</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>tolower_names</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -133,31 +154,26 @@ dans la fonction <code><a href='http://www.rdocumentation.org/packages/readr/top
 
     <p>Formats depuis 2011 pris en charge</p>
 <p>Structure du nom du fichier attendu (entrée pour Genrsa) :
-<em>finess.annee.moisc.rum</em>
-    <strong>750712184.2016.2.rum</strong></p>
-<p>Types d'imports :</p><table><tr><td>
-1 XLight : </td>
-<td> partie fixe</td>
-</tr><tr><td>
-2 Light : </td>
-<td> partie fixe +  streaming des actes, dad et das</td>
-</tr><tr><td>
-3 Standard : </td>
-<td> partie fixe + table acdi</td>
-</tr><tr><td>
-4 Standard+ : </td>
-<td> Import standard (3) + stream</td>
-</tr></table><p><strong>Principe du streaming :</strong>
+<em>finess.annee.moisc.rum</em></p>
+<p><strong>750712184.2016.2.rum</strong></p>
+<p>Types d'imports :</p><table class='table'>
+<tr><td>1 XLight :</td><td>partie fixe</td></tr>
+<tr><td>2 Light :</td><td>partie fixe +  streaming des actes, dad et das</td></tr>
+<tr><td>3 Standard :</td><td>partie fixe + table acdi</td></tr>
+<tr><td>4 Standard+ :</td><td>Import standard (3) + stream</td></tr>
+<tr><td></td><td>1 XLight :</td></tr>
+</table>
+    <p><strong>Principe du streaming :</strong>
 Mise en chaîne de caractères de la succession d'actes CCAM au cours du RUM, par exemple, pour un RUM :
 <samp>"ACQK001, LFQK002, MCQK001, NAQK015, PAQK002, PAQK900, YYYY600, ZZQP004"</samp></p>
-<p>La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélérée, comparée à une requête sur la large table acdi par une requête du type :
-    <code>grepl("ZZQP004",rum$actes)</code>  # toutes les lignes de  RUM avec au moins un ZZQP004
+<p>La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélérée, comparée à une requête sur la large table acdi par une requête du type :</p>
+<p><code>grepl("ZZQP004",rum$actes)</code>  # toutes les lignes de  RUM avec au moins un ZZQP004
 <code>grepl("ZZQP004|EBLA003",rum$actes)</code>  # toutes les lignes de  RUM avec au moins un ZZQP004 ou un EBLA003</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='irsa.html'>irsa</a></code>, <code><a href='ileg_mco.html'>ileg_mco</a></code>, <code><a href='iano_mco.html'>iano_mco</a></code>,
-utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p>
+    <div class='dont-index'><p><code><a href='irsa.html'>irsa</a></code>, <code><a href='ileg_mco.html'>ileg_mco</a></code>, <code><a href='iano_mco.html'>iano_mco</a></code>,
+utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -193,11 +209,14 @@ G. Pressiat
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
