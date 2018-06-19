@@ -4,7 +4,12 @@
 \alias{epmsi_mco_rav}
 \title{~ VVR - Reproduire le tableau RAV}
 \usage{
-epmsi_mco_rav(valo)
+epmsi_mco_rav(valo, knit = FALSE)
+}
+\arguments{
+\item{valo}{Un tibble résultant de \code{\link{vvr_mco}}}
+
+\item{knit}{à TRUE, appliquer une sortie `knitr::kable` au résultat}
 }
 \value{
 Un tibble similaire au tableau RAV epmsi (montant BR* ou BR si coeff prud = 1)

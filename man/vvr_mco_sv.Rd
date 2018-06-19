@@ -4,7 +4,14 @@
 \alias{vvr_mco_sv}
 \title{~ VVR - Attribuer le caractere facturable par cle_rsa}
 \usage{
-vvr_mco_sv(rsa, ano, porg = tibble(cle_rsa = ""))
+vvr_mco_sv(rsa, ano, porg = dplyr::tibble(cle_rsa = ""))
+}
+\arguments{
+\item{rsa}{un tibble rsa contenant les variables nécessaires (créé avec \code{\link{vvr_rsa}})}
+
+\item{ano}{un tibble ano contenant les variables nécessaires (créé avec \code{\link{vvr_mco_ano}})}
+
+\item{porg}{un tibble porg contenant les prélevements d'organes du out (créé avec \code{\link{ipo}})}
 }
 \value{
 Un tibble contenant la catégorie du tableau SV epmsi, une ligne par clé rsa

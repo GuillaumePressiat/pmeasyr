@@ -133,7 +133,7 @@ vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(con,  <sp
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
 
 resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
-<span class="kw">vvr_ghs_supp</span>(vrsa, vano, <span class="dt">tarifs =</span> tarifs_ghs),
+<span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, <span class="dt">ano =</span>  vano, <span class="dt">tarifs =</span> tarifs_ghs),
 <span class="kw">vvr_mco_sv</span>(vrsa, vano)
 )</code></pre></div>
 <p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
@@ -150,13 +150,16 @@ typvidhosp</code></pre>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
-<span class="kw">vvr_ghs_supp</span>(vrsa, 
-             tarifs_ghs, 
-             <span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>), 
-             vano, 
-             <span class="kw">ipo</span>(p),
-             <span class="kw">idiap</span>(p), 
-             <span class="kw">ipie</span>(p),
+<span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, 
+             <span class="dt">tarifs =</span> tarifs_ghs, 
+             <span class="dt">supplements =</span>  <span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>), 
+             <span class="dt">ano =</span> vano, 
+             <span class="dt">porg =</span> <span class="kw">ipo</span>(p), 
+             <span class="dt">diap =</span> <span class="kw">idiap</span>(p), 
+             <span class="dt">pie =</span> <span class="kw">ipie</span>(p), 
+             <span class="dt">full =</span> <span class="ot">FALSE</span>,
+             <span class="dt">cgeo =</span> <span class="fl">1.07</span>, 
+             <span class="dt">prudent =</span> <span class="ot">NULL</span>,
              <span class="dt">bee =</span> <span class="ot">FALSE</span>),
 <span class="kw">vvr_mco_sv</span>(vrsa, vano, <span class="kw">ipo</span>(p))
 )</code></pre></div>
@@ -397,6 +400,83 @@ typvidhosp</code></pre>
 <p>Les séjours sont distribués et les recettes BR * coeffs sont sommées en fonction du type de séjours et du type de recette (lib_type_sej * lib_valo).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmsi_mco_rav</span>(resu)</code></pre></div>
 </div>
+</div>
+<div id="connaitre-en-detail-la-valorisation-des-sejours" class="section level2">
+<h2>Connaître en détail la valorisation des séjours</h2>
+<p>Il est possible de garder toutes les variables intermédiaires du calcul de valorisation, c’est le cas en précisant le paramètre <code>full = TRUE</code> :</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
+<span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, 
+             <span class="dt">tarifs =</span> tarifs_ghs, 
+             <span class="dt">supplements =</span>  <span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>), 
+             <span class="dt">ano =</span> vano, 
+             <span class="dt">porg =</span> <span class="kw">ipo</span>(p), 
+             <span class="dt">diap =</span> <span class="kw">idiap</span>(p), 
+             <span class="dt">pie =</span> <span class="kw">ipie</span>(p), 
+             <span class="dt">full =</span> <span class="ot">TRUE</span>,
+             <span class="dt">cgeo =</span> <span class="fl">1.07</span>, 
+             <span class="dt">prudent =</span> <span class="ot">NULL</span>, 
+             <span class="dt">bee =</span> <span class="ot">FALSE</span>),
+<span class="kw">vvr_mco_sv</span>(vrsa, vano, <span class="kw">ipo</span>(p))
+)</code></pre></div>
+<p>Dans ce cas, les variables suivantes deviennent accessibles au niveau de chaque séjour :</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">'rec_'</span>)), sum)  %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">names</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">cat</span>(<span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>rec_base
+rec_exh
+rec_exb
+rec_bee
+rec_totale
+rec_rep
+rec_rea
+rec_stf
+rec_src
+rec_nn1
+rec_nn2
+rec_nn3
+rec_hhs
+rec_edpahs
+rec_edpcahs
+rec_ehhs
+rec_dip
+rec_dialhosp
+rec_caishyp
+rec_aph
+rec_ant
+rec_rap
+rec_sdc
+rec_rdt5
+rec_prot
+rec_ict
+rec_cyb
+rec_gam
+rec_rcon1
+rec_rcon2
+rec_tciea
+rec_tcies
+rec_aie
+rec_rcon3
+rec_rdt_tot
+rec_poi
+rec_poii
+rec_poiii
+rec_poiv
+rec_pov
+rec_povi
+rec_povii
+rec_poviii
+rec_poix
+rec_poa
+rec_po_tot
+rec_rehosp_ghm
+rec_pie_src
+rec_pie_stf
+rec_pie_rea
+rec_pie_rep
+rec_pie_nn1
+rec_pie_nn2
+rec_pie_nn3</code></pre>
 </div>
 
 

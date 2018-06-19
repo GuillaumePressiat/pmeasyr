@@ -129,8 +129,25 @@ vvr_rsa, vvr_ano_mco et éventuellement d'une table contenant le fichcomp PO" />
     
     </div>
 
-    <pre class="usage"><span class='fu'>vvr_mco_sv</span>(<span class='no'>rsa</span>, <span class='no'>ano</span>, <span class='kw'>porg</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>))</pre>
-        
+    <pre class="usage"><span class='fu'>vvr_mco_sv</span>(<span class='no'>rsa</span>, <span class='no'>ano</span>, <span class='kw'>porg</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>))</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>rsa</th>
+      <td><p>un tibble rsa contenant les variables nécessaires (créé avec <code><a href='vvr_rsa.html'>vvr_rsa</a></code>)</p></td>
+    </tr>
+    <tr>
+      <th>ano</th>
+      <td><p>un tibble ano contenant les variables nécessaires (créé avec <code>vvr_mco_ano</code>)</p></td>
+    </tr>
+    <tr>
+      <th>porg</th>
+      <td><p>un tibble porg contenant les prélevements d'organes du out (créé avec <code><a href='ipo.html'>ipo</a></code>)</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Un tibble contenant la catégorie du tableau SV epmsi, une ligne par clé rsa</p>
@@ -153,6 +170,7 @@ vvr_rsa, vvr_ano_mco et éventuellement d'une table contenant le fichcomp PO" />
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 

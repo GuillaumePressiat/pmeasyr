@@ -129,18 +129,66 @@ vvr_rsa, vvr_ano_mco, et de tables contenant les fichcomp PO et DIAP" />
     
     </div>
 
-    <pre class="usage"><span class='fu'>vvr_ghs_supp</span>(<span class='no'>rsa</span>, <span class='no'>tarifs</span>, <span class='kw'>supplements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ano</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>porg</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>diap</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>pie</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>cle_rsa</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cgeo</span> <span class='kw'>=</span> <span class='fl'>1.07</span>, <span class='kw'>prudent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bee</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-        
+    <pre class="usage"><span class='fu'>vvr_ghs_supp</span>(<span class='no'>rsa</span>, <span class='no'>tarifs</span>, <span class='kw'>supplements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ano</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>porg</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(), <span class='kw'>diap</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(), <span class='kw'>pie</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(),
+  <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cgeo</span> <span class='kw'>=</span> <span class='fl'>1.07</span>, <span class='kw'>prudent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bee</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>rsa</th>
+      <td><p>Un tibble rsa partie fixe (créé avec <code><a href='vvr_rsa.html'>vvr_rsa</a></code>)</p></td>
+    </tr>
+    <tr>
+      <th>tarifs</th>
+      <td><p>Un tibble contenant une ligne par tarif GHS - année séquentielle des tarifs</p></td>
+    </tr>
+    <tr>
+      <th>supplements</th>
+      <td><p>Un tibble contenant une ligne par année et une colonne par tarif de supplément</p></td>
+    </tr>
+    <tr>
+      <th>ano</th>
+      <td><p>Un tibble, facultatif si `r bee = TRUE`, créé avec <code><a href='vvr_ano_mco.html'>vvr_ano_mco</a></code></p></td>
+    </tr>
+    <tr>
+      <th>porg</th>
+      <td><p>Un tibble contenant les prélévements d'organes du out (importés avec <code><a href='ipo.html'>ipo</a></code>)</p></td>
+    </tr>
+    <tr>
+      <th>diap</th>
+      <td><p>Un tibble contenant les dialyses péritonéales du out (importés avec <code><a href='idiap.html'>idiap</a></code>)</p></td>
+    </tr>
+    <tr>
+      <th>pie</th>
+      <td><p>Un tibble contenant les prestations inter-établissements du out (importés avec <code><a href='ipie.html'>ipie</a></code>)</p></td>
+    </tr>
+    <tr>
+      <th>full</th>
+      <td><p>Booléen, à `r TRUE` toutes les variables intermédiaires de valo sont gardées</p></td>
+    </tr>
+    <tr>
+      <th>cgeo</th>
+      <td><p>Coefficient géographique, par défaut celui de l'Île-de-France (1.07)</p></td>
+    </tr>
+    <tr>
+      <th>prudent</th>
+      <td><p>coefficient prudentiel, par défaut à `r NULL`, le coefficient prudentiel est appliqué par année séquentielles des tarifs</p></td>
+    </tr>
+    <tr>
+      <th>bee</th>
+      <td><p>par défaut à `r TRUE`, seule la valorisation de GHS de base + extrême haut - extrême bas est calculée</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Un tibble contenant les différentes rubriques de valorisation, une ligne par clé rsa</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Pour l'heure cette fonction ne tient pas compte de fichcomp PIE</p>
+    <p>Pour l'heure cette fonction ne tient pas compte de la rubrique "Minoration forfaitaire liste en sus"</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -154,7 +202,7 @@ vvr_rsa, vvr_ano_mco, et de tables contenant les fichcomp PO et DIAP" />
 <span class='no'>supplements</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nomensland</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nomensland/topics/get_table'>get_table</a></span>(<span class='st'>'tarifs_mco_supplements'</span>)
 
 <span class='co'># Recette GHS de base et suppléments EXB, EXH</span>
-<span class='fu'>vvr_ghs_supp</span>(<span class='no'>vrsa</span>, <span class='no'>tarifs</span>)
+<span class='fu'>vvr_ghs_supp</span>(<span class='kw'>rsa</span> <span class='kw'>=</span> <span class='no'>vrsa</span>, <span class='kw'>tarifs</span> <span class='kw'>=</span> <span class='no'>tarifs</span>)
 
 <span class='co'># Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)</span>
 <span class='fu'>vvr_ghs_supp</span>(<span class='no'>vrsa</span>, <span class='no'>tarifs</span>, <span class='no'>supplements</span>, <span class='no'>vano</span>, <span class='fu'><a href='ipo.html'>ipo</a></span>(<span class='no'>p</span>), <span class='fu'><a href='idiap.html'>idiap</a></span>(<span class='no'>p</span>), <span class='kw'>bee</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -164,6 +212,7 @@ vvr_rsa, vvr_ano_mco, et de tables contenant les fichcomp PO et DIAP" />
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 

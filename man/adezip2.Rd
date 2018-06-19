@@ -16,7 +16,7 @@ adezip2(path, file, liste = "", pathto = "")
 \item{pathto}{Par defaut la même valeur que \code{path}, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par \code{pathto}.}
 }
 \description{
-Alternative à la fonction \code{\link[=adezip]{adezip()}}, si on connait précisement l'archive que l'on veut utiliser.
+Alternative à la fonction \code{\link[=adezip]{adezip()}}, si on connait precisement l'archive que l'on veut utiliser.
 }
 \details{
 \code{adezip2} est un simple wrapper autour de la fonction \code{adzip.default}. Cette fonction est dépréciée. En utilisant le paramètre \code{nom_archive} avec la fonciton \code{\link[=adezip]{adezip()}} on obtient le même résultat.

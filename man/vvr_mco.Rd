@@ -6,6 +6,11 @@
 \usage{
 vvr_mco(rsa_v, ano_sv)
 }
+\arguments{
+\item{rsa_v}{tibble résultant de la fonction \code{\link{vvr_rsa}}}
+
+\item{ano_sv}{tibble résultant de la fonction \code{\link{vvr_ano_mco}}}
+}
 \value{
 Un tibble final contenant la catégorie du tableau SV epmsi, et les variables rec_ de recette par séjour
 }

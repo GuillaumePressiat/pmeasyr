@@ -43,9 +43,12 @@ adezip(...)
 Les chemins d'accès des fichiers décompressés, de manière invisible.
 }
 \description{
-Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
+Recherche et dezippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de parametres.
 
 Dezipper les fichiers selectionnes d'une archive
+}
+\details{
+Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 }
 \examples{
 # Chemin vers un dossier temporaire

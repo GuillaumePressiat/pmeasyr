@@ -6,6 +6,9 @@
 \usage{
 vvr_libelles_valo(wich)
 }
+\arguments{
+\item{wich}{Chaine de caractères parmi :  'lib_type_sej', 'lib_vidhosp', 'lib_valo'}
+}
 \value{
 Un tibble avec les codes et libellés
 }

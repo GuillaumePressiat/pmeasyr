@@ -159,7 +159,7 @@ vano &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_an
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
 
 resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
-<span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, vano, <span class="dt">tarifs =</span> tarifs_ghs),
+<span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, <span class="dt">ano =</span>  vano, <span class="dt">tarifs =</span> tarifs_ghs),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano)
 )</code></pre></div>
 <p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
@@ -177,13 +177,16 @@ typvidhosp</code></pre>
 <h3 class="hasAnchor">
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
-<span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(vrsa, 
-             tarifs_ghs, 
-             <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_supplements'</span>), 
-             vano, 
-             <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p),
-             <span class="kw"><a href="../reference/idiap.html">idiap</a></span>(p), 
-             <span class="kw"><a href="../reference/ipie.html">ipie</a></span>(p),
+<span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, 
+             <span class="dt">tarifs =</span> tarifs_ghs, 
+             <span class="dt">supplements =</span>  <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_supplements'</span>), 
+             <span class="dt">ano =</span> vano, 
+             <span class="dt">porg =</span> <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p), 
+             <span class="dt">diap =</span> <span class="kw"><a href="../reference/idiap.html">idiap</a></span>(p), 
+             <span class="dt">pie =</span> <span class="kw"><a href="../reference/ipie.html">ipie</a></span>(p), 
+             <span class="dt">full =</span> <span class="ot">FALSE</span>,
+             <span class="dt">cgeo =</span> <span class="fl">1.07</span>, 
+             <span class="dt">prudent =</span> <span class="ot">NULL</span>,
              <span class="dt">bee =</span> <span class="ot">FALSE</span>),
 <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))
 )</code></pre></div>
@@ -423,6 +426,84 @@ typvidhosp</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/epmsi_mco_rav.html">epmsi_mco_rav</a></span>(resu)</code></pre></div>
 </div>
 </div>
+<div id="connaitre-en-detail-la-valorisation-des-sejours" class="section level2">
+<h2 class="hasAnchor">
+<a href="#connaitre-en-detail-la-valorisation-des-sejours" class="anchor"></a>Connaître en détail la valorisation des séjours</h2>
+<p>Il est possible de garder toutes les variables intermédiaires du calcul de valorisation, c’est le cas en précisant le paramètre <code>full = TRUE</code> :</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(
+<span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, 
+             <span class="dt">tarifs =</span> tarifs_ghs, 
+             <span class="dt">supplements =</span>  <span class="kw"><a href="http://www.rdocumentation.org/packages/nomensland/topics/get_table">get_table</a></span>(<span class="st">'tarifs_mco_supplements'</span>), 
+             <span class="dt">ano =</span> vano, 
+             <span class="dt">porg =</span> <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p), 
+             <span class="dt">diap =</span> <span class="kw"><a href="../reference/idiap.html">idiap</a></span>(p), 
+             <span class="dt">pie =</span> <span class="kw"><a href="../reference/ipie.html">ipie</a></span>(p), 
+             <span class="dt">full =</span> <span class="ot">TRUE</span>,
+             <span class="dt">cgeo =</span> <span class="fl">1.07</span>, 
+             <span class="dt">prudent =</span> <span class="ot">NULL</span>, 
+             <span class="dt">bee =</span> <span class="ot">FALSE</span>),
+<span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))
+)</code></pre></div>
+<p>Dans ce cas, les variables suivantes deviennent accessibles au niveau de chaque séjour :</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise_all.html">summarise_at</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/vars.html">vars</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/select_helpers.html">starts_with</a></span>(<span class="st">'rec_'</span>)), sum)  %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">names</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">cat</span>(<span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</code></pre></div>
+<pre><code>rec_base
+rec_exh
+rec_exb
+rec_bee
+rec_totale
+rec_rep
+rec_rea
+rec_stf
+rec_src
+rec_nn1
+rec_nn2
+rec_nn3
+rec_hhs
+rec_edpahs
+rec_edpcahs
+rec_ehhs
+rec_dip
+rec_dialhosp
+rec_caishyp
+rec_aph
+rec_ant
+rec_rap
+rec_sdc
+rec_rdt5
+rec_prot
+rec_ict
+rec_cyb
+rec_gam
+rec_rcon1
+rec_rcon2
+rec_tciea
+rec_tcies
+rec_aie
+rec_rcon3
+rec_rdt_tot
+rec_poi
+rec_poii
+rec_poiii
+rec_poiv
+rec_pov
+rec_povi
+rec_povii
+rec_poviii
+rec_poix
+rec_poa
+rec_po_tot
+rec_rehosp_ghm
+rec_pie_src
+rec_pie_stf
+rec_pie_rea
+rec_pie_rep
+rec_pie_nn1
+rec_pie_nn2
+rec_pie_nn3</code></pre>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -434,6 +515,7 @@ typvidhosp</code></pre>
       <li><a href="#recuperer-les-tarifs-ghs-et-supplements">Récupérer les tarifs GHS et suppléments</a></li>
       <li><a href="#valoriser-les-rsa">Valoriser les rsa</a></li>
       <li><a href="#generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles">Générer des tableaux type epmsi pour comparaison avec les valo officielles</a></li>
+      <li><a href="#connaitre-en-detail-la-valorisation-des-sejours">Connaître en détail la valorisation des séjours</a></li>
       </ul>
 </div>
       </div>

@@ -42,7 +42,7 @@ astat <- function(path, file, view = TRUE){
 
 #' ~ *.zip - Dezippe des fichiers de l'archive PMSI, avec en parametre le nom de l'archive
 #'
-#' Alternative à la fonction [adezip()], si on connait précisement l'archive que l'on veut utiliser. 
+#' Alternative à la fonction [adezip()], si on connait precisement l'archive que l'on veut utiliser. 
 #' 
 #' @details `adezip2` est un simple wrapper autour de la fonction `adzip.default`. Cette fonction est dépréciée. En utilisant le paramètre `nom_archive` avec la fonciton [adezip()] on obtient le même résultat.
 #' 
@@ -77,7 +77,11 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 
 #' ~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI
 #'
-#' Recherche et dézippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de paramètres. Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
+#' Recherche et dezippe (décompresse) les fichiers contenus dans une archive \emph{*.in} ou \emph{*.out} du PMSI en fonction de parametres. 
+#' 
+#' 
+#' Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
+#' 
 #' @param ... Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.
 
 #' @examples
@@ -336,7 +340,7 @@ selectionne_fichiers <- function(chemin_archive, types_fichier) {
 
 #' ~ *.zip - Dezippe des fichiers de l'archive PMSI en provenance de l'Intranet AP-HP, avec en parametre le nom de l'archive
 #'
-#' Version de la fonction \code{\link{adezip2}} pour des archives au format Intranet du DIM Siège de l'AP-HP,
+#' Version de la fonction \code{\link{adezip2}} pour des archives au format Intranet du DIM Siege de l'AP-HP,
 #' \url{http://dime.aphp.fr/}.
 #'
 #'
@@ -407,7 +411,7 @@ adezip3 <- function(finess, path, file, liste = "", pathto=""){
 
 #' ~ *.zip - Suppression des fichiers en fin de traitement
 #'
-#' Supprime les fichiers de l'archive PMSI dezippes en début de traitement
+#' Supprime les fichiers de l'archive PMSI dezippes en debut de traitement
 #'
 #'
 #' @param finess Finess du fichier a supprimer
@@ -428,7 +432,7 @@ adezip3 <- function(finess, path, file, liste = "", pathto=""){
 #'
 #' @seealso \code{\link{adezip}}, \code{\link{adezip2}}, \code{\link{astat}},
 #' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
-
+#'
 #' @export adelete
 #' @export
 adelete <- function(...){

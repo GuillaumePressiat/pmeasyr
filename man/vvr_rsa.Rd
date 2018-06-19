@@ -6,6 +6,13 @@
 \usage{
 vvr_rsa(...)
 }
+\arguments{
+\item{p}{Un noyau de paramètres \code{\link{noyau_pmeasyr}}}
+
+\item{con}{Une connexion vers une db contenant les données PMSI}
+
+\item{annee}{Dans le cas d'une con db, préciser l'année en integer sur deux caractères}
+}
 \value{
 Un tibble contenant les variables des rsa nécessaires pour calculer les recettes ghs et suppléments
 }
@@ -19,9 +26,10 @@ dans une base de données (con)
 \examples{
 \dontrun{
 # avec un noyau pmeasyr (importer les données)
+annee <- 18
 p <- noyau_pmeasyr(
   finess   = '750712184',
-  annee    = 2000 + 18,
+  annee    = 2000 + annee,
   mois     = 4,
   path     = '~/Documents/data/mco',
   progress = FALSE,

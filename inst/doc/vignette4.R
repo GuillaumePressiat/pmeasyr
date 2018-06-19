@@ -41,19 +41,22 @@
 #  tarifs_ghs <- dplyr::distinct(get_table('tarifs_mco_ghs'), ghs, anseqta, .keep_all = TRUE)
 #  
 #  resu <- vvr_mco(
-#  vvr_ghs_supp(vrsa, vano, tarifs = tarifs_ghs),
+#  vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs),
 #  vvr_mco_sv(vrsa, vano)
 #  )
 
 ## ----eval = F------------------------------------------------------------
 #  resu <- vvr_mco(
-#  vvr_ghs_supp(vrsa,
-#               tarifs_ghs,
-#               get_table('tarifs_mco_supplements'),
-#               vano,
-#               ipo(p),
-#               idiap(p),
-#               ipie(p),
+#  vvr_ghs_supp(rsa = vrsa,
+#               tarifs = tarifs_ghs,
+#               supplements =  get_table('tarifs_mco_supplements'),
+#               ano = vano,
+#               porg = ipo(p),
+#               diap = idiap(p),
+#               pie = ipie(p),
+#               full = FALSE,
+#               cgeo = 1.07,
+#               prudent = NULL,
 #               bee = FALSE),
 #  vvr_mco_sv(vrsa, vano, ipo(p))
 #  )
@@ -72,4 +75,26 @@ knitr::kable(pmeasyr::vvr_libelles_valo('lib_vidhosp'))
 
 ## ----eval = F------------------------------------------------------------
 #  epmsi_mco_rav(resu)
+
+## ----eval = F------------------------------------------------------------
+#  resu <- vvr_mco(
+#  vvr_ghs_supp(rsa = vrsa,
+#               tarifs = tarifs_ghs,
+#               supplements =  get_table('tarifs_mco_supplements'),
+#               ano = vano,
+#               porg = ipo(p),
+#               diap = idiap(p),
+#               pie = ipie(p),
+#               full = TRUE,
+#               cgeo = 1.07,
+#               prudent = NULL,
+#               bee = FALSE),
+#  vvr_mco_sv(vrsa, vano, ipo(p))
+#  )
+
+## ----eval = F------------------------------------------------------------
+#  resu %>%
+#    summarise_at(vars(starts_with('rec_')), sum)  %>%
+#    names() %>%
+#    cat(sep = "\n")
 

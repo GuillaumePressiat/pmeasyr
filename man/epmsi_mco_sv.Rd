@@ -4,7 +4,12 @@
 \alias{epmsi_mco_sv}
 \title{~ VVR - Reproduire le tableau SV}
 \usage{
-epmsi_mco_sv(valo)
+epmsi_mco_sv(valo, knit = FALSE)
+}
+\arguments{
+\item{valo}{Un tibble résultant de \code{\link{vvr_mco}}}
+
+\item{knit}{à TRUE, appliquer une sortie `knitr::kable` au résultat}
 }
 \value{
 Un tibble similaire au tableau RAV epmsi

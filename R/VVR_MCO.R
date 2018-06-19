@@ -9,14 +9,20 @@
 #' Deux méthodes sont disponibles : une utilisant l'import avec un noyau pmeasyr (p), l'autre utilisant les rsa stockés
 #' dans une base de données (con)
 #' 
+#' 
+#' @param p Un noyau de paramètres \code{\link{noyau_pmeasyr}}
+#' @param con Une connexion vers une db contenant les données PMSI
+#' @param annee Dans le cas d'une con db, préciser l'année en integer sur deux caractères
+#' 
 #' @return Un tibble contenant les variables des rsa nécessaires pour calculer les recettes ghs et suppléments
 #'
 #' @examples
 #' \dontrun{
 #' # avec un noyau pmeasyr (importer les données)
+#' annee <- 18
 #' p <- noyau_pmeasyr(
 #'   finess   = '750712184',
-#'   annee    = 2000 + 18,
+#'   annee    = 2000 + annee,
 #'   mois     = 4,
 #'   path     = '~/Documents/data/mco',
 #'   progress = FALSE,
@@ -85,6 +91,9 @@ vvr_rsa.src <- function(con, an,  ...){
 #' Deux méthodes sont disponibles : une utilisant l'import avec un noyau pmeasyr (p), l'autre utilisant les rsa stockés
 #' dans une base de données (con)
 #' 
+#' @param p Un noyau de paramètres \code{\link{noyau_pmeasyr}}
+#' @param con Une connexion vers une db contenant les données PMSI
+#' @param annee Dans le cas d'une con db, préciser l'année en integer sur deux caractères
 #' @return Un tibble contenant les variables ano
 #'
 #' @examples
@@ -138,7 +147,20 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' Reproduire la valorisation BR et coefficients géo/prudentiels du tableau RAV d'epmsi, à partir des tables résultant des fonctions
 #' \code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}}, et de tables contenant les fichcomp PO et DIAP
 #' 
-#' Pour l'heure cette fonction ne tient pas compte de fichcomp PIE
+#' Pour l'heure cette fonction ne tient pas compte de la rubrique "Minoration forfaitaire liste en sus"
+#' 
+#' 
+#' @param rsa Un tibble rsa partie fixe (créé avec \code{\link{vvr_rsa}})
+#' @param tarifs Un tibble contenant une ligne par tarif GHS - année séquentielle des tarifs
+#' @param supplements Un tibble contenant une ligne par année et une colonne par tarif de supplément
+#' @param ano Un tibble, facultatif si `r bee = TRUE`, créé avec \code{\link{vvr_ano_mco}}
+#' @param porg Un tibble contenant les prélévements d'organes du out (importés avec \code{\link{ipo}})
+#' @param diap Un tibble contenant les dialyses péritonéales du out (importés avec \code{\link{idiap}})
+#' @param pie Un tibble contenant les prestations inter-établissements du out (importés avec \code{\link{ipie}})
+#' @param full Booléen, à `r TRUE` toutes les variables intermédiaires de valo sont gardées
+#' @param cgeo Coefficient géographique, par défaut celui de l'Île-de-France (1.07)
+#' @param prudent coefficient prudentiel, par défaut à `r NULL`, le coefficient prudentiel est appliqué par année séquentielles des tarifs
+#' @param bee par défaut à `r TRUE`, seule la valorisation de GHS de base + extrême haut - extrême bas est calculée
 #' 
 #' @return Un tibble contenant les différentes rubriques de valorisation, une ligne par clé rsa
 #'
@@ -149,7 +171,7 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' supplements <- nomensland::get_table('tarifs_mco_supplements')
 #' 
 #' # Recette GHS de base et suppléments EXB, EXH
-#' vvr_ghs_supp(vrsa, tarifs)
+#' vvr_ghs_supp(rsa = vrsa, tarifs = tarifs)
 #' 
 #' # Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)
 #' vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)
@@ -158,17 +180,27 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{vvr_ano_mco}}, \code{\link{vvr_rsa}}, \code{\link{vvr_mco}}
-#' @export vvr_mco_sv
+#' @export vvr_ghs_supp
 #' @export
 vvr_ghs_supp <- function(rsa, 
-                         tarifs, supplements = NULL, 
-                         ano = tibble(cle_rsa = ""), 
-                         porg = tibble(cle_rsa = ""), 
-                         diap = tibble(cle_rsa = ""),  
-                         pie  = tibble(cle_rsa = ""),
+                         tarifs, 
+                         supplements = NULL, 
+                         ano = NULL, 
+                         porg = dplyr::tibble(), 
+                         diap = dplyr::tibble(),  
+                         pie  = dplyr::tibble(),
                          full = FALSE, cgeo = 1.07, prudent = NULL,
                          bee = TRUE) {
   
+  # Ajout de tarifs nuls pour le GHS 9999
+  n_anseqta <- length(unique(rsa$anseqta))
+  tarifs <- dplyr::bind_rows(tarifs, 
+                     dplyr::tibble(anseqta      = unique(rsa$anseqta), 
+                                   ghs          = rep('9999', n_anseqta), 
+                                   tarif_base   = rep(0, n_anseqta),
+                                   tarif_exb    = rep(0, n_anseqta),
+                                   tarif_exh    = rep(0, n_anseqta),
+                                   forfait_exb  = rep(0, n_anseqta)))
   
   if (is.null(prudent)){
   # Partie GHS
@@ -181,7 +213,7 @@ vvr_ghs_supp <- function(rsa,
       anseqta == '2014'    ~ 0.9965,
       anseqta == '2013'    ~ 0.9965,
       TRUE    ~ 1)) %>% 
-    dplyr::left_join(tarifs, by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
+    dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
     dplyr::mutate(
       t_base  = tarif_base                 * cgeo * cprudent,
       t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent, 
@@ -195,7 +227,7 @@ vvr_ghs_supp <- function(rsa,
       # Partie GHS
       rsa_2 <- rsa %>% 
         mutate(cprudent = prudent) %>% 
-        dplyr::left_join(tarifs, by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
+        dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
         dplyr::mutate(
           t_base  = tarif_base                 * cgeo * cprudent,
           t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent, 
@@ -209,6 +241,18 @@ vvr_ghs_supp <- function(rsa,
 
   if (bee == TRUE){
     return(rsa_2 %>% dplyr::select(cle_rsa, rec_totale, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, rec_bee))
+  }
+  
+  # Gestion des tibbles complémentaires (diap, po, pie)
+  
+  if(nrow(pie) == 0) {
+    pie = dplyr::tibble(cle_rsa = "", code_pie = "REP", nbsuppie = 0)
+  }
+  if(nrow(diap) == 0) {
+    diap = dplyr::tibble(cle_rsa = "", nbsup = 0)
+  }
+  if(nrow(porg) == 0) {
+    porg = dplyr::tibble(cle_rsa = "", cdpo = "")
   }
   
   # Info suppléments ghs radiothérapie
@@ -253,20 +297,24 @@ vvr_ghs_supp <- function(rsa,
   # pie
   
   trans_pie <- pie %>% 
-    group_by(cle_rsa, code_pie) %>% 
-    summarise(nbsuppie = sum(nbsuppie)) %>% 
-    ungroup() %>% 
-    right_join(tibble(liste_pie = c('STF', 'SRC', 'REA', 'REP', 'NN1', 'NN2', 'NN3')), by = c('code_pie' = 'liste_pie')) %>% 
+    dplyr::group_by(cle_rsa, code_pie) %>% 
+    dplyr::summarise(nbsuppie = sum(nbsuppie)) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::right_join(tibble(liste_pie = c('STF', 'SRC', 'REA', 'REP', 'NN1', 'NN2', 'NN3')), by = c('code_pie' = 'liste_pie')) %>% 
     tidyr::complete(cle_rsa, code_pie, fill = list(nbsuppie = 0)) %>% 
-    mutate(code_pie = paste0('pie_', tolower(code_pie))) %>% 
+    dplyr::mutate(code_pie = paste0('pie_', tolower(code_pie))) %>% 
     tidyr::spread(code_pie, nbsuppie, fill = 0) %>% 
-    filter(!is.na(cle_rsa))
+    dplyr::filter(!is.na(cle_rsa))
   trans_pie <- trans_pie %>% 
     dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>% 
     dplyr::mutate_if(is.numeric, function(x)dplyr::if_else(is.na(x), 0, x))
   
   
   # rehosp
+  if (is.null(ano)){
+    stop('La table ano doit être non vide et contenir les colonnes :\nnoanon, cok, cle_rsa, moissort, dtent, dtsort')
+  }
+  
   ano <- ano %>% 
     dplyr::select(noanon, cok, cle_rsa, moissort, dtent, dtsort)
   
@@ -399,8 +447,8 @@ vvr_ghs_supp <- function(rsa,
     # rehosp
     dplyr::mutate(rec_rehosp_ghm = - pmax(rehosp_ghm * ((t_base + t_bas)/2),0) * cgeo * cprudent) %>% 
     # suppléments pie
-    dplyr::mutate(rec_pie_src = pie_src * tsc * cgeo * cprudent,
-                  rec_pie_stf = pie_stf * tsi * cgeo * cprudent,
+    dplyr::mutate(rec_pie_src = pie_src * tsc  * cgeo * cprudent,
+                  rec_pie_stf = pie_stf * tsi  * cgeo * cprudent,
                   rec_pie_rea = pie_rea * trea * cgeo * cprudent,
                   rec_pie_rep = pie_rep * trep * cgeo * cprudent,
                   rec_pie_nn1 = pie_nn1 * tnn1 * cgeo * cprudent,
@@ -413,15 +461,27 @@ vvr_ghs_supp <- function(rsa,
                   rec_src = rec_src + rec_pie_src,
                   rec_nn1 = rec_nn1 + rec_pie_nn1,
                   rec_nn2 = rec_nn2 + rec_pie_nn2,
-                  rec_nn3 = rec_nn3 + rec_pie_nn3) %>% 
+                  rec_nn3 = rec_nn3 + rec_pie_nn3)
+  
     # calcul recette totale
-    dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
+  if (min(rsa_3$anseqta) > '2016'){
+    rsa_3 <- rsa_3 %>% 
+      dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
              rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm + 
-             rec_rdt_tot +rec_sdc + rec_po_tot)
+             rec_rdt_tot + rec_sdc + rec_po_tot)
+  } else {
+    rsa_3 <- rsa_3 %>% 
+      dplyr::mutate(rec_sdc = 0) %>% 
+      dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
+                      rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm + 
+                      rec_rdt_tot + rec_po_tot)
+  }
+    
   
   if (full){
-    return(rsa_3)
-  } else if (!full){
+    return(rsa_3 %>% dplyr::rename(rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut))
+  } else 
+    if (!full){
     rsa_3 %>% dplyr::select(cle_rsa, moissor, anseqta, rec_totale, rec_bee, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, 
                      rec_rep, rec_rea, rec_stf, rec_src, rec_nn1, rec_nn2, rec_nn3, 
                      rec_dialhosp, rec_caishyp, rec_aph, rec_ant, rec_rap, rec_rehosp_ghm, 
@@ -434,6 +494,11 @@ vvr_ghs_supp <- function(rsa,
 #'
 #' Reproduire les catégories du tableau SV d'epmsi, à partir des tables résultant des fonctions
 #' \code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}} et éventuellement d'une table contenant le fichcomp PO
+#' 
+#' 
+#' @param rsa un tibble rsa contenant les variables nécessaires (créé avec \code{\link{vvr_rsa}})
+#' @param ano un tibble ano contenant les variables nécessaires (créé avec \code{\link{vvr_mco_ano}})
+#' @param porg un tibble porg contenant les prélevements d'organes du out (créé avec \code{\link{ipo}})
 #' 
 #' @return Un tibble contenant la catégorie du tableau SV epmsi, une ligne par clé rsa
 #'
@@ -451,7 +516,7 @@ vvr_ghs_supp <- function(rsa,
 #' @seealso \code{\link{vvr_ano_mco}}, \code{\link{vvr_rsa}}, \code{\link{vvr_mco}}
 #' @export vvr_mco_sv
 #' @export
-vvr_mco_sv <- function(rsa, ano, porg = tibble(cle_rsa = "")){
+vvr_mco_sv <- function(rsa, ano, porg = dplyr::tibble(cle_rsa = "")){
   
   # CM 90
   # Séjours en CM 90 : nombre de RSA groupés dans la CM 90 (groupage en erreur)
@@ -667,6 +732,9 @@ vvr_mco_sv <- function(rsa, ano, porg = tibble(cle_rsa = "")){
 #' 
 #' C'est un left join
 #' 
+#' @param rsa_v tibble résultant de la fonction \code{\link{vvr_rsa}}
+#' @param ano_sv tibble résultant de la fonction \code{\link{vvr_ano_mco}}
+#' 
 #' @return Un tibble final contenant la catégorie du tableau SV epmsi, et les variables rec_ de recette par séjour
 #'
 #' @examples
@@ -689,6 +757,7 @@ vvr_mco <- function(rsa_v, ano_sv){
 #'
 #' Fonction pour obtenir les tables de libellés du tableau SV, RAV, et le type de caractère bloquant des données VIDHOSP.
 #' 
+#' @param wich Chaine de caractères parmi :  'lib_type_sej', 'lib_vidhosp', 'lib_valo'
 #' 
 #' @return Un tibble avec les codes et libellés
 #'
@@ -770,6 +839,9 @@ vvr_libelles_valo <- function(wich){
 #'
 #' Il s'agit d'un tableau similaire au tableau "Séjours Valorisés"
 #' 
+#' @param valo Un tibble résultant de \code{\link{vvr_mco}}
+#' @param knit à TRUE, appliquer une sortie `knitr::kable` au résultat
+#' 
 #' @return Un tibble similaire au tableau RAV epmsi
 #'
 #' Il s'agit d'un tableau similaire au tableau "Récapitulation Activité - Valorisation"
@@ -783,16 +855,25 @@ vvr_libelles_valo <- function(wich){
 #'
 #' @export epmsi_mco_sv
 #' @export
-epmsi_mco_sv <- function(valo){
-  valo %>% 
+epmsi_mco_sv <- function(valo, knit = FALSE){
+  rr <- valo %>% 
     dplyr::group_by(type_fin) %>% 
     dplyr::summarise(n = n(),
-              rec = sum(rec_totale)) %>% 
+              rec = sum(rec_totale)) %>%
+    dplyr::mutate(`%` = scales::percent(n / sum(n))) %>% 
     dplyr::left_join(vvr_libelles_valo('lib_type_sej'), by = c('type_fin' = 'type_fin'))
+  if (knit){
+    return(knitr::kable(rr))
+  } else {
+    return(rr)
+  }
 }
 
 #' ~ VVR - Reproduire le tableau RAV
 #'
+#' 
+#' @param valo Un tibble résultant de \code{\link{vvr_mco}}
+#' @param knit à TRUE, appliquer une sortie `knitr::kable` au résultat
 #' 
 #' @return Un tibble similaire au tableau RAV epmsi (montant BR* ou BR si coeff prud = 1)
 #'
@@ -806,24 +887,33 @@ epmsi_mco_sv <- function(valo){
 #'
 #' @export epmsi_mco_rav
 #' @export
-epmsi_mco_rav <- function(valo){
-  valo %>% dplyr::select(cle_rsa, dplyr::starts_with('rec_'), type_fin, -rec_totale, -rec_bee) %>% 
+epmsi_mco_rav <- function(valo, knit = FALSE){
+  rr <- valo %>% dplyr::select(cle_rsa, dplyr::starts_with('rec_'), type_fin, -rec_totale, -rec_bee) %>% 
     dplyr::mutate(rec_exb = -rec_exb) %>% 
     tidyr::gather(var, val, - cle_rsa, - type_fin) %>%
-    dplyr::filter(abs(val) > 1e-7,!is.na(val)) %>%
+    dplyr::filter(abs(val) > 0) %>%
     tidyr::spread(type_fin, val, fill = 0) %>% 
     dplyr::mutate(`0` = ifelse(var == "rec_po_tot", `0` + `8`, `0`)) %>% 
     select(cle_rsa, var, val = `0`) %>% 
     tidyr::gather(type_fin, val, - cle_rsa, - var) %>% 
-    dplyr::left_join(vvr_libelles_valo('lib_valo'), by = "var") %>%
+    dplyr::inner_join(vvr_libelles_valo('lib_valo'), by = "var") %>%
     dplyr::group_by(lib_valo, var) %>%
-    dplyr::summarise(n = n_distinct(cle_rsa),
+    dplyr::summarise(n = dplyr::n_distinct(cle_rsa),
                      v = sum(val)) %>% 
+    ungroup() %>% 
     arrange(lib_valo) %>% 
-    dplyr::bind_rows(tibble(lib_valo = "Total valorisation 100% T2A", var = "rec_totale", n = nrow(valo),
+    dplyr::bind_rows(tibble(lib_valo = "Total valorisation 100% T2A", 
+                            var = "rec_totale", 
+                            n = sum(valo$rec_totale != 0),
                             v = sum(.$v))) %>% 
     dplyr::mutate(n = formatC(n, format = "f", big.mark = " ", digits = 0),
                   v = formatC(v, format = "f", big.mark = " ", decimal.mark = ",", digits = 3) %>% paste0('€'))
+  
+  if (knit){
+    return(knitr::kable(rr))
+  } else {
+    return(rr)
+  }
 }
 
 # 

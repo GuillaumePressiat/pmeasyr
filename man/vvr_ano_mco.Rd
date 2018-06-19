@@ -6,6 +6,13 @@
 \usage{
 vvr_ano_mco(...)
 }
+\arguments{
+\item{p}{Un noyau de paramètres \code{\link{noyau_pmeasyr}}}
+
+\item{con}{Une connexion vers une db contenant les données PMSI}
+
+\item{annee}{Dans le cas d'une con db, préciser l'année en integer sur deux caractères}
+}
 \value{
 Un tibble contenant les variables ano
 }

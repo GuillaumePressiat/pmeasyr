@@ -96,7 +96,7 @@ Ici, on se concentre sur la valorisation dite BEE pour "Base + Extrême haut - E
 tarifs_ghs <- dplyr::distinct(get_table('tarifs_mco_ghs'), ghs, anseqta, .keep_all = TRUE)
 
 resu <- vvr_mco(
-vvr_ghs_supp(vrsa, vano, tarifs = tarifs_ghs),
+vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs),
 vvr_mco_sv(vrsa, vano)
 )
 ```
@@ -122,13 +122,16 @@ On peut libeller ces variables en faisant appel à la fonction `vvr_libelles_val
 
 ```{r eval = F} 
 resu <- vvr_mco(
-vvr_ghs_supp(vrsa, 
-             tarifs_ghs, 
-             get_table('tarifs_mco_supplements'), 
-             vano, 
-             ipo(p),
-             idiap(p), 
-             ipie(p),
+vvr_ghs_supp(rsa = vrsa, 
+             tarifs = tarifs_ghs, 
+             supplements =  get_table('tarifs_mco_supplements'), 
+             ano = vano, 
+             porg = ipo(p), 
+             diap = idiap(p), 
+             pie = ipie(p), 
+             full = FALSE,
+             cgeo = 1.07, 
+             prudent = NULL,
              bee = FALSE),
 vvr_mco_sv(vrsa, vano, ipo(p))
 )
@@ -208,3 +211,89 @@ Les séjours sont distribués et les recettes BR * coeffs sont sommées en fonct
 epmsi_mco_rav(resu)
 ```
 
+## Connaître en détail la valorisation des séjours
+
+Il est possible de garder toutes les variables intermédiaires du calcul de valorisation, c'est le cas en précisant le paramètre `full = TRUE` : 
+
+```{r eval = F}
+resu <- vvr_mco(
+vvr_ghs_supp(rsa = vrsa, 
+             tarifs = tarifs_ghs, 
+             supplements =  get_table('tarifs_mco_supplements'), 
+             ano = vano, 
+             porg = ipo(p), 
+             diap = idiap(p), 
+             pie = ipie(p), 
+             full = TRUE,
+             cgeo = 1.07, 
+             prudent = NULL, 
+             bee = FALSE),
+vvr_mco_sv(vrsa, vano, ipo(p))
+)
+```
+
+Dans ce cas, les variables suivantes deviennent accessibles au niveau de chaque séjour : 
+
+```{r eval = F}
+resu %>% 
+  summarise_at(vars(starts_with('rec_')), sum)  %>% 
+  names() %>% 
+  cat(sep = "\n")
+``` 
+
+```
+rec_base
+rec_exh
+rec_exb
+rec_bee
+rec_totale
+rec_rep
+rec_rea
+rec_stf
+rec_src
+rec_nn1
+rec_nn2
+rec_nn3
+rec_hhs
+rec_edpahs
+rec_edpcahs
+rec_ehhs
+rec_dip
+rec_dialhosp
+rec_caishyp
+rec_aph
+rec_ant
+rec_rap
+rec_sdc
+rec_rdt5
+rec_prot
+rec_ict
+rec_cyb
+rec_gam
+rec_rcon1
+rec_rcon2
+rec_tciea
+rec_tcies
+rec_aie
+rec_rcon3
+rec_rdt_tot
+rec_poi
+rec_poii
+rec_poiii
+rec_poiv
+rec_pov
+rec_povi
+rec_povii
+rec_poviii
+rec_poix
+rec_poa
+rec_po_tot
+rec_rehosp_ghm
+rec_pie_src
+rec_pie_stf
+rec_pie_rea
+rec_pie_rep
+rec_pie_nn1
+rec_pie_nn2
+rec_pie_nn3
+```

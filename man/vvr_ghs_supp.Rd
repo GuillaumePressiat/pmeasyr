@@ -4,10 +4,32 @@
 \alias{vvr_ghs_supp}
 \title{~ VVR - Attribuer les recettes GHS et suppléments sur des rsa}
 \usage{
-vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = tibble(cle_rsa = ""),
-  porg = tibble(cle_rsa = ""), diap = tibble(cle_rsa = ""),
-  pie = tibble(cle_rsa = ""), full = FALSE, cgeo = 1.07, prudent = NULL,
-  bee = TRUE)
+vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = NULL,
+  porg = dplyr::tibble(), diap = dplyr::tibble(), pie = dplyr::tibble(),
+  full = FALSE, cgeo = 1.07, prudent = NULL, bee = TRUE)
+}
+\arguments{
+\item{rsa}{Un tibble rsa partie fixe (créé avec \code{\link{vvr_rsa}})}
+
+\item{tarifs}{Un tibble contenant une ligne par tarif GHS - année séquentielle des tarifs}
+
+\item{supplements}{Un tibble contenant une ligne par année et une colonne par tarif de supplément}
+
+\item{ano}{Un tibble, facultatif si `r bee = TRUE`, créé avec \code{\link{vvr_ano_mco}}}
+
+\item{porg}{Un tibble contenant les prélévements d'organes du out (importés avec \code{\link{ipo}})}
+
+\item{diap}{Un tibble contenant les dialyses péritonéales du out (importés avec \code{\link{idiap}})}
+
+\item{pie}{Un tibble contenant les prestations inter-établissements du out (importés avec \code{\link{ipie}})}
+
+\item{full}{Booléen, à `r TRUE` toutes les variables intermédiaires de valo sont gardées}
+
+\item{cgeo}{Coefficient géographique, par défaut celui de l'Île-de-France (1.07)}
+
+\item{prudent}{coefficient prudentiel, par défaut à `r NULL`, le coefficient prudentiel est appliqué par année séquentielles des tarifs}
+
+\item{bee}{par défaut à `r TRUE`, seule la valorisation de GHS de base + extrême haut - extrême bas est calculée}
 }
 \value{
 Un tibble contenant les différentes rubriques de valorisation, une ligne par clé rsa
@@ -17,7 +39,7 @@ Reproduire la valorisation BR et coefficients géo/prudentiels du tableau RAV d'
 \code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}}, et de tables contenant les fichcomp PO et DIAP
 }
 \details{
-Pour l'heure cette fonction ne tient pas compte de fichcomp PIE
+Pour l'heure cette fonction ne tient pas compte de la rubrique "Minoration forfaitaire liste en sus"
 }
 \examples{
 \dontrun{
@@ -26,7 +48,7 @@ tarifs      <- nomensland::get_table('tarifs_mco_ghs') \%>\% distinct(ghs, anseq
 supplements <- nomensland::get_table('tarifs_mco_supplements')
 
 # Recette GHS de base et suppléments EXB, EXH
-vvr_ghs_supp(vrsa, tarifs)
+vvr_ghs_supp(rsa = vrsa, tarifs = tarifs)
 
 # Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)
 vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)

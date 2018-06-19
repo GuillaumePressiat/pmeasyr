@@ -18,7 +18,7 @@ adezip3(finess, path, file, liste = "", pathto = "")
 \item{pathto}{Chemin ou deposer les fichiers dezippes, par defaut à "", les fichiers sont mis la ou se trouve l'archive}
 }
 \description{
-Version de la fonction \code{\link{adezip2}} pour des archives au format Intranet du DIM Siège de l'AP-HP,
+Version de la fonction \code{\link{adezip2}} pour des archives au format Intranet du DIM Siege de l'AP-HP,
 \url{http://dime.aphp.fr/}.
 }
 \examples{

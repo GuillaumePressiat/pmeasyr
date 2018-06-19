@@ -20,7 +20,7 @@ adelete(finess, annee, mois, path, liste, type, ...)
 \item{type}{Type de fichier In / Out : par defaut a "", efface tous les fichiers \code{finess.annee.mois.}}
 }
 \description{
-Supprime les fichiers de l'archive PMSI dezippes en début de traitement
+Supprime les fichiers de l'archive PMSI dezippes en debut de traitement
 }
 \examples{
 \dontrun{
