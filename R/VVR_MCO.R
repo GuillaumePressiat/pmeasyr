@@ -464,7 +464,7 @@ vvr_ghs_supp <- function(rsa,
                   rec_nn3 = rec_nn3 + rec_pie_nn3)
   
     # calcul recette totale
-  if (min(rsa_3$anseqta) > '2016'){
+  if (min(rsa_3$anseqta) > '2015'){
     rsa_3 <- rsa_3 %>% 
       dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
              rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm + 
