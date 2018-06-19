@@ -168,7 +168,7 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' \dontrun{
 #' # Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
 #' tarifs      <- nomensland::get_table('tarifs_mco_ghs') %>% distinct(ghs, anseqta, .keep_all = TRUE)
-#' supplements <- nomensland::get_table('tarifs_mco_supplements')
+#' supplements <- nomensland::get_table('tarifs_mco_supplements') %>% mutate_if(is.numeric, tidyr::replace_na, 0)
 #' 
 #' # Recette GHS de base et suppléments EXB, EXH
 #' vvr_ghs_supp(rsa = vrsa, tarifs = tarifs)
@@ -482,10 +482,10 @@ vvr_ghs_supp <- function(rsa,
     return(rsa_3 %>% dplyr::rename(rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut))
   } else 
     if (!full){
-    rsa_3 %>% dplyr::select(cle_rsa, moissor, anseqta, rec_totale, rec_bee, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, 
+      return(rsa_3 %>% dplyr::select(cle_rsa, moissor, anseqta, rec_totale, rec_bee, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, 
                      rec_rep, rec_rea, rec_stf, rec_src, rec_nn1, rec_nn2, rec_nn3, 
                      rec_dialhosp, rec_caishyp, rec_aph, rec_ant, rec_rap, rec_rehosp_ghm, 
-                     rec_rdt_tot,rec_sdc, rec_po_tot)
+                     rec_rdt_tot, rec_sdc, rec_po_tot))
   }
 }
 

@@ -21,9 +21,6 @@ library(dplyr, warn.conflicts = F)
 Il faut au moins disposer des rsa et des données anohosp.
 Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.
 
-
-### Import avec pmeasyr et noyau
-
 Deux possibilités pour préparer les données rsa et ano afin de calculer la valorisation : les importer spécifiquement, ou les collecter depuis une base de données, voir pour cela éventuellement les fonctions autour des bases de données dans `pmeasyr`.
 
 ### Import avec pmeasyr et noyau
@@ -92,12 +89,12 @@ Charger ce package donne accès aux fonctions `get_table` et  `get_dictionnaire_
 Ici, on se concentre sur la valorisation dite BEE pour "Base + Extrême haut - Extrême bas". En effet par défaut le paramètre `bee` est à `TRUE` dans l'appel de fonction, et les tables vano, porg et diap sont renseignés à vide.
 
 ```{r eval = F} 
-
+# Importer les tarifs GHS
 tarifs_ghs <- dplyr::distinct(get_table('tarifs_mco_ghs'), ghs, anseqta, .keep_all = TRUE)
 
 resu <- vvr_mco(
-vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs),
-vvr_mco_sv(vrsa, vano)
+  vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs),
+  vvr_mco_sv(vrsa, vano)
 )
 ```
 
@@ -121,10 +118,13 @@ On peut libeller ces variables en faisant appel à la fonction `vvr_libelles_val
 ### Cas d'une valorisation base + Extrême haut - Extrême bas + suppléments
 
 ```{r eval = F} 
+# Importer les tarifs des suppléments
+tarifs_supp <- get_table('tarifs_mco_supplements') %>% mutate_if(is.numeric, tidyr::replace_na, 0)
+
 resu <- vvr_mco(
 vvr_ghs_supp(rsa = vrsa, 
              tarifs = tarifs_ghs, 
-             supplements =  get_table('tarifs_mco_supplements'), 
+             supplements =  tarifs_supp, 
              ano = vano, 
              porg = ipo(p), 
              diap = idiap(p), 
@@ -219,7 +219,7 @@ Il est possible de garder toutes les variables intermédiaires du calcul de valo
 resu <- vvr_mco(
 vvr_ghs_supp(rsa = vrsa, 
              tarifs = tarifs_ghs, 
-             supplements =  get_table('tarifs_mco_supplements'), 
+             supplements =  tarifs_supp, 
              ano = vano, 
              porg = ipo(p), 
              diap = idiap(p), 

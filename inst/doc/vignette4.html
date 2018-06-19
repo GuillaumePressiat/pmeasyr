@@ -79,11 +79,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="preparer-les-tables-necessaires" class="section level2">
 <h2>Préparer les tables nécessaires</h2>
 <p>Il faut au moins disposer des rsa et des données anohosp. Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.</p>
-<div id="import-avec-pmeasyr-et-noyau" class="section level3">
-<h3>Import avec pmeasyr et noyau</h3>
 <p>Deux possibilités pour préparer les données rsa et ano afin de calculer la valorisation : les importer spécifiquement, ou les collecter depuis une base de données, voir pour cela éventuellement les fonctions autour des bases de données dans <code>pmeasyr</code>.</p>
-</div>
-<div id="import-avec-pmeasyr-et-noyau-1" class="section level3">
+<div id="import-avec-pmeasyr-et-noyau" class="section level3">
 <h3>Import avec pmeasyr et noyau</h3>
 <p>Ici, on utilise les fonctions <code>vvr_rsa</code> et <code>vvr_ano_mco</code> pour importer les données depuis les fichiers bruts du <em>out</em> et sélectionner les variables dont nous avons besoins.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pmeasyr)
@@ -130,11 +127,12 @@ vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(con,  <sp
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Importer les tarifs GHS</span>
+tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
 
 resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
-<span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, <span class="dt">ano =</span>  vano, <span class="dt">tarifs =</span> tarifs_ghs),
-<span class="kw">vvr_mco_sv</span>(vrsa, vano)
+  <span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, <span class="dt">ano =</span>  vano, <span class="dt">tarifs =</span> tarifs_ghs),
+  <span class="kw">vvr_mco_sv</span>(vrsa, vano)
 )</code></pre></div>
 <p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
 <pre><code>cle_rsa
@@ -149,10 +147,13 @@ typvidhosp</code></pre>
 </div>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Importer les tarifs des suppléments</span>
+tarifs_supp &lt;-<span class="st"> </span><span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>) %&gt;%<span class="st"> </span><span class="kw">mutate_if</span>(is.numeric, tidyr::replace_na, <span class="dv">0</span>)
+
+resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, 
              <span class="dt">tarifs =</span> tarifs_ghs, 
-             <span class="dt">supplements =</span>  <span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>), 
+             <span class="dt">supplements =</span>  tarifs_supp, 
              <span class="dt">ano =</span> vano, 
              <span class="dt">porg =</span> <span class="kw">ipo</span>(p), 
              <span class="dt">diap =</span> <span class="kw">idiap</span>(p), 
@@ -407,7 +408,7 @@ typvidhosp</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, 
              <span class="dt">tarifs =</span> tarifs_ghs, 
-             <span class="dt">supplements =</span>  <span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>), 
+             <span class="dt">supplements =</span>  tarifs_supp, 
              <span class="dt">ano =</span> vano, 
              <span class="dt">porg =</span> <span class="kw">ipo</span>(p), 
              <span class="dt">diap =</span> <span class="kw">idiap</span>(p), 

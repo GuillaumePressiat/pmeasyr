@@ -37,19 +37,22 @@
 #  library(nomensland)
 
 ## ----eval = F------------------------------------------------------------
-#  
+#  # Importer les tarifs GHS
 #  tarifs_ghs <- dplyr::distinct(get_table('tarifs_mco_ghs'), ghs, anseqta, .keep_all = TRUE)
 #  
 #  resu <- vvr_mco(
-#  vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs),
-#  vvr_mco_sv(vrsa, vano)
+#    vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs),
+#    vvr_mco_sv(vrsa, vano)
 #  )
 
 ## ----eval = F------------------------------------------------------------
+#  # Importer les tarifs des suppléments
+#  tarifs_supp <- get_table('tarifs_mco_supplements') %>% mutate_if(is.numeric, tidyr::replace_na, 0)
+#  
 #  resu <- vvr_mco(
 #  vvr_ghs_supp(rsa = vrsa,
 #               tarifs = tarifs_ghs,
-#               supplements =  get_table('tarifs_mco_supplements'),
+#               supplements =  tarifs_supp,
 #               ano = vano,
 #               porg = ipo(p),
 #               diap = idiap(p),
@@ -80,7 +83,7 @@ knitr::kable(pmeasyr::vvr_libelles_valo('lib_vidhosp'))
 #  resu <- vvr_mco(
 #  vvr_ghs_supp(rsa = vrsa,
 #               tarifs = tarifs_ghs,
-#               supplements =  get_table('tarifs_mco_supplements'),
+#               supplements =  tarifs_supp,
 #               ano = vano,
 #               porg = ipo(p),
 #               diap = idiap(p),
