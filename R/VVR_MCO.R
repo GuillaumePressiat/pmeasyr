@@ -898,7 +898,7 @@ epmsi_mco_rav <- function(valo, knit = FALSE){
     tidyr::gather(type_fin, val, - cle_rsa, - var) %>% 
     dplyr::inner_join(vvr_libelles_valo('lib_valo'), by = "var") %>%
     dplyr::group_by(lib_valo, var) %>%
-    dplyr::summarise(n = dplyr::n_distinct(cle_rsa),
+    dplyr::summarise(n = sum(val != 0),
                      v = sum(val)) %>% 
     ungroup() %>% 
     arrange(lib_valo) %>% 
