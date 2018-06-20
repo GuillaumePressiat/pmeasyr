@@ -324,7 +324,7 @@ vvr_ghs_supp <- function(rsa,
     dplyr::filter(cok, moissor == moissort, rsacmd != '28', noghs != '9999') %>%
     dplyr::mutate(mdentr = paste0(echpmsi, prov),
                   mdsort = paste0(schpmsi, dest)) %>%
-    dplyr::arrange(noanon, nosej, ghm) %>% 
+    dplyr::arrange(noanon, nosej) %>% # , ghm (suivant version de vvs ?)
     dplyr::group_by(noanon) %>% 
     dplyr::mutate(r = row_number()) %>% 
     dplyr::ungroup()
