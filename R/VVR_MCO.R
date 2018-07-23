@@ -316,27 +316,39 @@ vvr_ghs_supp <- function(rsa,
   }
   
   ano <- ano %>% 
-    dplyr::select(noanon, cok, cle_rsa, moissort, dtent, dtsort)
+    dplyr::select(noanon, cok, cle_rsa, moissort, dtent, dtsort, nosej)
   
-  
-  reh <- rsa %>% 
-    dplyr::inner_join(ano, by = 'cle_rsa') %>% 
-    dplyr::filter(cok, moissor == moissort, rsacmd != '28', noghs != '9999') %>% 
+
+  reh <- rsa %>%
+    dplyr::inner_join(ano, by = 'cle_rsa') %>%
+    dplyr::filter(cok, moissor == moissort, rsacmd != '28', noghs != '9999') %>%
     dplyr::mutate(mdentr = paste0(echpmsi, prov),
-           mdsort = paste0(schpmsi, dest)) %>% 
-    dplyr::arrange(noanon, dtent, dtsort)
+                  mdsort = paste0(schpmsi, dest)) %>%
+    dplyr::arrange(noanon, nosej) %>% # , ghm (suivant version de vvs ?)
+    dplyr::group_by(noanon) %>% 
+    dplyr::mutate(r = row_number()) %>% 
+    dplyr::ungroup()
   
-  reh <- reh %>% 
+  reh <- reh %>%
     dplyr::mutate(lag_mdsort = dplyr::lag(mdsort),
-           lag_noanon = dplyr::lag(noanon),
-           lag_noghs  = dplyr::lag(noghs),
-           lag_sexe   = dplyr::lag(sexe),
-           lag_agean  = dplyr::lag(agean),
-           lag_dtsort = dplyr::lag(dtsort)) %>% 
-    dplyr::filter(mdentr == '71', mdentr == lag_mdsort,  noanon == lag_noanon,  
-           lag_agean <= agean, agean <= lag_agean + 1,
-           lag_noghs == noghs, lag_sexe == sexe, lag_dtsort + 2 < dtent, dtent <= lag_dtsort + 10) %>% 
-    dplyr::select(cle_rsa) %>% 
+                  lag_noanon = dplyr::lag(noanon),
+                  lag_r      = dplyr::lag(r),
+                  lag_noghs  = dplyr::lag(noghs),
+                  lag_nosej  = dplyr::lag(nosej),
+                  lag_duree  = dplyr::lag(duree),
+                  lag_sexe   = dplyr::lag(sexe),
+                  lag_agean  = dplyr::lag(agean)) %>%
+    dplyr::mutate(delai = nosej - lag_nosej - lag_duree) %>% 
+    dplyr::filter(mdentr == '71', 
+                  mdentr == lag_mdsort,  
+                  r == lag_r + 1,
+                  noanon == lag_noanon,  
+                  (agean == lag_agean | agean == lag_agean + 1 | is.na(agean)),
+                  lag_noghs == noghs, 
+                  lag_sexe == sexe, 
+                  delai <= 10 , 
+                  delai > 2) %>%
+    dplyr::select(cle_rsa) %>%
     dplyr::mutate(rehosp_ghm = 1)
   
   
@@ -445,7 +457,7 @@ vvr_ghs_supp <- function(rsa,
         rec_pov + rec_povi + rec_povii + rec_poviii + rec_poix + rec_poa) %>% 
     
     # rehosp
-    dplyr::mutate(rec_rehosp_ghm = - pmax(rehosp_ghm * ((t_base + t_bas)/2),0) * cgeo * cprudent) %>% 
+    dplyr::mutate(rec_rehosp_ghm = - pmax(rehosp_ghm *  (t_base + t_bas) / 2, 0) ) %>%
     # suppléments pie
     dplyr::mutate(rec_pie_src = pie_src * tsc  * cgeo * cprudent,
                   rec_pie_stf = pie_stf * tsi  * cgeo * cprudent,
@@ -898,7 +910,7 @@ epmsi_mco_rav <- function(valo, knit = FALSE){
     tidyr::gather(type_fin, val, - cle_rsa, - var) %>% 
     dplyr::inner_join(vvr_libelles_valo('lib_valo'), by = "var") %>%
     dplyr::group_by(lib_valo, var) %>%
-    dplyr::summarise(n = dplyr::n_distinct(cle_rsa),
+    dplyr::summarise(n = sum(val != 0),
                      v = sum(val)) %>% 
     ungroup() %>% 
     arrange(lib_valo) %>% 
