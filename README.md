@@ -1,5 +1,8 @@
 # pmeasyr : données PMSI avec R
 
+![rigologo](rigologo_pmeasyr.png)
+
+
 ***Guillaume Pressiat***
 
 ***SIMAP / DOMU / AP-HP***
