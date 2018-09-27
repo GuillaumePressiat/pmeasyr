@@ -1953,7 +1953,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     if (lib==T){
       v <- libelles
       v<- v[!is.na(v)]
-      med_i <- med_i %>% dplyr::select(-Fil1) %>%  sjlabelled::set_label(v)
+      med_i <- med_i %>%  sjlabelled::set_label(v)
     }
     med_i %>% dplyr::mutate(DTDISP = lubridate::dmy(DTDISP)) -> med_i
     if (tolower_names){
