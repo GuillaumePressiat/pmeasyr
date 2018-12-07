@@ -12,7 +12,6 @@
 
 <meta name="author" content="Guillaume Pressiat" />
 
-<meta name="date" content="2017-12-01" />
 
 <title>pmeasyr</title>
 
@@ -55,6 +54,8 @@ code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+
 </style>
 
 
@@ -259,10 +260,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
      <span class="dt">mois =</span> <span class="dv">12</span>, 
      <span class="dt">path =</span> <span class="st">'~/Documents/data/mco'</span>, 
      <span class="dt">typi =</span> <span class="dv">6</span>) -&gt;<span class="st"> </span>rsa15
-<span class="kw">View</span>(rsa15$rsa)
-<span class="kw">View</span>(rsa15$rsa_um)
-<span class="kw">View</span>(rsa15$actes)
-<span class="kw">View</span>(rsa15$das)</code></pre></div>
+<span class="kw">View</span>(rsa15<span class="op">$</span>rsa)
+<span class="kw">View</span>(rsa15<span class="op">$</span>rsa_um)
+<span class="kw">View</span>(rsa15<span class="op">$</span>actes)
+<span class="kw">View</span>(rsa15<span class="op">$</span>das)</code></pre></div>
 </div>
 <div id="rum" class="section level4">
 <h4>RUM</h4>
@@ -424,7 +425,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lecture du fichier tra et jointure aux rsa</span>
 <span class="kw">itra</span>(<span class="dv">750100042</span>, <span class="dv">2015</span>, <span class="dv">12</span>, <span class="st">'~/Documents/data/mco'</span>) -&gt;<span class="st"> </span>tra
 <span class="co"># Ajout du tra aux rsa :</span>
-<span class="kw">inner_tra</span>(rsa15$rsa, tra) -&gt;<span class="st"> </span>rsa15$rsa</code></pre></div>
+<span class="kw">inner_tra</span>(rsa15<span class="op">$</span>rsa, tra) -&gt;<span class="st"> </span>rsa15<span class="op">$</span>rsa</code></pre></div>
 </div>
 <div id="champ-had-ssr-psy-et-rsf" class="section level3">
 <h3>Champ HAD, SSR, PSY et RSF</h3>
@@ -546,13 +547,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="dico" class="section level3">
 <h3>Dico</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Obtenir les noms, labels et types de variables (character, numeric, integer, date, ...)</span>
-<span class="kw">dico</span>(rsa15$rsa)</code></pre></div>
+<span class="kw">dico</span>(rsa15<span class="op">$</span>rsa)</code></pre></div>
 </div>
 <div id="labels" class="section level3">
 <h3>Labels</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Obtenir le libelle d'une variable du PMSI</span>
-<span class="kw">labeleasier</span>(rsa15$rsa$SEXE, <span class="dt">Sexe =</span> T)
-<span class="kw">labeleasier</span>(rsa15$rsa$ECHPMSI, <span class="dt">Mode_entree =</span> T)</code></pre></div>
+<span class="kw">labeleasier</span>(rsa15<span class="op">$</span>rsa<span class="op">$</span>SEXE, <span class="dt">Sexe =</span> T)
+<span class="kw">labeleasier</span>(rsa15<span class="op">$</span>rsa<span class="op">$</span>ECHPMSI, <span class="dt">Mode_entree =</span> T)</code></pre></div>
 </div>
 <div id="tidy-diagnostics" class="section level3">
 <h3>Tidy diagnostics</h3>
@@ -560,7 +561,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pour les objets rsa et rum du MCO</span>
 <span class="co"># Transbahuter tous les diagnostics dans une seule table</span>
 <span class="kw">tdiag</span>(rsa15) -&gt;<span class="st"> </span>rsa15
-<span class="kw">View</span>(rsa15$diags)
+<span class="kw">View</span>(rsa15<span class="op">$</span>diags)
 <span class="co"># Tous les diagnostics sont dans une table, avec un numero selon leur position  </span>
 <span class="co"># 1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS</span></code></pre></div>
 <p>Exemple :</p>
@@ -621,30 +622,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># En utilisant le package dplyr</span>
 <span class="kw">library</span>(dplyr)
 <span class="co"># acte EBLA003</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'EBLA003'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15<span class="op">$</span>rsa <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'EBLA003'</span>, actes)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># actes EBLA001 ou EBLA002 ou EBLA003</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'EBLA'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15<span class="op">$</span>rsa <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'EBLA'</span>, actes)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># actes EBLA003 ou EPLF002</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'EBLA003|EPLF002'</span>, actes)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15<span class="op">$</span>rsa <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'EBLA003|EPLF002'</span>, actes)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># directement dans la table actes </span>
-rsa15$actes %&gt;%<span class="st"> </span><span class="kw">filter</span>(CDCCAM %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">'EBLA003'</span>, <span class="st">'EPLF002'</span>))  %&gt;%<span class="st"> </span>
-<span class="st">  </span>.$CLE_RSA %&gt;%<span class="st"> </span><span class="kw">unique</span>() %&gt;%<span class="st"> </span><span class="kw">length</span>()</code></pre></div>
+rsa15<span class="op">$</span>actes <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(CDCCAM <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">'EBLA003'</span>, <span class="st">'EPLF002'</span>))  <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>.<span class="op">$</span>CLE_RSA <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">unique</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">length</span>()</code></pre></div>
 </div>
 <div id="nombre-de-rsa-avec-un-diagnostic" class="section level3">
 <h3>Nombre de rsa avec un diagnostic</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Diagnostic categorie cancer du colon en toutes positions</span>
-rsa15$rsa %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, dpdrum)|<span class="kw">grepl</span>(<span class="st">'C18'</span>, das)) %&gt;%<span class="st"> </span><span class="kw">nrow</span>()
+rsa15<span class="op">$</span>rsa <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, dpdrum)<span class="op">|</span><span class="kw">grepl</span>(<span class="st">'C18'</span>, das)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nrow</span>()
 
 <span class="co"># Autrement apres avoir utilise tdiag() :</span>
-rsa15$diags %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag)) %&gt;%<span class="st"> </span>
-<span class="st">  </span>.$CLE_RSA %&gt;%<span class="st"> </span><span class="kw">unique</span>() %&gt;%<span class="st"> </span><span class="kw">length</span>()
+rsa15<span class="op">$</span>diags <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>.<span class="op">$</span>CLE_RSA <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">unique</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">length</span>()
 
 <span class="co"># En restreignant au dp dr du sejour (avec la variable position)</span>
-rsa15$diags %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag), position &lt;<span class="st"> </span><span class="dv">3</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span>.$CLE_RSA %&gt;%<span class="st"> </span><span class="kw">unique</span>() %&gt;%<span class="st"> </span><span class="kw">length</span>()</code></pre></div>
+rsa15<span class="op">$</span>diags <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'C18'</span>, diag), position <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>.<span class="op">$</span>CLE_RSA <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">unique</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">length</span>()</code></pre></div>
 </div>
 </div>
 <div id="help" class="section level2">
@@ -662,7 +663,7 @@ rsa15$diags %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span 
 <p>Le package comprend une table des formats des fichiers PMSI. Ce sont les formats inscrits dans les manuels techniques ATIH des logiciels relatifs aux champs MCO, SSR, HAD, PSY et RSF, respectivement <a href="http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#G">Genrsa</a>, <a href="http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#G">Genrha</a>, <a href="http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#P">Paprica</a>, <a href="http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#P">Pivoine</a> et <a href="http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement#P">Preface</a>. On peut obtenir ces manuels pdf dans l’<a href="http://atih.sante.fr/plateformes-de-transmission-et-logiciels/logiciels-espace-de-telechargement">espace de telechargement</a> sur le site de l’ATIH.</p>
 <p>C’est le seul jeu de donnees inclus dans le package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Charger les formats des donnees</span>
-pmeasyr::formats</code></pre></div>
+pmeasyr<span class="op">::</span>formats</code></pre></div>
 </div>
 
 

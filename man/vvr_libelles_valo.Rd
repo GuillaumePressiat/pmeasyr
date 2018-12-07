@@ -17,13 +17,13 @@ Fonction pour obtenir les tables de libellés du tableau SV, RAV, et le type de 
 }
 \examples{
 \dontrun{
-# Libellés des types de séjours (tableau SV)
+# LibellÃ©s des types de sÃ©jours (tableau SV)
 vvr_libelles_valo('lib_type_sej')
 
-# Libellés des types de vidhosp
+# LibellÃ©s des types de vidhosp
 vvr_libelles_valo('lib_vidhosp')
 
-# Libellés des types de valo (tableau RAV)
+# LibellÃ©s des types de valo (tableau RAV)
 vvr_libelles_valo('lib_valo')
 }
 

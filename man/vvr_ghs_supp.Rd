@@ -43,14 +43,14 @@ Pour l'heure cette fonction ne tient pas compte de la rubrique "Minoration forfa
 }
 \examples{
 \dontrun{
-# Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
+# RÃ©cupÃ©rer les tarifs GHS et des supplÃ©ments (ex-DGF) : 
 tarifs      <- nomensland::get_table('tarifs_mco_ghs') \%>\% distinct(ghs, anseqta, .keep_all = TRUE)
 supplements <- nomensland::get_table('tarifs_mco_supplements') \%>\% mutate_if(is.numeric, tidyr::replace_na, 0)
 
-# Recette GHS de base et suppléments EXB, EXH
+# Recette GHS de base et supplÃ©ments EXB, EXH
 vvr_ghs_supp(rsa = vrsa, tarifs = tarifs)
 
-# Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)
+# Recette GHS de base et supplÃ©ments EXB, EXH, et des supplÃ©ments (hors PIE)
 vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)
 }
 

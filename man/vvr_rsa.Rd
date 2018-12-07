@@ -25,7 +25,7 @@ dans une base de données (con)
 }
 \examples{
 \dontrun{
-# avec un noyau pmeasyr (importer les données)
+# avec un noyau pmeasyr (importer les donnÃ©es)
 annee <- 18
 p <- noyau_pmeasyr(
   finess   = '750712184',
@@ -39,7 +39,7 @@ p <- noyau_pmeasyr(
 
 vrsa <- vvr_rsa(p)
 
-# depuis une base de données (collecter les données)
+# depuis une base de donnÃ©es (collecter les donnÃ©es)
 dbdir <- "~/Documents/data/monetdb"
 con <- src_monetdblite(dbdir)
 

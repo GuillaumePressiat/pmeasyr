@@ -577,7 +577,7 @@ vvr_mco_sv <- function(rsa, ano, porg = dplyr::tibble(cle_rsa = "")){
         ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))) %>% 
     dplyr::select(cle_rsa) %>% 
     dplyr::mutate(fjnap = 1)
-  
+  if("cdgestion" %in% colnames(ano)) {
   # séjours avec pb de chaînage (hors NN, rdth et PO)
   quatre <- ano %>% dplyr::filter((crfushosp != '0' | crfuspmsi != '0') & cdgestion != '65') %>% 
     dplyr::select(cle_rsa) %>% 
@@ -586,7 +586,15 @@ vvr_mco_sv <- function(rsa, ano, porg = dplyr::tibble(cle_rsa = "")){
                        dplyr::filter( substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25') | 
                           ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = "cle_rsa") %>%
     dplyr::select(cle_rsa)
-  
+  } else {
+    quatre <- ano %>% dplyr::filter((crfushosp != '0' | crfuspmsi != '0')) %>% 
+      dplyr::select(cle_rsa) %>% 
+      dplyr::inner_join(autres1, by = "cle_rsa") %>% 
+      dplyr::anti_join(rsa %>% 
+                         dplyr::filter( substr(ghm,1,5) %in% c('28Z11', '28Z18', '28Z19', '28Z20', '28Z21', '28Z22', '28Z23', '28Z24', '28Z25') | 
+                                          ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = "cle_rsa") %>%
+      dplyr::select(cle_rsa)
+  }
   # attente de décision sur les droits du patient (hors NN, rdth et PO)
   six <- ano %>% 
     dplyr::filter(factam == '3') %>% 
@@ -712,6 +720,7 @@ vvr_mco_sv <- function(rsa, ano, porg = dplyr::tibble(cle_rsa = "")){
                   sept %>% dplyr::mutate(type = 7),
                   huit %>% dplyr::mutate(type = 8))
   
+  if("cdgestion" %in% colnames(bloq)) {
   bloq %>% 
     dplyr::anti_join(ok, by = "cle_rsa") %>% 
     dplyr::anti_join(rsa %>% 
@@ -719,7 +728,14 @@ vvr_mco_sv <- function(rsa, ano, porg = dplyr::tibble(cle_rsa = "")){
                   ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = 'cle_rsa') %>% 
     dplyr::anti_join(porg, by = 'cle_rsa') %>% 
     dplyr::anti_join(ano %>% filter(cdgestion == '65'), by = 'cle_rsa') -> bloq1
-  
+  } else {
+    bloq %>% 
+      dplyr::anti_join(ok, by = "cle_rsa") %>% 
+      dplyr::anti_join(rsa %>% 
+                         dplyr::filter(
+                           ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = 'cle_rsa') %>% 
+      dplyr::anti_join(porg, by = 'cle_rsa')
+  }
   fin <- dplyr::select(test, cle_rsa) %>% 
     dplyr::left_join(dplyr::select(ok, cle_rsa, type), by = 'cle_rsa') %>% 
     dplyr::left_join(dplyr::select(bloq1, cle_rsa, typvidhosp) %>% dplyr::mutate(bloq = 1), by = 'cle_rsa') 

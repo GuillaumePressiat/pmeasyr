@@ -197,14 +197,14 @@ vvr_rsa, vvr_ano_mco, et de tables contenant les fichcomp PO et DIAP" />
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Récupérer les tarifs GHS et des suppléments (ex-DGF) : </span>
+<span class='co'># RÃ©cupÃ©rer les tarifs GHS et des supplÃ©ments (ex-DGF) : </span>
 <span class='no'>tarifs</span>      <span class='kw'>&lt;-</span> <span class='kw pkg'>nomensland</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nomensland/topics/get_table'>get_table</a></span>(<span class='st'>'tarifs_mco_ghs'</span>) <span class='kw'>%&gt;%</span> <span class='fu'>distinct</span>(<span class='no'>ghs</span>, <span class='no'>anseqta</span>, <span class='kw'>.keep_all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>supplements</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nomensland</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nomensland/topics/get_table'>get_table</a></span>(<span class='st'>'tarifs_mco_supplements'</span>) <span class='kw'>%&gt;%</span> <span class='fu'>mutate_if</span>(<span class='no'>is.numeric</span>, <span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/tidyr/topics/replace_na'>replace_na</a></span>, <span class='fl'>0</span>)
+<span class='no'>supplements</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nomensland</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nomensland/topics/get_table'>get_table</a></span>(<span class='st'>'tarifs_mco_supplements'</span>) <span class='kw'>%&gt;%</span> <span class='fu'>mutate_if</span>(<span class='no'>is.numeric</span>, <span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='no'><a href='https://tidyr.tidyverse.org/reference/replace_na.html'>replace_na</a></span>, <span class='fl'>0</span>)
 
-<span class='co'># Recette GHS de base et suppléments EXB, EXH</span>
+<span class='co'># Recette GHS de base et supplÃ©ments EXB, EXH</span>
 <span class='fu'>vvr_ghs_supp</span>(<span class='kw'>rsa</span> <span class='kw'>=</span> <span class='no'>vrsa</span>, <span class='kw'>tarifs</span> <span class='kw'>=</span> <span class='no'>tarifs</span>)
 
-<span class='co'># Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)</span>
+<span class='co'># Recette GHS de base et supplÃ©ments EXB, EXH, et des supplÃ©ments (hors PIE)</span>
 <span class='fu'>vvr_ghs_supp</span>(<span class='no'>vrsa</span>, <span class='no'>tarifs</span>, <span class='no'>supplements</span>, <span class='no'>vano</span>, <span class='fu'><a href='ipo.html'>ipo</a></span>(<span class='no'>p</span>), <span class='fu'><a href='idiap.html'>idiap</a></span>(<span class='no'>p</span>), <span class='kw'>bee</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>

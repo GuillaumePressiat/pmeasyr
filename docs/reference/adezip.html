@@ -211,40 +211,40 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
     <pre class="examples"><div class='input'><span class='co'># Chemin vers un dossier temporaire</span>
 <span class='no'>tmp_dir</span> <span class='kw'>&lt;-</span> <span class='fu'>tempdir</span>()
 
-<span class='co'># Chemin vers un dossier contenant des archives simulées</span>
+<span class='co'># Chemin vers un dossier contenant des archives simulÃ©es</span>
 <span class='no'>dossier_archives</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"test_data"</span>, <span class='st'>"test_adezip"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pmeasyr"</span>)
 
-<span class='co'># Décompresser en fonction du finess, année et mois du </span>
+<span class='co'># DÃ©compresser en fonction du finess, annÃ©e et mois du </span>
 <span class='co'># fichier med d'une archive out</span>
  <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
         <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
         <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
-        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.18032016182636.out.zip</span>
+        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: le package 'bindrcpp' a été compilé avec la version R 3.4.4</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.2.18032016182636.out.zip</span>
 #&gt; <span class='message'>Taille    : 0.0072 Mo</span>
 #&gt; <span class='message'>Type      : out</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>Période   : 2016 M2</span>
+#&gt; <span class='message'>PÃ©riode   : 2016 M2</span>
 #&gt; <span class='message'>Date prod : 2016-03-18 18:26:36</span>
 #&gt; <span class='message'>Fichiers  : med</span></div><div class='input'>
 <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.med"</div><div class='input'>
-<span class='co'># Décompresser plusieurs types de fichiers d'une archive in</span>
+<span class='co'># DÃ©compresser plusieurs types de fichiers d'une archive in</span>
  <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
         <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'med'</span>,<span class='st'>'rapss'</span>, <span class='st'>'ano'</span>),
         <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
         <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.15032016152413.in.zip</span>
+#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.2.15032016152413.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>Période   : 2016 M2</span>
+#&gt; <span class='message'>PÃ©riode   : 2016 M2</span>
 #&gt; <span class='message'>Date prod : 2016-03-15 15:24:13</span>
 #&gt; <span class='message'>Fichiers  : ano, med</span></div><div class='input'>
 <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.ano.txt" "123456789.2016.2.med"    
 #&gt; [3] "123456789.2016.2.med.txt"</div><div class='input'>
-<span class='co'># Utilisation avec un noyau de paramtères</span>
+<span class='co'># Utilisation avec un noyau de paramtÃ¨res</span>
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></span>(
        <span class='kw'>finess</span> <span class='kw'>=</span> <span class='st'>'123456789'</span>,
        <span class='kw'>annee</span>  <span class='kw'>=</span> <span class='fl'>2016</span>,
@@ -254,24 +254,24 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
        )
 
 <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>, <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.12.16132016131502.in.zip</span>
+#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.12.16132016131502.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>Période   : 2016 M12</span>
+#&gt; <span class='message'>PÃ©riode   : 2016 M12</span>
 #&gt; <span class='message'>Date prod : NA</span>
 #&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.12.ano.txt"     "123456789.2016.12.diap.txt"   
 #&gt;  [3] "123456789.2016.12.dmi.txt"     "123456789.2016.12.ium.txt"    
 #&gt;  [5] "123456789.2016.12.med.ini.txt" "123456789.2016.12.med.txt"    
 #&gt;  [7] "123456789.2016.12.porg.txt"    "123456789.2016.12.rss.ini.txt"
 #&gt;  [9] "123456789.2016.12.rss.txt"     "123456789.2016.2.ano.txt"     
-#&gt; [11] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
+#&gt; [11] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     </div><div class='input'><span class='co'># Modification d'un paramÃ¨tre du noyau</span>
 <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>,  <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Dézippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
+#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>Période   : 2016 M11</span>
+#&gt; <span class='message'>PÃ©riode   : 2016 M11</span>
 #&gt; <span class='message'>Date prod : 2016-12-25 15:46:08</span>
 #&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'>dir</span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.11.ano.txt"     "123456789.2016.11.diap.txt"   
 #&gt;  [3] "123456789.2016.11.dmi.txt"     "123456789.2016.11.ium.txt"    
@@ -284,30 +284,30 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt; [17] "123456789.2016.12.rss.ini.txt" "123456789.2016.12.rss.txt"    
 #&gt; [19] "123456789.2016.2.ano.txt"      "123456789.2016.2.med"         
 #&gt; [21] "123456789.2016.2.med.txt"     </div><div class='input'>
-<span class='co'># Pour une même période (année/mois), il peut y avoir plusieurs archives si </span>
+<span class='co'># Pour une mÃªme pÃ©riode (annÃ©e/mois), il peut y avoir plusieurs archives si </span>
 <span class='co'># il y a eu plusieurs envois. Par exemple il y a deux version de l'archive</span>
-<span class='co'># out pour la période 2017.10 dans notre exemple simulé</span>
+<span class='co'># out pour la pÃ©riode 2017.10 dans notre exemple simulÃ©</span>
 <span class='fu'>dir</span>(<span class='no'>dossier_archives</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"2017\\.10.*out\\.zip"</span>)</div><div class='output co'>#&gt; [1] "123456789.2017.10.21112017162343.out.zip"
 #&gt; [2] "123456789.2017.10.24112017182343.out.zip"</div><div class='input'>
  <span class='co'># Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip </span>
- <span class='co'># sélectionne automatiquement l'archive la plus récente</span>
+ <span class='co'># sÃ©lectionne automatiquement l'archive la plus rÃ©cente</span>
  <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
         <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
         <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
         <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Dézippage de l'archive 123456789.2017.10.24112017182343.out.zip</span>
+#&gt; <span class='message'>DÃ©zippage de l'archive 123456789.2017.10.24112017182343.out.zip</span>
 #&gt; <span class='message'>Taille    : 0.0067 Mo</span>
 #&gt; <span class='message'>Type      : out</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
-#&gt; <span class='message'>Période   : 2017 M10</span>
+#&gt; <span class='message'>PÃ©riode   : 2017 M10</span>
 #&gt; <span class='message'>Date prod : 2017-11-24 18:23:43</span>
 #&gt; <span class='message'>Fichiers  : med</span></div><div class='input'> <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"med"</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.11.med.ini.txt" "123456789.2016.11.med.txt"    
 #&gt; [3] "123456789.2016.12.med.ini.txt" "123456789.2016.12.med.txt"    
 #&gt; [5] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     
 #&gt; [7] "123456789.2017.10.med"        </div><div class='input'> 
- # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
- # à choisir
+ # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invitÃ©
+ # Ã  choisir
  </div><span class='co'># NOT RUN {</span>
  <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
         <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
@@ -318,7 +318,7 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
  <span class='fu'>dir</span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"rsa"</span>)
 
 <span class='co'># }</span><div class='input'>
-# Dézipper les logs
+# DÃ©zipper les logs
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>, <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'chainage.log'</span>, <span class='st'>'comp.log'</span>, <span class='st'>'log'</span>))
 <span class='co'># }</span><div class='input'>

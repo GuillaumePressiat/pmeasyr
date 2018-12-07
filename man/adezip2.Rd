@@ -25,10 +25,10 @@ Alternative à la fonction \code{\link[=adezip]{adezip()}}, si on connait precis
 # Chemin vers un dossier temporaire
 tmp_dir <- tempdir()
 
-# Chemin vers un dossier contenant des archives simulées
+# Chemin vers un dossier contenant des archives simulÃ©es
 dossier_archives <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
 
-# Décompresser en fonction du finess, année et mois du 
+# DÃ©compresser en fonction du finess, annÃ©e et mois du 
 # fichier med d'une archive out
  adezip2(path = dossier_archives,
          file = "123456789.2017.7.21082017091715.out.zip",

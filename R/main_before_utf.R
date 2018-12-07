@@ -5876,7 +5876,7 @@ labeleasier <- function(col,
 #' \dontrun{
 #' 'Hého' %+% ' ' %+% 'world !'
 #' }
-#' @export
+
 `%+%` <- function(x,y){paste0(x,y)}
 
 

@@ -46,7 +46,7 @@
 #  )
 
 ## ----eval = F------------------------------------------------------------
-#  # Importer les tarifs des supplÃ©ments
+#  # Importer les tarifs des suppléments
 #  tarifs_supp <- get_table('tarifs_mco_supplements') %>% mutate_if(is.numeric, tidyr::replace_na, 0)
 #  
 #  resu <- vvr_mco(

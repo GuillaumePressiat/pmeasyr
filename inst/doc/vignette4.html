@@ -55,6 +55,8 @@ code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+
 </style>
 
 
@@ -128,7 +130,7 @@ vano &lt;-<span class="st"> </span><span class="kw">vvr_ano_mco</span>(con,  <sp
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Importer les tarifs GHS</span>
-tarifs_ghs &lt;-<span class="st"> </span>dplyr::<span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
+tarifs_ghs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">distinct</span>(<span class="kw">get_table</span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)
 
 resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
   <span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, <span class="dt">ano =</span>  vano, <span class="dt">tarifs =</span> tarifs_ghs),
@@ -148,7 +150,7 @@ typvidhosp</code></pre>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
 <h3>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Importer les tarifs des suppléments</span>
-tarifs_supp &lt;-<span class="st"> </span><span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>) %&gt;%<span class="st"> </span><span class="kw">mutate_if</span>(is.numeric, tidyr::replace_na, <span class="dv">0</span>)
+tarifs_supp &lt;-<span class="st"> </span><span class="kw">get_table</span>(<span class="st">'tarifs_mco_supplements'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>(is.numeric, tidyr<span class="op">::</span>replace_na, <span class="dv">0</span>)
 
 resu &lt;-<span class="st"> </span><span class="kw">vvr_mco</span>(
 <span class="kw">vvr_ghs_supp</span>(<span class="dt">rsa =</span> vrsa, 
@@ -197,7 +199,7 @@ typvidhosp</code></pre>
 <div id="generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="section level2">
 <h2>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h2>
 <p>Les variables présentes dans la table <code>resu</code> permettent à la fois de dénombrer les séjours par type de valorisation, c’est-à-dire :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_type_sej'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(pmeasyr<span class="op">::</span><span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_type_sej'</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -245,7 +247,7 @@ typvidhosp</code></pre>
 </tbody>
 </table>
 <p>et de reproduire les rubriques de valorisation par type de recette:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_valo'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(pmeasyr<span class="op">::</span><span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_valo'</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -347,7 +349,7 @@ typvidhosp</code></pre>
 <div id="types-de-vidhosp" class="section level3">
 <h3>Types de vidhosp</h3>
 <p>La table resu contient également une colonne <code>typvidhosp</code> qui correspond à un type de séjour, croisant plusieurs modalités (factam, nouveaux-nés, séances, 0 jour, autres, etc.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(pmeasyr::<span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_vidhosp'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(pmeasyr<span class="op">::</span><span class="kw">vvr_libelles_valo</span>(<span class="st">'lib_vidhosp'</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -420,9 +422,9 @@ typvidhosp</code></pre>
 <span class="kw">vvr_mco_sv</span>(vrsa, vano, <span class="kw">ipo</span>(p))
 )</code></pre></div>
 <p>Dans ce cas, les variables suivantes deviennent accessibles au niveau de chaque séjour :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">'rec_'</span>)), sum)  %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">names</span>() %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resu <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">'rec_'</span>)), sum)  <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">names</span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">cat</span>(<span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
 <pre><code>rec_base
 rec_exh
