@@ -4,7 +4,8 @@
 \alias{parse_nom_fichier}
 \title{Découpe un seul nom de fichier}
 \usage{
-parse_nom_fichier(nom_fichier, format_date_archive = "\%d\%m\%Y\%H\%M\%S")
+parse_nom_fichier(nom_fichier,
+  format_date_archive = "\%d\%m\%Y\%H\%M\%S")
 }
 \arguments{
 \item{nom_fichier}{Le nom du fichier à découper. Chaine de caractère de longueur 1.}
@@ -24,7 +25,13 @@ Si il y a plusieurs fichiers, la liste peut être facilement transformée en tab
 }
 }
 \description{
-Découpe un seul nom de fichier
+Les noms de fichiers des archives PMSI ont toujours le même format, de la forme \emph{finess.annee_envois.mois_envois.} suivi par \emph{horodatage} pour les archives \emph{in} et \emph{ou} et enfin le \emph{type} de fichier. Cette fonction permet d'extraire cette information.
+}
+\examples{
+noms_de_fichiers <- c("671234567.2016.1.12032016140012.in.zip",
+                      "671234567.2016.1.rum.txt")
+ x <- parse_noms_fichiers(noms_de_fichiers)
+dplyr::bind_rows(x)
 }
 \seealso{
 \code{\link[=parse_noms_fichiers]{parse_noms_fichiers()}} pour traiter plusieurs noms de fichiers.

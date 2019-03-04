@@ -22,10 +22,10 @@
     <loc>https://im-aphp.github.io/pmeasyr//reference/collect_rsa_from_db.html</loc>
   </url>
   <url>
-    <loc>https://im-aphp.github.io/pmeasyr//reference/creer_archives_vides.html</loc>
+    <loc>https://im-aphp.github.io/pmeasyr//reference/creer_archive_vide.html</loc>
   </url>
   <url>
-    <loc>https://im-aphp.github.io/pmeasyr//reference/creer_archive_vide.html</loc>
+    <loc>https://im-aphp.github.io/pmeasyr//reference/creer_archives_vides.html</loc>
   </url>
   <url>
     <loc>https://im-aphp.github.io/pmeasyr//reference/creer_json.html</loc>
@@ -175,10 +175,10 @@
     <loc>https://im-aphp.github.io/pmeasyr//reference/noyau_skeleton.html</loc>
   </url>
   <url>
-    <loc>https://im-aphp.github.io/pmeasyr//reference/parse_noms_fichiers.html</loc>
+    <loc>https://im-aphp.github.io/pmeasyr//reference/parse_nom_fichier.html</loc>
   </url>
   <url>
-    <loc>https://im-aphp.github.io/pmeasyr//reference/parse_nom_fichier.html</loc>
+    <loc>https://im-aphp.github.io/pmeasyr//reference/parse_noms_fichiers.html</loc>
   </url>
   <url>
     <loc>https://im-aphp.github.io/pmeasyr//reference/prepare_rsa.html</loc>

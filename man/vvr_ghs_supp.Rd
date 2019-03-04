@@ -5,8 +5,9 @@
 \title{~ VVR - Attribuer les recettes GHS et suppléments sur des rsa}
 \usage{
 vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = NULL,
-  porg = dplyr::tibble(), diap = dplyr::tibble(), pie = dplyr::tibble(),
-  full = FALSE, cgeo = 1.07, prudent = NULL, bee = TRUE)
+  porg = dplyr::tibble(), diap = dplyr::tibble(),
+  pie = dplyr::tibble(), mo = dplyr::tibble(), full = FALSE,
+  cgeo = 1.07, prudent = NULL, bee = TRUE)
 }
 \arguments{
 \item{rsa}{Un tibble rsa partie fixe (créé avec \code{\link{vvr_rsa}})}
@@ -23,6 +24,8 @@ vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = NULL,
 
 \item{pie}{Un tibble contenant les prestations inter-établissements du out (importés avec \code{\link{ipie}})}
 
+\item{mo}{Un tibble contenant les molécules onéreuses du out (importés avec \code{\link{imed_mco}})}
+
 \item{full}{Booléen, à `r TRUE` toutes les variables intermédiaires de valo sont gardées}
 
 \item{cgeo}{Coefficient géographique, par défaut celui de l'Île-de-France (1.07)}
@@ -36,22 +39,22 @@ Un tibble contenant les différentes rubriques de valorisation, une ligne par cl
 }
 \description{
 Reproduire la valorisation BR et coefficients géo/prudentiels du tableau RAV d'epmsi, à partir des tables résultant des fonctions
-\code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}}, et de tables contenant les fichcomp PO et DIAP
+\code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}}, et de tables contenant les fichcomp PO et DIAP, PIE et MO
 }
 \details{
-Pour l'heure cette fonction ne tient pas compte de la rubrique "Minoration forfaitaire liste en sus"
+Cette fonction ne tient pas compte de la rubrique "Minoration forfaitaire liste en sus, car elle a été supprimée en 2018
 }
 \examples{
 \dontrun{
-# RÃ©cupÃ©rer les tarifs GHS et des supplÃ©ments (ex-DGF) : 
+# Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
 tarifs      <- nomensland::get_table('tarifs_mco_ghs') \%>\% distinct(ghs, anseqta, .keep_all = TRUE)
 supplements <- nomensland::get_table('tarifs_mco_supplements') \%>\% mutate_if(is.numeric, tidyr::replace_na, 0)
 
-# Recette GHS de base et supplÃ©ments EXB, EXH
+# Recette GHS de base et suppléments EXB, EXH
 vvr_ghs_supp(rsa = vrsa, tarifs = tarifs)
 
-# Recette GHS de base et supplÃ©ments EXB, EXH, et des supplÃ©ments (hors PIE)
-vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)
+# Recette GHS de base et suppléments EXB, EXH, et des suppléments
+vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), ipie(p), imed_mco(p), bee = FALSE)
 }
 
 }

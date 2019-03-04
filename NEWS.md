@@ -1,3 +1,8 @@
+# pmeasyr 0.2.5
+
+* Valorisation des rsa 2019 
+* Ajout de spécificités de valorisation (GHS 5907, carT cells), voir [ici](https://im-aphp.github.io/pmeasyr/articles/vignette4.html#remarques-sur-le-mecanisme-de-valorisation), ces ajouts peuvent générer des ruptures dans certains programmes appelant `vvr_rsa` et `vvr_ghs_supp` (désormais on utilise la table um pour taguer les mono RUM UHCD, en particulier il n'est plus possible de valoriser avec des rsa typi = 1, et l'ajout du paramètre mo peut générer des erreurs lors de l'appel à `vvr_ghs_supp` si les paramètres ne sont pas nommés dans l'appel (rupture dans l'ordre des paramètres)).
+
 # pmeasyr 0.2.4
 
 * Ajout de fonctions pour la valorisation des rsa, voir vignette correspondante

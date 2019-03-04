@@ -4,7 +4,8 @@
 \alias{enrobeur}
 \title{~ req : mise en forme d'une liste de codes}
 \usage{
-enrobeur(a, robe = "'", colonne = F, interstice = ", ", symetrique = F)
+enrobeur(a, robe = "'", colonne = F, interstice = ", ",
+  symetrique = F)
 }
 \description{
 ~ req : mise en forme d'une liste de codes

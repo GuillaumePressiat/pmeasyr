@@ -54,14 +54,21 @@ vvr_rsa.pm_param <- function(p, ...){
   new_par <- list(..., typi = 4)
   p2 <- utils::modifyList(p, new_par)
   
-  pmeasyr::irsa(p2)$rsa %>% 
+  rsa <- pmeasyr::irsa(p2)
+  rsa$rsa %>% 
     dplyr::select_all(tolower) %>% 
     dplyr::select(cle_rsa, duree, rsacmd, ghm, typesej, noghs, moissor,sexe, agean, agejr,
            anseqta, nbjrbs, nbjrexb, sejinfbi, agean, agejr, 
            dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
            nb_rdth, nbacte9615,
            echpmsi, prov, dest, schpmsi,
-           rdth, nb_rdth)
+           rdth, nb_rdth, nbrum) %>%
+    dplyr::left_join(rsa$rsa_um %>% 
+                       dplyr::filter(substr(typaut1, 1, 2) == '07') %>% 
+                       dplyr::distinct(cle_rsa) %>%
+                       dplyr::mutate(uhcd = 1), by = 'cle_rsa') %>%
+    dplyr::mutate(monorum_uhcd = (uhcd == 1 & nbrum == 1)) %>%
+    dplyr::select(-uhcd)
 
 }
 
@@ -74,7 +81,13 @@ vvr_rsa.src <- function(con, an,  ...){
            dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
            nb_rdth, nbacte9615,
            echpmsi, prov, dest, schpmsi,
-           rdth, nb_rdth) %>% 
+           rdth, nb_rdth, nbrum) %>% 
+    dplyr::left_join(pmeasyr::tbl_mco(con, an, 'rsa_um') %>% 
+                       dplyr::filter(substr(typaut1, 1, 2) == '07') %>% 
+                       dplyr::distinct(cle_rsa) %>%
+                       dplyr::mutate(uhcd = 1), by = 'cle_rsa') %>%
+    dplyr::mutate(monorum_uhcd = (uhcd == 1 & nbrum == 1)) %>%
+    dplyr::select(-uhcd) %>%
     dplyr::collect()
   
 }
@@ -145,9 +158,9 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' ~ VVR - Attribuer les recettes GHS et suppléments sur des rsa
 #'
 #' Reproduire la valorisation BR et coefficients géo/prudentiels du tableau RAV d'epmsi, à partir des tables résultant des fonctions
-#' \code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}}, et de tables contenant les fichcomp PO et DIAP
+#' \code{\link{vvr_rsa}}, \code{\link{vvr_ano_mco}}, et de tables contenant les fichcomp PO et DIAP, PIE et MO
 #' 
-#' Pour l'heure cette fonction ne tient pas compte de la rubrique "Minoration forfaitaire liste en sus"
+#' Cette fonction ne tient pas compte de la rubrique "Minoration forfaitaire liste en sus, car elle a été supprimée en 2018
 #' 
 #' 
 #' @param rsa Un tibble rsa partie fixe (créé avec \code{\link{vvr_rsa}})
@@ -157,6 +170,7 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' @param porg Un tibble contenant les prélévements d'organes du out (importés avec \code{\link{ipo}})
 #' @param diap Un tibble contenant les dialyses péritonéales du out (importés avec \code{\link{idiap}})
 #' @param pie Un tibble contenant les prestations inter-établissements du out (importés avec \code{\link{ipie}})
+#' @param mo Un tibble contenant les molécules onéreuses du out (importés avec \code{\link{imed_mco}})
 #' @param full Booléen, à `r TRUE` toutes les variables intermédiaires de valo sont gardées
 #' @param cgeo Coefficient géographique, par défaut celui de l'Île-de-France (1.07)
 #' @param prudent coefficient prudentiel, par défaut à `r NULL`, le coefficient prudentiel est appliqué par année séquentielles des tarifs
@@ -173,8 +187,8 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' # Recette GHS de base et suppléments EXB, EXH
 #' vvr_ghs_supp(rsa = vrsa, tarifs = tarifs)
 #' 
-#' # Recette GHS de base et suppléments EXB, EXH, et des suppléments (hors PIE)
-#' vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), bee = FALSE)
+#' # Recette GHS de base et suppléments EXB, EXH, et des suppléments
+#' vvr_ghs_supp(vrsa, tarifs, supplements, vano, ipo(p), idiap(p), ipie(p), imed_mco(p), bee = FALSE)
 #' }
 #'
 #' @author G. Pressiat
@@ -189,6 +203,7 @@ vvr_ghs_supp <- function(rsa,
                          porg = dplyr::tibble(), 
                          diap = dplyr::tibble(),  
                          pie  = dplyr::tibble(),
+                         mo   = dplyr::tibble(),
                          full = FALSE, cgeo = 1.07, prudent = NULL,
                          bee = TRUE) {
   
@@ -202,10 +217,49 @@ vvr_ghs_supp <- function(rsa,
                                    tarif_exh    = rep(0, n_anseqta),
                                    forfait_exb  = rep(0, n_anseqta)))
   
+  # Gestion des tibbles complémentaires (diap, po, pie, mo)
+  
+  if(nrow(pie) == 0) {
+    pie = dplyr::tibble(cle_rsa = "", code_pie = "REP", nbsuppie = 0)
+  }
+  if(nrow(diap) == 0) {
+    diap = dplyr::tibble(cle_rsa = "", nbsup = 0)
+  }
+  if(nrow(porg) == 0) {
+    porg = dplyr::tibble(cle_rsa = "", cdpo = "")
+  }
+  if(nrow(mo) == 0) {
+    mo = dplyr::tibble(cle_rsa = "", cducd = "")
+  }
+  
+  # Correction GHS 5907 suite erreur dans tarifs atih entrainant une valo négative en cas de borne basse 
+  if (2018 %in% unique(rsa$anseqta)){
+  rsa <- rsa %>%
+    dplyr::mutate(
+      nbjrexb = ifelse(ghm == '15M06A' & noghs == '5907' & nbjrexb ==  30 & duree == 0, nbjrexb - 10, nbjrexb)
+    ) %>%
+    dplyr::mutate(
+      nbjrexb = ifelse(ghm == '15M06A' & noghs == '5907' & nbjrexb ==  30 & duree == 1 & monorum_uhcd == 1, nbjrexb - 10, nbjrexb)
+    )
+  }
+  
+  # Switch de GHS si molécule Yescarta ou Kymriah (car-T cells)
+  cart_cells <- mo %>%
+    dplyr::filter(substr(cducd, 6, 12) %in% c('9439938', '9439921')) %>%
+    dplyr::distinct(cle_rsa) %>%
+    dplyr::mutate(switch_ghs = 1)
+  
+  rsa <- rsa %>%
+    dplyr::left_join(cart_cells, by = 'cle_rsa') %>%
+    dplyr::mutate(
+      old_noghs = ifelse(!is.na(switch_ghs), noghs, ''),
+      noghs = ifelse(!is.na(switch_ghs), '8973', noghs))
+  
   if (is.null(prudent)){
   # Partie GHS
   rsa_2 <- rsa %>% 
     dplyr::mutate(cprudent = dplyr::case_when(
+      anseqta == '2019'    ~ 0.9930,
       anseqta == '2018'    ~ 0.9930,
       anseqta == '2017'    ~ 0.9930,
       anseqta == '2016'    ~ 0.9950,
@@ -243,17 +297,7 @@ vvr_ghs_supp <- function(rsa,
     return(rsa_2 %>% dplyr::select(cle_rsa, rec_totale, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, rec_bee))
   }
   
-  # Gestion des tibbles complémentaires (diap, po, pie)
-  
-  if(nrow(pie) == 0) {
-    pie = dplyr::tibble(cle_rsa = "", code_pie = "REP", nbsuppie = 0)
-  }
-  if(nrow(diap) == 0) {
-    diap = dplyr::tibble(cle_rsa = "", nbsup = 0)
-  }
-  if(nrow(porg) == 0) {
-    porg = dplyr::tibble(cle_rsa = "", cdpo = "")
-  }
+
   
   # Info suppléments ghs radiothérapie
   rsa_i <- rsa %>% dplyr::select(cle_rsa, rdth, nb_rdth) %>% 

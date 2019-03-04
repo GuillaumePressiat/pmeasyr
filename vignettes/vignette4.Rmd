@@ -1,10 +1,10 @@
 ---
 title: "Valoriser les rsa"
 author: "Guillaume Pressiat"
-date: 12/06/2017
+date: 04/03/2019
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{database migration with pmeasyr}
+  %\VignetteIndexEntry{Valoriser les rsa}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -19,7 +19,7 @@ library(dplyr, warn.conflicts = F)
 
 
 Il faut au moins disposer des rsa et des données anohosp.
-Pour valoriser les suppléments, les tables porg et diap sont aussi nécessaires.
+Pour valoriser les suppléments, les tables porg, pie et diap sont aussi nécessaires.
 
 Deux possibilités pour préparer les données rsa et ano afin de calculer la valorisation : les importer spécifiquement, ou les collecter depuis une base de données, voir pour cela éventuellement les fonctions autour des bases de données dans `pmeasyr`.
 
@@ -32,7 +32,7 @@ library(pmeasyr)
 
 noyau_pmeasyr(
   finess = '750100042',
-  annee  = 2016,
+  annee  = 2018,
   mois   = 12,
   path   = '~/Documents/data/mco',
   progress = FALSE,
@@ -60,8 +60,8 @@ library(MonetDBLite)
 dbdir <- "~/Documents/data/monetdb"
 con <- src_monetdblite(dbdir)
 
-vrsa <- vvr_rsa(con, 16)
-vano <- vvr_ano_mco(con,  16)
+vrsa <- vvr_rsa(con, 18)
+vano <- vvr_ano_mco(con,  18)
 
 ```
 
@@ -129,6 +129,7 @@ vvr_ghs_supp(rsa = vrsa,
              porg = ipo(p), 
              diap = idiap(p), 
              pie = ipie(p), 
+             mo = imed_mco(p), 
              full = FALSE,
              cgeo = 1.07, 
              prudent = NULL,
@@ -168,6 +169,8 @@ rec_po_tot
 type_fin
 typvidhosp
 ```
+
+
 
 On peut libeller ces variables en faisant appel à la fonction `vvr_libelles_valo`, voir ci-dessous.
 
@@ -297,3 +300,17 @@ rec_pie_nn1
 rec_pie_nn2
 rec_pie_nn3
 ```
+
+## Remarques sur le mécanisme de valorisation
+
+La valorisation des rsa est assez mécanique (c'est un programme), le détail de ce mécanisme peut-être lu en regardant le code source de `pmeasyr` (bien sûr, ce n'est pas le programme officiel). En peu de mots, la logique est celle-ci :
+
+- pour chaque GHS, un tarif de base, des tarifs extrème bas et extrème haut en fonction de la durée de séjour. Cette partie est la plus simple
+- pour chaque supplément, un tarif de supplément. Cette partie est plus complexe car il y a de nombreux types de suppléments ; et chaque type de supplément a sa propre mécanique
+
+
+Si cette mécanique vaut pour la grande majorité, on note quelques exceptions, d'où les deux adaptations suivantes :
+
+- en année séquentielle des tarifs 2017 et 2018, la borne basse du GHS 5907 déclenche une valorisation négative de certains séjours, voir [ici](https://applis.atih.sante.fr/agora/ago_action_theme.do?action=voir_sujet&id_sujet=52026#166276), agora, sujet 52026. Nous tenons compte de cette correction dans la valorisation calculée dans R, ainsi que des monoRUM UHCD de 1 jour considérés par l'ATIH comme l'équivalent de séjours 0 jour dans le calcul du nombre de jours extrème bas. *Cette adaptation nécessite d'intégrer l'information mono RUM UHCD lors de la valorisation, on croise donc avec la table UM, ce qui allonge un peu le temps de traitement*.
+- Fin 2018, l'ATIH a introduit un switch de GHS pour les séjours présentant une molécule de Kymriah ou de Yescarta, le GHS devient 8973. La solution est provisoire en attendant un mode de financement spécifique des séjours carT cells, mais nous avons inclus ce switch de GHS. Autrement dit, le couple GHM/GHS présent dans les RSA pour ces séjours ne correspond pas au couple utilisé sur epmsi pour calculer la valorisation réelle, celle présente dans VVS. *Cette adaptation nécessite d'intégrer les mo/atu lors de la valorisation*.
+
