@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmeasyr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -119,17 +119,24 @@
       
     </div>
 
-    <div id="pmeasyr-025" class="section level1">
+    <div id="pmeasyr-0-2-6" class="section level1">
 <h1 class="page-header">
-<a href="#pmeasyr-025" class="anchor"></a>pmeasyr 0.2.5</h1>
+<a href="#pmeasyr-0-2-6" class="anchor"></a>pmeasyr 0.2.6</h1>
+<ul>
+<li>Ajout de la fonction vvr_had_ght pour valoriser les sous-séquences de l’hospitalisation à domicile comme sur epmsi.</li>
+</ul>
+</div>
+    <div id="pmeasyr-0-2-5" class="section level1">
+<h1 class="page-header">
+<a href="#pmeasyr-0-2-5" class="anchor"></a>pmeasyr 0.2.5</h1>
 <ul>
 <li>Valorisation des rsa 2019</li>
 <li>Ajout de spécificités de valorisation (GHS 5907, carT cells), voir <a href="https://im-aphp.github.io/pmeasyr/articles/vignette4.html#remarques-sur-le-mecanisme-de-valorisation">ici</a>, ces ajouts peuvent générer des ruptures dans certains programmes appelant <code>vvr_rsa</code> et <code>vvr_ghs_supp</code> (désormais on utilise la table um pour taguer les mono RUM UHCD, en particulier il n’est plus possible de valoriser avec des rsa typi = 1, et l’ajout du paramètre mo peut générer des erreurs lors de l’appel à <code>vvr_ghs_supp</code> si les paramètres ne sont pas nommés dans l’appel (rupture dans l’ordre des paramètres)).</li>
 </ul>
 </div>
-    <div id="pmeasyr-024" class="section level1">
+    <div id="pmeasyr-0-2-4" class="section level1">
 <h1 class="page-header">
-<a href="#pmeasyr-024" class="anchor"></a>pmeasyr 0.2.4</h1>
+<a href="#pmeasyr-0-2-4" class="anchor"></a>pmeasyr 0.2.4</h1>
 <ul>
 <li>Ajout de fonctions pour la valorisation des rsa, voir vignette correspondante</li>
 <li>Ajout d’une fonction pour importer les pie out</li>
@@ -137,9 +144,9 @@
 </li>
 </ul>
 </div>
-    <div id="pmeasyr-020" class="section level1">
+    <div id="pmeasyr-0-2-0" class="section level1">
 <h1 class="page-header">
-<a href="#pmeasyr-020" class="anchor"></a>pmeasyr 0.2.0</h1>
+<a href="#pmeasyr-0-2-0" class="anchor"></a>pmeasyr 0.2.0</h1>
 <div id="fonctions-dimports" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fonctions-dimports" class="anchor"></a>Fonctions d’imports</h3>
@@ -166,9 +173,10 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#pmeasyr-025">0.2.5</a></li>
-        <li><a href="#pmeasyr-024">0.2.4</a></li>
-        <li><a href="#pmeasyr-020">0.2.0</a></li>
+        <li><a href="#pmeasyr-0-2-6">0.2.6</a></li>
+        <li><a href="#pmeasyr-0-2-5">0.2.5</a></li>
+        <li><a href="#pmeasyr-0-2-4">0.2.4</a></li>
+        <li><a href="#pmeasyr-0-2-0">0.2.0</a></li>
       </ul>
     </div>
   </div>

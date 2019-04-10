@@ -5870,12 +5870,6 @@ labeleasier <- function(col,
 ##############################################
 
 
-#' ~ ... paste0 comme un pipe 
-#' @usage x %+% y
-#' @examples
-#' \dontrun{
-#' 'Hého' %+% ' ' %+% 'world !'
-#' }
 
 `%+%` <- function(x,y){paste0(x,y)}
 

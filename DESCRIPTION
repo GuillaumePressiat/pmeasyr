@@ -1,8 +1,8 @@
 Package: pmeasyr
 Type: Package
 Title: Donnees PMSI avec R
-Version: 0.2.5
-Date: 2019-03-04
+Version: 0.2.6
+Date: 2019-04-10
 Imports:
     readr,
     tidyr,
@@ -22,7 +22,7 @@ Author: Guillaume Pressiat
 Authors@R: c(person('Guillaume Pressiat', role = c("aut", "cre"), email = "guillaume.pressiat@aphp.fr"),
              person("Joris Muller", email = "", role = "aut"))
 Maintainer: Guillaume Pressiat <guillaume.pressiat@aphp.fr>
-Description: Import de donnees PMSI. Gestion des archives. Formats depuis 2011. Connexion et interface avec une db. requetr. Valorisation des rsa.
+Description: Import de donnees PMSI. Gestion des archives. Formats depuis 2011. Connexion et interface avec une db. requetr. Valorisation des rsa, des rapss.
 License: GPL-2 | file LICENSE
 LazyData: TRUE
 RoxygenNote: 6.1.1

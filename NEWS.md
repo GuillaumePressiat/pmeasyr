@@ -1,3 +1,7 @@
+# pmeasyr 0.2.6
+
+* Ajout de la fonction vvr_had_ght pour valoriser les sous-séquences de l'hospitalisation à domicile comme sur epmsi.
+
 # pmeasyr 0.2.5
 
 * Valorisation des rsa 2019 

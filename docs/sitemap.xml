@@ -76,9 +76,6 @@
     <loc>https://im-aphp.github.io/pmeasyr//reference/formats.html</loc>
   </url>
   <url>
-    <loc>https://im-aphp.github.io/pmeasyr//reference/grapes-plus-grapes.html</loc>
-  </url>
-  <url>
     <loc>https://im-aphp.github.io/pmeasyr//reference/iano_had.html</loc>
   </url>
   <url>
@@ -218,6 +215,9 @@
   </url>
   <url>
     <loc>https://im-aphp.github.io/pmeasyr//reference/vvr_ghs_supp.html</loc>
+  </url>
+  <url>
+    <loc>https://im-aphp.github.io/pmeasyr//reference/vvr_had_ght.html</loc>
   </url>
   <url>
     <loc>https://im-aphp.github.io/pmeasyr//reference/vvr_libelles_valo.html</loc>
