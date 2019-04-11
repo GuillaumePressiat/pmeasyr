@@ -71,15 +71,16 @@ vvr_had_ght <- function(p, ghts, coeff_geo = 1.07, coeff_prudent = NULL){
   
   rapss <- irapss(p)
   base_ght <- rapss$ght %>% 
-    filter(typght == 'PAPRICA') %>%
-    select(noseqsej, noseq, nosousseq, numght, joursght) %>% 
-    inner_join(rapss$rapss %>% select(noseqsej, noseq, nosousseq, mois_fin_ss_seq, typdom) %>%
-                 mutate(typdom = case_when(typdom %in% c('1', '2', '5') ~ "",
+    dplyr::filter(typght == 'PAPRICA') %>%
+    dplyr::select(noseqsej, noseq, nosousseq, numght, joursght) %>% 
+    dplyr::inner_join(rapss$rapss %>% 
+                        dplyr::select(noseqsej, noseq, nosousseq, mois_fin_ss_seq, typdom) %>%
+                        dplyr::mutate(typdom = dplyr::case_when(typdom %in% c('1', '2', '5') ~ "",
                                            typdom %in% c('3', '4') ~ "esms",
                                            typdom == "6" ~ "ssiad")), 
                by = c("noseqsej", "noseq", "nosousseq")) %>%
-    mutate(anseqta = ifelse(mois_fin_ss_seq %in% c('01', '02'), p$annee - 1, p$annee) %>% as.character()) %>%
-    mutate(cgeo = coeff_geo,
+    dplyr::mutate(anseqta = ifelse(mois_fin_ss_seq %in% c('01', '02'), p$annee - 1, p$annee) %>% as.character()) %>%
+    dplyr::mutate(cgeo = coeff_geo,
            cprudent = case_when(
              anseqta == '2019'    ~ 0.9930,
              anseqta == '2018'    ~ 0.9930,
@@ -91,15 +92,15 @@ vvr_had_ght <- function(p, ghts, coeff_geo = 1.07, coeff_prudent = NULL){
              anseqta == "2012"    ~ 0.9965,
              anseqta == "2011"    ~ 0.9965
            )) %>% 
-    left_join(ghts, by = c('numght' = 'paprica_numght', 'anseqta', "typdom"))
+    dplyr::left_join(ghts, by = c('numght' = 'paprica_numght', 'anseqta', "typdom"))
   
   if (!is.null(coeff_prudent)){
     base_ght <- base_ght %>% 
-      mutate(cprudent = coeff_prudent)
+      dplyr::mutate(cprudent = coeff_prudent)
   }
   if (coeff_geo == 1){
     base_ght <- base_ght %>% 
-      mutate(cgeo = 1)
+      dplyr::mutate(cgeo = 1)
   }
   base_ght
 }
