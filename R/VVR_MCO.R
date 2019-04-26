@@ -209,13 +209,13 @@ vvr_ghs_supp <- function(rsa,
   
   # Ajout de tarifs nuls pour le GHS 9999
   n_anseqta <- length(unique(rsa$anseqta))
-  tarifs <- dplyr::bind_rows(tarifs, 
-                     dplyr::tibble(anseqta      = unique(rsa$anseqta), 
-                                   ghs          = rep('9999', n_anseqta), 
-                                   tarif_base   = rep(0, n_anseqta),
-                                   tarif_exb    = rep(0, n_anseqta),
-                                   tarif_exh    = rep(0, n_anseqta),
-                                   forfait_exb  = rep(0, n_anseqta)))
+  tarifs <- dplyr::bind_rows(tarifs,
+                             dplyr::tibble(anseqta      = unique(rsa$anseqta),
+                                           ghs          = rep('9999', n_anseqta),
+                                           tarif_base   = rep(0, n_anseqta),
+                                           tarif_exb    = rep(0, n_anseqta),
+                                           tarif_exh    = rep(0, n_anseqta),
+                                           forfait_exb  = rep(0, n_anseqta)))
   
   # Gestion des tibbles complémentaires (diap, po, pie, mo)
   
@@ -232,15 +232,15 @@ vvr_ghs_supp <- function(rsa,
     mo = dplyr::tibble(cle_rsa = "", cducd = "")
   }
   
-  # Correction GHS 5907 suite erreur dans tarifs atih entrainant une valo négative en cas de borne basse 
-  if (2018 %in% unique(rsa$anseqta)){
-  rsa <- rsa %>%
-    dplyr::mutate(
-      nbjrexb = ifelse(ghm == '15M06A' & noghs == '5907' & nbjrexb ==  30 & duree == 0, nbjrexb - 10, nbjrexb)
-    ) %>%
-    dplyr::mutate(
-      nbjrexb = ifelse(ghm == '15M06A' & noghs == '5907' & nbjrexb ==  30 & duree == 1 & monorum_uhcd == 1, nbjrexb - 10, nbjrexb)
-    )
+  # Correction GHS 5907 suite erreur dans tarifs atih entrainant une valo négative en cas de borne basse
+  if ("2018" %in% unique(rsa$anseqta)){
+    rsa <- rsa %>%
+      dplyr::mutate(
+        nbjrexb = ifelse(ghm == '15M06A' & noghs == '5907' & nbjrexb ==  30 & duree == 0 & anseqta == "2018", nbjrexb - 10, nbjrexb)
+      ) %>%
+      dplyr::mutate(
+        nbjrexb = ifelse(ghm == '15M06A' & noghs == '5907' & nbjrexb ==  30 & duree == 1 & monorum_uhcd == 1 & anseqta == "2018", nbjrexb - 10, nbjrexb)
+      )
   }
   
   # Switch de GHS si molécule Yescarta ou Kymriah (car-T cells)
@@ -252,55 +252,55 @@ vvr_ghs_supp <- function(rsa,
   rsa <- rsa %>%
     dplyr::left_join(cart_cells, by = 'cle_rsa') %>%
     dplyr::mutate(
-      old_noghs = ifelse(!is.na(switch_ghs), noghs, ''),
-      noghs = ifelse(!is.na(switch_ghs), '8973', noghs))
+      old_noghs = ifelse(!is.na(switch_ghs) & (moissor < "03" | anseqta == "2018"), noghs, ''),
+      noghs = ifelse(!is.na(switch_ghs) & (moissor < "03" | anseqta == "2018"), '8973', noghs))
   
   if (is.null(prudent)){
-  # Partie GHS
-  rsa_2 <- rsa %>% 
-    dplyr::mutate(cprudent = dplyr::case_when(
-      anseqta == '2019'    ~ 0.9930,
-      anseqta == '2018'    ~ 0.9930,
-      anseqta == '2017'    ~ 0.9930,
-      anseqta == '2016'    ~ 0.9950,
-      anseqta == '2015'    ~ 0.9965,
-      anseqta == '2014'    ~ 0.9965,
-      anseqta == '2013'    ~ 0.9965,
-      TRUE    ~ 1)) %>% 
-    dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
-    dplyr::mutate(
-      t_base  = tarif_base                 * cgeo * cprudent,
-      t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent, 
-      t_bas   = dplyr::case_when(
-             sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
-             sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
-             sejinfbi == '0' ~ 0),
-      rec_bee = (t_base + t_haut - t_bas),
-      rec_totale = rec_bee)
+    # Partie GHS
+    rsa_2 <- rsa %>%
+      dplyr::mutate(cprudent = dplyr::case_when(
+        anseqta == '2019'    ~ 0.9930,
+        anseqta == '2018'    ~ 0.9930,
+        anseqta == '2017'    ~ 0.9930,
+        anseqta == '2016'    ~ 0.9950,
+        anseqta == '2015'    ~ 0.9965,
+        anseqta == '2014'    ~ 0.9965,
+        anseqta == '2013'    ~ 0.9965,
+        TRUE    ~ 1)) %>%
+      dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>%
+      dplyr::mutate(
+        t_base  = tarif_base                 * cgeo * cprudent,
+        t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent,
+        t_bas   = dplyr::case_when(
+          sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
+          sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
+          sejinfbi == '0' ~ 0),
+        rec_bee = (t_base + t_haut - t_bas),
+        rec_totale = rec_bee)
   } else {
-      # Partie GHS
-      rsa_2 <- rsa %>% 
-        mutate(cprudent = prudent) %>% 
-        dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>% 
-        dplyr::mutate(
-          t_base  = tarif_base                 * cgeo * cprudent,
-          t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent, 
-          t_bas   = dplyr::case_when(
-            sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
-            sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
-            sejinfbi == '0' ~ 0),
-          rec_bee = (t_base + t_haut - t_bas),
-          rec_totale = rec_bee)
-    }
-
+    # Partie GHS
+    rsa_2 <- rsa %>%
+      mutate(cprudent = prudent) %>%
+      dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>%
+      dplyr::mutate(
+        t_base  = tarif_base                 * cgeo * cprudent,
+        t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent,
+        t_bas   = dplyr::case_when(
+          sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
+          sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
+          sejinfbi == '0' ~ 0),
+        rec_bee = (t_base + t_haut - t_bas),
+        rec_totale = rec_bee)
+  }
+  
   if (bee == TRUE){
     return(rsa_2 %>% dplyr::select(cle_rsa, rec_totale, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, rec_bee))
   }
   
-
+  
   
   # Info suppléments ghs radiothérapie
-  rsa_i <- rsa %>% dplyr::select(cle_rsa, rdth, nb_rdth) %>% 
+  rsa_i <- rsa %>% dplyr::select(cle_rsa, rdth, nb_rdth) %>%
     dplyr::mutate(lrdh = stringr::str_extract_all(rdth, '.{7}'))
   
   rdth <- purrr::flatten_chr(rsa_i$lrdh) %>% stringr::str_trim()
@@ -308,13 +308,13 @@ vvr_ghs_supp <- function(rsa,
   df <- as.data.frame(lapply(df, rep, df$nb_rdth), stringsAsFactors = F) %>% dplyr::tbl_df()
   rdth <- dplyr::bind_cols(df,data.frame(r = rdth, stringsAsFactors = F) ) %>% dplyr::tbl_df()
   
-  rdth <- rdth %>% 
+  rdth <- rdth %>%
     dplyr::mutate(codsupra = stringr::str_sub(r, 1,4),
-           nbsupra = stringr::str_sub(r, 5,7) %>% as.integer()) %>% 
+                  nbsupra = stringr::str_sub(r, 5,7) %>% as.integer()) %>%
     dplyr::select(-nb_rdth, -r)
   
   
-  rdth <- rdth %>% 
+  rdth <- rdth %>%
     dplyr::mutate(
       nbacte9610 = nbsupra * (codsupra == '9610'),
       nbacte9619 = nbsupra * (codsupra == '9619'),
@@ -327,30 +327,30 @@ vvr_ghs_supp <- function(rsa,
       nbacte9633 = nbsupra * (codsupra == '9633'),
       nbacte6523 = nbsupra * (codsupra == '6523'),
       nbacte9623 = nbsupra * (codsupra == '9623')
-    ) %>% 
-    dplyr::group_by(cle_rsa) %>% 
-    dplyr::summarise_at(vars(starts_with('nbacte')), sum) %>% 
-    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>% 
+    ) %>%
+    dplyr::group_by(cle_rsa) %>%
+    dplyr::summarise_at(vars(starts_with('nbacte')), sum) %>%
+    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>%
     dplyr::mutate_if(is.numeric, function(x)ifelse(is.na(x), 0, x))
   
   
-  rsa_2 <- rsa_2 %>% 
+  rsa_2 <- rsa_2 %>%
     dplyr::left_join(rdth, by = 'cle_rsa')
   
   
   # pie
   
-  trans_pie <- pie %>% 
-    dplyr::group_by(cle_rsa, code_pie) %>% 
-    dplyr::summarise(nbsuppie = sum(nbsuppie)) %>% 
-    dplyr::ungroup() %>% 
-    dplyr::right_join(tibble(liste_pie = c('STF', 'SRC', 'REA', 'REP', 'NN1', 'NN2', 'NN3')), by = c('code_pie' = 'liste_pie')) %>% 
-    tidyr::complete(cle_rsa, code_pie, fill = list(nbsuppie = 0)) %>% 
-    dplyr::mutate(code_pie = paste0('pie_', tolower(code_pie))) %>% 
-    tidyr::spread(code_pie, nbsuppie, fill = 0) %>% 
+  trans_pie <- pie %>%
+    dplyr::group_by(cle_rsa, code_pie) %>%
+    dplyr::summarise(nbsuppie = sum(nbsuppie)) %>%
+    dplyr::ungroup() %>%
+    dplyr::right_join(tibble(liste_pie = c('STF', 'SRC', 'REA', 'REP', 'NN1', 'NN2', 'NN3')), by = c('code_pie' = 'liste_pie')) %>%
+    tidyr::complete(cle_rsa, code_pie, fill = list(nbsuppie = 0)) %>%
+    dplyr::mutate(code_pie = paste0('pie_', tolower(code_pie))) %>%
+    tidyr::spread(code_pie, nbsuppie, fill = 0) %>%
     dplyr::filter(!is.na(cle_rsa))
-  trans_pie <- trans_pie %>% 
-    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>% 
+  trans_pie <- trans_pie %>%
+    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>%
     dplyr::mutate_if(is.numeric, function(x)dplyr::if_else(is.na(x), 0, x))
   
   
@@ -359,18 +359,18 @@ vvr_ghs_supp <- function(rsa,
     stop('La table ano doit être non vide et contenir les colonnes :\nnoanon, cok, cle_rsa, moissort, dtent, dtsort')
   }
   
-  ano <- ano %>% 
+  ano <- ano %>%
     dplyr::select(noanon, cok, cle_rsa, moissort, dtent, dtsort, nosej)
   
-
+  
   reh <- rsa %>%
     dplyr::inner_join(ano, by = 'cle_rsa') %>%
     dplyr::filter(cok, moissor == moissort, rsacmd != '28', noghs != '9999') %>%
     dplyr::mutate(mdentr = paste0(echpmsi, prov),
                   mdsort = paste0(schpmsi, dest)) %>%
     dplyr::arrange(noanon, nosej) %>% # , ghm (suivant version de vvs ?)
-    dplyr::group_by(noanon) %>% 
-    dplyr::mutate(r = row_number()) %>% 
+    dplyr::group_by(noanon) %>%
+    dplyr::mutate(r = row_number()) %>%
     dplyr::ungroup()
   
   reh <- reh %>%
@@ -382,15 +382,15 @@ vvr_ghs_supp <- function(rsa,
                   lag_duree  = dplyr::lag(duree),
                   lag_sexe   = dplyr::lag(sexe),
                   lag_agean  = dplyr::lag(agean)) %>%
-    dplyr::mutate(delai = nosej - lag_nosej - lag_duree) %>% 
-    dplyr::filter(mdentr == '71', 
-                  mdentr == lag_mdsort,  
+    dplyr::mutate(delai = nosej - lag_nosej - lag_duree) %>%
+    dplyr::filter(mdentr == '71',
+                  mdentr == lag_mdsort, 
                   r == lag_r + 1,
-                  noanon == lag_noanon,  
+                  noanon == lag_noanon, 
                   (agean == lag_agean | agean == lag_agean + 1 | is.na(agean)),
-                  lag_noghs == noghs, 
-                  lag_sexe == sexe, 
-                  delai <= 10 , 
+                  lag_noghs == noghs,
+                  lag_sexe == sexe,
+                  delai <= 10 ,
                   delai > 2) %>%
     dplyr::select(cle_rsa) %>%
     dplyr::mutate(rehosp_ghm = 1)
@@ -398,78 +398,78 @@ vvr_ghs_supp <- function(rsa,
   
   
   # Import dip
-  dip <- diap %>% 
-    dplyr::group_by(cle_rsa) %>% 
+  dip <- diap %>%
+    dplyr::group_by(cle_rsa) %>%
     dplyr::summarise(nbdip = sum(nbsup))
   
   # Importer po
-  po <- porg %>% 
+  po <- porg %>%
     dplyr::mutate(
-      nb_poi    = (cdpo == "PO1"),	
-      nb_poii   = (cdpo == "PO2"),	
+      nb_poi    = (cdpo == "PO1"),  
+      nb_poii   = (cdpo == "PO2"), 
       nb_poiii  = (cdpo == "PO3"),
-      nb_poiv   = (cdpo == "PO4"),	
-      nb_pov    = (cdpo == "PO5"),	
+      nb_poiv   = (cdpo == "PO4"), 
+      nb_pov    = (cdpo == "PO5"),
       nb_povi   = (cdpo == "PO6"),
-      nb_povii  = (cdpo == "PO7"),	
-      nb_poviii = (cdpo == "PO8"),	
-      nb_poix   = (cdpo == "PO9"), 
+      nb_povii  = (cdpo == "PO7"), 
+      nb_poviii = (cdpo == "PO8"), 
+      nb_poix   = (cdpo == "PO9"),
       nb_poa    = (cdpo == "POA")
     )
-  po_synthese <- po %>% 
-    dplyr::group_by(cle_rsa) %>% 
+  po_synthese <- po %>%
+    dplyr::group_by(cle_rsa) %>%
     dplyr::summarise_at(dplyr::vars(dplyr::starts_with('nb_')), sum)
   
   
   for (i in 1:nrow(po_synthese)){
     if (po_synthese[i,]$nb_poiv > 0){
-      po_synthese[i,]$nb_poi   <- 0 
+      po_synthese[i,]$nb_poi   <- 0
       po_synthese[i,]$nb_poii  <- 0
       po_synthese[i,]$nb_poiii <- 0
     }
   }
   
-  po_synthese <- dplyr::distinct(rsa, cle_rsa) %>% 
-    dplyr::left_join(po_synthese, by = 'cle_rsa') %>% 
+  po_synthese <- dplyr::distinct(rsa, cle_rsa) %>%
+    dplyr::left_join(po_synthese, by = 'cle_rsa') %>%
     dplyr::mutate_if(is.numeric, function(x){ifelse(is.na(x), 0, x)})
   
   
   if (max(unique(rsa_2$anseqta)) < '2017'){
-    rsa_2 <- rsa_2 %>% 
+    rsa_2 <- rsa_2 %>%
       dplyr::mutate(suppdefcard = '0')
   }
   
   # Partie suppléments
-  rsa_3 <- rsa_2 %>% 
-    dplyr::left_join(dip, by = 'cle_rsa') %>% 
-    dplyr::left_join(reh, by = 'cle_rsa') %>% 
-    dplyr::left_join(trans_pie, by = 'cle_rsa') %>% 
+  rsa_3 <- rsa_2 %>%
+    dplyr::left_join(dip, by = 'cle_rsa') %>%
+    dplyr::left_join(reh, by = 'cle_rsa') %>%
+    dplyr::left_join(trans_pie, by = 'cle_rsa') %>%
     dplyr::mutate(nbdip = ifelse(is.na(nbdip), 0, nbdip),
-           rehosp_ghm = ifelse(is.na(rehosp_ghm), 0, rehosp_ghm)) %>% 
-    dplyr::left_join(po_synthese, by = 'cle_rsa') %>% 
-    dplyr::left_join(supplements, by = c('anseqta' = 'anseqta')) %>% 
+                  rehosp_ghm = ifelse(is.na(rehosp_ghm), 0, rehosp_ghm)) %>%
+    dplyr::left_join(po_synthese, by = 'cle_rsa') %>%
+    dplyr::left_join(supplements, by = c('anseqta' = 'anseqta')) %>%
     # suppléments structures
     dplyr::mutate(rec_rep = pmax(trep * nbsuprep, 0) * cgeo * cprudent,
-           rec_rea = pmax(trea * nbsuprea, 0) * cgeo * cprudent,
-           rec_stf = pmax(tsi  * nbsupstf, 0) * cgeo * cprudent,
-           rec_src = pmax(tsc  * nbsupsrc, 0) * cgeo * cprudent,
-           rec_nn1 = pmax(tnn1 * nbsupnn1, 0) * cgeo * cprudent,
-           rec_nn2 = pmax(tnn2 * nbsupnn2, 0) * cgeo * cprudent,
-           rec_nn3 = pmax(tnn3 * nbsupnn3, 0) * cgeo * cprudent) %>% 
+                  rec_rea = pmax(trea * nbsuprea, 0) * cgeo * cprudent,
+                  rec_stf = pmax(tsi  * nbsupstf, 0) * cgeo * cprudent,
+                  rec_src = pmax(tsc  * nbsupsrc, 0) * cgeo * cprudent,
+                  rec_nn1 = pmax(tnn1 * nbsupnn1, 0) * cgeo * cprudent,
+                  rec_nn2 = pmax(tnn2 * nbsupnn2, 0) * cgeo * cprudent,
+                  rec_nn3 = pmax(tnn3 * nbsupnn3, 0) * cgeo * cprudent) %>%
     # suppléments dialyse hors séances
-    dplyr::mutate(rec_hhs      = pmax(thhs     * nbsuphs,  0) * cgeo * cprudent, 
-           rec_edpahs   = pmax(tedpahs  * nbsupahs, 0) * cgeo * cprudent,
-           rec_edpcahs  = pmax(tedpcahs * nbsupchs, 0) * cgeo * cprudent,
-           rec_ehhs     = pmax(tehhs    * nbsupehs, 0) * cgeo * cprudent,
-           rec_dip      = pmax(tdip     * nbdip,    0) * cgeo * cprudent,
-           rec_dialhosp = rec_hhs + rec_edpahs + rec_edpcahs + rec_ehhs + rec_dip) %>% 
+    dplyr::mutate(rec_hhs      = pmax(thhs     * nbsuphs,  0) * cgeo * cprudent,
+                  rec_edpahs   = pmax(tedpahs  * nbsupahs, 0) * cgeo * cprudent,
+                  rec_edpcahs  = pmax(tedpcahs * nbsupchs, 0) * cgeo * cprudent,
+                  rec_ehhs     = pmax(tehhs    * nbsupehs, 0) * cgeo * cprudent,
+                  rec_dip      = pmax(tdip     * nbdip,    0) * cgeo * cprudent,
+                  rec_dialhosp = rec_hhs + rec_edpahs + rec_edpcahs + rec_ehhs + rec_dip) %>%
     #  autres suppléments
     dplyr::mutate(rec_caishyp = pmax(tcaishyp  * nbsupcaisson, 0) * cgeo * cprudent,
-           rec_aph     = pmax(taph_9615 * nbacte9615,   0) * cgeo * cprudent,
-           rec_ant     = pmax(tant      * nbsupatpart,  0) * cgeo * cprudent,
-           rec_rap     = pmax(trap      * nbsupreaped,  0) * cgeo * cprudent,
-           rec_sdc     = pmax(sdc       * (suppdefcard == '1'), 0) * cgeo * cprudent) %>% 
-    # supplements irradiation hors séances 
+                  rec_aph     = pmax(taph_9615 * nbacte9615,   0) * cgeo * cprudent,
+                  rec_ant     = pmax(tant      * nbsupatpart,  0) * cgeo * cprudent,
+                  rec_rap     = pmax(trap      * nbsupreaped,  0) * cgeo * cprudent,
+                  rec_sdc     = pmax(sdc       * (suppdefcard == '1'), 0) * cgeo * cprudent) %>%
+    # supplements irradiation hors séances
     dplyr::mutate(
       rec_rdt5    = pmax(trdt5_9610  * nbacte9610, 0) * cgeo * cprudent,
       rec_prot    = pmax(tprot_9619  * nbacte9619, 0) * cgeo * cprudent,
@@ -484,7 +484,7 @@ vvr_ghs_supp <- function(rsa,
       rec_rcon3   = pmax(trconf_9623 * nbacte9623, 0) * cgeo * cprudent,
       rec_rdt_tot = rec_rdt5 + rec_prot + rec_ict + rec_cyb + rec_gam +
         rec_rcon1 + rec_rcon2 + rec_tciea +
-        rec_tcies + rec_aie + rec_rcon3) %>% 
+        rec_tcies + rec_aie + rec_rcon3) %>%
     # po
     dplyr::mutate(
       rec_poi    = pmax(tpoi    * nb_poi,    0) * cgeo * cprudent,
@@ -497,8 +497,8 @@ vvr_ghs_supp <- function(rsa,
       rec_poviii = pmax(tpoviii * nb_poviii, 0) * cgeo * cprudent,
       rec_poix   = pmax(tpoix   * nb_poix,   0) * cgeo * cprudent,
       rec_poa    = pmax(tpoa    * nb_poa,    0) * cgeo * cprudent,
-      rec_po_tot = rec_poi + rec_poii + rec_poiii + rec_poiv + 
-        rec_pov + rec_povi + rec_povii + rec_poviii + rec_poix + rec_poa) %>% 
+      rec_po_tot = rec_poi + rec_poii + rec_poiii + rec_poiv +
+        rec_pov + rec_povi + rec_povii + rec_poviii + rec_poix + rec_poa) %>%
     
     # rehosp
     dplyr::mutate(rec_rehosp_ghm = - pmax(rehosp_ghm *  (t_base + t_bas) / 2, 0) ) %>%
@@ -509,7 +509,7 @@ vvr_ghs_supp <- function(rsa,
                   rec_pie_rep = pie_rep * trep * cgeo * cprudent,
                   rec_pie_nn1 = pie_nn1 * tnn1 * cgeo * cprudent,
                   rec_pie_nn2 = pie_nn2 * tnn2 * cgeo * cprudent,
-                  rec_pie_nn3 = pie_nn3 * tnn3 * cgeo * cprudent) %>% 
+                  rec_pie_nn3 = pie_nn3 * tnn3 * cgeo * cprudent) %>%
     # ajout des pie aux supp structures classiques
     dplyr::mutate(rec_rep = rec_rep + rec_pie_rep,
                   rec_rea = rec_rea + rec_pie_rea,
@@ -519,30 +519,31 @@ vvr_ghs_supp <- function(rsa,
                   rec_nn2 = rec_nn2 + rec_pie_nn2,
                   rec_nn3 = rec_nn3 + rec_pie_nn3)
   
-    # calcul recette totale
+  # calcul recette totale
   if (min(rsa_3$anseqta) > '2015'){
-    rsa_3 <- rsa_3 %>% 
-      dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
-             rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm + 
-             rec_rdt_tot + rec_sdc + rec_po_tot)
+    rsa_3 <- rsa_3 %>%
+      dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 +
+                      rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm +
+                      rec_rdt_tot + rec_sdc + rec_po_tot)
   } else {
-    rsa_3 <- rsa_3 %>% 
-      dplyr::mutate(rec_sdc = 0) %>% 
-      dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 + 
-                      rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm + 
+    rsa_3 <- rsa_3 %>%
+      dplyr::mutate(rec_sdc = 0) %>%
+      dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 +
+                      rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm +
                       rec_rdt_tot + rec_po_tot)
   }
-    
+  
   
   if (full){
     return(rsa_3 %>% dplyr::rename(rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut))
-  } else 
+  } else
     if (!full){
-      return(rsa_3 %>% dplyr::select(cle_rsa, moissor, anseqta, rec_totale, rec_bee, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut, 
-                     rec_rep, rec_rea, rec_stf, rec_src, rec_nn1, rec_nn2, rec_nn3, 
-                     rec_dialhosp, rec_caishyp, rec_aph, rec_ant, rec_rap, rec_rehosp_ghm, 
-                     rec_rdt_tot, rec_sdc, rec_po_tot))
-  }
+      return(rsa_3 %>% dplyr::select(cle_rsa, moissor, anseqta, rec_totale, rec_bee, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut,
+                                     rec_rep, rec_rea, rec_stf, rec_src, rec_nn1, rec_nn2, rec_nn3,
+                                     rec_dialhosp, rec_caishyp, rec_aph, rec_ant, rec_rap, rec_rehosp_ghm,
+                                     rec_rdt_tot, rec_sdc, rec_po_tot))
+    }
+  
 }
 
 
