@@ -72,7 +72,7 @@ Cette commande lance l'installation du package et de ses dépendances.
 
 ### Installation derrière un proxy
 
-Souvent, les établissements hospitaliers ont mis en place un proxy qui empèchent l'installation pratique d'un package sur github.
+Souvent, les établissements hospitaliers ont mis en place un proxy qui empèche l'installation pratique d'un package sur github.
 Voici comment faire dans ce cas.
 
 ```r
@@ -90,7 +90,7 @@ library(devtools)
 install_github('IM-APHP/pmeasyr')
 ```
 
-Une autre option dans ce contexte est la configuration définitive des proxy du logiciel R au sein du fichier [Renviron.site](https://support.rstudio.com/hc/en-us/articles/200488488-Configuring-R-to-Use-an-HTTP-or-HTTPS-Proxy). En cas de question, n'hésitez pas à ouvrir une [issue](https://github.com/IM-APHP/pmeasyr/issues).
+Une autre option dans ce contexte est la configuration définitive des proxys du logiciel R au sein du fichier [Renviron.site, voir ici par exemple](https://support.rstudio.com/hc/en-us/articles/200488488-Configuring-R-to-Use-an-HTTP-or-HTTPS-Proxy). En cas de question, n'hésitez pas à ouvrir une [issue](https://github.com/IM-APHP/pmeasyr/issues).
 
 
 ## Pour commencer
