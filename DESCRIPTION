@@ -1,8 +1,8 @@
 Package: pmeasyr
 Type: Package
 Title: Donnees PMSI avec R
-Version: 0.2.6
-Date: 2019-04-10
+Version: 0.2.7
+Date: 2019-05-02
 Imports:
     readr,
     tidyr,

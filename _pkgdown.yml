@@ -30,6 +30,8 @@ reference:
     contents:
     - tdiag
     - dico
+    - renomme_fichier
+    - epmsi_mco_vmed_f
   - title: Requêteur
     contents:
     - requete
