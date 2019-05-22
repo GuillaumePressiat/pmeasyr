@@ -92,6 +92,7 @@ install_github('IM-APHP/pmeasyr')
 
 Une autre option dans ce contexte est la configuration définitive des proxys du logiciel R au sein du fichier [Renviron.site, voir ici par exemple](https://support.rstudio.com/hc/en-us/articles/200488488-Configuring-R-to-Use-an-HTTP-or-HTTPS-Proxy). En cas de question, n'hésitez pas à ouvrir une [issue](https://github.com/IM-APHP/pmeasyr/issues).
 
+Par exemple, si vous ne connaissez pas votre proxy, vous pouvez faire comme indiqué [ici](https://github.com/IM-APHP/pmeasyr/issues/23).
 
 ## Pour commencer
 
