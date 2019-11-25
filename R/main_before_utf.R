@@ -3281,6 +3281,9 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
 #' Imports du fichier Med Out
 #'
 #' Formats depuis 2011 pris en charge
+#'   
+#' import des med, medatu et mchl si le fichier existe
+#' 
 #' Structure du nom du fichier attendu (sortie de Paprica) :
 #' \emph{finess.annee.moisc.med}
 #'
@@ -3392,6 +3395,17 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
       dplyr::mutate(NBADM = NBADM/1000,
                     PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
     med_i <- rbind(med_i,med_i2)
+  }
+  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".mchl"))
+  if (info$size >0 & !is.na(info$size)){
+    med_i3<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".mchl"),
+                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i2))
+    
+    med_i3 <- med_i3 %>%
+      dplyr::mutate(NBADM = NBADM/1000,
+                    PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
+    med_i <- rbind(med_i, med_i3)
   }
   if (tolower_names){
     names(med_i) <- tolower(names(med_i))
@@ -5180,7 +5194,7 @@ tdiag <- function (d,  include = T){
     h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "DP", `2` = "DR", `3` = "DPUM", `4` = "DRUM",
                                                                                                          `5` = "DAS"))))
     
-    h <- sjlabelled::remove_all_labels(h)
+    # h <- sjlabelled::remove_all_labels(h)
     if (!is.null(sjlabelled::get_label(d$rsa$NOFINESS))){
     h <- h %>% sjlabelled::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
                                    "Diagnostic"))
@@ -5208,7 +5222,7 @@ tdiag <- function (d,  include = T){
       f <- e %>% dplyr::filter(diag != "")
       h <- dplyr::bind_rows(h, f) %>% dplyr::mutate(position = as.numeric(as.character(forcats::fct_recode(position,`1` = "dp", `2` = "dr", `3` = "dpum", `4` = "drum",
                                                                                                            `5` = "das"))))
-      h <- sjlabelled::remove_all_labels(h)
+      # h <- sjlabelled::remove_all_labels(h)
       
       if (!is.null(sjlabelled::get_label(d$rsa$nofiness))){
       h <- h %>% sjlabelled::set_label(c("Clé rsa", "N° du RUM","1:DP, 2:DR, 3:DPUM, 4:DRUM, 5:DAS",
@@ -6855,10 +6869,10 @@ prepare_rsa <- function(rsa){
     dplyr::mutate(rsatype = substr(ghm, 3,3))
   
   rsa <- tdiag(rsa)
-  sjlabelled::remove_all_labels(rsa$rsa) -> rsa$rsa
-  sjlabelled::remove_all_labels(rsa$actes) -> rsa$actes
-  sjlabelled::remove_all_labels(rsa$diags) -> rsa$diags
-  sjlabelled::remove_all_labels(rsa$rsa_um) -> rsa$rsa_um
+  # sjlabelled::remove_all_labels(rsa$rsa) -> rsa$rsa
+  # sjlabelled::remove_all_labels(rsa$actes) -> rsa$actes
+  # sjlabelled::remove_all_labels(rsa$diags) -> rsa$diags
+  # sjlabelled::remove_all_labels(rsa$rsa_um) -> rsa$rsa_um
   return(rsa)
 }
 

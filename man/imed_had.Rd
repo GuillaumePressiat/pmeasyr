@@ -31,6 +31,9 @@ Imports du fichier Med Out
 }
 \details{
 Formats depuis 2011 pris en charge
+  
+import des med, medatu et mchl si le fichier existe
+
 Structure du nom du fichier attendu (sortie de Paprica) :
 \emph{finess.annee.moisc.med}
 
