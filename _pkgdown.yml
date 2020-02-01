@@ -92,6 +92,9 @@ navbar:
         href: articles/vignette3.html
       - text: Valoriser les rsa
         href: articles/vignette4.html
+      - text: Analyser les données
+        href: articles/vignette5.html
+
     news:
       text: Changelog
       href: news/index.html
