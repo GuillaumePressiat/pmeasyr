@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vers la database avec pmeasyr • pmeasyr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Vers la database avec pmeasyr">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmeasyr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -79,6 +80,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -94,45 +96,45 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(pmeasyr)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr, <span class="dt">warn.conflicts =</span> F)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dbplyr)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(DBI)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(pmeasyr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr, <span class="dt">warn.conflicts =</span> F)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dbplyr)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DBI)</a></code></pre></div>
 <div id="definir-lobjet-de-connexion-a-la-db" class="section level3">
 <h3 class="hasAnchor">
 <a href="#definir-lobjet-de-connexion-a-la-db" class="anchor"></a>0 - Definir l’objet de connexion a la db</h3>
 <div id="connexion-a-une-db-monetdblite" class="section level4">
 <h4 class="hasAnchor">
 <a href="#connexion-a-une-db-monetdblite" class="anchor"></a>0.1 - Connexion à une db MonetDBLite</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dbdir &lt;-<span class="st"> "~/Documents/data/monetdb"</span>
-con &lt;-<span class="st"> </span><span class="kw">src_monetdblite</span>(dbdir)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dbdir &lt;-<span class="st"> "~/Documents/data/monetdb"</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">con &lt;-<span class="st"> </span><span class="kw">src_monetdblite</span>(dbdir)</a></code></pre></div>
 </div>
 <div id="connexion-a-une-db-sqlite" class="section level4">
 <h4 class="hasAnchor">
 <a href="#connexion-a-une-db-sqlite" class="anchor"></a>0.2 - Connexion à une db SQLite</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dbdir &lt;-<span class="st"> "~/Documents/data/sqlite/pmsi.sqlite"</span>
-con &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_sqlite</a></span>(dbdir)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">dbdir &lt;-<span class="st"> "~/Documents/data/sqlite/pmsi.sqlite"</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">con &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_sqlite</a></span>(dbdir)</a></code></pre></div>
 </div>
 <div id="connexion-a-une-db-postgresql" class="section level4">
 <h4 class="hasAnchor">
 <a href="#connexion-a-une-db-postgresql" class="anchor"></a>0.3 - Connexion à une db PostgreSQL</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_postgres</a></span>(<span class="dt">user =</span> <span class="st">"gui"</span>, <span class="dt">password =</span> <span class="st">"gui"</span>, <span class="dt">dbname =</span> <span class="st">"aphp"</span>,
-                    <span class="dt">host =</span> <span class="st">"localhost"</span>, <span class="dt">port =</span> <span class="dv">5432</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">con &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_postgres</a></span>(<span class="dt">user =</span> <span class="st">"gui"</span>, <span class="dt">password =</span> <span class="st">"gui"</span>, <span class="dt">dbname =</span> <span class="st">"aphp"</span>,</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">                    <span class="dt">host =</span> <span class="st">"localhost"</span>, <span class="dt">port =</span> <span class="dv">5432</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="definir-le-noyau-de-parametres-pmeasyr" class="section level3">
 <h3 class="hasAnchor">
 <a href="#definir-le-noyau-de-parametres-pmeasyr" class="anchor"></a>1 - Definir le noyau de parametres pmeasyr</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># noyau_skeleton()</span>
-p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/noyau_pmeasyr.html">noyau_pmeasyr</a></span>(
-  <span class="dt">finess   =</span> <span class="st">'750712184'</span>,
-  <span class="dt">annee =</span> <span class="dv">2016</span>,
-  <span class="dt">mois     =</span> <span class="dv">12</span>,
-  <span class="dt">path     =</span> <span class="st">'~/Documents/data/mco'</span>,
-  <span class="dt">progress =</span> F, 
-  <span class="dt">tolower_names =</span> T, <span class="co"># choix de noms de colonnes minuscules : T / F</span>
-  <span class="dt">n_max =</span> <span class="fl">1e4</span>, <span class="co"># on limite la lecture a un petit nombre de lignes pour tester d'abord</span>
-  <span class="dt">lib =</span> F)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># noyau_skeleton()</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/noyau_pmeasyr.html">noyau_pmeasyr</a></span>(</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">finess   =</span> <span class="st">'750712184'</span>,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">annee =</span> <span class="dv">2016</span>,</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="dt">mois     =</span> <span class="dv">12</span>,</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="dt">path     =</span> <span class="st">'~/Documents/data/mco'</span>,</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="dt">progress =</span> F, </a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  <span class="dt">tolower_names =</span> T, <span class="co"># choix de noms de colonnes minuscules : T / F</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">  <span class="dt">n_max =</span> <span class="fl">1e4</span>, <span class="co"># on limite la lecture a un petit nombre de lignes pour tester d'abord</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">  <span class="dt">lib =</span> F)</a></code></pre></div>
 </div>
 <div id="integrer-les-tables-pmsi-dans-la-db-a-laquelle-on-est-connecte" class="section level3">
 <h3 class="hasAnchor">
@@ -141,44 +143,44 @@ p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/noyau_pme
 <h4 class="hasAnchor">
 <a href="#mco" class="anchor"></a>MCO</h4>
 <p>Avec les fonctions <code>db_mco_in</code> et <code>db_mco_out</code>, les tables rum, actes et diagnostics des rums, les tables rsa, actes, diagnostics et passages um et ano des rsa sont integrees dans la db, avec le fichier tra accole.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tables mco in 2011</span>
-purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2011</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ok ?</span>
-<span class="co"># ... 2012 -- 2015</span>
-purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
-
-<span class="co"># Tables mco out 2016</span>
-purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_mco_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span>
-<span class="co"># ...</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Tables mco in 2011</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2011</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ok ?</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co"># ... 2012 -- 2015</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_mco_in)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co"># Tables mco out 2016</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_mco_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># ...</span></a></code></pre></div>
 </div>
 <div id="rsf" class="section level4">
 <h4 class="hasAnchor">
 <a href="#rsf" class="anchor"></a>RSF</h4>
 <p>Avec la fonction <code>db_rsf_out</code>, tous les rafael du out sont integrees dans la db, un par table (A, B, C, etc) et la table ano-ace.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/rsf"</span>
-
-<span class="co"># Tables rsf out 2016</span>
-purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_rsf_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/rsf"</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># Tables rsf out 2016</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_rsf_out)(con,  p, <span class="dt">annee =</span> <span class="dv">2016</span>) -&gt;<span class="st"> </span>ok <span class="co"># on analyse l'objet ok ensuite : ..</span></a></code></pre></div>
 </div>
 <div id="table-par-table" class="section level4">
 <h4 class="hasAnchor">
 <a href="#table-par-table" class="anchor"></a>Table par table</h4>
 <p>Un exemple pour la table rapss de l’had.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Exemple en had</span>
-p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/had"</span>
-
-<span class="kw"><a href="../reference/irapss.html">irapss</a></span>(p, <span class="dt">annee =</span> <span class="dv">2015</span>) -&gt;<span class="st"> </span>tables_had
-
-<span class="co"># Table had rapss 2015</span>
-purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_generique)(con, <span class="dt">an =</span> <span class="dv">15</span>, <span class="dt">table =</span> tables_had<span class="op">$</span>rapss, <span class="dt">prefix =</span> <span class="st">'had'</span>, <span class="dt">suffix =</span>  <span class="st">'rapss_rapss'</span>) -&gt;<span class="st"> </span>ok
-<span class="co"># had_15_rapss_rapss</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Exemple en had</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">p<span class="op">$</span>path &lt;-<span class="st"> "~/Documents/data/had"</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw"><a href="../reference/irapss.html">irapss</a></span>(p, <span class="dt">annee =</span> <span class="dv">2015</span>) -&gt;<span class="st"> </span>tables_had</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># Table had rapss 2015</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">quietly</a></span>(db_generique)(con, <span class="dt">an =</span> <span class="dv">15</span>, <span class="dt">table =</span> tables_had<span class="op">$</span>rapss, <span class="dt">prefix =</span> <span class="st">'had'</span>, <span class="dt">suffix =</span>  <span class="st">'rapss_rapss'</span>) -&gt;<span class="st"> </span>ok</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co"># had_15_rapss_rapss</span></a></code></pre></div>
 </div>
 </div>
 <div id="connections-tab-dans-rstudio" class="section level3">
 <h3 class="hasAnchor">
 <a href="#connections-tab-dans-rstudio" class="anchor"></a>3 - Connections Tab dans RStudio</h3>
 <p>Pour pouvoir profiter de l’onglet <a href="https://db.rstudio.com">Connections</a> dans RStudio v1.1, vous pouvez définir l’objet <code>con</code> comme suit :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="st">"PostgreSQL"</span>)
-con &lt;-<span class="st"> </span>dbplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dbplyr/topics/src_dbi">src_dbi</a></span>(con)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(odbc<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/odbc/man/odbc.html">odbc</a></span>(), <span class="st">"PostgreSQL"</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">con &lt;-<span class="st"> </span>dbplyr<span class="op">::</span><span class="kw"><a href="https://dbplyr.tidyverse.org/reference/src_dbi.html">src_dbi</a></span>(con)</a></code></pre></div>
 <p>Et vous pourrez alors naviguer dans les 1 000 premières lignes de chacune des tables.</p>
 </div>
   </div>
@@ -189,17 +191,20 @@ con &lt;-<span class="st"> </span>dbplyr<span class="op">::</span><span class="k
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Guillaume Pressiat, Joris Muller.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

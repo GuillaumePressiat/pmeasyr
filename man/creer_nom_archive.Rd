@@ -2,7 +2,7 @@
 % Please edit documentation in R/archives.R
 \name{creer_nom_archive}
 \alias{creer_nom_archive}
-\title{Créer le nom d'une archive
+\title{Creer le nom d'une archive
 Permet de simuler ou de créer des noms d'archives PMSI}
 \usage{
 creer_nom_archive(finess, annee, mois, type = "in", horodatage = NULL)
@@ -22,6 +22,6 @@ creer_nom_archive(finess, annee, mois, type = "in", horodatage = NULL)
 Un nom d'archive compatible
 }
 \description{
-Créer le nom d'une archive
+Creer le nom d'une archive
 Permet de simuler ou de créer des noms d'archives PMSI
 }

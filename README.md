@@ -5,19 +5,20 @@
 
 ***Guillaume Pressiat***
 
-***SIMAP / AP-HP***
+*1 février 2020*
 
-*22 mai 2019*
+
+**Le développement de ce package a été initié au DIM du siège de l'AP-HP**. Il était auparavant hébergé sur le github [IM-APHP](https://github.com/IM-APHP/).
 
 ## Contenu du package
 
 Ce package contient des fonctions pour : 
 
-- la gestion des archives PMSI en entrée / sortie des logiciels de l'ATIH : dézippage, suppression des archives, voir [ici](https://im-aphp.github.io/pmeasyr/reference/#section-gestion-des-archives)
-- l'import des fichiers des champs PMSI MCO, SSR, HAD, PSY et RSF, voir [ici](https://im-aphp.github.io/pmeasyr/reference/#section-import-des-donn-es) et [là](https://im-aphp.github.io/pmeasyr/articles/vignette2.html)
-- Administrer les données dans une base de données avec R, voir [ici](https://im-aphp.github.io/pmeasyr/reference/#section-vers-la-base-de-donn-es) ou [là](https://im-aphp.github.io/pmeasyr/articles/vignette3.html)
-- Requêter les données aisément, voir [ici](https://im-aphp.github.io/pmeasyr/reference/#section-requ-teur)
-- Valoriser les résumés anonymes PMSI du MCO et de l'HAD, voir [ici](https://im-aphp.github.io/pmeasyr/reference/#section-valorisation-des-s-jours-mco) et [là](https://im-aphp.github.io/pmeasyr/articles/vignette4.html)
+- la gestion des archives PMSI en entrée / sortie des logiciels de l'ATIH : dézippage, suppression des archives, voir [ici](https://guillaumepressiat.github.io/pmeasyr/reference/#section-gestion-des-archives)
+- l'import des fichiers des champs PMSI MCO, SSR, HAD, PSY et RSF, voir [ici](https://guillaumepressiat.github.io/pmeasyr/reference/#section-import-des-donn-es) et [là](https://guillaumepressiat.github.io/pmeasyr/articles/vignette2.html)
+- Administrer les données dans une base de données avec R, voir [ici](https://guillaumepressiat.github.io/pmeasyr/reference/#section-vers-la-base-de-donn-es) ou [là](https://guillaumepressiat.github.io/pmeasyr/articles/vignette3.html)
+- Requêter les données aisément, voir [ici](https://guillaumepressiat.github.io/pmeasyr/reference/#section-requ-teur)
+- Valoriser les résumés anonymes PMSI du MCO et de l'HAD, voir [ici](https://guillaumepressiat.github.io/pmeasyr/reference/#section-valorisation-des-s-jours-mco) et [là](https://guillaumepressiat.github.io/pmeasyr/articles/vignette4.html)
 
 ## Support documentaire et annexes
 
@@ -37,7 +38,7 @@ Une vidéo est aussi [disponible](https://guillaumepressiat.github.io/blog/2017/
 ```r
 # install.packages('devtools')
 library(devtools)
-install_github('IM-APHP/pmeasyr')
+install_github('guillaumepressiat/pmeasyr')
 ```
 
 Cette commande lance l'installation du package et de ses dépendances.
@@ -59,12 +60,12 @@ set_config( use_proxy(
 
 # install.packages('devtools')
 library(devtools)
-install_github('IM-APHP/pmeasyr')
+install_github('guillaumepressiat/pmeasyr')
 ```
 
-Une autre option dans ce contexte est la configuration définitive des proxys du logiciel R au sein du fichier [Renviron.site, voir ici par exemple](https://support.rstudio.com/hc/en-us/articles/200488488-Configuring-R-to-Use-an-HTTP-or-HTTPS-Proxy). En cas de question, n'hésitez pas à ouvrir une [issue](https://github.com/IM-APHP/pmeasyr/issues).
+Une autre option dans ce contexte est la configuration définitive des proxys du logiciel R au sein du fichier [Renviron.site, voir ici par exemple](https://support.rstudio.com/hc/en-us/articles/200488488-Configuring-R-to-Use-an-HTTP-or-HTTPS-Proxy). En cas de question, n'hésitez pas à ouvrir une [issue](https://github.com/guillaumepressiat/pmeasyr/issues).
 
-Par exemple, si vous ne connaissez pas votre proxy, vous pouvez faire comme indiqué [ici](https://github.com/IM-APHP/pmeasyr/issues/23).
+Par exemple, si vous ne connaissez pas votre proxy, vous pouvez faire comme indiqué [ici](https://github.com/guillaumepressiat/pmeasyr/issues/23).
 
 ## Pour commencer
 
@@ -74,7 +75,7 @@ La vignette introductive du package donne des exemples de commandes pour les tra
 browseVignettes('pmeasyr')
 ```
 
-Ou bien consulter la [vignette en ligne](https://im-aphp.github.io/pmeasyr/articles/vignette.html).
+Ou bien consulter la [vignette en ligne](https://guillaumepressiat.github.io/pmeasyr/articles/vignette.html).
 
 
 ## Le pourquoi du package
@@ -103,7 +104,7 @@ L'utilisation de R confère aux données du PMSI la liberté proposée par le lo
 
    - les requêtes sur les diagnostics et les actes peuvent s'écrire de multiples façons et c'est l'utilisateur qui crée ses propres programmes
    - les données sont dans R : prêtes pour des modèles linéaires, logistiques, des classifications...
-   - la confrontation des données in\* (reflet du codage des établissements) aux données out\* (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](https://im-aphp.github.io/pmeasyr/articles/vignette.html#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil  
+   - la confrontation des données in\* (reflet du codage des établissements) aux données out\* (reflet de la valorisation accordée à l'établissement) est facilitée par l'import du fichier tra (cf [vignette](https://guillaumepressiat.github.io/pmeasyr/articles/vignette.html#tra)), cela peut permettre aux équipes DIM d'améliorer leur recueil  
    - le reporting de l'activité en excel, pdf, word, html, ou en créant des applications (shiny)
    - l'utilisation des graphiques pour représenter des volumes d'activités et des cartographies interactives pour visualiser la localisation d'activités, de patientèles, et les flux de patients
    - le partage de projets RStudio, qui facilite et encourage les travaux en équipe.
@@ -122,8 +123,4 @@ En dernier ressort, R travaillant en mémoire vive, les exécutions de requêtes
 ------------
 
 
-<p align="center">
-  SIMAP / DOMU / AP-HP<br>
-  <img src="https://github.com/IM-APHP/pmeasyr/blob/master/vignettes/logo.jpg" alt="AP-HP Logo" align ="center" style="width: 48"/>
-</p>
 

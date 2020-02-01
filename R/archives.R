@@ -276,7 +276,7 @@ adezip.default <- function(finess, annee, mois,
         exdir = pathto)
 }
 
-#' Sélectionne une archive in/out
+#' Selectionne une archive in/out
 #' @param dossier_archives Chemin vers le dossier contenant les archives. Vecteur de caractère de longueur 1.
 #' @param type_archive Type d'archive : *in* (par défaut) ou *out*
 #' @inherit adezip.default params
@@ -509,7 +509,7 @@ parse_noms_fichiers <- function(noms_fichiers, return_tibble = TRUE) {
   }
 }
 
-#' Découpe un seul nom de fichier
+#' Decoupe un seul nom de fichier
 #' @param nom_fichier Le nom du fichier à découper. Chaine de caractère de longueur 1.
 #' @param format_date_archive Format de date d'horodatage pour les fichiers archive avec la notation de [base::strptime()].
 #' @seealso [parse_noms_fichiers()] pour traiter plusieurs noms de fichiers.
@@ -554,7 +554,7 @@ parse_nom_fichier <- function(
   x
 }
 
-#' Créer des archives simulées à partir de plusieurs archives réelles
+#' Creer des archives simulees a partir de plusieurs archives reelles
 #' @inherit creer_archive_vide
 #' @param chemins_archives Chemin vers les archives qui servira de modèle pour l'archive simulée
 #' @seealso [creer_archive_vide()]
@@ -613,7 +613,7 @@ creer_archive_vide <- function(chemin_archive,
 }
 
 
-#' Créer le nom d'une archive
+#' Creer le nom d'une archive
 #' Permet de simuler ou de créer des noms d'archives PMSI
 #' @param horodatage Une date au format *dmYHMS*
 #' @inherit adezip.default params

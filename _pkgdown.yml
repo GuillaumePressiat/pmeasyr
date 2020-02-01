@@ -1,4 +1,4 @@
-url: https://im-aphp.github.io/pmeasyr/
+url: https://guillaumepressiat.github.io/pmeasyr/
 
 templates:
   params:
@@ -57,7 +57,11 @@ reference:
     desc: "Valoriser les rapss comme epmsi"
     contents:
     - vvr_had_ght
-
+  - title: Analyse des données selon certains axes
+    desc: "Durée de séjour, taux ambulatoire, etc."
+    contents:
+    - ana_r_ca_gestes_marqueurs
+    - ana_r_ghm_ambu_dms
 
 
 navbar:

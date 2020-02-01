@@ -2,7 +2,7 @@
 % Please edit documentation in R/archives.R
 \name{selectionne_archive}
 \alias{selectionne_archive}
-\title{Sélectionne une archive in/out}
+\title{Selectionne une archive in/out}
 \usage{
 selectionne_archive(finess, mois, annee, dossier_archives,
   type_archive = "in", recent = TRUE)
@@ -33,7 +33,7 @@ Si il y a plusieurs fichiers, la liste peut être facilement transformée en tab
 }
 }
 \description{
-Sélectionne une archive in/out
+Selectionne une archive in/out
 }
 \seealso{
 \code{\link[=adezip.default]{adezip.default()}} et \code{\link[=parse_nom_fichier]{parse_nom_fichier()}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/archives.R
 \name{creer_archives_vides}
 \alias{creer_archives_vides}
-\title{Créer des archives simulées à partir de plusieurs archives réelles}
+\title{Creer des archives simulees a partir de plusieurs archives reelles}
 \usage{
 creer_archives_vides(chemins_archives)
 }
@@ -13,7 +13,7 @@ creer_archives_vides(chemins_archives)
 \code{NULL}
 }
 \description{
-Créer des archives simulées à partir de plusieurs archives réelles
+Creer des archives simulees a partir de plusieurs archives reelles
 }
 \seealso{
 \code{\link[=creer_archive_vide]{creer_archive_vide()}}

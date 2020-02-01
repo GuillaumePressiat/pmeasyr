@@ -1,3 +1,7 @@
+# pmeasyr 0.2.8
+
+* Ajout de fonctions d'analyse des données MCO : chir ambu GHM C + 7 racines, gestes marqueurs
+
 # pmeasyr 0.2.6
 
 * Ajout de la fonction vvr_had_ght pour valoriser les sous-séquences de l'hospitalisation à domicile comme sur epmsi.

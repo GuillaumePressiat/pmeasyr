@@ -2,7 +2,7 @@
 % Please edit documentation in R/archives.R
 \name{parse_nom_fichier}
 \alias{parse_nom_fichier}
-\title{Découpe un seul nom de fichier}
+\title{Decoupe un seul nom de fichier}
 \usage{
 parse_nom_fichier(nom_fichier,
   format_date_archive = "\%d\%m\%Y\%H\%M\%S")
