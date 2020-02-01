@@ -82,8 +82,6 @@ Une fois les fichiers extraits des .zip, on peut utiliser les fonctions d'import
 
 Le nom des fonctions permettant l'**i**mport des fichiers commence par **i**.
 
-En MCO, SSR et HAD les fonctions permettent d'importer les fichiers aux formats de 2011 a 2016. En PSY et pour les RSF, de 2012 a 2016.
-
 
 ### Champ MCO
 
