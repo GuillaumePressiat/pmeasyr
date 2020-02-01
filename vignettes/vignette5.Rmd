@@ -1,0 +1,105 @@
+---
+title: "Analyses de l'activité"
+subtitle: "pour description et pilotage"
+author: "Guillaume Pressiat"
+date: 01/02/2020
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{analyses activite / pilotage}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+
+## 1 - Chirurgie ambulatoire : 55 gestes marqueurs
+
+
+
+```{r eval = FALSE, message=FALSE, warning=FALSE}
+library(dplyr, warn.conflicts = FALSE)
+library(pmeasyr)
+
+p <- noyau_pmeasyr(finess = '290000017',
+                   annee  = 2018,
+                   mois   = 12,
+                   path   = '~/Documents/data/mco', 
+                   tolower_names = TRUE,
+                   n_max = Inf)
+
+
+library(nomensland)
+
+dicts <- get_dictionnaire_listes()
+lgm <- get_all_listes('Chir ambu : 55 GM')
+
+periodes <- list(
+  list(an = 2013, moi = 12),
+  list(an = 2014, moi = 12),
+  list(an = 2015, moi = 12),
+  list(an = 2016, moi = 12),
+  list(an = 2017, moi = 12),
+  list(an = 2018, moi = 12),
+  list(an = 2019, moi = 11))
+
+result <- periodes %>% purrr::map_dfr(ana_r_ca_gestes_marqueurs, p = p, gestes_marqueurs = lgm)
+result <- result %>% arrange(`Geste marqueur`, `Période`)
+
+knitr::kable(head(result))
+
+pivot_result <- result %>% 
+  select(`Geste marqueur`, nofiness, taux_ambu, `Nb total`, `Période`) %>% 
+  mutate(stat = paste0(scales::percent(taux_ambu), ' (', `Nb total`, ')')) %>% 
+  select(-taux_ambu, - `Nb total`) %>% 
+  tidyr::spread(`Période`, stat, '')
+
+knitr::kable(head(pivot_result))
+
+```
+
+## 2 - Chirurgie ambulatoire : GHM C et 7 racines
+
+
+```{r eval = FALSE, message=FALSE, warning=FALSE}
+
+library(dplyr, warn.conflicts = FALSE)
+library(pmeasyr)
+
+p <- noyau_pmeasyr(finess = '290000017',
+                   annee  = 2018,
+                   mois   = 12,
+                   path   = '~/Documents/data/mco', 
+                   tolower_names = TRUE,
+                   n_max = Inf)
+
+
+library(nomensland)
+
+ghmc_7r <- get_liste('chir_ambu_ghm_C_7_racines')
+
+periodes <- list(
+  list(an = 2013, moi = 12),
+  list(an = 2014, moi = 12),
+  list(an = 2015, moi = 12),
+  list(an = 2016, moi = 12),
+  list(an = 2017, moi = 12),
+  list(an = 2018, moi = 12),
+  list(an = 2019, moi = 11))
+
+result <- periodes %>% purrr::map_dfr(ana_r_ghm_ambu_dms, p = p, requete = ghmc_7r)
+result <- result %>% arrange(niveau, Requete, `Période`)
+
+
+knitr::kable(head(result))
+
+
+pivot_result <- result %>% 
+  select(niveau, Requete, nofiness, taux_ambu, `Nb total`, `Période`) %>% 
+  mutate(stat = paste0(scales::percent(taux_ambu), ' (', `Nb total`, ')')) %>% 
+  select(-taux_ambu, - `Nb total`) %>% 
+  tidyr::spread(`Période`, stat, '')
+
+knitr::kable(head(pivot_result))
+
+
+```
+

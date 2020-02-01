@@ -20,7 +20,9 @@ Imports:
     sqldf
 Author: Guillaume Pressiat
 Authors@R: c(person('Guillaume Pressiat', role = c("aut", "cre"), email = "guillaume.pressiat@chu-brest.fr"),
-             person("Joris Muller", email = "", role = "aut"))
+             person("Namik Taright", email = "", role = "aut"),
+             person("Joris Muller", email = "", role = "aut"),
+             person("IM-APHP", email = "", role = "aut"))
 Maintainer: Guillaume Pressiat <guillaume.pressiat@chu-brest.fr>
 Description: Import de donnees PMSI. Gestion des archives. Formats depuis 2011. Connexion et interface avec une db. requetr. Valorisation des rsa, des rapss.
 License: GPL-2 | file LICENSE
