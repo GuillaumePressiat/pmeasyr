@@ -154,17 +154,24 @@
 <h2 class="hasAnchor">
 <a href="#valoriser-les-rsa" class="anchor"></a>Valoriser les rsa</h2>
 <p><strong>Nous ne tenons pas compte de la rubrique “minoration forfaitaire liste en SUS” volontairement car cela nécessite de maintenir la liste des MO en SUS pour 2016 et 2017</strong>.</p>
+<div id="traitement-des-rsa-transmis-hors-periode-voir-tableau-rtp" class="section level3">
+<h3 class="hasAnchor">
+<a href="#traitement-des-rsa-transmis-hors-periode-voir-tableau-rtp" class="anchor"></a>Traitement des RSA transmis hors période (voir tableau RTP)</h3>
+<p>Pour les RSA transmis hors période (année précédente, mois d’après, souvent causés par des dossiers à cheval), on force le groupage en erreur comme epmsi le fait. C’est fait avec la fonction <code>vvr_rsa_hors_periode</code> :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">vrsa &lt;-<span class="st"> </span>vrsa <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/vvr_rsa_hors_periode.html">vvr_rsa_hors_periode</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(p<span class="op">$</span>annee), stringr<span class="op">::</span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_pad.html">str_pad</a></span>(p<span class="op">$</span>mois, <span class="dv">2</span>, <span class="st">"left"</span>, <span class="st">'0'</span>))</a></code></pre></div>
+</div>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas</h3>
 <p>Ici, on se concentre sur la valorisation dite BEE pour “Base + Extrême haut - Extrême bas”. En effet par défaut le paramètre <code>bee</code> est à <code>TRUE</code> dans l’appel de fonction, et les tables vano, porg et diap sont renseignés à vide.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Importer les tarifs GHS</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">tarifs_ghs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/nomensland/man/get_table.html">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, <span class="dt">ano =</span>  vano, <span class="dt">tarifs =</span> tarifs_ghs),</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano)</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Importer les tarifs GHS</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">tarifs_ghs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/nomensland/man/get_table.html">get_table</a></span>(<span class="st">'tarifs_mco_ghs'</span>), ghs, anseqta, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, <span class="dt">ano =</span>  vano, <span class="dt">tarifs =</span> tarifs_ghs, <span class="dt">cgeo =</span> 1L),</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  <span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano)</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">)</a></code></pre></div>
 <p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
 <pre><code>cle_rsa
 rec_totale
@@ -179,24 +186,25 @@ typvidhosp</code></pre>
 <div id="cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cas-dune-valorisation-base-extreme-haut---extreme-bas-supplements" class="anchor"></a>Cas d’une valorisation base + Extrême haut - Extrême bas + suppléments</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Importer les tarifs des suppléments</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">tarifs_supp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/nomensland/man/get_table.html">get_table</a></span>(<span class="st">'tarifs_mco_supplements'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_if</a></span>(is.numeric, tidyr<span class="op">::</span>replace_na, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, </a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">             <span class="dt">tarifs =</span> tarifs_ghs, </a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">             <span class="dt">supplements =</span>  tarifs_supp, </a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">             <span class="dt">ano =</span> vano, </a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">             <span class="dt">porg =</span> <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p), </a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">             <span class="dt">diap =</span> <span class="kw"><a href="../reference/idiap.html">idiap</a></span>(p), </a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">             <span class="dt">pie =</span> <span class="kw"><a href="../reference/ipie.html">ipie</a></span>(p), </a>
-<a class="sourceLine" id="cb7-12" data-line-number="12">             <span class="dt">mo =</span> <span class="kw"><a href="../reference/imed_mco.html">imed_mco</a></span>(p), </a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">             <span class="dt">full =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">             <span class="dt">cgeo =</span> <span class="fl">1.07</span>, </a>
-<a class="sourceLine" id="cb7-15" data-line-number="15">             <span class="dt">prudent =</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb7-16" data-line-number="16">             <span class="dt">bee =</span> <span class="ot">FALSE</span>),</a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))</a>
-<a class="sourceLine" id="cb7-18" data-line-number="18">)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Importer les tarifs des suppléments</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">tarifs_supp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/nomensland/man/get_table.html">get_table</a></span>(<span class="st">'tarifs_mco_supplements'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_if</a></span>(is.numeric, tidyr<span class="op">::</span>replace_na, <span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span>cgeo)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, </a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">             <span class="dt">tarifs =</span> tarifs_ghs, </a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">             <span class="dt">supplements =</span>  tarifs_supp, </a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">             <span class="dt">ano =</span> vano, </a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">             <span class="dt">porg =</span> <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p), </a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">             <span class="dt">diap =</span> <span class="kw"><a href="../reference/idiap.html">idiap</a></span>(p), </a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">             <span class="dt">pie =</span> <span class="kw"><a href="../reference/ipie.html">ipie</a></span>(p), </a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">             <span class="dt">mo =</span> <span class="kw"><a href="../reference/imed_mco.html">imed_mco</a></span>(p), </a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">             <span class="dt">full =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">             <span class="dt">cgeo =</span> 1L, </a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">             <span class="dt">prudent =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17">             <span class="dt">bee =</span> <span class="ot">FALSE</span>),</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))</a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">)</a></code></pre></div>
 <p>La table <code>resu</code> contient une ligne par rsa avec les variables suivantes :</p>
 <pre><code>cle_rsa
 moissor
@@ -231,7 +239,7 @@ typvidhosp</code></pre>
 <h2 class="hasAnchor">
 <a href="#generer-des-tableaux-type-epmsi-pour-comparaison-avec-les-valo-officielles" class="anchor"></a>Générer des tableaux type epmsi pour comparaison avec les valo officielles</h2>
 <p>Les variables présentes dans la table <code>resu</code> permettent à la fois de dénombrer les séjours par type de valorisation, c’est-à-dire :</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pmeasyr/man/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_type_sej'</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pmeasyr/man/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_type_sej'</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">type_fin</th>
@@ -277,100 +285,128 @@ typvidhosp</code></pre>
 </tbody>
 </table>
 <p>et de reproduire les rubriques de valorisation par type de recette:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pmeasyr/man/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_valo'</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pmeasyr/man/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_valo'</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
+<th align="right">ordre_epmsi</th>
 <th align="left">var</th>
 <th align="left">lib_valo</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="right">22</td>
 <td align="left">rec_totale</td>
 <td align="left">Valorisation 100% T2A globale</td>
 </tr>
 <tr class="even">
+<td align="right">1</td>
 <td align="left">rec_base</td>
 <td align="left">Valorisation des GHS de base</td>
 </tr>
 <tr class="odd">
+<td align="right">0</td>
 <td align="left">rec_bee</td>
 <td align="left">Valorisation base + exb + exh</td>
 </tr>
 <tr class="even">
+<td align="right">2</td>
 <td align="left">rec_exb</td>
 <td align="left">Valorisation extrême bas (à déduire)</td>
 </tr>
 <tr class="odd">
+<td align="right">3</td>
 <td align="left">rec_rehosp_ghm</td>
 <td align="left">Valorisation séjours avec rehosp dans même GHM</td>
 </tr>
 <tr class="even">
+<td align="right">4</td>
 <td align="left">rec_mino_sus</td>
 <td align="left">Valorisation séjours avec minoration forfaitaire liste en sus</td>
 </tr>
 <tr class="odd">
+<td align="right">5</td>
 <td align="left">rec_exh</td>
 <td align="left">Valorisation journées extrême haut</td>
 </tr>
 <tr class="even">
+<td align="right">6</td>
 <td align="left">rec_aph</td>
 <td align="left">Valorisation actes GHS 9615 en Hospit.</td>
 </tr>
 <tr class="odd">
+<td align="right">7</td>
 <td align="left">rec_rap</td>
 <td align="left">Valorisation suppléments radiothérapie pédiatrique</td>
 </tr>
 <tr class="even">
+<td align="right">8</td>
 <td align="left">rec_ant</td>
 <td align="left">Valorisation suppléments antepartum</td>
 </tr>
 <tr class="odd">
+<td align="right">9</td>
 <td align="left">rec_rdt_tot</td>
 <td align="left">Valorisation actes RDTH en Hospit.</td>
 </tr>
 <tr class="even">
+<td align="right">10</td>
 <td align="left">rec_rea</td>
 <td align="left">Valorisation suppléments de réanimation</td>
 </tr>
 <tr class="odd">
+<td align="right">11</td>
 <td align="left">rec_rep</td>
 <td align="left">Valorisation suppléments de réa pédiatrique</td>
 </tr>
 <tr class="even">
+<td align="right">12</td>
 <td align="left">rec_nn1</td>
 <td align="left">Valorisation suppléments de néonat sans SI</td>
 </tr>
 <tr class="odd">
+<td align="right">13</td>
 <td align="left">rec_nn2</td>
 <td align="left">Valorisation suppléments de néonat avec SI</td>
 </tr>
 <tr class="even">
+<td align="right">14</td>
 <td align="left">rec_nn3</td>
 <td align="left">Valorisation suppléments de réanimation néonat</td>
 </tr>
 <tr class="odd">
+<td align="right">15</td>
 <td align="left">rec_po_tot</td>
 <td align="left">Valorisation prélévements d organe</td>
 </tr>
 <tr class="even">
+<td align="right">16</td>
 <td align="left">rec_caishyp</td>
 <td align="left">Valorisation des actes de caissons hyperbares en sus</td>
 </tr>
 <tr class="odd">
+<td align="right">17</td>
 <td align="left">rec_dialhosp</td>
 <td align="left">Valorisation suppléments de dialyse</td>
 </tr>
 <tr class="even">
+<td align="right">18</td>
+<td align="left">rec_sdc</td>
+<td align="left">Valorisation supplément défibrilateur cardiaque</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="left">rec_i04</td>
+<td align="left">Valorisation suppléments Forfait Innovation I04</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
 <td align="left">rec_src</td>
 <td align="left">Valorisation suppléments de surveillance continue</td>
 </tr>
 <tr class="odd">
+<td align="right">21</td>
 <td align="left">rec_stf</td>
 <td align="left">Valorisation suppléments de soins intensifs</td>
-</tr>
-<tr class="even">
-<td align="left">rec_sdc</td>
-<td align="left">Valorisation supplément défibrilateur cardiaque</td>
 </tr>
 </tbody>
 </table>
@@ -378,7 +414,7 @@ typvidhosp</code></pre>
 <h3 class="hasAnchor">
 <a href="#types-de-vidhosp" class="anchor"></a>Types de vidhosp</h3>
 <p>La table resu contient également une colonne <code>typvidhosp</code> qui correspond à un type de séjour, croisant plusieurs modalités (factam, nouveaux-nés, séances, 0 jour, autres, etc.)</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pmeasyr/man/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_vidhosp'</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(pmeasyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pmeasyr/man/vvr_libelles_valo.html">vvr_libelles_valo</a></span>(<span class="st">'lib_vidhosp'</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">typvidhosp</th>
@@ -424,38 +460,39 @@ typvidhosp</code></pre>
 <h3 class="hasAnchor">
 <a href="#sejours-valorises" class="anchor"></a>Séjours valorisés</h3>
 <p>Les séjours sont distribués et les recettes BR * coeffs sont sommées en fonction du type de séjours (lib_type_sej).</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/epmsi_mco_sv.html">epmsi_mco_sv</a></span>(resu)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/epmsi_mco_sv.html">epmsi_mco_sv</a></span>(resu) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarise_if</a></span>(., is.numeric, sum))</a></code></pre></div>
 </div>
 <div id="recapitulation-activite---valorisation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#recapitulation-activite---valorisation" class="anchor"></a>Récapitulation activité - valorisation</h3>
 <p>Les séjours sont distribués et les recettes BR * coeffs sont sommées en fonction du type de séjours et du type de recette (lib_type_sej * lib_valo).</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/epmsi_mco_rav.html">epmsi_mco_rav</a></span>(resu)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/epmsi_mco_rav.html">epmsi_mco_rav</a></span>(resu)</a></code></pre></div>
 </div>
 </div>
 <div id="connaitre-en-detail-la-valorisation-des-sejours" class="section level2">
 <h2 class="hasAnchor">
 <a href="#connaitre-en-detail-la-valorisation-des-sejours" class="anchor"></a>Connaître en détail la valorisation des séjours</h2>
 <p>Il est possible de garder toutes les variables intermédiaires du calcul de valorisation, c’est le cas en précisant le paramètre <code>full = TRUE</code> :</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, </a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">             <span class="dt">tarifs =</span> tarifs_ghs, </a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">             <span class="dt">supplements =</span>  tarifs_supp, </a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">             <span class="dt">ano =</span> vano, </a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">             <span class="dt">porg =</span> <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p), </a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">             <span class="dt">diap =</span> <span class="kw"><a href="../reference/idiap.html">idiap</a></span>(p), </a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">             <span class="dt">pie =</span> <span class="kw"><a href="../reference/ipie.html">ipie</a></span>(p), </a>
-<a class="sourceLine" id="cb14-9" data-line-number="9">             <span class="dt">full =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb14-10" data-line-number="10">             <span class="dt">cgeo =</span> <span class="fl">1.07</span>, </a>
-<a class="sourceLine" id="cb14-11" data-line-number="11">             <span class="dt">prudent =</span> <span class="ot">NULL</span>, </a>
-<a class="sourceLine" id="cb14-12" data-line-number="12">             <span class="dt">bee =</span> <span class="ot">FALSE</span>),</a>
-<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))</a>
-<a class="sourceLine" id="cb14-14" data-line-number="14">)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">resu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vvr_mco.html">vvr_mco</a></span>(</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw"><a href="../reference/vvr_ghs_supp.html">vvr_ghs_supp</a></span>(<span class="dt">rsa =</span> vrsa, </a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">             <span class="dt">tarifs =</span> tarifs_ghs, </a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">             <span class="dt">supplements =</span>  tarifs_supp, </a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">             <span class="dt">ano =</span> vano, </a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">             <span class="dt">porg =</span> <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p), </a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">             <span class="dt">diap =</span> <span class="kw"><a href="../reference/idiap.html">idiap</a></span>(p), </a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">             <span class="dt">pie =</span> <span class="kw"><a href="../reference/ipie.html">ipie</a></span>(p), </a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">             <span class="dt">full =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">             <span class="dt">cgeo =</span> 1L, </a>
+<a class="sourceLine" id="cb15-11" data-line-number="11">             <span class="dt">prudent =</span> <span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb15-12" data-line-number="12">             <span class="dt">bee =</span> <span class="ot">FALSE</span>),</a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="kw"><a href="../reference/vvr_mco_sv.html">vvr_mco_sv</a></span>(vrsa, vano, <span class="kw"><a href="../reference/ipo.html">ipo</a></span>(p))</a>
+<a class="sourceLine" id="cb15-14" data-line-number="14">)</a></code></pre></div>
 <p>Dans ce cas, les variables suivantes deviennent accessibles au niveau de chaque séjour :</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">resu <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarise_at</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">starts_with</a></span>(<span class="st">'rec_'</span>)), sum)  <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">resu <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarise_at</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">starts_with</a></span>(<span class="st">'rec_'</span>)), sum)  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
 <pre><code>rec_base
 rec_exh
 rec_exb

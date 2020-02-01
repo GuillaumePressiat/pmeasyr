@@ -84,6 +84,15 @@ Charger ce package donne accès aux fonctions `get_table` et  `get_dictionnaire_
 
 **Nous ne tenons pas compte de la rubrique "minoration forfaitaire liste en SUS" volontairement car cela nécessite de maintenir la liste des MO en SUS pour 2016 et 2017**.
 
+### Traitement des RSA transmis hors période (voir tableau RTP)
+
+Pour les RSA transmis hors période (année précédente, mois d'après, souvent causés par des dossiers à cheval), on force le groupage en erreur comme epmsi le fait. C'est fait avec la fonction `vvr_rsa_hors_periode` :
+
+```{r eval = F}
+vrsa <- vrsa %>% 
+  vvr_rsa_hors_periode(as.character(p$annee), stringr::str_pad(p$mois, 2, "left", '0'))
+````
+
 ### Cas d'une valorisation base + Extrême haut - Extrême bas
 
 Ici, on se concentre sur la valorisation dite BEE pour "Base + Extrême haut - Extrême bas". En effet par défaut le paramètre `bee` est à `TRUE` dans l'appel de fonction, et les tables vano, porg et diap sont renseignés à vide.
@@ -93,7 +102,7 @@ Ici, on se concentre sur la valorisation dite BEE pour "Base + Extrême haut - E
 tarifs_ghs <- dplyr::distinct(get_table('tarifs_mco_ghs'), ghs, anseqta, .keep_all = TRUE)
 
 resu <- vvr_mco(
-  vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs),
+  vvr_ghs_supp(rsa = vrsa, ano =  vano, tarifs = tarifs_ghs, cgeo = 1L),
   vvr_mco_sv(vrsa, vano)
 )
 ```
@@ -119,7 +128,8 @@ On peut libeller ces variables en faisant appel à la fonction `vvr_libelles_val
 
 ```{r eval = F} 
 # Importer les tarifs des suppléments
-tarifs_supp <- get_table('tarifs_mco_supplements') %>% mutate_if(is.numeric, tidyr::replace_na, 0)
+tarifs_supp <- get_table('tarifs_mco_supplements') %>% mutate_if(is.numeric, tidyr::replace_na, 0) %>% 
+  select(-cgeo)
 
 resu <- vvr_mco(
 vvr_ghs_supp(rsa = vrsa, 
@@ -131,7 +141,7 @@ vvr_ghs_supp(rsa = vrsa,
              pie = ipie(p), 
              mo = imed_mco(p), 
              full = FALSE,
-             cgeo = 1.07, 
+             cgeo = 1L, 
              prudent = NULL,
              bee = FALSE),
 vvr_mco_sv(vrsa, vano, ipo(p))
@@ -203,7 +213,8 @@ knitr::kable(pmeasyr::vvr_libelles_valo('lib_vidhosp'))
 Les séjours sont distribués et les recettes BR * coeffs sont sommées en fonction du type de séjours (lib_type_sej).
 
 ```{r eval = F}
-epmsi_mco_sv(resu)
+epmsi_mco_sv(resu) %>% 
+  bind_rows(summarise_if(., is.numeric, sum))
 ```
 
 ### Récapitulation activité - valorisation
@@ -228,7 +239,7 @@ vvr_ghs_supp(rsa = vrsa,
              diap = idiap(p), 
              pie = ipie(p), 
              full = TRUE,
-             cgeo = 1.07, 
+             cgeo = 1L, 
              prudent = NULL, 
              bee = FALSE),
 vvr_mco_sv(vrsa, vano, ipo(p))

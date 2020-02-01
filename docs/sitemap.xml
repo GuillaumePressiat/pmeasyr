@@ -70,6 +70,9 @@
     <loc>https://guillaumepressiat.github.io/pmeasyr//reference/enrobeur.html</loc>
   </url>
   <url>
+    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rae.html</loc>
+  </url>
+  <url>
     <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rav.html</loc>
   </url>
   <url>
@@ -242,6 +245,9 @@
   </url>
   <url>
     <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rsa.html</loc>
+  </url>
+  <url>
+    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rsa_hors_periode.html</loc>
   </url>
   <url>
     <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette1.html</loc>

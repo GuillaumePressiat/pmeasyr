@@ -51,8 +51,10 @@ reference:
     - vvr_mco
     - vvr_mco_sv
     - vvr_rsa
+    - vvr_rsa_hors_periode
     - epmsi_mco_sv
     - epmsi_mco_rav
+    - epmsi_mco_rae
   - title: Valorisation des sous-séquences HAD
     desc: "Valoriser les rapss comme epmsi"
     contents:
