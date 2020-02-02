@@ -1231,13 +1231,16 @@ vvr_rum <- function(p, valo,
     left_join(rsa_rum %>% select(cle_rsa, nseqrum, typaut1), by = c('cle_rsa', 'noseqrum' = 'nseqrum'))
   
   pmct_um_dp <- rsa_rum_dp %>% 
+    distinct(cle_rsa, cdurm, .keep_all = TRUE) %>% 
     group_by(cdurm, typaut1, mono  = (nbrum == 1L)) %>% 
     summarise(n = n(),
               pmct_um_dp = mean(rec_bee, na.rm = TRUE),
               pmedct_um_dp = median(rec_bee, na.rm = TRUE),
               psdct_um_dp = sd(rec_bee),
               iqr = IQR(rec_bee)) %>% 
-    bind_rows(rsa_rum_dp %>% group_by(cdurm, typaut1, mono  = NA) %>% 
+    bind_rows(rsa_rum_dp %>% 
+                distinct(cle_rsa, cdurm, .keep_all = TRUE) %>% 
+                group_by(cdurm, typaut1, mono  = NA) %>% 
                 summarise(n = n(),
                           pmct_um_dp = mean(rec_bee),
                           pmedct_um_dp = median(rec_bee),
