@@ -7,7 +7,8 @@ reference:
   - title: "Gestion des archives"
     desc: "Dézipper, effacer des archives in / out PMSI"
     contents:
-    - starts_with("a")
+    - starts_with("ad")
+    - starts_with("asta")
   - title: Import des données
     desc: "Importer les fichiers in / out des archives PMSI"
     contents:
@@ -57,6 +58,12 @@ reference:
     - epmsi_mco_rae
     - vvr_rum
     - epmsi_mco_rav_rum
+  - title: Valorisation des passages MCO
+    desc: "Voir vignette"
+    contents:
+    - vvr_rum
+    - epmsi_mco_rav_rum
+    - vvr_rum_check_rubriques_rav
   - title: Valorisation des sous-séquences HAD
     desc: "Valoriser les rapss comme epmsi"
     contents:
