@@ -1228,28 +1228,25 @@ vvr_rum <- function(p, valo,
   rsa_rum_dp <- dplyr::inner_join(rsa$rsa %>%  select(cle_rsa, nbrum, noseqrum) %>% 
                                     inner_tra(itra(p)), rum, by = c('norss', 'noseqrum' = 'norum')) %>% 
     inner_join(valo %>% select(cle_rsa, rec_bee, rec_totale), by = 'cle_rsa') %>% 
-    left_join(rsa_rum %>% select(cle_rsa, nseqrum, typaut1), by = c('cle_rsa', 'noseqrum' = 'nseqrum'))
+    left_join(rsa_rum %>% select(cle_rsa, nseqrum, typaut1), by = c('cle_rsa', 'noseqrum' = 'nseqrum')) %>% 
+    distinct(cle_rsa, cdurm, .keep_all = TRUE)
   
   pmct_um_dp <- rsa_rum_dp %>% 
-    distinct(cle_rsa, cdurm, .keep_all = TRUE) %>% 
-    group_by(cdurm, typaut1, mono  = (nbrum == 1L)) %>% 
+    filter(nbrum == 1L) %>% 
+    group_by(cdurm, typaut1, mono  = TRUE) %>% 
     summarise(n = n(),
               pmct_um_dp = mean(rec_bee, na.rm = TRUE),
               pmedct_um_dp = median(rec_bee, na.rm = TRUE),
               psdct_um_dp = sd(rec_bee),
               iqr = IQR(rec_bee)) %>% 
     bind_rows(rsa_rum_dp %>% 
-                distinct(cle_rsa, cdurm, .keep_all = TRUE) %>% 
-                group_by(cdurm, typaut1, mono  = NA) %>% 
+                group_by(cdurm, typaut1, mono  = FALSE) %>% 
                 summarise(n = n(),
                           pmct_um_dp = mean(rec_bee),
                           pmedct_um_dp = median(rec_bee),
                           psdct_um_dp = sd(rec_bee),
                           iqr = IQR(rec_bee)))
   
-  pmct_um_dp <- pmct_um_dp %>% 
-    filter(is.na(mono) | mono) %>% 
-    tidyr::replace_na(list(mono = FALSE))
   
   rsa_rum <- rsa_rum %>% 
     dplyr::mutate(
