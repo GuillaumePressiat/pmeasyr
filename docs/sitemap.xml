@@ -76,6 +76,12 @@
     <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rav.html</loc>
   </url>
   <url>
+    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rav2.html</loc>
+  </url>
+  <url>
+    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rav_rum.html</loc>
+  </url>
+  <url>
     <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_sv.html</loc>
   </url>
   <url>
@@ -250,6 +256,12 @@
     <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rsa_hors_periode.html</loc>
   </url>
   <url>
+    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rum.html</loc>
+  </url>
+  <url>
+    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rum_check_rubriques_rav.html</loc>
+  </url>
+  <url>
     <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette1.html</loc>
   </url>
   <url>
@@ -263,5 +275,8 @@
   </url>
   <url>
     <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette5.html</loc>
+  </url>
+  <url>
+    <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette6.html</loc>
   </url>
 </urlset>

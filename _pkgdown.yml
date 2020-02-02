@@ -55,6 +55,8 @@ reference:
     - epmsi_mco_sv
     - epmsi_mco_rav
     - epmsi_mco_rae
+    - vvr_rum
+    - epmsi_mco_rav_rum
   - title: Valorisation des sous-séquences HAD
     desc: "Valoriser les rapss comme epmsi"
     contents:
@@ -96,6 +98,8 @@ navbar:
         href: articles/vignette4.html
       - text: Analyser les données
         href: articles/vignette5.html
+      - text: Valoriser les rum
+        href: articles/vignette6.html
 
     news:
       text: Changelog

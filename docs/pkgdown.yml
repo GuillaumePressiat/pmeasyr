@@ -7,6 +7,7 @@ articles:
   vignette3: vignette3.html
   vignette4: vignette4.html
   vignette5: vignette5.html
+  vignette6: vignette6.html
 urls:
   reference: https://guillaumepressiat.github.io/pmeasyr//reference
   article: https://guillaumepressiat.github.io/pmeasyr//articles

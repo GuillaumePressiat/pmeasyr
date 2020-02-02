@@ -1056,7 +1056,7 @@ epmsi_mco_sv <- function(valo, knit = FALSE){
 # 
 #' }
 #'
-#' @author G. Pressiat
+#' @author G. Pressiat, fbrcdnj 
 #'
 #' @export epmsi_mco_rav
 #' @export
@@ -1149,28 +1149,480 @@ epmsi_mco_rae <- function(valo, knit = FALSE){
   }
 }
 
-# epmsi_mco_rae <- function(valo, knit = FALSE){
-#   rr <- valo %>% dplyr::select(cle_rsa, dplyr::starts_with('nb'), starts_with('pie'), 
-#                                type_fin, rehosp_ghm, -nbsupsi, - nb_rdth) %>% 
-#     tidyr::gather(var, val, - cle_rsa, -type_fin) %>%
-#     dplyr::filter(val > 0) %>% 
-#     dplyr::left_join(vvr_libelles_valo('lib_detail_valo'), by = 'var') %>% 
-#     dplyr::group_by(cle_rsa) %>% 
-#     dplyr::mutate(flag_po = sum(libelle_detail_valo == "Supplément prélèvement d'organe", na.rm = TRUE) > 0) %>% 
-#     ungroup() %>% 
-#     dplyr::mutate(val = case_when(
-#       type_fin == 0L ~ val,
-#       flag_po & substr(var,1,5) == "nb_po" ~ val,
-#       TRUE ~ 0)) %>%
-#     dplyr::filter(val > 0) %>% 
-#     dplyr::group_by(libelle_detail_valo) %>% 
-#     dplyr::summarise(Nb_sup = sum(val),
-#                      Nb_rsa = n_distinct(cle_rsa))
-#     
-#   
-#   if (knit){
-#     return(knitr::kable(rr))
-#   } else {
-#     return(rr)
-#   }
-# }
+#' ~ VVR - Distribuer la valorisation des rsa au niveau des rum ou des passages UM
+#'
+#' 
+#' @param valo Un tibble résultant de \code{\link{vvr_mco}}
+#' @param p Un noyau de paramètres
+#' @param repartition_multi pour renseigner les paramètres de la clef de répartition (entre durée de passage et PMCT des UM fréquentées)
+#' @param pmct_mono Calcul du PMCT par UM sur les mono-RUM (TRUE), ou sur tous les séjours par l'UM fournissant le DP (FALSE)
+#' @param seuil_pmct En dessous de quel nombre on considère le PMCT non robuste, dans ce cas, on passe à une distribution uniquement sur les durées de passages
+#' @param type_passage La table résultat est soit au niveau RUM, soit au niveau passage unique (pas de UM A, UM B, UM A, juste UM A, UM B)
+#' 
+#' 
+#' @return Un tibble 
+#'
+#' @examples
+#' \dontrun{
+#' vvr_rum(p, valo, type_passage = "RUM", pmct_mono = FALSE)
+# 
+#' }
+#'
+#' @author G. Pressiat
+#' @author fbrcdnj 
+#'
+#' @seealso epmsi_mco_rav_rum, vvr_mco
+#' @export vvr_rum
+#' @export
+vvr_rum <- function(p, valo, 
+                    repartition_multi = '{prop_pmct_um}*0.5+{prop_pass}*0.5', 
+                    pmct_mono = c(FALSE, TRUE), 
+                    seuil_pmct = 10,
+                    type_passage = c('RUM', 'Passage unique')){
+  
+  message('- Valorisation des RUM')
+  message('-- Clef de répartition : ', repartition_multi)
+  
+  p1 <- stringr::str_replace(repartition_multi, '(\\{prop_pmct_um\\})\\*(.*)\\+(\\{prop_pass\\})\\*(.*)', '\\2') %>% as.numeric()
+  p2 <- stringr::str_replace(repartition_multi, '(\\{prop_pmct_um\\})\\*(.*)\\+(\\{prop_pass\\})\\*(.*)', '\\4') %>% as.numeric()
+  
+  message('-- Poids PMCT             : ', p1)
+  message('-- Poids durée de passage : ', p2)
+  
+  if ((p1 + p2) != 1L){
+    stop(paste0('Pb dans la formule : la somme des deux paramètres doit faire 1 : ', repartition_multi))
+    
+  }
+  
+  if (p1 > 0){
+  message('-- PMCT utilisé : \n-- -- ', 
+          ifelse(!is.na(pmct_mono), 'PMCT des MONO-RUM', 'PMCT via le RUM principal du RSA'))
+  }
+  rsa <- pmeasyr::irsa(p, typi = 4)
+  
+  message('-- Nb rsa ', nrow(rsa$rsa))
+  message('-- Nb rsa_um ', nrow(rsa$rsa_um))
+  
+  rsa_um <- rsa$rsa_um %>% 
+    dplyr::select(cle_rsa, typaut1, dureesejpart, 
+                  dpum, drum, 
+                  natsupp1, nbsupp1, 
+                  nbsupp2, typaut2, 
+                  natsupp2, nseqrum) %>% 
+    dplyr::mutate(nbsupp1 = as.integer(nbsupp1)) %>% 
+    dplyr::mutate(nbsupp2 = as.integer(nbsupp2)) %>% 
+    dplyr::mutate(typaut1 = substr(typaut1,1,3)) %>% 
+    mutate_if(is.numeric, tidyr::replace_na, 0) %>% 
+    inner_tra(itra(p))
+  
+  rum <- irum(p, typi = 1)$rum %>% 
+    dplyr::select(norss, cdurm, d8eeue, d8soue, dp, dr, norum) %>% 
+    dplyr::mutate(dsrum = as.integer(difftime(d8soue, d8eeue, units = "days"))) %>% 
+    dplyr::mutate(norum = stringr::str_pad(
+      stringr::str_trim(substr(norum, nchar(norum) - 1, nchar(norum))), 2, 'left', '0'))
+  
+  rsa_rum <- dplyr::inner_join(rsa_um, rum, by = c('norss', 'nseqrum' = 'norum'))
+  
+  message('-- Nb rum ', nrow(rum))
+  
+  rsa_rum_dp <- dplyr::inner_join(rsa$rsa %>%  select(cle_rsa, nbrum, noseqrum) %>% 
+                                    inner_tra(itra(p)), rum, by = c('norss', 'noseqrum' = 'norum')) %>% 
+    inner_join(valo %>% select(cle_rsa, rec_bee, rec_totale), by = 'cle_rsa') %>% 
+    left_join(rsa_rum %>% select(cle_rsa, nseqrum, typaut1), by = c('cle_rsa', 'noseqrum' = 'nseqrum'))
+  
+  pmct_um_dp <- rsa_rum_dp %>% 
+    group_by(cdurm, typaut1, mono  = (nbrum == 1L)) %>% 
+    summarise(n = n(),
+              pmct_um_dp = mean(rec_bee, na.rm = TRUE),
+              pmedct_um_dp = median(rec_bee, na.rm = TRUE),
+              psdct_um_dp = sd(rec_bee),
+              iqr = IQR(rec_bee)) %>% 
+    bind_rows(rsa_rum_dp %>% group_by(cdurm, typaut1, mono  = NA) %>% 
+                summarise(n = n(),
+                          pmct_um_dp = mean(rec_bee),
+                          pmedct_um_dp = median(rec_bee),
+                          psdct_um_dp = sd(rec_bee),
+                          iqr = IQR(rec_bee)))
+  
+  pmct_um_dp <- pmct_um_dp %>% 
+    filter(is.na(mono) | mono) %>% 
+    tidyr::replace_na(list(mono = FALSE))
+  
+  rsa_rum <- rsa_rum %>% 
+    dplyr::mutate(
+      suprea = pmax( nbsupp1 * (natsupp1 == '01'),0) + pmax(nbsupp2 * (natsupp2 == '01'),0),
+      flag_rea = (natsupp1 == '01' | natsupp2 == '01'),
+      supstf = pmax(nbsupp1 * (natsupp1 == '02'),0) + pmax(nbsupp2 * (natsupp2 == '02'),0),
+      flag_stf = (natsupp1 == '02' | natsupp2 == '02'),
+      supsrc = pmax(nbsupp1 * (natsupp1 == '03'),0) + pmax(nbsupp2 * (natsupp2 == '03'),0), 
+      flag_src= (natsupp1 == '03' | natsupp2 == '03'),
+      suprep= pmax(nbsupp1 * (natsupp1 == '13'),0)+ pmax(nbsupp2 * (natsupp2 == '13'),0), 
+      flag_rep= (natsupp1 == '13' | natsupp2 == '13'),
+      supnn1= pmax(nbsupp1 * (natsupp1 == '04'),0) + pmax(nbsupp2 * (natsupp2 == '04'),0), 
+      flag_nn1=(natsupp1 == '04' | natsupp2 == '04'),
+      supnn2= pmax(nbsupp1 * (natsupp1 == '05'),0) + pmax(nbsupp2 * (natsupp2 == '05'),0), 
+      flag_nn2= (natsupp1 == '05' | natsupp2 == '05'),
+      supnn3= pmax(nbsupp1 * (natsupp1 == '06'),0) + pmax(nbsupp2 * (natsupp2 == '06'),0), 
+      flag_nn3=(natsupp1 == '06' | natsupp2 == '06')
+    )
+    
+  checks_coincide <- rsa_rum %>% 
+    group_by(cle_rsa, norss) %>% 
+    summarise_at(vars(starts_with('sup')), sum) %>% 
+    ungroup() %>% 
+    left_join(rsa$rsa %>% select(cle_rsa, ghm, nbsuprea, nbsupstf, 
+                                 nbsupsrc, nbsuprep, nbsupnn1, nbsupnn2, nbsupnn3), by = 'cle_rsa') %>% 
+    mutate(check_rea = suprea == nbsuprea,
+           check_src = supsrc == nbsupsrc,
+           check_stf = supstf == nbsupstf,
+           check_rep = suprep == nbsuprep,
+           check_nn1 = supnn1 == nbsupnn1,
+           check_nn2 = supnn2 == nbsupnn2,
+           check_nn3 = supnn3 == nbsupnn3)
+  
+  
+  
+  checks <- group_by_at(checks_coincide, vars(starts_with('check'))) %>% count()
+  
+  message('-- Check correspondance des suppléments RUM <-> RSA : ', ifelse(nrow(checks) == 1L, "ok", "nok !"))
+  if (nrow(checks) > 1){
+    checks
+  }
+
+  # passage unique par UM
+  if (type_passage == "RUM"){
+  rum_uma <- rsa_rum %>% 
+    group_by(cle_rsa, norss, cdurm, typaut1, nseqrum)
+  } else {
+    rum_uma <- rsa_rum %>% 
+      group_by(cle_rsa, norss, cdurm, typaut1)
+  }
+  
+  rum_uma <- rum_uma %>% 
+    summarise(dsrum = sum(dsrum),
+              suprea = sum(suprea),
+              supstf = sum(supstf),
+              supsrc = sum(supsrc),
+              supnn1 = sum(supnn1),
+              supnn2 = sum(supnn2),
+              supnn3 = sum(supnn3),
+              suprep = sum(suprep),
+              flag_rea = sum(flag_rea),
+              flag_stf = sum(flag_stf),
+              flag_src = sum(flag_src),
+              flag_nn1 = sum(flag_nn1),
+              flag_nn2 = sum(flag_nn2),
+              flag_nn3 = sum(flag_nn3),
+              flag_rep = sum(flag_rep)) %>% 
+    ungroup() %>% 
+    mutate(
+      suprea = suprea + (flag_rea > 0),
+      supstf = supstf + (flag_stf > 0),
+      supsrc = supsrc + (flag_src > 0),
+      suprep = suprep + (flag_rep > 0),
+      supnn1 = supnn1 + (flag_nn1 > 0),
+      supnn2 = supnn2 + (flag_nn2 > 0),
+      supnn3 = supnn3 + (flag_nn3 > 0)) %>% 
+    select(- starts_with('flag_')) %>% 
+    group_by(cle_rsa, norss) %>% 
+    mutate(suprea_prop = suprea / sum(suprea),
+           supstf_prop = supstf / sum(supstf),
+           supsrc_prop = supsrc / sum(supsrc),
+           suprep_prop = suprep / sum(suprep),
+           supnn1_prop = supnn1 / sum(supnn1),
+           supnn2_prop = supnn2 / sum(supnn2),
+           supnn3_prop = supnn3 / sum(supnn3)) %>% 
+    ungroup() %>% 
+    mutate_if(is.numeric, tidyr::replace_na, 0)
+  
+  
+  rum_uma_valo <- rum_uma %>% 
+    left_join(valo %>% select(cle_rsa, type_fin, ghm, nbrum, duree, rec_base, rec_exb, rec_exh, rec_bee, rec_po_tot, rec_rea, 
+                              rec_stf, rec_src, rec_rep, rec_nn1, rec_rehosp_ghm, rec_sdc,
+                              rec_nn2, rec_nn3, rec_ant, rec_dialhosp, rec_rdt_tot, rec_caishyp, rec_aph), by = 'cle_rsa')
+  
+  
+  valo_mono <- rum_uma_valo %>% 
+    filter(nbrum == 1L) %>% 
+    mutate(nb_uma = 1L) %>% 
+    #select(-rec_po_tot) %>% 
+    mutate(rec_rea_rum         = rec_rea,
+           rec_stf_rum         = rec_stf,
+           rec_src_rum         = rec_src,
+           rec_rep_rum         = rec_rep,
+           rec_nn1_rum         = rec_nn1,
+           rec_nn2_rum         = rec_nn2,
+           rec_nn3_rum         = rec_nn3, 
+           rec_bee_rum         = rec_bee, 
+           rec_po_tot_rum      = rec_po_tot,
+           rec_base_rum        = rec_base, 
+           rec_exb_rum         = rec_exb, 
+           rec_exh_rum         = rec_exh, 
+           rec_ant_rum         = rec_ant, 
+           rec_sdc_rum         = rec_sdc, 
+           rec_caishyp_rum     = rec_caishyp,
+           rec_rehosp_ghm_rum  = rec_rehosp_ghm,
+           rec_aph_rum         = rec_aph) %>% 
+  mutate(rec_totale_rum = rec_bee + rec_po_tot + rec_rea + rec_stf + 
+           rec_src + rec_rep + rec_nn1 + rec_sdc +
+           rec_nn2 + rec_nn3 + rec_ant + rec_aph + rec_caishyp + rec_rehosp_ghm) %>% 
+    mutate(type_repartition = "mono-rum")
+  
+  message('-- Nb mono-rum ', nrow(valo_mono))
+  
+  if (is.na(pmct_mono)){
+    pmct_um_dp_use <- pmct_um_dp %>% 
+      filter(is.na(mono))
+  } else {
+    pmct_um_dp_use <- pmct_um_dp %>%
+      filter(mono == TRUE)
+  }
+  
+  message('-- Nb UM dans réf. PMCT : ', nrow(pmct_um_dp_use))
+  message('-- Nb UM dans réf. PMCT seuillé : ', nrow(pmct_um_dp_use %>% filter(n >= seuil_pmct)))
+  
+  pmct_um_dp_use <- pmct_um_dp_use %>% filter(n >= seuil_pmct)
+  
+  valo_multi <- rum_uma_valo %>% 
+    left_join(pmct_um_dp_use, by = c("cdurm", "typaut1")) %>% 
+    filter(nbrum > 1L) %>% 
+    group_by(norss) %>% 
+    mutate(nb_uma = n(),
+           check_pmct_ok = (sum(!is.na(pmct_um_dp)) == nb_uma),
+           pmct_tot_parcours = sum(pmct_um_dp, na.rm = TRUE)) %>% 
+    ungroup() %>% 
+      mutate(p1 = p1,
+             p2 = p2) %>%
+    # si un des RUM n'a pas de pmct, on bascule sur le calcul au pro rata durée de séjour seul
+    mutate(p1 = ifelse(!check_pmct_ok, 0, p1),
+           p2 = ifelse(! check_pmct_ok, 1, p2),
+           prop_pass = (dsrum + 1) / (duree + nb_uma),
+           prop_pmct_um   = ifelse(check_pmct_ok, pmct_um_dp  / pmct_tot_parcours, 0)) %>% 
+    mutate(rec_rea_rum = rec_rea * suprea_prop,
+           rec_stf_rum = rec_stf * supstf_prop,
+           rec_src_rum = rec_src * supsrc_prop,
+           rec_rep_rum = rec_rep * suprep_prop,
+           rec_nn1_rum = rec_nn1 * supnn1_prop,
+           rec_nn2_rum = rec_nn2 * supnn2_prop,
+           rec_nn3_rum = rec_nn3 * supnn3_prop, 
+           rec_base_rum = rec_base * (prop_pass * p2 + prop_pmct_um * p1), 
+           rec_exb_rum = rec_exb   * (prop_pass * p2 + prop_pmct_um * p1), 
+           rec_exh_rum = rec_exh   * (prop_pass * p2 + prop_pmct_um * p1), 
+           rec_bee_rum = rec_bee   * (prop_pass * p2 + prop_pmct_um * p1),
+           rec_po_tot_rum = rec_po_tot * (prop_pass * p2 + prop_pmct_um * p1),
+           rec_ant_rum = rec_ant * (prop_pass * p2 + prop_pmct_um * p1),
+           rec_sdc_rum = rec_sdc * (prop_pass * p2 + prop_pmct_um * p1),
+           rec_caishyp_rum = rec_caishyp * (prop_pass * p2 + prop_pmct_um * p1),
+           rec_aph_rum = rec_aph * (prop_pass * p2 + prop_pmct_um * p1),
+           rec_rehosp_ghm_rum = rec_rehosp_ghm * (prop_pass * p2 + prop_pmct_um * p1)) %>% 
+    mutate(rec_totale_rum = rec_bee_rum + rec_po_tot_rum + rec_rea_rum + rec_stf_rum + 
+                            rec_src_rum + rec_rep_rum + rec_nn1_rum + rec_sdc_rum + 
+              rec_nn2_rum + rec_nn3_rum + rec_ant_rum + rec_aph_rum + rec_caishyp_rum + rec_rehosp_ghm_rum) %>% 
+    mutate(type_repartition = "multi-rum")
+  
+  message('-- Nb multi-rum ', nrow(valo_multi %>% distinct(cle_rsa)))
+  
+  valo_rum <- bind_rows(valo_mono, valo_multi)
+  
+  message('-- Nb lignes : rum valo ', nrow(valo_rum))
+  
+  # Ici, on ventile les suppléments dialyses et rdth fictivement sur chaque passage dans la période
+  # pour les dialyses, on splitte enfants / adultes
+  # pour ventiler l'ensemble des recettes sur ces unitées dans certains reportings (recette annexes)
+  # l'idée pourrait être de faire pareil pour le caisson hyperbare et les aphérèses sanguines.
+  
+  # cas des dialyses
+  valo_unite_dial <- rum_uma_valo %>% 
+    distinct(cle_rsa, norss, cdurm, dsrum, typaut1) %>% 
+    filter(substr(typaut1,1,2) %in% c('21', '22', '23')) %>% 
+    left_join(rsa$rsa %>% select(cle_rsa, agean), by = "cle_rsa") %>% 
+    #bind_cols(tibble(rec_dialhosp_tot_hop = rep(sum(valo$rec_dialhosp), nrow(.)))) %>% 
+    bind_cols(tibble(rec_dialhosp_tot_hop_enf = rep(sum(valo[is.na(valo$agean) | valo$agean < 16,]$rec_dialhosp), nrow(.)))) %>% 
+    bind_cols(tibble(rec_dialhosp_tot_hop_adu = rep(sum(valo[! is.na(valo$agean) & valo$agean > 15,]$rec_dialhosp), nrow(.)))) %>% 
+    group_by(ped = (agean < 16 | is.na(agean))) %>% 
+    mutate(typaut1 = case_when(
+      substr(typaut1,1,2) %in% c('21', '23') ~ '21',
+      substr(typaut1,1,2)== '22' ~ '22')) %>% 
+    add_count(typaut1, name = "nb_passage") %>% 
+    mutate(rec_dialhosp_rum = case_when(
+      typaut1 == '21' & !ped ~ rec_dialhosp_tot_hop_adu / nb_passage,
+      typaut1 == '22' &  ped ~ rec_dialhosp_tot_hop_enf / nb_passage,
+      TRUE ~ 0)) %>% 
+    ungroup()
+  
+
+  # radiothérapie
+  valo_unite_rdt <- rum_uma_valo %>% 
+    distinct(cle_rsa, norss, cdurm, dsrum, typaut1) %>% 
+    filter(substr(typaut1,1,2) == '42') %>% 
+    bind_cols(tibble(rec_rdt_tot_hop = rep(sum(valo$rec_rdt_tot), nrow(.)))) %>% 
+    add_count(typaut1, name = "nb_passage") %>% 
+    ungroup() %>% 
+    mutate(rec_rdt_tot_rum = ifelse(substr(typaut1,1,2) == '42', rec_rdt_tot_hop / nb_passage, 0))
+  
+  # radiothérapie pédiatrique
+  valo_unite_rap <- rum_uma_valo %>% 
+    distinct(cle_rsa, norss, cdurm, dsrum, typaut1) %>% 
+    filter(substr(typaut1,1,2) == '42') %>% 
+    bind_cols(tibble(rec_rap_tot_hop = rep(sum(valo$rec_rap), nrow(.)))) %>% 
+    add_count(typaut1, name = "nb_passage") %>% 
+    ungroup() %>% 
+    mutate(rec_rap_rum = ifelse(substr(typaut1,1,2) == '42', rec_rap_tot_hop / nb_passage, 0))
+  
+    
+  valo_rum <- valo_rum %>% 
+    left_join(valo_unite_dial %>% select(cle_rsa, cdurm, rec_dialhosp_rum), by = c("cle_rsa", "cdurm")) %>% 
+    left_join(valo_unite_rdt %>% select(cle_rsa, cdurm, rec_rdt_tot_rum), by = c("cle_rsa", "cdurm")) %>% 
+    left_join(valo_unite_rap %>% select(cle_rsa, cdurm, rec_rap_rum), by = c("cle_rsa", "cdurm")) %>% 
+    tidyr::replace_na(list(rec_dialhosp_rum = 0, rec_rdt_tot_rum = 0, rec_rap_rum = 0)) %>% 
+    mutate(rec_annexes_rum = rec_dialhosp_rum + rec_rdt_tot_rum + rec_rap_rum,
+           rec_totale_rum = rec_totale_rum + rec_annexes_rum + rec_rap_rum)
+  
+  message('-- Ventilation suppléments dialyses sur UM typaut 21, 22 et 23 : ', 
+          round(mean(valo_rum$rec_dialhosp_rum[valo_rum$rec_dialhosp_rum > 0], na.rm = TRUE)), '€ en moyenne sur chaque RUM typaut 21, 22, ou 23 (recette annexes)')
+  message('-- Ventilation suppléments radioth sur UM typaut 42 : ', 
+          round(mean(valo_rum$rec_rdt_tot_rum[valo_rum$rec_rdt_tot_rum > 0], na.rm = TRUE)), '€ sur chaque RUM typaut 42 (recette annexes)')
+  
+  #  vvr_rum_check_rubriques_rav(valo, valo_rum)
+  
+  valo_rum %>% 
+    select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp, nb_uma, norss, cdurm, typaut1, ends_with('_rum')) %>% 
+    mutate_at(vars(starts_with('rec_')), tidyr::replace_na, 0)
+  
+}
+
+
+#' ~ VVR - Reproduire le tableau RAV (works)
+#'
+#' 
+#' @param valo Un tibble résultant de \code{\link{vvr_mco}}
+#' @param knit à TRUE, appliquer une sortie `knitr::kable` au résultat
+#' 
+#' @return Un tibble similaire au tableau RAV epmsi (montant BR* ou BR si coeff prud = 1)
+#'
+#' @examples
+#' \dontrun{
+#' epmsi_mco_rav2(valo)
+# 
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @export
+#' @export epmsi_mco_rav2
+epmsi_mco_rav2 <- function(valo, theorique = TRUE){
+  if (theorique){
+  rr <- valo %>% 
+    dplyr::select(dplyr::starts_with('rec_'), -rec_totale, -rec_bee) %>% 
+    dplyr::mutate(rec_exb = -rec_exb) %>% 
+    summarise_all(sum) %>% 
+    tidyr::gather(var, val) %>% 
+    filter(abs(val) > 0) %>% 
+    inner_join(vvr_libelles_valo('lib_valo'), by = "var") %>% 
+    group_by(ordre_epmsi, var, lib_valo) %>% 
+    summarise(val = round(sum(val),0)) %>% 
+    ungroup()
+  } else {
+    rr <- valo %>% 
+      dplyr::select(cle_rsa, dplyr::starts_with('rec_'), type_fin, -rec_totale, -rec_bee) %>% 
+      dplyr::mutate(rec_exb = -rec_exb) %>% 
+      group_by(type_fin, cle_rsa) %>% 
+      summarise_all(sum) %>% 
+      tidyr::gather(var, val, - type_fin, - cle_rsa) %>% 
+      filter(abs(val) > 0) %>% 
+      mutate(flag_po = sum(("rec_po_tot" == var)) > 0) %>% 
+      ungroup() %>% 
+      mutate(val_reelle = case_when((type_fin == 0L | flag_po) ~ val,
+                                    TRUE ~ 0)) %>% 
+      filter(val_reelle != 0L) %>% 
+      inner_join(vvr_libelles_valo('lib_valo')) %>% 
+      group_by(ordre_epmsi, var, lib_valo) %>% 
+      summarise(val = round(sum(val_reelle),0)) %>% 
+      ungroup() %>% 
+      bind_rows(summarise_if(., is.numeric, sum))
+  }
+  rr
+}
+
+
+#' ~ VVR - Synthese des rubriques de valo apres valo des RUM
+#'
+#' 
+#' @param valo_rum Un tibble résultant de \code{\link{vvr_rum}}
+#' 
+#' @return Un tibble similaire au tableau RAV epmsi
+#'
+#' @examples
+#' \dontrun{
+#' epmsi_mco_rav_rum(valo)
+# 
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso  epmsi_mco_rav, epmsi_mco_rav_rum, epmsi_mco_rav2,
+#' @export epmsi_mco_rav_rum
+epmsi_mco_rav_rum <- function(valo_rum, theorique = TRUE){
+  if (theorique){
+  rr <- valo_rum %>% 
+    dplyr::select(dplyr::ends_with('_rum')) %>% 
+      dplyr::mutate(rec_exb_rum = -rec_exb_rum) %>% 
+    summarise_all(sum) %>% 
+    tidyr::gather(var, val) %>% 
+    filter(abs(val) > 0) %>% 
+    mutate(var = stringr::str_remove(var, '_rum')) %>% 
+    left_join(vvr_libelles_valo('lib_valo'), by = "var") %>% 
+    group_by(ordre_epmsi, var, lib_valo) %>% 
+    summarise(val = round(sum(val),0)) %>% 
+    ungroup()  -> rr_rum
+     
+  } else {
+    rr <- valo_rum %>% 
+      dplyr::select(cle_rsa, type_fin, dplyr::ends_with('_rum')) %>% 
+      dplyr::mutate(rec_exb_rum = -rec_exb_rum) %>% 
+      group_by(type_fin, cle_rsa) %>% 
+      summarise_all(sum) %>% 
+      tidyr::gather(var, val, - type_fin, - cle_rsa) %>% 
+      filter(abs(val) > 0) %>% 
+      mutate(flag_po = sum(("rec_po_rum" == var)) > 0) %>% 
+      ungroup() %>% 
+      mutate(val_reelle = case_when((type_fin == 0L | flag_po) ~ val,
+                                    TRUE ~ 0)) %>% 
+      filter(val_reelle != 0L) %>% 
+      mutate(var = stringr::str_remove(var, '_rum')) %>% 
+      left_join(vvr_libelles_valo('lib_valo')) %>% 
+      group_by(ordre_epmsi, var, lib_valo) %>% 
+      summarise(val = round(sum(val_reelle),0)) %>% 
+      ungroup()  -> rr_rum
+    
+  }
+  rr
+}
+
+#' ~ VVR - Confronter la valo rum a la valo rsa par rubrique epmsi
+#'
+#' 
+#' @param valo Un tibble résultant de \code{\link{vvr_mco}}
+#' @param valo_rum Un tibble résultant de \code{\link{vvr_rum}}
+#' 
+#' @return Un tibble similaire au tableau RAV epmsi avec deux colonnes (rsa et rum)
+#'
+#' @examples
+#' \dontrun{
+#' vvr_rum_check_rubriques_rav(valo)
+# 
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso  epmsi_mco_rav, epmsi_mco_rav_rum, epmsi_mco_rav2,
+#' @export vvr_rum_check_rubriques_rav
+vvr_rum_check_rubriques_rav <- function(valo, valo_rum){
+  epmsi_mco_rav2(valo) %>% 
+    left_join(epmsi_mco_rav_rum(valo_rum), 
+              by = c('ordre_epmsi', 'lib_valo', 'var'), 
+              suffix = c('_rsa', '_rum')) %>% 
+    mutate_if(is.numeric, tidyr::replace_na, 0) %>% 
+    mutate(delta = val_rum - val_rsa)
+}
+

@@ -1,0 +1,94 @@
+---
+title: "Valoriser les rum"
+author: "Guillaume Pressiat, fbrcdnj"
+date: 02/03/2020
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Valoriser les rum}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r  eval = F}
+library(pmeasyr)
+library(dplyr, warn.conflicts = F)
+```
+
+
+voir ici une inspiration sur ce sujet.
+
+https://github.com/24p11/dimRactivite/blob/master/R/fonctions_pmeasyr.R
+
+## Préparer les tables nécessaires
+
+
+Il faut au moins disposer des rsa et des données anohosp, et des rum
+Pour valoriser les suppléments, les tables porg, pie et diap sont aussi nécessaires.
+
+
+```{r eval = F}
+library(pmeasyr)
+library(dplyr, warn.conflicts = F)
+
+noyau_pmeasyr(
+  finess = '290000017',
+  annee  = 2019,
+  mois   = 11,
+  path   = '~/Documents/data/mco',
+  progress = FALSE,
+  lib = FALSE, 
+  tolower_names = TRUE
+) -> p
+
+# adezip(p, type = "out")
+# adezip(p, type = "in", liste = 'rss')
+
+vrsa <- vvr_rsa(p)
+vrsa <- vrsa %>% 
+  vvr_rsa_hors_periode(as.character(p$annee), stringr::str_pad(p$mois, 2, "left", '0'))
+
+vano <- vvr_ano_mco(p)
+
+tarifs_supp <- get_table('tarifs_mco_supplements') %>% 
+  mutate_if(is.numeric, tidyr::replace_na, 0) %>% 
+  select(-cgeo)
+
+
+# valo des RSA avec suppléments
+valo <- vvr_mco(
+  vvr_ghs_supp(rsa = vrsa, 
+               tarifs = tarifs_ghs, 
+               supplements =  tarifs_supp, 
+               ano = vano, 
+               porg = ipo(p), 
+               diap = idiap(p), 
+               pie = ipie(p), 
+               mo = imed_mco(p), 
+               full = TRUE,
+               cgeo = 1L, 
+               prudent = NULL,
+               bee = FALSE),
+  vvr_mco_sv(vrsa, vano, ipo(p))
+)
+
+
+```
+
+## Valoriser les rum
+
+```{r eval = FALSE}
+# valo des RUM avec suppléments
+valo_rum <- vvr_rum(p, 
+                    valo, 
+                    repartition_multi = '{prop_pmct_um}*0.5+{prop_pass}*0.5',
+                    seuil_pmct = 20,
+                    type_passage = "RUM", 
+                    pmct_mono = FALSE)
+```
+
+
+```{r eval = FALSE}
+# On compare la valorisation des rsa à celle des rum, rubrique par rubrique, sans tenir compte du caractère facturable des séjours
+vvr_rum_check_rubriques_rav(valo, valo_rum, theorique = TRUE)
+```
+
