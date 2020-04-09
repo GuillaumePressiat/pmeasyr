@@ -3400,7 +3400,7 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
   if (info$size >0 & !is.na(info$size)){
     med_i3<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".mchl"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
-    synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i2))
+    synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i3))
     
     med_i3 <- med_i3 %>%
       dplyr::mutate(NBADM = NBADM/1000,
