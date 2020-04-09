@@ -639,7 +639,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
 #'
 #' \code{e66 <- grepl('E66',das)|grepl('E66',dpdrum)}  # toutes les lignes de RSA avec un diagnostic E66
 #'
-#' Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les infos sur les séjours directement : nb séjours, journées, entrée / sortie (...) plutôt que d'avoir à utiliser et croiser les tables acdi, rsa_um avec rsa.
+#' Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les infos sur les séjours directement : 
+#' nb séjours, journées, entrée / sortie (...) plutôt que d'avoir à utiliser et croiser les tables acdi, rsa_um avec rsa.
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -904,7 +905,9 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
         v <- c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
       }
       else{
-        v <-   c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', "Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
+        v <-   c(v[!is.na(v)], 'Ghm', 'Année séq. de tarifs', 
+                 "Types Aut. à Portée Globale", "Supp. Radiothérapies", 
+                 "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
       }
       rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
     }
@@ -1254,10 +1257,14 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     if (lib==T){
       v <- libelles
       if (annee==2011) {
-        v <- c(v[!is.na(v)],"Ghm", "Année séq. de tarifs", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
+        v <- c(v[!is.na(v)],"Ghm", "Année séq. de tarifs", "Supp. Radiothérapies", 
+               "Stream Actes","Parcours Typaut UM",
+               "Stream DP/DR des UM","Stream Das")
       }
       else{
-        v <-  c(v[!is.na(v)],"Ghm", "Année séq. de tarifs", "Types Aut. à Portée Globale", "Supp. Radiothérapies", "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
+        v <-  c(v[!is.na(v)],"Ghm", "Année séq. de tarifs", 
+                "Types Aut. à Portée Globale", "Supp. Radiothérapies", 
+                "Stream Actes","Parcours Typaut UM","Stream DP/DR des UM","Stream Das")
       }
       rsa_i <- rsa_i %>%  sjlabelled::set_label(v)
       
@@ -1982,7 +1989,9 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : T2A 06 - ATU 09 - THROMBO 10
+#' @return Une table (data.frame, tbl_df) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : 
+#' si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : 
+#' T2A 06 - ATU 09 - THROMBO 10
 #'
 #' @examples
 #' \dontrun{
@@ -3400,7 +3409,7 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
   if (info$size >0 & !is.na(info$size)){
     med_i3<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".mchl"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
-    synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i2))
+    synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i3))
     
     med_i3 <- med_i3 %>%
       dplyr::mutate(NBADM = NBADM/1000,
