@@ -301,6 +301,7 @@ vvr_ghs_supp <- function(rsa,
     # Partie GHS
     rsa_2 <- rsa %>%
       dplyr::mutate(cprudent = dplyr::case_when(
+        anseqta == '2020'    ~ 0.9930,
         anseqta == '2019'    ~ 0.9930,
         anseqta == '2018'    ~ 0.9930,
         anseqta == '2017'    ~ 0.9930,
