@@ -396,7 +396,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
       fin <- fa$fin
       u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
       for (i in 1:length(deb)){
-        temp <- dplyr::as_data_frame(former(fa$type[i], u(actes$var, i)))
+        temp <- dplyr::as_tibble(former(fa$type[i], u(actes$var, i)))
         names(temp) <- fa$nom[i]
         actes <- dplyr::bind_cols(actes, temp)
       }
@@ -424,7 +424,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
                                                                   stringr::str_sub(var, deb2[i], fin2[i]))) %>%
                               dplyr::select(temp)))}
       for (i in 1:length(deb1)){
-        temp <- dplyr::as_data_frame(former(fa1$type[i], u(i, actes)))
+        temp <- dplyr::as_tibble(former(fa1$type[i], u(i, actes)))
         names(temp) <- fa1$nom[i]
         actes <- dplyr::bind_cols(actes, temp)
       }
@@ -499,7 +499,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
       fin <- fa$fin
       u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
       for (i in 1:length(deb)){
-        temp <- dplyr::as_data_frame(former(fa$type[i], u(actes$var, i)))
+        temp <- dplyr::as_tibble(former(fa$type[i], u(actes$var, i)))
         names(temp) <- fa$nom[i]
         actes <- dplyr::bind_cols(actes, temp)
       }
@@ -527,7 +527,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
                                                                   stringr::str_sub(var, deb2[i], fin2[i]))) %>%
                               dplyr::select(temp)))}
       for (i in 1:length(deb1)){
-        temp <- dplyr::as_data_frame(former(fa1$type[i], u(i, actes)))
+        temp <- dplyr::as_tibble(former(fa1$type[i], u(i, actes)))
         names(temp) <- fa1$nom[i]
         actes <- dplyr::bind_cols(actes, temp)
       }
@@ -952,7 +952,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
     for (i in 1:length(deb)){
-      temp <- dplyr::as_data_frame(former(fa$type[i], u(rsa_um$var, i)))
+      temp <- dplyr::as_tibble(former(fa$type[i], u(rsa_um$var, i)))
       names(temp) <- fa$nom[i]
       rsa_um <- dplyr::bind_cols(rsa_um, temp)
     }
@@ -992,7 +992,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
     for (i in 1:length(deb)){
-      temp <- dplyr::as_data_frame(former(fa$type[i], u(actes$var, i)))
+      temp <- dplyr::as_tibble(former(fa$type[i], u(actes$var, i)))
       names(temp) <- fa$nom[i]
       actes <- dplyr::bind_cols(actes, temp)
     }
@@ -1067,7 +1067,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
     for (i in 1:length(deb)){
-      temp <- dplyr::as_data_frame(former(fa$type[i], u(rsa_um$var, i)))
+      temp <- dplyr::as_tibble(former(fa$type[i], u(rsa_um$var, i)))
       names(temp) <- fa$nom[i]
       rsa_um <- dplyr::bind_cols(rsa_um, temp)
     }
@@ -1107,7 +1107,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
     for (i in 1:length(deb)){
-      temp <- dplyr::as_data_frame(former(fa$type[i], u(actes$var, i)))
+      temp <- dplyr::as_tibble(former(fa$type[i], u(actes$var, i)))
       names(temp) <- fa$nom[i]
       actes <- dplyr::bind_cols(actes, temp)
     }
@@ -1197,7 +1197,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
     for (i in 1:length(deb)){
-      temp <- dplyr::as_data_frame(former(fa$type[i], u(rsa_um$var, i)))
+      temp <- dplyr::as_tibble(former(fa$type[i], u(rsa_um$var, i)))
       names(temp) <- fa$nom[i]
       rsa_um <- dplyr::bind_cols(rsa_um, temp)
     }
@@ -1237,7 +1237,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     fin <- fa$fin
     u <- function(x, i){stringr::str_sub(x, deb[i], fin[i])}
     for (i in 1:length(deb)){
-      temp <- dplyr::as_data_frame(former(fa$type[i], u(actes$var, i)))
+      temp <- dplyr::as_tibble(former(fa$type[i], u(actes$var, i)))
       names(temp) <- fa$nom[i]
       actes <- dplyr::bind_cols(actes, temp)
     }
@@ -5210,10 +5210,13 @@ tdiag <- function (d,  include = T){
     }
     
     if (include == F) {
-      return(h)
+      return(h %>% dplyr::as_tibble())
     }
     else {
-      return(list(rsa = d$rsa, rsa_um = d$rsa_um, actes = d$actes, diags = h))
+      return(list(rsa = d$rsa %>% dplyr::as_tibble(), 
+                  rsa_um = d$rsa_um %>% dplyr::as_tibble(), 
+                  actes = d$actes %>% dplyr::as_tibble(), 
+                  diags = h %>% dplyr::as_tibble()))
     }
     }
     else if ('dp' %in% names(d$rsa)){
@@ -5239,10 +5242,13 @@ tdiag <- function (d,  include = T){
       }
       
       if (include == F) {
-        return(h)
+        return(h %>% dplyr::as_tibble())
       }
       else {
-        return(list(rsa = d$rsa, rsa_um = d$rsa_um, actes = d$actes, diags = h))
+        return(list(rsa = d$rsa %>% dplyr::as_tibble(), 
+                    rsa_um = d$rsa_um %>% dplyr::as_tibble(), 
+                    actes = d$actes %>% dplyr::as_tibble(), 
+                    diags = h %>% dplyr::as_tibble()))
       }
     }
   }
@@ -5263,10 +5269,12 @@ tdiag <- function (d,  include = T){
                                    "1:DP, 2:DR, 3:DAS, 4:DAD", "Diagnostic"))
     }
     if (include == F) {
-      return(h)
+      return(h %>% dplyr::as_tibble())
     }
     else {
-      return(list(rum = d$rum, actes = d$actes, diags = h))
+      return(list(rum = d$rum %>% dplyr::as_tibble(), 
+                  actes = d$actes %>% dplyr::as_tibble(), 
+                  diags = h %>% dplyr::as_tibble()))
     }
     }
     else if ("dp" %in% names(d$rum)){
@@ -5284,10 +5292,12 @@ tdiag <- function (d,  include = T){
       h <- h %>% sjlabelled::set_label(c("N° administratif du séjour", "N° du RUM",
                                          "1:DP, 2:DR, 3:DAS, 4:DAD", "Diagnostic"))}
       if (include == F) {
-        return(h)
+        return(h %>% dplyr::as_tibble())
       }
       else {
-        return(list(rum = d$rum, actes = d$actes, diags = h))
+        return(list(rum = d$rum %>% dplyr::as_tibble(), 
+                    actes = d$actes %>% dplyr::as_tibble(), 
+                    diags = h %>% dplyr::as_tibble()))
       }
     }
   }
@@ -5309,10 +5319,12 @@ tdiag <- function (d,  include = T){
     
     
     if (include == F) {
-      return(h)
+      return(h %>% dplyr::as_tibble())
     }
     else {
-      return(list(rha = d$rha, acdi = d$acdi, diags = h))
+      return(list(rha = d$rha %>% dplyr::as_tibble(), 
+                  acdi = d$acdi %>% dplyr::as_tibble(), 
+                  diags = h %>% dplyr::as_tibble()))
     }
   }
     else if ("mmp" %in% names(d$rha)){
@@ -5330,10 +5342,12 @@ tdiag <- function (d,  include = T){
                                          "Diagnostic"))
       
       if (include == F) {
-        return(h)
+        return(h %>% dplyr::as_tibble())
       }
       else {
-        return(list(rha = d$rha, acdi = d$acdi, diags = h))
+        return(list(rha = d$rha %>% dplyr::as_tibble(), 
+                    acdi = d$acdi %>% dplyr::as_tibble(), 
+                    diags = h %>% dplyr::as_tibble()))
       }
     }
     
@@ -5463,7 +5477,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
     
     r %>% dplyr::filter(substr(lon,typi_r,typi_r) == typs) -> one
     for (i in 1:length(deb)){
-      temp <- dplyr::as_data_frame(former(fa$cla[i], u(one$lon, i)))
+      temp <- dplyr::as_tibble(former(fa$cla[i], u(one$lon, i)))
       names(temp) <- fa$nom[i]
       one <- dplyr::bind_cols(one, temp)
     }
@@ -5947,19 +5961,19 @@ db_mco_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$rsa))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsa$rsa),    "mco_" %+% an %+% "_rsa_rsa",   temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsa$rsa),    "mco_" %+% an %+% "_rsa_rsa",   temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$actes))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsa$actes),  "mco_" %+% an %+% "_rsa_actes", temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsa$actes),  "mco_" %+% an %+% "_rsa_actes", temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$diags))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsa$diags),  "mco_" %+% an %+% "_rsa_diags", temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsa$diags),  "mco_" %+% an %+% "_rsa_diags", temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa$rsa_um))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsa$rsa_um), "mco_" %+% an %+% "_rsa_um",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsa$rsa_um), "mco_" %+% an %+% "_rsa_um",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsa_ano))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsa_ano),    "mco_" %+% an %+% "_rsa_ano",   temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsa_ano),    "mco_" %+% an %+% "_rsa_ano",   temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   
   if (zip == T) {
@@ -6023,26 +6037,26 @@ db_ssr_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rha$rha))))) -> t_2
   
-  dplyr::copy_to(con, dplyr::as_data_frame(rha$rha),   "ssr_" %+% an %+% "_rha_rha",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rha$rha),   "ssr_" %+% an %+% "_rha_rha",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rha$acdi))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rha$acdi),   "ssr_" %+% an %+% "_rha_acdi",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rha$acdi),   "ssr_" %+% an %+% "_rha_acdi",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rha_ano))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rha_ano),    "ssr_" %+% an %+% "_rha_ano",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rha_ano),    "ssr_" %+% an %+% "_rha_ano",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   
   if (p$annee > 2016) {
     purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(ssrha$ssrha))))) -> t_2
-    dplyr::copy_to(con, dplyr::as_data_frame(ssrha$ssrha),    "ssr_" %+% an %+% "_rha_ssrha",    temporary = FALSE, overwrite = TRUE,
+    dplyr::copy_to(con, dplyr::as_tibble(ssrha$ssrha),    "ssr_" %+% an %+% "_rha_ssrha",    temporary = FALSE, overwrite = TRUE,
                    indexes = indexes[t_1 == t_2])
     purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(ssrha$gme))))) -> t_2
-    dplyr::copy_to(con, dplyr::as_data_frame(ssrha$gme),    "ssr_" %+% an %+% "_rha_gme",    temporary = FALSE, overwrite = TRUE,
+    dplyr::copy_to(con, dplyr::as_tibble(ssrha$gme),    "ssr_" %+% an %+% "_rha_gme",    temporary = FALSE, overwrite = TRUE,
                    indexes = indexes[t_1 == t_2])
   }
   else {
     purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(ssrha))))) -> t_2
-    dplyr::copy_to(con, dplyr::as_data_frame(ssrha),    "ssr_" %+% an %+% "_rha_ssrha",    temporary = FALSE, overwrite = TRUE,
+    dplyr::copy_to(con, dplyr::as_tibble(ssrha),    "ssr_" %+% an %+% "_rha_ssrha",    temporary = FALSE, overwrite = TRUE,
                    indexes = indexes[t_1 == t_2])
   }
   if (zip == T) {
@@ -6096,13 +6110,13 @@ db_had_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rapss$rapss))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rapss$rapss),    "had_" %+% an %+% "_rapss_rapss",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rapss$rapss),    "had_" %+% an %+% "_rapss_rapss",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rapss$acdi))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rapss$acdi),    "had_" %+% an %+% "_rapss_acdi",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rapss$acdi),    "had_" %+% an %+% "_rapss_acdi",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rapss_ano))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rapss_ano),    "had_" %+% an %+% "_rapss_ano",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rapss_ano),    "had_" %+% an %+% "_rapss_ano",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   if (zip == T) {
     pmeasyr::adelete(p)
@@ -6164,27 +6178,27 @@ db_psy_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa$rpsa))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rpsa$rpsa),    "psy_" %+% an %+% "_rpsa_rpsa",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rpsa$rpsa),    "psy_" %+% an %+% "_rpsa_rpsa",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa$das))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rpsa$das),    "psy_" %+% an %+% "_rpsa_das",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rpsa$das),    "psy_" %+% an %+% "_rpsa_das",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   
   if (p$annee > 2016) {
     purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa$actes))))) -> t_2
-    dplyr::copy_to(con, dplyr::as_data_frame(rpsa$actes),    "psy_" %+% an %+% "_rpsa_actes",    temporary = FALSE, overwrite = TRUE,
+    dplyr::copy_to(con, dplyr::as_tibble(rpsa$actes),    "psy_" %+% an %+% "_rpsa_actes",    temporary = FALSE, overwrite = TRUE,
                    indexes = indexes[t_1 == t_2])
   }
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rpsa_ano))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rpsa_ano),    "psy_" %+% an %+% "_rpsa_ano",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rpsa_ano),    "psy_" %+% an %+% "_rpsa_ano",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
 
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(r3a$r3a))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(r3a$r3a),    "psy_" %+% an %+% "_r3a_r3a",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(r3a$r3a),    "psy_" %+% an %+% "_r3a_r3a",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
 
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(r3a$das))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(r3a$das),    "psy_" %+% an %+% "_r3a_das",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(r3a$das),    "psy_" %+% an %+% "_r3a_das",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
 
   if (zip == T) {
@@ -6231,11 +6245,11 @@ db_mco_in <- function (con, p, remove = T, zip = T, indexes = list(), ...) {
   rum <- pmeasyr::irum(p, typi = 4) %>% pmeasyr::tdiag()
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rum$rum))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rum$rum),   "mco_" %+% an %+% "_rum_rum",    temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
+  dplyr::copy_to(con, dplyr::as_tibble(rum$rum),   "mco_" %+% an %+% "_rum_rum",    temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rum$diags))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rum$diags), "mco_" %+% an %+% "_rum_diags",  temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
+  dplyr::copy_to(con, dplyr::as_tibble(rum$diags), "mco_" %+% an %+% "_rum_diags",  temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rum$actes))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rum$actes), "mco_" %+% an %+% "_rum_actes",  temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
+  dplyr::copy_to(con, dplyr::as_tibble(rum$actes), "mco_" %+% an %+% "_rum_actes",  temporary = FALSE, overwrite = TRUE, indexes = indexes[t_1 == t_2])
   if (zip == T) {
     pmeasyr::adelete(p)
   }
@@ -6282,28 +6296,28 @@ db_rsf_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$A))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf$A),   "rsf_" %+% an %+% "_rafael_a",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf$A),   "rsf_" %+% an %+% "_rafael_a",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$B))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf$B),   "rsf_" %+% an %+% "_rafael_b",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf$B),   "rsf_" %+% an %+% "_rafael_b",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$C))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf$C),   "rsf_" %+% an %+% "_rafael_c",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf$C),   "rsf_" %+% an %+% "_rafael_c",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$H))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf$H),   "rsf_" %+% an %+% "_rafael_h",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf$H),   "rsf_" %+% an %+% "_rafael_h",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$L))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf$L),   "rsf_" %+% an %+% "_rafael_l",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf$L),   "rsf_" %+% an %+% "_rafael_l",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$M))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf$M),   "rsf_" %+% an %+% "_rafael_m",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf$M),   "rsf_" %+% an %+% "_rafael_m",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf$P))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf$P),   "rsf_" %+% an %+% "_rafael_p",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf$P),   "rsf_" %+% an %+% "_rafael_p",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(rsf_ano))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(rsf_ano),   "rsf_" %+% an %+% "_rafael_ano",    temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(rsf_ano),   "rsf_" %+% an %+% "_rafael_ano",    temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
   
   if (zip == T) {
@@ -6456,7 +6470,7 @@ db_generique <- function(con,  an, table, prefix, suffix, indexes = list(), remo
   
   purrr::flatten_int(purrr::map(indexes, length)) -> t_1
   purrr::flatten_int(purrr::map(indexes, function(x)(sum(x %in% names(table))))) -> t_2
-  dplyr::copy_to(con, dplyr::as_data_frame(table),    nom,   temporary = FALSE, overwrite = TRUE,
+  dplyr::copy_to(con, dplyr::as_tibble(table),    nom,   temporary = FALSE, overwrite = TRUE,
                  indexes = indexes[t_1 == t_2])
 }
 
