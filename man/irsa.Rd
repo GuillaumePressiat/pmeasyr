@@ -58,7 +58,8 @@ La recherche d'un (ou d'une liste d') acte(s) sur un RUM est largement accélér
 
 \code{e66 <- grepl('E66',das)|grepl('E66',dpdrum)}  # toutes les lignes de RSA avec un diagnostic E66
 
-Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les infos sur les séjours directement : nb séjours, journées, entrée / sortie (...) plutôt que d'avoir à utiliser et croiser les tables acdi, rsa_um avec rsa.
+Cela permet de n'utiliser que la seule table rsa avec stream et d'avoir les infos sur les séjours directement : 
+nb séjours, journées, entrée / sortie (...) plutôt que d'avoir à utiliser et croiser les tables acdi, rsa_um avec rsa.
 }
 \examples{
 \dontrun{
