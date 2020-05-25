@@ -2860,7 +2860,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   #           $ght pour accéder aux ght etb et paprica\n\n"))
   
     if(annee >= 2020 & mois >= 3) {
-    an = "2020_H33"
+    an = "20_H33"
   } else {
     an =  substr(as.character(annee),3,4)
   }
