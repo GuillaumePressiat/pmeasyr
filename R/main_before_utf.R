@@ -3140,7 +3140,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   rapss_i <- rapss_i %>% dplyr::select(- dplyr::starts_with("PAP"),- dplyr::starts_with("ETB"),-NOVRPSS)
   acdi[is.na(acdi) & is.character(acdi)] <- ""
   rapss_i[is.na(rapss_i) & is.character(rapss_i)] <- ""
-  ght[is.na(ght)] <- ""
+  ght[is.na(ght) & is.character(ght)] <- ""
   if (lib==T){
     
     ght <- ght %>% sjlabelled::set_label(c('N° du séjour HAD', 'N° de la séquence', 'N° de la sous-séquence',
