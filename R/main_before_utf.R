@@ -2968,7 +2968,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
     
   }
   
-  if (annee>2014){
+  if (annee>2014 & annee<2020){
     zght <- ".{5}"
     zd   <- ".{1,6}"
     zA   <- ".{1,19}"
@@ -3003,20 +3003,69 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
       lpap_ght  = stringr::str_extract_all(pap_ght,zght)
     )
   }
+  if (annee>=2020){
+    zght <- ".{5}"
+    zd   <- ".{1,6}"
+    zA   <- ".{1,20}"
+    
+    rapss_i <- rapss_i %>% dplyr::mutate(
+      DP = stringr::str_trim(DP),
+      # Diagnostics et actes
+      dmpp     = ifelse(NBDIAGMPP>0,stringr::str_sub(Z,1,NBDIAGMPP*6),""),
+      ldmpp    = stringr::str_extract_all(dmpp,zd),
+      dmpa     = ifelse(NBDIAGMPA>0,stringr::str_sub(Z,1+NBDIAGMPP*6,NBDIAGMPP*6+NBDIAGMPA*6),""),
+      ldmpa    = stringr::str_extract_all(dmpa,zd),
+      da       = ifelse(NBDA>0,stringr::str_sub(Z,1+NBDIAGMPP*6+NBDIAGMPA*6,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6),""),
+      lda    = stringr::str_extract_all(da,zd),
+      za       = ifelse(NBZA>0,stringr::str_sub(Z,1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20),""),
+      lactes    = stringr::str_extract_all(za,zA),
+      
+      # groupage Etablissement
+      NOVRPSS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3),
+      ETB_VCLASS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3+2),
+      ETB_CDRETR = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3+2, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3+2+3),
+      ETB_GHPC  = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3+2+3, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3+2+3+4),
+      ETB_NBGHT  = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3+2+3+4, NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+3+2+3+4+1) %>% as.numeric(),
+      etb_ght   = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT),
+      letb_ght  = stringr::str_extract_all(etb_ght,zght),
+      
+      # groupage Paprica
+      PAPRICA_VCLASS = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+2),
+      PAPRICA_CDRETR = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+2,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+2+3),
+      PAPRICA_GHPC = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+2+3,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+2+3+4),
+      PAPRICA_NBGHT  = stringr::str_sub(Z, 1+NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+2+3+4,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+2+3+4+1) %>% as.numeric(),
+      pap_ght   = stringr::str_sub(Z,1+ NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+10,NBDIAGMPP*6+NBDIAGMPA*6+NBDA*6+NBZA*20+13+5*ETB_NBGHT+10+PAPRICA_NBGHT*5),
+      lpap_ght  = stringr::str_extract_all(pap_ght,zght)
+    )
+  }
   
   if (annee>2011){
     actes <- purrr::flatten_chr(rapss_i$lactes)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBZA)
     df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
     actes <- dplyr::bind_cols(df,data.frame(ZACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
-    actes <- dplyr::mutate(actes, CODE = 'A') %>% dplyr::select(-NBZA) %>% dplyr::mutate(
-      DELAI  = stringr::str_sub(ZACTES, 1, 4) %>% as.numeric(),
-      CDCCAM = stringr::str_sub(ZACTES, 5,11),
-      PHASE  = stringr::str_sub(ZACTES,14,14),
-      ACT    = stringr::str_sub(ZACTES,15,15),
-      EXTDOC = stringr::str_sub(ZACTES,16,16),
-      NBEXEC = stringr::str_sub(ZACTES,17,18),
-      INDVAL = stringr::str_sub(ZACTES,19,19))
+    
+    if (annee>=2020) {
+      actes <- dplyr::mutate(actes, CODE = 'A') %>% dplyr::select(-NBZA) %>% dplyr::mutate(
+        DELAI  = stringr::str_sub(ZACTES, 1, 5) %>% as.numeric(), 
+        CDCCAM = stringr::str_sub(ZACTES, 6,12),
+        PHASE  = stringr::str_sub(ZACTES,15,15),
+        ACT    = stringr::str_sub(ZACTES,16,16),
+        EXTDOC = stringr::str_sub(ZACTES,17,17),
+        NBEXEC = stringr::str_sub(ZACTES,18,19),
+        INDVAL = stringr::str_sub(ZACTES,20,20))
+      
+    } else {
+      
+      actes <- dplyr::mutate(actes, CODE = 'A') %>% dplyr::select(-NBZA) %>% dplyr::mutate(
+        DELAI  = stringr::str_sub(ZACTES, 1, 4) %>% as.numeric(),
+        CDCCAM = stringr::str_sub(ZACTES, 5,11),
+        PHASE  = stringr::str_sub(ZACTES,14,14),
+        ACT    = stringr::str_sub(ZACTES,15,15),
+        EXTDOC = stringr::str_sub(ZACTES,16,16),
+        NBEXEC = stringr::str_sub(ZACTES,17,18),
+        INDVAL = stringr::str_sub(ZACTES,19,19))
+    }
     
     da <- purrr::flatten_chr(rapss_i$lda)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDA)
@@ -3089,8 +3138,8 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   
   rapss_i <- rapss_i %>% dplyr::select(-c(lpap_ght,letb_ght))
   rapss_i <- rapss_i %>% dplyr::select(- dplyr::starts_with("PAP"),- dplyr::starts_with("ETB"),-NOVRPSS)
-  acdi[is.na(acdi)] <- ""
-  rapss_i[is.na(rapss_i)] <- ""
+  acdi[is.na(acdi) & is.character(acdi)] <- ""
+  rapss_i[is.na(rapss_i) & is.character(rapss_i)] <- ""
   ght[is.na(ght)] <- ""
   if (lib==T){
     
