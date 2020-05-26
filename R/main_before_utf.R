@@ -3249,7 +3249,11 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
-  format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == substr(as.character(annee),3,4))
+  if(annee >= 2020 & mois >= 3) {
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == "20_H33")
+  } else {
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == substr(as.character(annee),3,4)) 
+  }
   
   af <- format$longueur
   libelles <- format$libelle
@@ -3316,13 +3320,13 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
                     TAUXRM   = TAUXRM  /100)
   }
   if (lib==T){
-  ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
-  ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
+    ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
+    ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
   }
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
   }
-
+  
   attr(ano_i,"problems") <- synthese_import
   return(ano_i)
 }
