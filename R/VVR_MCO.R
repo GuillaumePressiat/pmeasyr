@@ -1291,9 +1291,9 @@ vvr_rum <- function(p, valo,
   }
 
   # passage unique par UM
-  if (type_passage == "RUM"){
-  rum_uma <- rsa_rum %>% 
-    group_by(cle_rsa, norss, cdurm, typaut1, nseqrum)
+  if (type_passage == "RUM") {
+    rum_uma <- rsa_rum %>% group_by(cle_rsa, norss, cdurm, 
+                                    typaut1, nseqrum)
   } else {
     rum_uma <- rsa_rum %>% 
       group_by(cle_rsa, norss, cdurm, typaut1)
@@ -1486,9 +1486,16 @@ vvr_rum <- function(p, valo,
   
   #  vvr_rum_check_rubriques_rav(valo, valo_rum)
   
-  valo_rum %>% 
-    select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp, nb_uma, norss, cdurm, typaut1, ends_with('_rum')) %>% 
-    mutate_at(vars(starts_with('rec_')), tidyr::replace_na, 0)
+  if (type_passage == "RUM"){
+    return(valo_rum %>% select(cle_rsa, nseqrum, nbrum, p1, p2, n, pmct_um_dp, 
+                               nb_uma, norss, cdurm, typaut1, ends_with("_rum")) %>% 
+             mutate_at(vars(starts_with("rec_")), tidyr::replace_na, 
+                       0))} else {
+                         return(valo_rum %>% select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp, 
+                                                    nb_uma, norss, cdurm, typaut1, ends_with("_rum")) %>% 
+                                  mutate_at(vars(starts_with("rec_")), tidyr::replace_na, 
+                                            0))
+                       }
   
 }
 
@@ -1610,7 +1617,7 @@ epmsi_mco_rav_rum <- function(valo_rum, theorique = TRUE){
 #'
 #' @examples
 #' \dontrun{
-#' vvr_rum_check_rubriques_rav(valo)
+#' vvr_rum_check_rubriques_rav(valo, valo_rum)
 # 
 #' }
 #'
