@@ -101,7 +101,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     dplyr::mutate(FPPC = stringr::str_trim(FPPC),
                   MMP = stringr::str_trim(MMP),
                   AE = stringr::str_trim(AE), 
-                  shift_zad  = case_when(NOVRHS == 'M1A' ~ 4L,
+                  shift_zad  = dplyr::case_when(NOVRHS == 'M1A' ~ 4L,
                                          NOVRHS == 'M1B' ~ 6L, 
                                          NOVRHS == 'M19' ~ 1L,
                                          NOVRHS == 'M18' ~ 0L,
