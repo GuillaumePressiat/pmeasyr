@@ -93,7 +93,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     class = "col_spec"
   )
   suppressWarnings(rhs_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt.txt"),trim_ws = FALSE,
-                                            readr::fwf_widths(af,an), col_types = at , na=character()))#, ...)) 
+                                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(rhs_i) -> synthese_import
   
@@ -106,14 +106,16 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                                          NOVRHS == 'M19' ~ 1L,
                                          NOVRHS == 'M18' ~ 0L,
                                          NOVRHS == 'M17' ~ 0L,
-                                         NOVRHS == 'M16' ~ 0L))
+                                         NOVRHS == 'M16' ~ 0L)) %>% 
+    dplyr::mutate_at(dplyr::vars(dplyr::starts_with('DT')), lubridate::dmy, quiet = TRUE) %>% 
+    dplyr::mutate_at(dplyr::vars(dplyr::starts_with('D8')), lubridate::dmy, quiet = TRUE)
   
   # TODO : variables en fin de partie fixe sur 2017 -- 2020 (LISP / unité spécifique)
   
   if (annee >  2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(),
+                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(quiet = TRUE),
                     CDCCAM = stringr::str_sub(ccam,9,15),
                     DESCRI = stringr::str_sub(ccam, 16,18) %>% stringr::str_trim(),
                     PHASE  = stringr::str_sub(ccam,19,19),
@@ -132,7 +134,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                     CDPAT2      = stringr::str_sub(csarr,15,16),
                     CDINTER     = stringr::str_sub(csarr,17,18),
                     NBEXEC      = stringr::str_sub(csarr,20,21) %>% as.integer(),
-                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy(),
+                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy(quiet = TRUE),
                     NBPATREEL   = stringr::str_sub(csarr,30,31),
                     NBINT       = stringr::str_sub(csarr,32,33),
                     EXTDOCcsarr = stringr::str_sub(csarr,34,35)
@@ -193,7 +195,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   if (annee == 2014){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(),
+                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(quiet = TRUE),
                     CDCCAM = stringr::str_sub(ccam,9,15),
                     PHASE  = stringr::str_sub(ccam,16,16),
                     ACT    = stringr::str_sub(ccam,17,17),
@@ -211,7 +213,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                     CDPAT2      = stringr::str_sub(csarr,15,16),
                     CDINTER     = stringr::str_sub(csarr,17,18),
                     NBEXEC      = stringr::str_sub(csarr,20,21) %>% as.integer(),
-                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy(),
+                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy(quiet = TRUE),
                     NBPATREEL   = stringr::str_sub(csarr,30,31),
                     NBINT       = stringr::str_sub(csarr,32,33),
                     EXTDOCcsarr = stringr::str_sub(csarr,34,35)
@@ -268,7 +270,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   if (annee == 2013){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(),
+                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(quiet = TRUE),
                     CDCCAM = stringr::str_sub(ccam,9,15),
                     PHASE  = stringr::str_sub(ccam,16,16),
                     ACT    = stringr::str_sub(ccam,17,17),
@@ -289,7 +291,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                     CDPAT2      = stringr::str_sub(csarr,15,16),
                     CDINTER     = stringr::str_sub(csarr,17,18),
                     NBEXEC      = stringr::str_sub(csarr,20,21) %>% as.integer(),
-                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy()
+                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy(quiet = TRUE)
       ) %>% dplyr::select(-csarr)
     }
 
@@ -345,7 +347,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   if (annee == 2012){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(),
+                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(quiet = TRUE),
                     CDCCAM = stringr::str_sub(ccam,9,15),
                     PHASE  = stringr::str_sub(ccam,16,16),
                     ACT    = stringr::str_sub(ccam,17,17),
@@ -366,7 +368,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                     CDPAT2      = stringr::str_sub(csarr,15,16),
                     CDINTER     = stringr::str_sub(csarr,17,18),
                     NBEXEC      = stringr::str_sub(csarr,20,21) %>% as.integer(),
-                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy()
+                    DATE_ACTE   = stringr::str_sub(csarr,22,29) %>% lubridate::dmy(quiet = TRUE)
       ) %>% dplyr::select(-csarr)
     }
     
@@ -422,7 +424,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   if (annee == 2011){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
-                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(),
+                    DATE_ACTE  = stringr::str_sub(ccam,1,8) %>% lubridate::dmy(quiet = TRUE),
                     CDCCAM = stringr::str_sub(ccam,9,15),
                     PHASE  = stringr::str_sub(ccam,16,16),
                     ACT    = stringr::str_sub(ccam,17,17),
@@ -492,6 +494,12 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
   
   rhs_i <- rhs_i[,!(names(rhs_i) %in% Fillers)]
+  
+  rhs_i <- rhs_i  %>% 
+    dplyr::mutate_if(is.character, stringr::str_trim)
+  
+  acdi  <- acdi %>% 
+    dplyr::mutate_if(is.character, stringr::str_trim)
   
   rhs_i <- rhs_i   %>% dplyr::select(-ZAD, -shift_zad)
   if (lib == T){

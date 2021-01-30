@@ -319,15 +319,15 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
            'i'   = col1 %>% as.integer(),
            'n2'  = (col1 %>% as.numeric() )/100,
            'n3'  = (col1 %>% as.numeric() )/1000,
-           'dmy' = lubridate::dmy(col1))
+           'dmy' = lubridate::dmy(col1, quiet = TRUE))
   }
   
   if (typi !=0){
     #cat("Lecture du fichier / parsing fixe...\n")
     rum_i <- i(annee,mois) %>% dplyr::mutate(
-      DTNAIS=lubridate::dmy(DTNAIS),
-      D8EEUE=lubridate::dmy(D8EEUE),
-      D8SOUE=lubridate::dmy(D8SOUE),
+      DTNAIS=lubridate::dmy(DTNAIS, quiet = TRUE),
+      D8EEUE=lubridate::dmy(D8EEUE, quiet = TRUE),
+      D8SOUE=lubridate::dmy(D8SOUE, quiet = TRUE),
       DP    = stringr::str_trim(DP),
       DR    = stringr::str_trim(DR)) %>% 
       dplyr::mutate(DUREESEJPART = as.integer(difftime(D8SOUE, D8EEUE, units= c("days"))))
@@ -757,7 +757,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
            'i'   = col1 %>% as.integer(),
            'n2'  = (col1 %>% as.numeric() )/100,
            'n3'  = (col1 %>% as.numeric() )/1000,
-           'dmy' = lubridate::dmy(col1))
+           'dmy' = lubridate::dmy(col1, quiet = TRUE))
   }
   
   
@@ -1423,8 +1423,8 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     readr::problems(tra_i) -> synthese_import
     
     tra_i <- tra_i %>%
-      dplyr::mutate(DTENT  = lubridate::dmy(DTENT),
-                    DTSORT = lubridate::dmy(DTSORT),
+      dplyr::mutate(DTENT  = lubridate::dmy(DTENT, quiet = TRUE),
+                    DTSORT = lubridate::dmy(DTSORT, quiet = TRUE),
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
   }
   if (champ=="had"){
@@ -1433,14 +1433,14 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     readr::problems(tra_i) -> synthese_import
     
     tra_i <- tra_i %>%
-      dplyr::mutate(DTENT  = lubridate::dmy(DTENT),
-                    DTSORT = lubridate::dmy(DTSORT),
+      dplyr::mutate(DTENT  = lubridate::dmy(DTENT, quiet = TRUE),
+                    DTSORT = lubridate::dmy(DTSORT, quiet = TRUE),
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2)),
-                    DTNAI = lubridate::dmy(DTNAI),
-                    DT_DEB_SEQ = lubridate::dmy(DT_DEB_SEQ),
-                    DT_FIN_SEQ = lubridate::dmy(DT_FIN_SEQ),
-                    DT_DEB_SS_SEQ = lubridate::dmy(DT_DEB_SS_SEQ),
-                    DT_FIN_SS_SEQ = lubridate::dmy(DT_FIN_SS_SEQ))
+                    DTNAI = lubridate::dmy(DTNAI, quiet = TRUE),
+                    DT_DEB_SEQ = lubridate::dmy(DT_DEB_SEQ, quiet = TRUE),
+                    DT_FIN_SEQ = lubridate::dmy(DT_FIN_SEQ, quiet = TRUE),
+                    DT_DEB_SS_SEQ = lubridate::dmy(DT_DEB_SS_SEQ, quiet = TRUE),
+                    DT_FIN_SS_SEQ = lubridate::dmy(DT_FIN_SS_SEQ, quiet = TRUE))
   }
   if (champ=="ssr"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra"),
@@ -1457,16 +1457,16 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
       dplyr::mutate(NOHOP = paste0("000",stringr::str_sub(NAS,1,2)),
                     DTENT  = lubridate::dmy(DTENT),
                     DTSORT = lubridate::dmy(DTSORT),
-                    DT_DEB_SEQ = lubridate::dmy(DT_DEB_SEQ),
-                    DT_FIN_SEQ = lubridate::dmy(DT_FIN_SEQ))
+                    DT_DEB_SEQ = lubridate::dmy(DT_DEB_SEQ, quiet = TRUE),
+                    DT_FIN_SEQ = lubridate::dmy(DT_FIN_SEQ, quiet = TRUE))
   }
   if (champ=="psy_r3a"){
     tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.raa.txt"),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     tra_i <- tra_i %>%
-      dplyr::mutate(DTACTE  = lubridate::dmy(DTACTE),
-                    DTACTE_2  = lubridate::dmy(DTACTE_2))
+      dplyr::mutate(DTACTE  = lubridate::dmy(DTACTE, quiet = TRUE),
+                    DTACTE_2  = lubridate::dmy(DTACTE_2, quiet = TRUE))
   }
   
   if (lib==T & champ !="psy_r3a"){
@@ -1613,8 +1613,8 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>%
-                         dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                                       DTENT    = lubridate::dmy(DTENT),
+                         dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT, quiet = TRUE),
+                                       DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                                        cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                                                 (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') +
                                                 (CRCDNAI=='0') + (CRCSEXE=='0')==9),
@@ -1634,8 +1634,8 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
                                               readr::fwf_widths(af,an), col_types =at, na=character(), ...)  
   readr::problems(ano_i) -> synthese_import
   ano_i <- ano_i %>%
-    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                  DTENT    = lubridate::dmy(DTENT),
+    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT, quiet = TRUE),
+                  DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                   cok      = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                                 (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') == 7),
                   MTFACTMO = MTFACTMO/100,
@@ -1653,8 +1653,8 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>%
-                          dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                                        DTENT    = lubridate::dmy(DTENT),
+                          dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT, quiet = TRUE),
+                                        DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                                         cok      = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                                                       (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') == 7),
                                         MTFACTMO = MTFACTMO/100,
@@ -1717,7 +1717,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>% 
-        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
+        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP, quiet = TRUE),
                       MTFACTMO = MTFACTMO/100,
                       MTFORJOU = MTFORJOU/100,
                       MTFACTOT = MTFACTOT/100,
@@ -1962,7 +1962,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
       v<- v[!is.na(v)]
       med_i <- med_i %>%  sjlabelled::set_label(v)
     }
-    med_i %>% dplyr::mutate(DTDISP = lubridate::dmy(DTDISP)) -> med_i
+    med_i %>% dplyr::mutate(DTDISP = lubridate::dmy(DTDISP, quiet = TRUE)) -> med_i
     if (tolower_names){
       names(med_i) <- tolower(names(med_i))
     }
@@ -2135,7 +2135,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
     
     dmi_i <- dmi_i %>%
       dplyr::mutate(PRIX   =  PRIX /1000,
-                    DTPOSE = lubridate::dmy(DTPOSE))
+                    DTPOSE = lubridate::dmy(DTPOSE, quiet = TRUE))
     
     
     if (lib==T){
@@ -2481,7 +2481,7 @@ idiap.default <- function(finess, annee, mois, path,
     readr::problems(diap_i) -> synthese_import
     
     diap_i <- diap_i %>%
-      dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
+      dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT, quiet = TRUE))
     
     
     if (lib==T){
@@ -2602,7 +2602,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   readr::problems(ium_i) -> synthese_import
   
   ium_i <- ium_i %>%
-    dplyr::mutate(DTEAUT = lubridate::dmy(DTEAUT))
+    dplyr::mutate(DTEAUT = lubridate::dmy(DTEAUT, quiet = TRUE))
   
   
   if (lib==T){
@@ -2773,7 +2773,7 @@ if (typpo=="in"){
   readr::problems(po_i) -> synthese_import
   
   po_i <- po_i %>%
-    dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT))
+    dplyr::mutate(DTDEBUT = lubridate::dmy(DTDEBUT, quiet = TRUE))
   
   
   if (lib==T){
@@ -3304,8 +3304,8 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
     readr::problems(ano_i) -> synthese_import
     
     ano_i <- ano_i %>%
-      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
-                    DTENT    = lubridate::dmy(DTENT),
+      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR, quiet = TRUE),
+                    DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                              (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') ==7),
                     MTFACTMO = MTFACTMO/100,
@@ -3320,8 +3320,8 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
     readr::problems(ano_i) -> synthese_import
     
     ano_i <- ano_i %>%
-      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
-                    DTENT    = lubridate::dmy(DTENT),
+      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR, quiet = TRUE),
+                    DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                              (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') +
                              (CRCDNAI=='0') + (CRCSEXE=='0')==9),
@@ -3380,7 +3380,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
       readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>% 
-        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
+        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP, quiet = TRUE),
                       MTFACTMO = MTFACTMO/100,
                       MTFORJOU = MTFORJOU/100,
                       MTFACTOT = MTFACTOT/100,
@@ -4261,8 +4261,8 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out
   if (annee>2012){
     
     ano_i <- ano_i %>%
-      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
-                    DTENT   = lubridate::dmy(DTENT),
+      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR, quiet = TRUE),
+                    DTENT   = lubridate::dmy(DTENT, quiet = TRUE),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                              (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') +
                              (CRCDNAI=='0') + (CRCSEXE=='0')==9),
@@ -4277,8 +4277,8 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out
 
     
     ano_i <- ano_i %>%
-      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
-                    DTENT   = lubridate::dmy(DTENT),
+      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR, quiet = TRUE),
+                    DTENT   = lubridate::dmy(DTENT, quiet = TRUE),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                              (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') == 7),
                     MTFACTMO = MTFACTMO/100,
@@ -4336,7 +4336,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out
       readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>% 
-        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
+        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP, quiet = TRUE),
                       MTFACTMO = MTFACTMO/100,
                       MTFORJOU = MTFORJOU/100,
                       MTFACTOT = MTFACTOT/100,
@@ -5357,8 +5357,8 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
     readr::problems(ano_i) -> synthese_import
     ano_i <- ano_i %>%
-      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
-                    DTENT    = lubridate::dmy(DTENT),
+      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR, quiet = TRUE),
+                    DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                              (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') ==7),
                     MTFACTMO = MTFACTMO/100,
@@ -5373,8 +5373,8 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
     readr::problems(ano_i) -> synthese_import
     ano_i <- ano_i %>%
-      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR),
-                    DTENT    = lubridate::dmy(DTENT),
+      dplyr::mutate(DTSOR   = lubridate::dmy(DTSOR, quiet = TRUE),
+                    DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                     cok = ((CRSECU=='0')+(CRDNAI=='0')+ (CRSEXE=='0') + (CRNODA=='0') +
                              (CRFUSHOSP=='0') + (CRFUSPMSI=='0') + (CRDTENT=='0') +
                              (CRCDNAI=='0') + (CRCSEXE=='0')==9),
@@ -5434,7 +5434,7 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
       readr::problems(ano_i) -> synthese_import
       
       ano_i <- ano_i %>% 
-        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
+        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP, quiet = TRUE),
                       MTFACTMO = MTFACTMO/100,
                       MTFORJOU = MTFORJOU/100,
                       MTFACTOT = MTFACTOT/100,
@@ -6011,8 +6011,8 @@ iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, 
                                                readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
   readr::problems(ano_i) -> synthese_import
   ano_i <- ano_i %>%
-    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                  DTENT    = lubridate::dmy(DTENT),
+    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT, quiet = TRUE),
+                  DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                   cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
                            (CRDENTR=='0') ==5)) %>% sjlabelled::set_label(c(libelles, 'Chaînage Ok'))
   }
@@ -6020,8 +6020,8 @@ iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, 
                                                readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
   readr::problems(ano_i) -> synthese_import
   ano_i <- ano_i %>%
-    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT),
-                  DTENT    = lubridate::dmy(DTENT),
+    dplyr::mutate(DTSORT   = lubridate::dmy(DTSORT, quiet = TRUE),
+                  DTENT    = lubridate::dmy(DTENT, quiet = TRUE),
                   cok = ((CRNOSEC=='0')+(CRDNAIS=='0')+ (CRSEXE=='0') + (CRNAS=='0') +
                            (CRDENTR=='0') ==5)) %>% sjlabelled::set_label(c(libelles, 'Chaînage Ok'))
   }
