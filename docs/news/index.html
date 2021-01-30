@@ -8,23 +8,29 @@
 
 <title>Changelog • pmeasyr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,7 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Changelog" />
+
 
 
 
@@ -49,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmeasyr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
       </span>
     </div>
 
@@ -86,22 +94,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/vignette1.html">pmeasyr</a>
+      <a class="dropdown-item" href="../articles/vignette1.html">pmeasyr</a>
     </li>
     <li>
-      <a href="../articles/vignette2.html">Flux d'import avec pmeasyr</a>
+      <a class="dropdown-item" href="../articles/vignette2.html">Flux d'import avec pmeasyr</a>
     </li>
     <li>
-      <a href="../articles/vignette3.html">Vers la database avec pmeasyr</a>
+      <a class="dropdown-item" href="../articles/vignette3.html">Vers la database avec pmeasyr</a>
     </li>
     <li>
-      <a href="../articles/vignette4.html">Valoriser les rsa</a>
+      <a class="dropdown-item" href="../articles/vignette4.html">Valoriser les rsa</a>
     </li>
     <li>
-      <a href="../articles/vignette5.html">Analyser les données</a>
+      <a class="dropdown-item" href="../articles/vignette5.html">Analyser les données</a>
     </li>
     <li>
-      <a href="../articles/vignette6.html">Valoriser les rum</a>
+      <a class="dropdown-item" href="../articles/vignette6.html">Valoriser les rum</a>
     </li>
   </ul>
 </li>
@@ -109,9 +117,13 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/GuillaumePressiat/pmeasyr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -125,35 +137,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/GuillaumePressiat/pmeasyr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="pmeasyr-0-2-8" class="section level1">
-<h1 class="page-header">
-<a href="#pmeasyr-0-2-8" class="anchor"></a>pmeasyr 0.2.8</h1>
+    <div id="pmeasyr-028" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.8">
+<a href="#pmeasyr-028" class="anchor"></a>pmeasyr 0.2.8</h1>
 <ul>
 <li>Ajout de fonctions d’analyse des données MCO : chir ambu GHM C + 7 racines, gestes marqueurs</li>
 </ul>
 </div>
-    <div id="pmeasyr-0-2-6" class="section level1">
-<h1 class="page-header">
-<a href="#pmeasyr-0-2-6" class="anchor"></a>pmeasyr 0.2.6</h1>
+    <div id="pmeasyr-026" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.6">
+<a href="#pmeasyr-026" class="anchor"></a>pmeasyr 0.2.6</h1>
 <ul>
 <li>Ajout de la fonction vvr_had_ght pour valoriser les sous-séquences de l’hospitalisation à domicile comme sur epmsi.</li>
 </ul>
 </div>
-    <div id="pmeasyr-0-2-5" class="section level1">
-<h1 class="page-header">
-<a href="#pmeasyr-0-2-5" class="anchor"></a>pmeasyr 0.2.5</h1>
+    <div id="pmeasyr-025" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.5">
+<a href="#pmeasyr-025" class="anchor"></a>pmeasyr 0.2.5</h1>
 <ul>
 <li>Valorisation des rsa 2019</li>
 <li>Ajout de spécificités de valorisation (GHS 5907, carT cells), voir <a href="https://im-aphp.github.io/pmeasyr/articles/vignette4.html#remarques-sur-le-mecanisme-de-valorisation">ici</a>, ces ajouts peuvent générer des ruptures dans certains programmes appelant <code>vvr_rsa</code> et <code>vvr_ghs_supp</code> (désormais on utilise la table um pour taguer les mono RUM UHCD, en particulier il n’est plus possible de valoriser avec des rsa typi = 1, et l’ajout du paramètre mo peut générer des erreurs lors de l’appel à <code>vvr_ghs_supp</code> si les paramètres ne sont pas nommés dans l’appel (rupture dans l’ordre des paramètres)).</li>
 </ul>
 </div>
-    <div id="pmeasyr-0-2-4" class="section level1">
-<h1 class="page-header">
-<a href="#pmeasyr-0-2-4" class="anchor"></a>pmeasyr 0.2.4</h1>
+    <div id="pmeasyr-024" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.4">
+<a href="#pmeasyr-024" class="anchor"></a>pmeasyr 0.2.4</h1>
 <ul>
 <li>Ajout de fonctions pour la valorisation des rsa, voir vignette correspondante</li>
 <li>Ajout d’une fonction pour importer les pie out</li>
@@ -161,9 +173,9 @@
 </li>
 </ul>
 </div>
-    <div id="pmeasyr-0-2-0" class="section level1">
-<h1 class="page-header">
-<a href="#pmeasyr-0-2-0" class="anchor"></a>pmeasyr 0.2.0</h1>
+    <div id="pmeasyr-020" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0">
+<a href="#pmeasyr-020" class="anchor"></a>pmeasyr 0.2.0</h1>
 <div id="fonctions-dimports" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fonctions-dimports" class="anchor"></a>Fonctions d’imports</h3>
@@ -186,17 +198,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#pmeasyr-0-2-8">0.2.8</a></li>
-        <li><a href="#pmeasyr-0-2-6">0.2.6</a></li>
-        <li><a href="#pmeasyr-0-2-5">0.2.5</a></li>
-        <li><a href="#pmeasyr-0-2-4">0.2.4</a></li>
-        <li><a href="#pmeasyr-0-2-0">0.2.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -208,7 +213,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

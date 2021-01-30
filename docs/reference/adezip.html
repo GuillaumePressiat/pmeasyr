@@ -8,23 +8,29 @@
 
 <title>~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI — adezip • pmeasyr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,10 +38,10 @@
 
 
 
-<meta property="og:title" content="~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI — adezip" />
 
+<meta property="og:title" content="~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI — adezip" />
 <meta property="og:description" content="Recherche et dezippe (décompresse) les fichiers contenus dans une archive *.in ou *.out du PMSI en fonction de parametres." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -52,7 +58,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -66,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmeasyr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
       </span>
     </div>
 
@@ -89,22 +95,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/vignette1.html">pmeasyr</a>
+      <a class="dropdown-item" href="../articles/vignette1.html">pmeasyr</a>
     </li>
     <li>
-      <a href="../articles/vignette2.html">Flux d'import avec pmeasyr</a>
+      <a class="dropdown-item" href="../articles/vignette2.html">Flux d'import avec pmeasyr</a>
     </li>
     <li>
-      <a href="../articles/vignette3.html">Vers la database avec pmeasyr</a>
+      <a class="dropdown-item" href="../articles/vignette3.html">Vers la database avec pmeasyr</a>
     </li>
     <li>
-      <a href="../articles/vignette4.html">Valoriser les rsa</a>
+      <a class="dropdown-item" href="../articles/vignette4.html">Valoriser les rsa</a>
     </li>
     <li>
-      <a href="../articles/vignette5.html">Analyser les données</a>
+      <a class="dropdown-item" href="../articles/vignette5.html">Analyser les données</a>
     </li>
     <li>
-      <a href="../articles/vignette6.html">Valoriser les rum</a>
+      <a class="dropdown-item" href="../articles/vignette6.html">Valoriser les rum</a>
     </li>
   </ul>
 </li>
@@ -112,9 +118,13 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/GuillaumePressiat/pmeasyr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -129,26 +139,24 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>~ *.zip - Identifie et dezippe des fichiers de l'archive PMSI</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/GuillaumePressiat/pmeasyr/blob/master/R/archives.R'><code>R/archives.R</code></a></small>
     <div class="hidden name"><code>adezip.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Recherche et dezippe (décompresse) les fichiers contenus dans une archive <em>*.in</em> ou <em>*.out</em> du PMSI en fonction de parametres.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>adezip</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>adezip</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pm_param</span>
-<span class='fu'>adezip</span>(<span class='no'>.params</span>, <span class='no'>...</span>)
+<span class='fu'>adezip</span><span class='op'>(</span><span class='va'>.params</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>adezip</span>(<span class='no'>finess</span>, <span class='no'>annee</span>, <span class='no'>mois</span>, <span class='no'>path</span>, <span class='kw'>liste</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>path</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>, <span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nom_archive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
-    
+<span class='fu'>adezip</span><span class='op'>(</span><span class='va'>finess</span>, <span class='va'>annee</span>, <span class='va'>mois</span>, <span class='va'>path</span>, liste <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pathto <span class='op'>=</span> <span class='va'>path</span>, type <span class='op'>=</span> <span class='st'>"in"</span>, recent <span class='op'>=</span> <span class='cn'>TRUE</span>, nom_archive <span class='op'>=</span> <span class='cn'>NULL</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -201,159 +209,162 @@
       <td><p>Affichage d'un message au dézippage <code>TRUE</code> / <code>FALSE</code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Les chemins d'accès des fichiers décompressés, de manière invisible.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code>).</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='adezip2.html'>adezip2</a></code>, <code><a href='astat.html'>astat</a></code>, <code><a href='adelete.html'>adelete</a></code>,
 utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p>
 <p><code><a href='https://rdrr.io/r/utils/unzip.html'>utils::unzip()</a></code></p></div>
-    
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>G. Pressiat</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Chemin vers un dossier temporaire</span>
-<span class='no'>tmp_dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()
+<span class='va'>tmp_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Chemin vers un dossier contenant des archives simulées</span>
-<span class='no'>dossier_archives</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"test_data"</span>, <span class='st'>"test_adezip"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pmeasyr"</span>)
+<span class='va'>dossier_archives</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"test_data"</span>, <span class='st'>"test_adezip"</span>, package <span class='op'>=</span> <span class='st'>"pmeasyr"</span><span class='op'>)</span>
 
 <span class='co'># Décompresser en fonction du finess, année et mois du </span>
 <span class='co'># fichier med d'une archive out</span>
- <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
-        <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
-        <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
-        <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
-        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+ <span class='fu'>adezip</span><span class='op'>(</span><span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>, 
+        path <span class='op'>=</span> <span class='va'>dossier_archives</span>,
+        liste <span class='op'>=</span> <span class='st'>'med'</span>,
+        pathto <span class='op'>=</span> <span class='va'>tmp_dir</span>,
+        type <span class='op'>=</span> <span class='st'>"out"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.18032016182636.out.zip</span>
 #&gt; <span class='message'>Taille    : 0.0072 Mo</span>
 #&gt; <span class='message'>Type      : out</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
 #&gt; <span class='message'>Période   : 2016 M2</span>
 #&gt; <span class='message'>Date prod : 2016-03-18 18:26:36</span>
-#&gt; <span class='message'>Fichiers  : med</span></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.med"            "file897210d31ef1.so"            
-#&gt; [3] "libloc_213_e619d72855daa0d8.rds" "libloc_243_cb5adee5dca0f946.rds"</div><div class='input'>
+#&gt; <span class='message'>Fichiers  : med</span></div><div class='input'> 
+<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "123456789.2016.2.med" "downlit"              "fileee21194a946"     
+#&gt; [4] "fileee220e0f76f"      "fileee22202216d.so"  </div><div class='input'>
 <span class='co'># Décompresser plusieurs types de fichiers d'une archive in</span>
- <span class='fu'>adezip</span>(<span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>,
-        <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
-        <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'med'</span>,<span class='st'>'rapss'</span>, <span class='st'>'ano'</span>),
-        <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
-        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+ <span class='fu'>adezip</span><span class='op'>(</span><span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>, 
+        path <span class='op'>=</span> <span class='va'>dossier_archives</span>,
+        liste <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'med'</span>,<span class='st'>'rapss'</span>, <span class='st'>'ano'</span><span class='op'>)</span>,
+        pathto <span class='op'>=</span> <span class='va'>tmp_dir</span>,
+        type <span class='op'>=</span> <span class='st'>"in"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Dézippage de l'archive 123456789.2016.2.15032016152413.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
 #&gt; <span class='message'>Période   : 2016 M2</span>
 #&gt; <span class='message'>Date prod : 2016-03-15 15:24:13</span>
-#&gt; <span class='message'>Fichiers  : ano, med</span></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.2.ano.txt"        "123456789.2016.2.med"           
-#&gt; [3] "123456789.2016.2.med.txt"        "file897210d31ef1.so"            
-#&gt; [5] "libloc_213_e619d72855daa0d8.rds" "libloc_243_cb5adee5dca0f946.rds"</div><div class='input'>
+#&gt; <span class='message'>Fichiers  : ano, med</span></div><div class='input'>        
+<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "123456789.2016.2.ano.txt" "123456789.2016.2.med"    
+#&gt; [3] "123456789.2016.2.med.txt" "downlit"                 
+#&gt; [5] "fileee21194a946"          "fileee220e0f76f"         
+#&gt; [7] "fileee22202216d.so"      </div><div class='input'>
 <span class='co'># Utilisation avec un noyau de paramtères</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></span>(
-       <span class='kw'>finess</span> <span class='kw'>=</span> <span class='st'>'123456789'</span>,
-       <span class='kw'>annee</span>  <span class='kw'>=</span> <span class='fl'>2016</span>,
-       <span class='kw'>mois</span>   <span class='kw'>=</span> <span class='fl'>12</span>,
-       <span class='kw'>path</span>   <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
-       <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-       )
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></span><span class='op'>(</span>
+       finess <span class='op'>=</span> <span class='st'>'123456789'</span>,
+       annee  <span class='op'>=</span> <span class='fl'>2016</span>,
+       mois   <span class='op'>=</span> <span class='fl'>12</span>,
+       path   <span class='op'>=</span> <span class='va'>dossier_archives</span>,
+       progress <span class='op'>=</span> <span class='cn'>FALSE</span>
+       <span class='op'>)</span>
 
-<span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>, <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+<span class='fu'>adezip</span><span class='op'>(</span><span class='va'>p</span>, type <span class='op'>=</span> <span class='st'>"in"</span>, pathto <span class='op'>=</span> <span class='va'>tmp_dir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Dézippage de l'archive 123456789.2016.12.16132016131502.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
 #&gt; <span class='message'>Période   : 2016 M12</span>
 #&gt; <span class='message'>Date prod : NA</span>
-#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.12.ano.txt"       "123456789.2016.12.diap.txt"     
-#&gt;  [3] "123456789.2016.12.dmi.txt"       "123456789.2016.12.ium.txt"      
-#&gt;  [5] "123456789.2016.12.med.ini.txt"   "123456789.2016.12.med.txt"      
-#&gt;  [7] "123456789.2016.12.porg.txt"      "123456789.2016.12.rss.ini.txt"  
-#&gt;  [9] "123456789.2016.12.rss.txt"       "123456789.2016.2.ano.txt"       
-#&gt; [11] "123456789.2016.2.med"            "123456789.2016.2.med.txt"       
-#&gt; [13] "file897210d31ef1.so"             "libloc_213_e619d72855daa0d8.rds"
-#&gt; [15] "libloc_243_cb5adee5dca0f946.rds"</div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
-<span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>mois</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"in"</span>,  <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "123456789.2016.12.ano.txt"     "123456789.2016.12.diap.txt"   
+#&gt;  [3] "123456789.2016.12.dmi.txt"     "123456789.2016.12.ium.txt"    
+#&gt;  [5] "123456789.2016.12.med.ini.txt" "123456789.2016.12.med.txt"    
+#&gt;  [7] "123456789.2016.12.porg.txt"    "123456789.2016.12.rss.ini.txt"
+#&gt;  [9] "123456789.2016.12.rss.txt"     "123456789.2016.2.ano.txt"     
+#&gt; [11] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     
+#&gt; [13] "downlit"                       "fileee21194a946"              
+#&gt; [15] "fileee220e0f76f"               "fileee22202216d.so"           </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
+<span class='fu'>adezip</span><span class='op'>(</span><span class='va'>p</span>, mois <span class='op'>=</span> <span class='fl'>11</span>, type <span class='op'>=</span> <span class='st'>"in"</span>,  pathto <span class='op'>=</span> <span class='va'>tmp_dir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Dézippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
 #&gt; <span class='message'>Taille    : 0.0023 Mo</span>
 #&gt; <span class='message'>Type      : in</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
 #&gt; <span class='message'>Période   : 2016 M11</span>
 #&gt; <span class='message'>Date prod : 2016-12-25 15:46:08</span>
-#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='no'>tmp_dir</span>)</div><div class='output co'>#&gt;  [1] "123456789.2016.11.ano.txt"       "123456789.2016.11.diap.txt"     
-#&gt;  [3] "123456789.2016.11.dmi.txt"       "123456789.2016.11.ium.txt"      
-#&gt;  [5] "123456789.2016.11.med.ini.txt"   "123456789.2016.11.med.txt"      
-#&gt;  [7] "123456789.2016.11.porg.txt"      "123456789.2016.11.rss.ini.txt"  
-#&gt;  [9] "123456789.2016.11.rss.txt"       "123456789.2016.12.ano.txt"      
-#&gt; [11] "123456789.2016.12.diap.txt"      "123456789.2016.12.dmi.txt"      
-#&gt; [13] "123456789.2016.12.ium.txt"       "123456789.2016.12.med.ini.txt"  
-#&gt; [15] "123456789.2016.12.med.txt"       "123456789.2016.12.porg.txt"     
-#&gt; [17] "123456789.2016.12.rss.ini.txt"   "123456789.2016.12.rss.txt"      
-#&gt; [19] "123456789.2016.2.ano.txt"        "123456789.2016.2.med"           
-#&gt; [21] "123456789.2016.2.med.txt"        "file897210d31ef1.so"            
-#&gt; [23] "libloc_213_e619d72855daa0d8.rds" "libloc_243_cb5adee5dca0f946.rds"</div><div class='input'>
+#&gt; <span class='message'>Fichiers  : Tous</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "123456789.2016.11.ano.txt"     "123456789.2016.11.diap.txt"   
+#&gt;  [3] "123456789.2016.11.dmi.txt"     "123456789.2016.11.ium.txt"    
+#&gt;  [5] "123456789.2016.11.med.ini.txt" "123456789.2016.11.med.txt"    
+#&gt;  [7] "123456789.2016.11.porg.txt"    "123456789.2016.11.rss.ini.txt"
+#&gt;  [9] "123456789.2016.11.rss.txt"     "123456789.2016.12.ano.txt"    
+#&gt; [11] "123456789.2016.12.diap.txt"    "123456789.2016.12.dmi.txt"    
+#&gt; [13] "123456789.2016.12.ium.txt"     "123456789.2016.12.med.ini.txt"
+#&gt; [15] "123456789.2016.12.med.txt"     "123456789.2016.12.porg.txt"   
+#&gt; [17] "123456789.2016.12.rss.ini.txt" "123456789.2016.12.rss.txt"    
+#&gt; [19] "123456789.2016.2.ano.txt"      "123456789.2016.2.med"         
+#&gt; [21] "123456789.2016.2.med.txt"      "downlit"                      
+#&gt; [23] "fileee21194a946"               "fileee220e0f76f"              
+#&gt; [25] "fileee22202216d.so"           </div><div class='input'>
 <span class='co'># Pour une même période (année/mois), il peut y avoir plusieurs archives si </span>
 <span class='co'># il y a eu plusieurs envois. Par exemple il y a deux version de l'archive</span>
 <span class='co'># out pour la période 2017.10 dans notre exemple simulé</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='no'>dossier_archives</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"2017\\.10.*out\\.zip"</span>)</div><div class='output co'>#&gt; [1] "123456789.2017.10.21112017162343.out.zip"
+<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>dossier_archives</span>, pattern <span class='op'>=</span> <span class='st'>"2017\\.10.*out\\.zip"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "123456789.2017.10.21112017162343.out.zip"
 #&gt; [2] "123456789.2017.10.24112017182343.out.zip"</div><div class='input'>
  <span class='co'># Lorsque l'arguement `recent` est `TRUE` alors la fonction adezip </span>
  <span class='co'># sélectionne automatiquement l'archive la plus récente</span>
- <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
-        <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
-        <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'med'</span>,
-        <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
-        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+ <span class='fu'>adezip</span><span class='op'>(</span><span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
+        path <span class='op'>=</span> <span class='va'>dossier_archives</span>,
+        liste <span class='op'>=</span> <span class='st'>'med'</span>,
+        pathto <span class='op'>=</span> <span class='va'>tmp_dir</span>,
+        type <span class='op'>=</span> <span class='st'>"out"</span><span class='op'>)</span> 
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Dézippage de l'archive 123456789.2017.10.24112017182343.out.zip</span>
 #&gt; <span class='message'>Taille    : 0.0067 Mo</span>
 #&gt; <span class='message'>Type      : out</span>
 #&gt; <span class='message'>Finess    : 123456789</span>
 #&gt; <span class='message'>Période   : 2017 M10</span>
 #&gt; <span class='message'>Date prod : 2017-11-24 18:23:43</span>
-#&gt; <span class='message'>Fichiers  : med</span></div><div class='input'> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"med"</span>)</div><div class='output co'>#&gt; [1] "123456789.2016.11.med.ini.txt" "123456789.2016.11.med.txt"    
+#&gt; <span class='message'>Fichiers  : med</span></div><div class='input'> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span>, pattern <span class='op'>=</span> <span class='st'>"med"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "123456789.2016.11.med.ini.txt" "123456789.2016.11.med.txt"    
 #&gt; [3] "123456789.2016.12.med.ini.txt" "123456789.2016.12.med.txt"    
 #&gt; [5] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     
-#&gt; [7] "123456789.2017.10.med"        </div><div class='input'>
+#&gt; [7] "123456789.2017.10.med"        </div><div class='input'> 
  <span class='co'># Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité</span>
  <span class='co'># à choisir</span>
- <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
- <span class='fu'>adezip</span>(<span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
-        <span class='kw'>path</span> <span class='kw'>=</span> <span class='no'>dossier_archives</span>,
-        <span class='kw'>liste</span> <span class='kw'>=</span> <span class='st'>'rsa'</span>,
-        <span class='kw'>pathto</span> <span class='kw'>=</span> <span class='no'>tmp_dir</span>,
-        <span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-        <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>)
- <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='no'>tmp_dir</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"rsa"</span>)
- }
+ <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+ <span class='fu'>adezip</span><span class='op'>(</span><span class='fl'>123456789</span>, <span class='fl'>2017</span>, <span class='fl'>10</span>,
+        path <span class='op'>=</span> <span class='va'>dossier_archives</span>,
+        liste <span class='op'>=</span> <span class='st'>'rsa'</span>,
+        pathto <span class='op'>=</span> <span class='va'>tmp_dir</span>,
+        recent <span class='op'>=</span> <span class='cn'>FALSE</span>,
+        type <span class='op'>=</span> <span class='st'>"out"</span><span class='op'>)</span>
+ <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span>, pattern <span class='op'>=</span> <span class='st'>"rsa"</span><span class='op'>)</span>
+ <span class='op'>}</span>
 
 <span class='co'># Dézipper les logs</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>adezip</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"out"</span>, <span class='kw'>liste</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'chainage.log'</span>, <span class='st'>'comp.log'</span>, <span class='st'>'log'</span>))
-}</div></pre>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>adezip</span><span class='op'>(</span><span class='va'>p</span>, type <span class='op'>=</span> <span class='st'>"out"</span>, liste <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'chainage.log'</span>, <span class='st'>'comp.log'</span>, <span class='st'>'log'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>G. Pressiat</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -364,7 +375,7 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

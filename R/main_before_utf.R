@@ -389,8 +389,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM, NBACTE)
-      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
-      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% tibble::as_tibble()
+      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
       fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum_actes",  an == substr(annee,3,4))
       deb <- fa$position
       fin <- fa$fin
@@ -408,8 +408,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM, NOVERG, NBACTE)
-      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
-      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% tibble::as_tibble()
+      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
       fa1 <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum_actes",
                                                  an == paste0(substr(annee,3,4), '_',vers[1]))
       deb1 <- fa1$position
@@ -438,8 +438,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rum_i$ldas) %>% stringr::str_trim()
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAS)
-    df <- as.data.frame(lapply(df, rep, df$NBDAS), stringsAsFactors = F) %>% dplyr::tbl_df()
-    das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAS)
+    df <- as.data.frame(lapply(df, rep, df$NBDAS), stringsAsFactors = F) %>% tibble::as_tibble()
+    das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% tibble::as_tibble()  %>% dplyr::select(-NBDAS)
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
@@ -447,8 +447,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
     un_i<-Sys.time()
     dad <- purrr::flatten_chr(rum_i$ldad)
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAD)
-    df <- as.data.frame(lapply(df, rep, df$NBDAD), stringsAsFactors = F) %>% dplyr::tbl_df()
-    dad <- dplyr::bind_cols(df,data.frame(DAD = stringr::str_trim(dad), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAD)
+    df <- as.data.frame(lapply(df, rep, df$NBDAD), stringsAsFactors = F) %>% tibble::as_tibble()
+    dad <- dplyr::bind_cols(df,data.frame(DAD = stringr::str_trim(dad), stringsAsFactors = F) ) %>% tibble::as_tibble()  %>% dplyr::select(-NBDAD)
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
@@ -492,8 +492,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM, NBACTE)
-      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
-      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% tibble::as_tibble()
+      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
       fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum_actes",  an == substr(annee,3,4))
       deb <- fa$position
       fin <- fa$fin
@@ -511,8 +511,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
       un_i<-Sys.time()
       actes <- purrr::flatten_chr(rum_i$lactes)
       df <- rum_i %>% dplyr::select(NAS, NORUM,  NOVERG, NBACTE)
-      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
-      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+      df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% tibble::as_tibble()
+      actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
       fa1 <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rum_actes",
                                                  an == paste0(substr(annee,3,4), '_',vers[1]))
       deb1 <- fa1$position
@@ -541,8 +541,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rum_i$ldas) %>% stringr::str_trim()
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAS)
-    df <- as.data.frame(lapply(df, rep, df$NBDAS), stringsAsFactors = F) %>% dplyr::tbl_df()
-    das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAS)
+    df <- as.data.frame(lapply(df, rep, df$NBDAS), stringsAsFactors = F) %>% tibble::as_tibble()
+    das <- dplyr::bind_cols(df,data.frame(DAS = stringr::str_trim(das), stringsAsFactors = F) ) %>% tibble::as_tibble()  %>% dplyr::select(-NBDAS)
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     
@@ -550,8 +550,8 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
     un_i<-Sys.time()
     dad <- purrr::flatten_chr(rum_i$ldad)
     df <- rum_i %>% dplyr::select(NAS,NORUM,NBDAD)
-    df <- as.data.frame(lapply(df, rep, df$NBDAD), stringsAsFactors = F) %>% dplyr::tbl_df()
-    dad <- dplyr::bind_cols(df,data.frame(DAD = stringr::str_trim(dad), stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>% dplyr::select(-NBDAD)
+    df <- as.data.frame(lapply(df, rep, df$NBDAD), stringsAsFactors = F) %>% tibble::as_tibble()
+    dad <- dplyr::bind_cols(df,data.frame(DAD = stringr::str_trim(dad), stringsAsFactors = F) ) %>% tibble::as_tibble()  %>% dplyr::select(-NBDAD)
     deux_i<-Sys.time()
     #cat(round(difftime(deux_i,un_i, units="secs"),0), "secondes\n")
     if (lib == T){
@@ -653,7 +653,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rsa, rsa_um, actes et das si import > 3)
+#' @return Une classe S3 contenant les tables (data.frame, tibble ou tbl) importées  (rsa, rsa_um, actes et das si import > 3)
 #'
 #' @examples
 #' \dontrun{
@@ -943,10 +943,10 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
     df <- rsa_i %>% dplyr::select(CLE_RSA,NBRUM)
-    df <- as.data.frame(lapply(df, rep, df$NBRUM), stringsAsFactors = F) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBRUM), stringsAsFactors = F) %>% tibble::as_tibble()
     if (as.integer(annee) <= 2012){
       df <- df %>% dplyr::mutate(NSEQRUM = stringr::str_pad(dplyr::row_number(CLE_RSA), 2,"left","0"))}
-    rsa_um <- dplyr::bind_cols(df,data.frame(var = rsa_um, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    rsa_um <- dplyr::bind_cols(df,data.frame(var = rsa_um, stringsAsFactors = F) ) %>% tibble::as_tibble()
     fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rsa_um",  an == substr(annee,3,4))
     deb <- fa$position
     fin <- fa$fin
@@ -971,8 +971,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rsa_i$ldas) %>% stringr::str_trim()
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBDIAGAS)
-    df <- as.data.frame(lapply(df, rep, df$NBDIAGAS), stringsAsFactors = F) %>% dplyr::tbl_df()
-    das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBDIAGAS), stringsAsFactors = F) %>% tibble::as_tibble()
+    das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% tibble::as_tibble()
     das <- das %>% dplyr::select(-NBDIAGAS)
     if (lib == T){
       das %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
@@ -985,8 +985,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     actes <- purrr::flatten_chr(rsa_i$lactes)
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBACTE)
-    df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
-    actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% tibble::as_tibble()
+    actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
     fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rsa_actes", an == substr(annee,3,4))
     deb <- fa$position
     fin <- fa$fin
@@ -1058,10 +1058,10 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
     df <- rsa_i %>% dplyr::select(CLE_RSA,NBRUM)
-    df <- as.data.frame(lapply(df, rep, df$NBRUM), stringsAsFactors = F) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBRUM), stringsAsFactors = F) %>% tibble::as_tibble()
     if (as.integer(annee) <= 2012){
       df <- df %>% dplyr::mutate(NSEQRUM = stringr::str_pad(dplyr::row_number(CLE_RSA), 2,"left","0"))}
-    rsa_um <- dplyr::bind_cols(df,data.frame(var = rsa_um, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    rsa_um <- dplyr::bind_cols(df,data.frame(var = rsa_um, stringsAsFactors = F) ) %>% tibble::as_tibble()
     fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rsa_um",  an == substr(annee,3,4))
     deb <- fa$position
     fin <- fa$fin
@@ -1086,8 +1086,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rsa_i$ldas) %>% stringr::str_trim()
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBDIAGAS)
-    df <- as.data.frame(lapply(df, rep, df$NBDIAGAS), stringsAsFactors = F) %>% dplyr::tbl_df()
-    das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBDIAGAS), stringsAsFactors = F) %>% tibble::as_tibble()
+    das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% tibble::as_tibble()
     das <- das %>% dplyr::select(-NBDIAGAS)
     if (lib == T){
       das %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
@@ -1100,8 +1100,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     actes <- purrr::flatten_chr(rsa_i$lactes)
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBACTE)
-    df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
-    actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% tibble::as_tibble()
+    actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
     fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rsa_actes", an == substr(annee,3,4))
     deb <- fa$position
     fin <- fa$fin
@@ -1188,10 +1188,10 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     rsa_um <- purrr::flatten_chr(rsa_i$lum)
     df <- rsa_i %>% dplyr::select(CLE_RSA,NBRUM)
-    df <- as.data.frame(lapply(df, rep, df$NBRUM), stringsAsFactors = F) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBRUM), stringsAsFactors = F) %>% tibble::as_tibble()
     if (as.integer(annee) <= 2012){
       df <- df %>% dplyr::mutate(NSEQRUM = stringr::str_pad(dplyr::row_number(CLE_RSA), 2,"left","0"))}
-    rsa_um <- dplyr::bind_cols(df,data.frame(var = rsa_um, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    rsa_um <- dplyr::bind_cols(df,data.frame(var = rsa_um, stringsAsFactors = F) ) %>% tibble::as_tibble()
     fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rsa_um",  an == substr(annee,3,4))
     deb <- fa$position
     fin <- fa$fin
@@ -1216,8 +1216,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     das <- purrr::flatten_chr(rsa_i$ldas) %>% stringr::str_trim()
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBDIAGAS)
-    df <- as.data.frame(lapply(df, rep, df$NBDIAGAS), stringsAsFactors = F) %>% dplyr::tbl_df()
-    das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBDIAGAS), stringsAsFactors = F) %>% tibble::as_tibble()
+    das <- dplyr::bind_cols(df,data.frame(DAS = das, stringsAsFactors = F) ) %>% tibble::as_tibble()
     das <- das %>% dplyr::select(-NBDIAGAS)
     if (lib == T){
       das %>% sjlabelled::set_label(c('Clé RSA', 'N° séquentiel du RUM',  'Diagnostic associé')) -> das
@@ -1230,8 +1230,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
     un_i<-Sys.time()
     actes <- purrr::flatten_chr(rsa_i$lactes)
     df <- rsa_um %>% dplyr::select(CLE_RSA,NSEQRUM,NBACTE)
-    df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% dplyr::tbl_df()
-    actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBACTE), stringsAsFactors = F) %>% tibble::as_tibble()
+    actes <- dplyr::bind_cols(df,data.frame(var = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
     fa <-  pmeasyr::formats %>% dplyr::filter(champ == "mco", table == "rsa_actes", an == substr(annee,3,4))
     deb <- fa$position
     fin <- fa$fin
@@ -1328,7 +1328,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame ou tbl_df) qui contient : - Clé RSA - NORSS - Numéro de ligne du fichier RSS d'origine (rss.ini) - NAS - Date d'entrée du séjour - GHM groupage du RSS (origine) - Date de sortie du séjour
+#' @return Une table (data.frame ou tibble) qui contient : - Clé RSA - NORSS - Numéro de ligne du fichier RSS d'origine (rss.ini) - NAS - Date d'entrée du séjour - GHM groupage du RSS (origine) - Date de sortie du séjour
 #'
 #' @examples
 #' \dontrun{
@@ -1515,7 +1515,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame ou tbl_df) qui contient les données Anohosp in / out
+#' @return Une table (data.frame ou tibble) qui contient les données Anohosp in / out
 #'
 #' @examples
 #' \dontrun{
@@ -1989,7 +1989,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : 
+#' @return Une table (data.frame, tibble) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : 
 #' si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : 
 #' T2A 06 - ATU 09 - THROMBO 10
 #'
@@ -2167,7 +2167,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
+#' @return Une table (data.frame, tibble) contenant les erreurs Out.
 #'
 #' @examples
 #' \dontrun{
@@ -2337,7 +2337,7 @@ inner_tra <- function(table, tra, sel = 1, champ = "mco"){
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les dialyses péritonéales In ou Out.
+#' @return Une table (data.frame, tibble) contenant les dialyses péritonéales In ou Out.
 #'
 #' @examples
 #' \dontrun{
@@ -2516,7 +2516,7 @@ idiap.default <- function(finess, annee, mois, path,
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les informations structures du Out.
+#' @return Une table (data.frame, tibble) contenant les informations structures du Out.
 #'
 #' @examples
 #' \dontrun{
@@ -2815,7 +2815,7 @@ if (typpo=="in"){
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées (rapss, acdi, ght).
+#' @return Une classe S3 contenant les tables (data.frame, tibble ou tbl) importées (rapss, acdi, ght).
 #'
 #' @examples
 #' \dontrun{
@@ -3051,8 +3051,8 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   if (annee>2011){
     actes <- purrr::flatten_chr(rapss_i$lactes)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBZA)
-    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    actes <- dplyr::bind_cols(df,data.frame(ZACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% tibble::as_tibble()
+    actes <- dplyr::bind_cols(df,data.frame(ZACTES = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
     
     if (annee>=2020) {
       actes <- dplyr::mutate(actes, CODE = 'A') %>% dplyr::select(-NBZA) %>% dplyr::mutate(
@@ -3078,20 +3078,20 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
     
     da <- purrr::flatten_chr(rapss_i$lda)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% tibble::as_tibble()
     da <- dplyr::mutate(da, CODE = 'DA') %>% dplyr::select(-NBDA)
     
     dmpp <- purrr::flatten_chr(rapss_i$ldmpp)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDIAGMPP)
-    df <- as.data.frame(lapply(df, rep, df$NBDIAGMPP), stringsAsFactors = F) %>% dplyr::tbl_df()
-    dmpp <- dplyr::bind_cols(df,data.frame(DMPP = stringr::str_trim(dmpp), stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBDIAGMPP), stringsAsFactors = F) %>% tibble::as_tibble()
+    dmpp <- dplyr::bind_cols(df,data.frame(DMPP = stringr::str_trim(dmpp), stringsAsFactors = F) ) %>% tibble::as_tibble()
     dmpp <- dplyr::mutate(dmpp, CODE = 'DMPP') %>% dplyr::select(-NBDIAGMPP)
     
     dmpa <- purrr::flatten_chr(rapss_i$ldmpa)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDIAGMPA)
-    df <- as.data.frame(lapply(df, rep, df$NBDIAGMPA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    dmpa <- dplyr::bind_cols(df,data.frame(DMPA = stringr::str_trim(dmpa), stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBDIAGMPA), stringsAsFactors = F) %>% tibble::as_tibble()
+    dmpa <- dplyr::bind_cols(df,data.frame(DMPA = stringr::str_trim(dmpa), stringsAsFactors = F) ) %>% tibble::as_tibble()
     dmpa <- dplyr::mutate(dmpa, CODE = 'DMPA') %>% dplyr::select(-NBDIAGMPA)
     
     acdi <- dplyr::bind_rows(actes,da,dmpp,dmpa) %>% dplyr::select(-ZACTES)
@@ -3102,8 +3102,8 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   if (annee==2011){
     actes <- purrr::flatten_chr(rapss_i$lactes)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBZA)
-    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    actes <- dplyr::bind_cols(df,data.frame(ZACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% tibble::as_tibble()
+    actes <- dplyr::bind_cols(df,data.frame(ZACTES = actes, stringsAsFactors = F) ) %>% tibble::as_tibble()
     actes <- dplyr::mutate(actes, CODE = 'A') %>% dplyr::select(-NBZA) %>% dplyr::mutate(
       DELAI  = stringr::str_sub(ZACTES, 1, 4) %>% as.numeric(),
       CDCCAM = stringr::str_sub(ZACTES, 5,11),
@@ -3115,8 +3115,8 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
     
     da <- purrr::flatten_chr(rapss_i$lda)
     df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df()
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% tibble::as_tibble()
     da <- dplyr::mutate(da, CODE = 'DA') %>% dplyr::select(-NBDA)
     
     acdi <- dplyr::bind_rows(actes,da) %>% dplyr::select(-ZACTES)
@@ -3126,8 +3126,8 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   etb_ght <- purrr::flatten_chr(rapss_i$letb_ght)
   df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,NOVRPSS, VCLASS = ETB_VCLASS, CDRETR = ETB_CDRETR,
                                   GHPC = ETB_GHPC, NBGHT = ETB_NBGHT)
-  df <- as.data.frame(lapply(df, rep, df$NBGHT), stringsAsFactors = F) %>% dplyr::tbl_df()
-  etb_ght <- dplyr::bind_cols(df,data.frame(etb_ght, stringsAsFactors = F) ) %>% dplyr::tbl_df()  %>%
+  df <- as.data.frame(lapply(df, rep, df$NBGHT), stringsAsFactors = F) %>% tibble::as_tibble()
+  etb_ght <- dplyr::bind_cols(df,data.frame(etb_ght, stringsAsFactors = F) ) %>% tibble::as_tibble()  %>%
     dplyr::mutate(TYPGHT='ETAB',
                   NUMGHT = stringr::str_sub(etb_ght,1,2),
                   JOURSGHT = stringr::str_sub(etb_ght,3,5) %>% as.numeric() ) %>%
@@ -3136,8 +3136,8 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   pap_ght <- purrr::flatten_chr(rapss_i$lpap_ght)
   df <- rapss_i %>% dplyr::select(NOSEQSEJ,NOSEQ,NOSOUSSEQ,VCLASS=PAPRICA_VCLASS, CDRETR = PAPRICA_CDRETR, GHPC = PAPRICA_GHPC,
                                   NBGHT = PAPRICA_NBGHT )
-  df <- as.data.frame(lapply(df, rep, df$NBGHT), stringsAsFactors = F) %>% dplyr::tbl_df()
-  pap_ght <- dplyr::bind_cols(df,data.frame(pap_ght, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>%
+  df <- as.data.frame(lapply(df, rep, df$NBGHT), stringsAsFactors = F) %>% tibble::as_tibble()
+  pap_ght <- dplyr::bind_cols(df,data.frame(pap_ght, stringsAsFactors = F) ) %>% tibble::as_tibble() %>%
     dplyr::mutate(TYPGHT='PAPRICA',
                   NUMGHT = stringr::str_sub(pap_ght,1,2),
                   JOURSGHT = stringr::str_sub(pap_ght,3,5) %>% as.numeric() ) %>%
@@ -3211,7 +3211,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données Anohosp HAD du Out.
+#' @return Une table (data.frame, tibble) contenant les données Anohosp HAD du Out.
 #'
 #' @examples
 #' \dontrun{
@@ -3363,7 +3363,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données médicaments HAD du Out.
+#' @return Une table (data.frame, tibble) contenant les données médicaments HAD du Out.
 #'
 #' @examples
 #' \dontrun{
@@ -3491,7 +3491,7 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #'
-#' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
+#' @return Une table (data.frame, tibble) contenant les erreurs Out.
 #'
 #' @examples
 #' \dontrun{
@@ -3717,22 +3717,22 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     da <- purrr::flatten_chr(zad$lda)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCSARR)
-    df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% dplyr::tbl_df()
-    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CSARR') %>% dplyr::select(-NBCSARR)
+    df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% tibble::as_tibble()
+    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CSARR') %>% dplyr::select(-NBCSARR)
     
     
     ccam <- purrr::flatten_chr(zad$lccam)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
-    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
-    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
+    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% tibble::as_tibble()
+    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
     
@@ -3793,22 +3793,22 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     da <- purrr::flatten_chr(zad$lda)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCSARR)
-    df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% dplyr::tbl_df()
-    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CSARR') %>% dplyr::select(-NBCSARR)
+    df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% tibble::as_tibble()
+    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CSARR') %>% dplyr::select(-NBCSARR)
     
     
     ccam <- purrr::flatten_chr(zad$lccam)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
-    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
-    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
+    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% tibble::as_tibble()
+    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
     if (lib == T){
@@ -3869,22 +3869,22 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     da <- purrr::flatten_chr(zad$lda)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA')%>% dplyr::select(-NBDA) %>%
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='DA')%>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCSARR)
-    df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% dplyr::tbl_df()
-    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBCSARR)
+    df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% tibble::as_tibble()
+    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::select(-NBCSARR)
     
     
     ccam <- purrr::flatten_chr(zad$lccam)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
-    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
-    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
+    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% tibble::as_tibble()
+    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
     
@@ -3943,22 +3943,22 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     da <- purrr::flatten_chr(zad$lda)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     csarr <- purrr::flatten_chr(zad$lcsarr)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCDARR)
-    df <- as.data.frame(lapply(df, rep, df$NBCDARR), stringsAsFactors = F) %>% dplyr::tbl_df()
-    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) )%>% dplyr::tbl_df() %>% dplyr::select(-NBCDARR)
+    df <- as.data.frame(lapply(df, rep, df$NBCDARR), stringsAsFactors = F) %>% tibble::as_tibble()
+    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) )%>% tibble::as_tibble() %>% dplyr::select(-NBCDARR)
     
     
     ccam <- purrr::flatten_chr(zad$lccam)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
-    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
-    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
+    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% tibble::as_tibble()
+    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <- dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
     
@@ -4010,22 +4010,22 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     da <- purrr::flatten_chr(zad$lda)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
       dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
     
     cdarr <- purrr::flatten_chr(zad$lcdarr)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCDARR)
-    df <- as.data.frame(lapply(df, rep, df$NBCDARR), stringsAsFactors = F) %>% dplyr::tbl_df()
-    cdarr <- dplyr::bind_cols(df,data.frame(cdarr = cdarr, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CDARR') %>% dplyr::select(-NBCDARR)
+    df <- as.data.frame(lapply(df, rep, df$NBCDARR), stringsAsFactors = F) %>% tibble::as_tibble()
+    cdarr <- dplyr::bind_cols(df,data.frame(cdarr = cdarr, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CDARR') %>% dplyr::select(-NBCDARR)
     
     
     ccam <- purrr::flatten_chr(zad$lccam)
     
     df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
-    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% dplyr::tbl_df()
-    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
+    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% tibble::as_tibble()
+    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
     
     acdi <-dplyr::bind_rows(da, fzdarr(cdarr), fzacte(ccam))
     
@@ -4041,9 +4041,10 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   
   
   acdi[is.na(acdi)] <- ""
-  acdi$NBEXEC <- acdi$NBEXEC  %>%  as.numeric()
-  acdi$DELAI <- acdi$DELAI  %>%  as.numeric()
-  if (annee>2014){acdi$NBPATREEL <- acdi$NBPATREEL  %>%  as.numeric()}
+  suppressWarnings(acdi$NBEXEC <- acdi$NBEXEC  %>%  as.numeric())
+  suppressWarnings(acdi$DELAI <- acdi$DELAI  %>%  as.numeric())
+  suppressWarnings(if (annee>2014){acdi$NBPATREEL <- acdi$NBPATREEL  %>%  as.numeric()})
+  
   Fillers <- names(rha_i)
   Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="Fil"]
   
@@ -4085,7 +4086,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes, \code{progress = F, skip =...}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données Anohosp SSR du Out.
+#' @return Une table (data.frame, tibble) contenant les données Anohosp SSR du Out.
 #'
 #' @examples
 #' \dontrun{
@@ -4234,7 +4235,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données SHA, et a partir de 2017 une liste de deux tables (sha et gme)
+#' @return Une table (data.frame, tibble) contenant les données SHA, et a partir de 2017 une liste de deux tables (sha et gme)
 #'
 #' @examples
 #' \dontrun{
@@ -4370,7 +4371,7 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
 #' @param reshape booleen TRUE/FALSE : la donnee doit-elle etre restructuree ? une ligne = une erreur, sinon, une ligne = un sejour. par defaut a F
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #'
-#' @return Une table (data.frame, tbl_df) contenant les erreurs Out.
+#' @return Une table (data.frame, tibble) contenant les erreurs Out.
 #'
 #' @examples
 #' \dontrun{
@@ -4461,7 +4462,7 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données médicaments SSR du Out.
+#' @return Une table (data.frame, tibble) contenant les données médicaments SSR du Out.
 #'
 #' @examples
 #' \dontrun{
@@ -4547,7 +4548,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
                   PRIX  = PRIX /1000) %>% sjlabelled::set_label(libelles)
   }
   else {
-    med_i <- dplyr::tbl_df(data.frame())
+    med_i <- tibble::as_tibble(data.frame())
     }
   info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
   if (info$size >0 & !is.na(info$size)){
@@ -4583,7 +4584,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les informations structures du Out.
+#' @return Une table (data.frame, tibble) contenant les informations structures du Out.
 #'
 #' @examples
 #' \dontrun{
@@ -4705,7 +4706,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données RPSA.
+#' @return Une table (data.frame, tibble) contenant les données RPSA.
 #'
 #' @examples
 #' \dontrun{
@@ -4802,8 +4803,8 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
   da <- purrr::flatten_chr(zad$lda) %>% stringr::str_trim()
   
   df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBDA)
-  df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-  da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
+  df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+  da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::select(-NBDA)
   
   
   rpsa_i$ZAD[is.na(rpsa_i$ZAD)] <- ""
@@ -4823,7 +4824,7 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
   rpsa_1 = list(rpsa = rpsa_i, das = da)
   }
   
-  if (annee > 2016){
+  if (annee > 2016 & annee < 2020){
     rpsa_i <- rpsa_i %>%  
       dplyr::mutate(da  = ifelse(NBDA>0,stringr::str_sub(ZAD,1, NBDA*6),""),
                     lda = stringr::str_extract_all(da, '.{1,6}'),
@@ -4834,14 +4835,14 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
     da <- purrr::flatten_chr(zad$lda) %>% stringr::str_trim()
     
     df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBDA)
-    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::select(-NBDA)
     
     actes <- purrr::flatten_chr(zad$lactes)
     
     df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBZA)
-    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% dplyr::tbl_df()
-    actes <- dplyr::bind_cols(df,data.frame(ACTES = actes, stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBZA)
+    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% tibble::as_tibble()
+    actes <- dplyr::bind_cols(df,data.frame(ACTES = actes, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::select(-NBZA)
     
     fzacte <- function(actes){
       dplyr::mutate(actes,
@@ -4862,15 +4863,72 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
     libelles[is.na(libelles)] <- ""
     
     if (lib == T){
-    rpsa_i <- rpsa_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream actes","Stream DA ou facteurs associés"))
+      rpsa_i <- rpsa_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream actes","Stream DA ou facteurs associés"))
+      
+      da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+                                           'Diagnostics et facteurs associés'))
+      
+      
+      actes <- actes %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+                                                 "Délai depuis la date d'entrée", "Code CCAM",
+                                                 "Extension PMSI", "Code de la phase", "Code de l'activité", "Extension documentaire", "Nombre de réalisations"))
+    }
+    if (tolower_names){
+      names(rpsa_i) <- tolower(names(rpsa_i))
+      names(da) <- tolower(names(da))
+      names(actes) <- tolower(names(actes))
+    }
+    rpsa_1 = list(rpsa = rpsa_i, das = da, actes = actes)
+  }
+  
+  if (annee > 2019){
+    rpsa_i <- rpsa_i %>%  
+      dplyr::mutate(da  = ifelse(NBDA>0,stringr::str_sub(ZAD,1, NBDA*6),""),
+                    lda = stringr::str_extract_all(da, '.{1,6}'),
+                    actes = ifelse(NBZA>0,stringr::str_sub(ZAD,NBDA*6+1,1+ NBDA*6 + NBZA*19),""),
+                    lactes = stringr::str_extract_all(actes, '.{1,19}'))
     
-    da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
-                                     'Diagnostics et facteurs associés'))
+    zad <- rpsa_i
+    da <- purrr::flatten_chr(zad$lda) %>% stringr::str_trim()
     
+    df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBDA)
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::select(-NBDA)
     
-    actes <- actes %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
-                                     "Délai depuis la date d'entrée", "Code CCAM",
-                                     "Extension PMSI", "Code de la phase", "Code de l'activité", "Extension documentaire", "Nombre de réalisations"))
+    actes <- purrr::flatten_chr(zad$lactes)
+    
+    df <- zad %>% dplyr::select(NOSEQSEJ, NOSEQ,NBZA)
+    df <- as.data.frame(lapply(df, rep, df$NBZA), stringsAsFactors = F) %>% tibble::as_tibble()
+    actes <- dplyr::bind_cols(df,data.frame(ACTES = actes, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::select(-NBZA)
+    
+    fzacte <- function(actes){
+      dplyr::mutate(actes,
+                    DELAI  = stringr::str_sub(ACTES,1,5) %>% as.integer(),
+                    CDCCAM = stringr::str_sub(ACTES,6,12),
+                    DESCRI = stringr::str_sub(ACTES,13,14) %>% stringr::str_trim(),
+                    PHASE  = stringr::str_sub(ACTES,15,15),
+                    ACT    = stringr::str_sub(ACTES,16,16),
+                    EXTDOC = stringr::str_sub(ACTES,17,18),
+                    NBEXEC = stringr::str_sub(ACTES,19,19) %>% as.integer()
+      ) %>% dplyr::select(-ACTES)
+    }
+    
+    fzacte(actes) -> actes
+    rpsa_i$ZAD[is.na(rpsa_i$ZAD)] <- ""
+    rpsa_i <- rpsa_i %>% dplyr::mutate(das = extz(da, ".{1,6}"), 
+                                       actes = extz(actes, "[A-Z]{4}[0-9]{3}")) %>% dplyr::select(-ZAD, -da, -lactes, -lda)
+    libelles[is.na(libelles)] <- ""
+    
+    if (lib == T){
+      rpsa_i <- rpsa_i %>% sjlabelled::set_label(c(libelles[-length(libelles)], "Stream actes","Stream DA ou facteurs associés"))
+      
+      da <- da %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+                                           'Diagnostics et facteurs associés'))
+      
+      
+      actes <- actes %>% sjlabelled::set_label(c('N° séquentiel de séjour','N° séquentiel de séquence au sein du séjour',
+                                                 "Délai depuis la date d'entrée", "Code CCAM",
+                                                 "Extension PMSI", "Code de la phase", "Code de l'activité", "Extension documentaire", "Nombre de réalisations"))
     }
     if (tolower_names){
       names(rpsa_i) <- tolower(names(rpsa_i))
@@ -4905,7 +4963,7 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données R3A.
+#' @return Une table (data.frame, tibble) contenant les données R3A.
 #'
 #' @examples
 #' \dontrun{
@@ -5000,8 +5058,8 @@ ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   da <- purrr::flatten_chr(zad$lda)
   
   df <- zad %>% dplyr::select(NOSEQSEJ,NOORDR,NBDA)
-  df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% dplyr::tbl_df()
-  da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% dplyr::tbl_df() %>% dplyr::select(-NBDA)
+  df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+  da <- dplyr::bind_cols(df,data.frame(DA = stringr::str_trim(da), stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::select(-NBDA)
   
   
   r3a_i$ZAD[is.na(r3a_i$ZAD)] <- ""
@@ -5043,7 +5101,7 @@ ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame, tbl_df) contenant les données Anohosp SSR du Out.
+#' @return Une table (data.frame, tibble) contenant les données Anohosp SSR du Out.
 #'
 #' @examples
 #' \dontrun{
@@ -5421,7 +5479,7 @@ tdiag <- function (d,  include = T){
 #' Formats depuis 2012 pour les rsfa
 #' Formats depuis 2014 pour les rsfa-maj (reprise 2013)
 #' 
-#' @return Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rafaels)
+#' @return Une classe S3 contenant les tables (data.frame, tibble ou tbl) importées  (rafaels)
 #'
 #' @examples
 #' \dontrun{
@@ -5619,7 +5677,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 #' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
 #'
-#' @return Une table (data.frame ou tbl_df) qui contient les données Anohosp in / out
+#' @return Une table (data.frame ou tibble) qui contient les données Anohosp in / out
 #'
 #' @examples
 #' \dontrun{
@@ -6577,7 +6635,7 @@ enrobeur <- function(a, robe = "\'", colonne = F, interstice = ", ", symetrique 
 #' @return un tibble contenant les rsa respectant la requete : les rsa qui ont un acte de la liste, un diag, une duree correspondante, etc.
 #'
 #' @author G. Pressiat
-#' @importFrom dplyr mutate inner_join select filter_ distinct tibble tbl_df data_frame
+#' @importFrom dplyr mutate inner_join select filter_ distinct tibble tibble data_frame
 #' @importFrom purrr flatten_chr
 #' @importFrom sqldf sqldf
 #' @export
@@ -6650,14 +6708,14 @@ requete <- function (tables, elements, vars = NULL) {
       s <- paste0("select distinct cle_rsa from d where ",
                   paste0("diag like '", elements$diags, "%'",
                          collapse = " or "))
-      diags <- sqldf::sqldf(s) %>% dplyr::tbl_df()
+      diags <- sqldf::sqldf(s) %>% tibble::as_tibble()
     }
     else if (elements[["positions_diags"]][1] == "dp") {
       d <- tables$rsa
       s <- paste0("select cle_rsa from d where (",
                   paste0("dp like '", elements$diags, "%'",
                          collapse = " or "), ")")
-      diags <- sqldf::sqldf(s) %>% dplyr::tbl_df() %>%
+      diags <- sqldf::sqldf(s) %>% tibble::as_tibble() %>%
         dplyr::select(cle_rsa)
     }
     else {
@@ -6666,7 +6724,7 @@ requete <- function (tables, elements, vars = NULL) {
                   paste0(elements$positions_diags, collapse = ", "),
                   ") and ( ", paste0("diag like '", elements$diags,
                                      "%'", collapse = " or "), " )")
-      diags <- sqldf::sqldf(s) %>% dplyr::tbl_df()    
+      diags <- sqldf::sqldf(s) %>% tibble::as_tibble()    
     }}
   else {
     diags = dplyr::tibble()
@@ -6674,7 +6732,7 @@ requete <- function (tables, elements, vars = NULL) {
   }
   if (length(elements[["actes"]]) > 0) {
     liste_actes = dplyr::data_frame(cdccam = elements$actes) %>% 
-      dplyr::tbl_df()
+      tibble::as_tibble()
     if (length(elements[["activite_actes"]]) > 0) {
       actes = dplyr::inner_join(tables$actes %>% filter(act %in% 
                                                           elements[["activite_actes"]]), liste_actes, 
@@ -6719,7 +6777,7 @@ requete <- function (tables, elements, vars = NULL) {
 #' @return un tibble contenant les rsa respectant la requete : les rsa qui ont un acte de la liste, un diag, une duree correspondante, etc.
 #'
 #' @author G. Pressiat
-#' @importFrom dplyr mutate inner_join select filter_ distinct tibble tbl_df data_frame
+#' @importFrom dplyr mutate inner_join select filter_ distinct tibble tibble data_frame
 #' @export
 requete_db <- function (con, an, elements, vars = NULL)
 {
@@ -6813,14 +6871,14 @@ requete_db <- function (con, an, elements, vars = NULL)
   if (length(elements[["actes"]]) > 0) {
     if (length(elements[["activite_actes"]]) > 0){
       liste_actes = dplyr::data_frame(cdccam = elements$actes) %>%
-        dplyr::tbl_df() %>% dplyr::copy_to(con, ., "acc",
+        tibble::as_tibble() %>% dplyr::copy_to(con, ., "acc",
                                            overwrite = T)
       actes_filtre = dplyr::inner_join(tbl_mco(con, an, "rsa_actes") %>% filter(act %in% elements[['activite_actes']]),
                                        dplyr::tbl(con, "acc"), by = c(cdccam = "cdccam")) %>%
         dplyr::distinct(cle_rsa)
     } else {
       liste_actes = dplyr::data_frame(cdccam = elements$actes) %>%
-        dplyr::tbl_df() %>% dplyr::copy_to(con, ., "acc",
+        tibble::as_tibble() %>% dplyr::copy_to(con, ., "acc",
                                            overwrite = T)
       actes_filtre = dplyr::inner_join(tbl_mco(con, an, "rsa_actes"),
                                        dplyr::tbl(con, "acc"), by = c(cdccam = "cdccam")) %>%

@@ -348,8 +348,8 @@ vvr_ghs_supp <- function(rsa,
   
   rdth <- purrr::flatten_chr(rsa_i$lrdh) %>% stringr::str_trim()
   df <- rsa_i %>% dplyr::select(cle_rsa, nb_rdth)
-  df <- as.data.frame(lapply(df, rep, df$nb_rdth), stringsAsFactors = F) %>% dplyr::tbl_df()
-  rdth <- dplyr::bind_cols(df,data.frame(r = rdth, stringsAsFactors = F) ) %>% dplyr::tbl_df()
+  df <- as.data.frame(lapply(df, rep, df$nb_rdth), stringsAsFactors = F) %>% tibble::as_tibble()
+  rdth <- dplyr::bind_cols(df,data.frame(r = rdth, stringsAsFactors = F) ) %>% tibble::as_tibble()
   
   rdth <- rdth %>%
     dplyr::mutate(codsupra = stringr::str_sub(r, 1,4),
@@ -1486,17 +1486,21 @@ vvr_rum <- function(p, valo,
   
   #  vvr_rum_check_rubriques_rav(valo, valo_rum)
   
+
+  # valo_rum %>% 
+  #   select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp, nb_uma, norss, cdurm, typaut1, ends_with('_rum')) %>% 
+  #   mutate_at(vars(starts_with('rec_')), tidyr::replace_na, 0)
+
   if (type_passage == "RUM"){
-    return(valo_rum %>% select(cle_rsa, nseqrum, nbrum, p1, p2, n, pmct_um_dp, 
-                               nb_uma, norss, cdurm, typaut1, ends_with("_rum")) %>% 
-             mutate_at(vars(starts_with("rec_")), tidyr::replace_na, 
+    return(valo_rum %>% select(cle_rsa, nseqrum, nbrum, p1, p2, n, pmct_um_dp,
+                               nb_uma, norss, cdurm, typaut1, ends_with("_rum"), starts_with('sup'), starts_with("flag_")) %>%
+             mutate_at(vars(starts_with("rec_")), tidyr::replace_na,
                        0))} else {
-                         return(valo_rum %>% select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp, 
-                                                    nb_uma, norss, cdurm, typaut1, ends_with("_rum")) %>% 
-                                  mutate_at(vars(starts_with("rec_")), tidyr::replace_na, 
+                         return(valo_rum %>% select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp,
+                                                    nb_uma, norss, cdurm, typaut1, ends_with("_rum"), starts_with('sup'), starts_with("flag_")) %>%
+                                  mutate_at(vars(starts_with("rec_")), tidyr::replace_na,
                                             0))
-                       }
-  
+                       }  
 }
 
 
