@@ -3205,6 +3205,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
+#' @param typano Type de donnees in / out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
@@ -3247,10 +3248,12 @@ iano_had.list <- function(l, ...){
 }
 
 #' @export
-iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = F, ...){
+iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out', 'in'), tolower_names = F, ...){
   if (annee<2011|annee > 2020){
     stop('Année PMSI non prise en charge\n')
   }
+  typano <- match.arg(typano)
+  
   if (mois<1|mois>12){
     stop('Mois incorrect\n')
   }
@@ -3258,11 +3261,12 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
-  if(annee >= 2020 & mois >= 3) {
-    format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == "20_H33")
-  } else {
+  if (typano=="out"){
+  # if(annee >= 2020 & mois >= 3) {
+  #   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == "20_H33")
+  # } else {
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == substr(as.character(annee),3,4)) 
-  }
+  # }
   
   af <- format$longueur
   libelles <- format$libelle
@@ -3331,6 +3335,84 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, tolower_names = 
   if (lib==T){
     ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
     ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
+  }
+  }
+  
+  if (typano=="in"){
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rhs_ano', an == substr(as.character(annee),3,4))
+    
+    af <- format$longueur
+    libelles <- format$libelle
+    an <- format$nom
+    vec <- format$type
+    col_types <-  vec
+    is_character <- vapply(col_types, is.character, logical(1))
+    col_concise <- function(x) {
+      switch(x,
+             "_" = ,
+             "-" = readr::col_skip(),
+             "?" = readr::col_guess(),
+             c = readr::col_character(),
+             D = readr::col_date(),
+             d = readr::col_double(),
+             i = readr::col_integer(),
+             l = readr::col_logical(),
+             n = readr::col_number(),
+             T = readr::col_datetime(),
+             t = readr::col_time(),
+             stop("Unknown shortcut: ", x, call. = FALSE)
+      )
+    }
+    col_types[is_character] <- lapply(col_types[is_character], col_concise)
+    
+    at <- structure(
+      list(
+        cols = col_types
+      ),
+      class = "col_spec"
+    )
+    
+    
+    if (2011<annee){
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
+        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
+                      MTFACTMO = MTFACTMO/100,
+                      MTFORJOU = MTFORJOU/100,
+                      MTFACTOT = MTFACTOT/100,
+                      MTRMAMC  = MTRMAMC /100,
+                      MTBASERM = MTBASERM/100,
+                      TAUXRM   = TAUXRM  /100,
+                      MTMAJPAR = MTMAJPAR/100)
+    }
+    if (annee == 2011){
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
+        dplyr::mutate(
+          MTFACTMO = MTFACTMO/100,
+          MTFORJOU = MTFORJOU/100,
+          MTFACTOT = MTFACTOT/100,
+          MTBASERM = MTBASERM/100,
+          TAUXRM   = TAUXRM  /100,
+          MTMAJPAR = MTMAJPAR/100)
+    }
+    
+    Fillers <- names(ano_i)
+    Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
+    ano_i <- ano_i[,!(names(ano_i) %in% Fillers)]
+    
+    if (lib==T){
+      v <- libelles[!is.na(libelles)]
+      ano_i <- ano_i  %>%  sjlabelled::set_label(v)
+    }
   }
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
@@ -4080,6 +4162,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
+#' @param typano Type de donnees in / out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... paramètres supplementaires à passer
@@ -4123,10 +4206,12 @@ iano_ssr.list <- function(l, ...){
 }
 
 #' @export
-iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
+iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out', 'in'), tolower_names = F, ...){
   if (annee<2011|annee > 2020){
     stop('Année PMSI non prise en charge\n')
   }
+  typano <- match.arg(typano)
+  
   if (mois<1|mois>12){
     stop('Mois incorrect\n')
   }
@@ -4134,6 +4219,8 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
+  if (typano=="out"){
+    
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rha_ano', an == substr(as.character(annee),3,4))
   
   af <- format$longueur
@@ -4205,10 +4292,89 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("FIL"))
   }
+  }
+  
+  if (typano=="in"){
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'ssr', table == 'rhs_ano', an == substr(as.character(annee),3,4))
+    
+    af <- format$longueur
+    libelles <- format$libelle
+    an <- format$nom
+    vec <- format$type
+    col_types <-  vec
+    is_character <- vapply(col_types, is.character, logical(1))
+    col_concise <- function(x) {
+      switch(x,
+             "_" = ,
+             "-" = readr::col_skip(),
+             "?" = readr::col_guess(),
+             c = readr::col_character(),
+             D = readr::col_date(),
+             d = readr::col_double(),
+             i = readr::col_integer(),
+             l = readr::col_logical(),
+             n = readr::col_number(),
+             T = readr::col_datetime(),
+             t = readr::col_time(),
+             stop("Unknown shortcut: ", x, call. = FALSE)
+      )
+    }
+    col_types[is_character] <- lapply(col_types[is_character], col_concise)
+    
+    at <- structure(
+      list(
+        cols = col_types
+      ),
+      class = "col_spec"
+    )
+    
+    
+    if (2011<annee){
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".anoh.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
+        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
+                      MTFACTMO = MTFACTMO/100,
+                      MTFORJOU = MTFORJOU/100,
+                      MTFACTOT = MTFACTOT/100,
+                      MTRMAMC  = MTRMAMC /100,
+                      MTBASERM = MTBASERM/100,
+                      TAUXRM   = TAUXRM  /100,
+                      MTMAJPAR = MTMAJPAR/100)
+    }
+    if (annee == 2011){
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".anoh.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
+        dplyr::mutate(
+          MTFACTMO = MTFACTMO/100,
+          MTFORJOU = MTFORJOU/100,
+          MTFACTOT = MTFACTOT/100,
+          MTBASERM = MTBASERM/100,
+          TAUXRM   = TAUXRM  /100,
+          MTMAJPAR = MTMAJPAR/100)
+    }
+    
+    Fillers <- names(ano_i)
+    Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
+    ano_i <- ano_i[,!(names(ano_i) %in% Fillers)]
+    
+    if (lib==T){
+      v <- libelles[!is.na(libelles)]
+      ano_i <- ano_i  %>%  sjlabelled::set_label(v)
+    }
+  }
   
   if (tolower_names){
     names(ano_i) <- tolower(names(ano_i))
   }
+  
   
 
   attr(ano_i,"problems") <- synthese_import
@@ -5096,6 +5262,7 @@ ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
+#' @param typano Type de donnees in / out
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
@@ -5137,10 +5304,12 @@ iano_psy.list <- function(l, ...){
 }
 
 #' @export
-iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
+iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'), lib=T, tolower_names = F, ...){
   if (annee<2012|annee > 2020){
     stop('Année PMSI non prise en charge\n')
   }
+  typano <- match.arg(typano)
+  
   if (mois<1|mois>12){
     stop('Mois incorrect\n')
   }
@@ -5148,6 +5317,7 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
+  if (typano=="out"){
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'psy', table == 'rpsa_ano', an == substr(as.character(annee),3,4))
   
   af <- format$longueur
@@ -5219,6 +5389,84 @@ iano_psy.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
   if (lib == T){
   ano_i <- ano_i %>% sjlabelled::set_label(c(libelles,'Chaînage Ok'))
   ano_i <- ano_i %>% dplyr::select(-dplyr::starts_with("Fill"))
+  }
+  }
+  
+  if (typano=="in"){
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'psy', table == 'rps_ano', an == substr(as.character(annee),3,4))
+    
+    af <- format$longueur
+    libelles <- format$libelle
+    an <- format$nom
+    vec <- format$type
+    col_types <-  vec
+    is_character <- vapply(col_types, is.character, logical(1))
+    col_concise <- function(x) {
+      switch(x,
+             "_" = ,
+             "-" = readr::col_skip(),
+             "?" = readr::col_guess(),
+             c = readr::col_character(),
+             D = readr::col_date(),
+             d = readr::col_double(),
+             i = readr::col_integer(),
+             l = readr::col_logical(),
+             n = readr::col_number(),
+             T = readr::col_datetime(),
+             t = readr::col_time(),
+             stop("Unknown shortcut: ", x, call. = FALSE)
+      )
+    }
+    col_types[is_character] <- lapply(col_types[is_character], col_concise)
+    
+    at <- structure(
+      list(
+        cols = col_types
+      ),
+      class = "col_spec"
+    )
+    
+    
+    if (2011<annee){
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".anohosp.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
+        dplyr::mutate(DTHOSP   = lubridate::dmy(DTHOSP),
+                      MTFACTMO = MTFACTMO/100,
+                      MTFORJOU = MTFORJOU/100,
+                      MTFACTOT = MTFACTOT/100,
+                      MTRMAMC  = MTRMAMC /100,
+                      MTBASERM = MTBASERM/100,
+                      TAUXRM   = TAUXRM  /100,
+                      MTMAJPAR = MTMAJPAR/100)
+    }
+    if (annee == 2011){
+      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".anohosp.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(ano_i) -> synthese_import
+      
+      ano_i <- ano_i %>% 
+        dplyr::mutate(
+          MTFACTMO = MTFACTMO/100,
+          MTFORJOU = MTFORJOU/100,
+          MTFACTOT = MTFACTOT/100,
+          MTBASERM = MTBASERM/100,
+          TAUXRM   = TAUXRM  /100,
+          MTMAJPAR = MTMAJPAR/100)
+    }
+    
+    Fillers <- names(ano_i)
+    Fillers <- Fillers[stringr::str_sub(Fillers,1,3)=="FIL"]
+    ano_i <- ano_i[,!(names(ano_i) %in% Fillers)]
+    
+    if (lib==T){
+      v <- libelles[!is.na(libelles)]
+      ano_i <- ano_i  %>%  sjlabelled::set_label(v)
+    }
   }
   
   if (tolower_names){
