@@ -19,7 +19,7 @@ Un tibble similaire au tableau RAV epmsi avec deux colonnes (rsa et rum)
 }
 \examples{
 \dontrun{
-vvr_rum_check_rubriques_rav(valo)
+vvr_rum_check_rubriques_rav(valo, valo_rum)
 }
 
 }

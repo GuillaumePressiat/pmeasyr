@@ -4,8 +4,11 @@
 \alias{ana_r_ca_gestes_marqueurs}
 \title{~ ANA - Chirurgie ambulatoire : 55 gestes marqueurs}
 \usage{
-ana_r_ca_gestes_marqueurs(p, periode = list(an = 2018, moi = 12),
-  gestes_marqueurs)
+ana_r_ca_gestes_marqueurs(
+  p,
+  periode = list(an = 2018, moi = 12),
+  gestes_marqueurs
+)
 }
 \arguments{
 \item{p}{Noyau de paramètres}

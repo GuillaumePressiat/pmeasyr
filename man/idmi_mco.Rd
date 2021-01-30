@@ -26,7 +26,7 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une table (data.frame, tbl_df) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : 
+Une table (data.frame, tibble) contenant les dispositifs médicaux implantables In ou Out (T2A, ATU et thrombo selon l'existence des fichiers : 
 si le fichier n'existe pas, pas de donnée importée). Pour discriminer le type de prestation, la colonne TYPEPREST donne l'information : 
 T2A 06 - ATU 09 - THROMBO 10
 }

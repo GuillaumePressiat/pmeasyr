@@ -15,6 +15,8 @@ iano_ssr(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 
 \item{path}{Localisation du fichier de donnees}
 
+\item{typano}{Type de donnees in / out}
+
 \item{lib}{Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}}
 
 \item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
@@ -24,10 +26,10 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes, \code{progress = F, skip =...}}
 }
 \value{
-Une table (data.frame, tbl_df) contenant les données Anohosp SSR du Out.
+Une table (data.frame, tibble) contenant les données Anohosp SSR du Out.
 }
 \description{
-Import du fichier Ano Out
+Import du fichier Ano
 }
 \details{
 Formats depuis 2011 pris en charge

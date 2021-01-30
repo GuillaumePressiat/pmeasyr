@@ -26,7 +26,7 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premières lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une table (data.frame ou tbl_df) qui contient : - Clé RSA - NORSS - Numéro de ligne du fichier RSS d'origine (rss.ini) - NAS - Date d'entrée du séjour - GHM groupage du RSS (origine) - Date de sortie du séjour
+Une table (data.frame ou tibble) qui contient : - Clé RSA - NORSS - Numéro de ligne du fichier RSS d'origine (rss.ini) - NAS - Date d'entrée du séjour - GHM groupage du RSS (origine) - Date de sortie du séjour
 }
 \description{
 Import du fichier TRA, 4 champs PMSI couverts.

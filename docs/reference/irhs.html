@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>~ PSY - Import des R3A — ir3a • pmeasyr</title>
+<title>~ SSR - Import des RHS — irhs • pmeasyr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="~ PSY - Import des R3A — ir3a" />
-<meta property="og:description" content="Import du fichier R3A" />
+<meta property="og:title" content="~ SSR - Import des RHS — irhs" />
+<meta property="og:description" content="Import des RHS" />
 
 
 
@@ -138,39 +138,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>~ PSY - Import des R3A</h1>
-    <small class="dont-index">Source: <a href='https://github.com/GuillaumePressiat/pmeasyr/blob/master/R/main_before_utf.R'><code>R/main_before_utf.R</code></a></small>
-    <div class="hidden name"><code>ir3a.Rd</code></div>
+    <h1>~ SSR - Import des RHS</h1>
+    <small class="dont-index">Source: <a href='https://github.com/GuillaumePressiat/pmeasyr/blob/master/R/rhs.R'><code>R/rhs.R</code></a></small>
+    <div class="hidden name"><code>irhs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Import du fichier R3A</p>
+    <p>Import des RHS</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ir3a</span><span class='op'>(</span><span class='va'>finess</span>, <span class='va'>annee</span>, <span class='va'>mois</span>, <span class='va'>path</span>, lib <span class='op'>=</span> <span class='cn'>T</span>, tolower_names <span class='op'>=</span> <span class='cn'>F</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>irhs</span><span class='op'>(</span><span class='va'>finess</span>, <span class='va'>annee</span>, <span class='va'>mois</span>, <span class='va'>path</span>, lib <span class='op'>=</span> <span class='cn'>T</span>, tolower_names <span class='op'>=</span> <span class='cn'>F</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>finess</th>
-      <td><p>Finess du Out a importer : dans le nom du fichier</p></td>
+      <td><p>Finess du fichier In de GENRHA a integrer</p></td>
     </tr>
     <tr>
       <th>annee</th>
-      <td><p>Annee PMSI (nb) des donnees sur 4 caracteres (2016)</p></td>
+      <td><p>Annee de la periode (du fichier in)</p></td>
     </tr>
     <tr>
       <th>mois</th>
-      <td><p>Mois PMSI (nb) des données (janvier : 1, decembre : 12)</p></td>
+      <td><p>Mois de la periode (du fichier in)</p></td>
     </tr>
     <tr>
       <th>path</th>
-      <td><p>Localisation du fichier de donnees</p></td>
+      <td><p>Chemin d'acces au fichier .rhs.rtt</p></td>
     </tr>
     <tr>
       <th>lib</th>
-      <td><p>Ajout des libelles de colonnes aux tables, par defaut a <code>TRUE</code> ; necessite le package <code>sjlabelled</code></p></td>
+      <td><p>Attribution de libelles aux colonnes</p></td>
     </tr>
     <tr>
       <th>tolower_names</th>
@@ -180,22 +180,16 @@
       <th>~...</th>
       <td><p>parametres supplementaires a passer
 dans la fonction <code><a href='https://readr.tidyverse.org/reference/read_fwf.html'>read_fwf</a></code>, par exemple
-<code>n_max = 1e3</code> pour lire les 1000 premieres lignes,  <code>progress = F, skip = 1e3</code></p></td>
+<code>n_max=10e3</code> pour lire les 10000 premieres lignes</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Une table (data.frame, tibble) contenant les données R3A.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Formats depuis 2012 pris en charge
-Structure du nom du fichier attendu (sortie de Pivoine) :
-<em>finess.annee.moisc.r3a</em></p>
-<p><strong>750712184.2016.3.r3a</strong></p>
+    <p>Formats depuis 2011 pris en charge</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='irpsa.html'>irpsa</a></code>,
+    <div class='dont-index'><p><code><a href='iano_ssr.html'>iano_ssr</a></code>, <code><a href='ileg_ssr.html'>ileg_ssr</a></code>,
 utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
@@ -203,9 +197,8 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-   <span class='va'>r3a</span> <span class='op'>&lt;-</span> <span class='fu'>ir3a</span><span class='op'>(</span><span class='st'>'750712184'</span>,<span class='fl'>2015</span>,<span class='fl'>12</span>,<span class='st'>"~/Documents/data/psy"</span><span class='op'>)</span>
+   <span class='fu'>irhs</span><span class='op'>(</span><span class='st'>'750712184'</span>,<span class='fl'>2015</span>,<span class='fl'>12</span>,<span class='st'>'pathpath/'</span><span class='op'>)</span> <span class='op'>-&gt;</span> <span class='va'>rhs15</span>
 <span class='op'>}</span>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

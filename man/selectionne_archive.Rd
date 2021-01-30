@@ -4,8 +4,14 @@
 \alias{selectionne_archive}
 \title{Selectionne une archive in/out}
 \usage{
-selectionne_archive(finess, mois, annee, dossier_archives,
-  type_archive = "in", recent = TRUE)
+selectionne_archive(
+  finess,
+  mois,
+  annee,
+  dossier_archives,
+  type_archive = "in",
+  recent = TRUE
+)
 }
 \arguments{
 \item{finess}{Finess de l'archive.}

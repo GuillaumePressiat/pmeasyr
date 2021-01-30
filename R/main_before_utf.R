@@ -3193,7 +3193,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
 
 #' ~ HAD - Import des Anohosp
 #'
-#' Imports du fichier Ano Out
+#' Imports du fichier Ano 
 #'
 #' Formats depuis 2011 pris en charge
 #' Structure du nom du fichier attendu (sortie de Paprica) :
@@ -3662,7 +3662,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
 #' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
-#' \code{n_max=10e3} pour lire les 1000 premieres lignes
+#' \code{n_max=10e3} pour lire les 10000 premieres lignes
 #'
 #' @examples
 #' \dontrun{
@@ -4150,7 +4150,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
 
 #' ~ SSR - Import des Anohosp
 #'
-#' Import du fichier Ano Out
+#' Import du fichier Ano 
 #'
 #' Formats depuis 2011 pris en charge
 #' Structure du nom du fichier attendu (sortie de Genrha) :
@@ -5250,7 +5250,7 @@ ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
 
 #' ~ PSY - Import des Anohosp
 #'
-#' Import du fichier Ano Out
+#' Import du fichier Ano 
 #'
 #' Formats depuis 2012 pris en charge
 #' Structure du nom du fichier attendu (sortie de Genrha) :

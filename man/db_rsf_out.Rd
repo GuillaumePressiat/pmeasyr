@@ -18,16 +18,6 @@ db_rsf_out(con, p, remove = T, zip = T, indexes = list(), ...)
 \item{zip}{a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db}
 
 \item{indexes}{index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})}
-
-\item{con}{la connexion a la base de donnees (src_..)}
-
-\item{p}{le noyau pmeasyr}
-
-\item{remove}{a TRUE, les tables precedentes rafael de l'annee sont effacees avant}
-
-\item{zip}{a TRUE les fichiers des archives sont dezippes et effaces apres integration dans la db}
-
-\item{indexes}{index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})}
 }
 \value{
 nothing

@@ -26,7 +26,7 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rsa, rsa_um, actes et das si import > 3)
+Une classe S3 contenant les tables (data.frame, tibble ou tbl) importées  (rsa, rsa_um, actes et das si import > 3)
 }
 \description{
 Import des RSA. 6 types d'imports possibles.
@@ -47,6 +47,7 @@ Types d'imports :
 5 Standard+ : \tab Partie fixe + création des tables acdi et rsa_um + stream (+)\cr
 6 Standard++ : \tab Partie fixe + création des tables acdi et rsa_um + stream (++)\cr
 }
+
 
 \strong{Principe du streaming :}
 Mise en chaîne de caractères de la succession d'actes CCAM au cours du RUM, par exemple, pour un RUM :

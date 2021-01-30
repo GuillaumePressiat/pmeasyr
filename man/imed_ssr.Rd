@@ -24,7 +24,7 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une table (data.frame, tbl_df) contenant les données médicaments SSR du Out.
+Une table (data.frame, tibble) contenant les données médicaments SSR du Out.
 }
 \description{
 Imports du fichier Med Out

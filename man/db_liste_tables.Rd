@@ -12,10 +12,6 @@ db_liste_tables(con, nb = 15)
 \item{con}{la connexion a la base de donnees (src_..)}
 
 \item{nb}{le nombre de lignes du tableau}
-
-\item{con}{la connexion a la base de donnees (src_..)}
-
-\item{nb}{le nombre de lignes du tableau}
 }
 \value{
 nothing

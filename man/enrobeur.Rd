@@ -4,11 +4,9 @@
 \alias{enrobeur}
 \title{~ req : mise en forme d'une liste de codes}
 \usage{
-enrobeur(a, robe = "'", colonne = F, interstice = ", ",
-  symetrique = F)
+enrobeur(a, robe = "'", colonne = F, interstice = ", ", symetrique = F)
 
-enrobeur(a, robe = "'", colonne = F, interstice = ", ",
-  symetrique = F)
+enrobeur(a, robe = "'", colonne = F, interstice = ", ", symetrique = F)
 }
 \description{
 ~ req : mise en forme d'une liste de codes
@@ -21,9 +19,9 @@ li <- c('QEFA003', 'QEFA005', 'QEFA010', 'QEFA013', 'QEFA015', 'QEFA019', 'QEFA0
 
 enrobeur(li, robe="", interstice="|") \%>\% cat()
 
-enrobeur(li, robe="\\'", interstice=",") \%>\% cat()
+enrobeur(li, robe="\'", interstice=",") \%>\% cat()
 
-enrobeur(li, robe="\\'\%", interstice="\\n", symetrique = T) \%>\% cat()
+enrobeur(li, robe="\'\%", interstice="\n", symetrique = T) \%>\% cat()
 }
 
 \dontrun{
@@ -31,9 +29,9 @@ li <- c('QEFA003', 'QEFA005', 'QEFA010', 'QEFA013', 'QEFA015', 'QEFA019', 'QEFA0
 
 enrobeur(li, robe="", interstice="|") \%>\% cat()
 
-enrobeur(li, robe="\\'", interstice=",") \%>\% cat()
+enrobeur(li, robe="\'", interstice=",") \%>\% cat()
 
-enrobeur(li, robe="\\'\%", interstice="\\n", symetrique = T) \%>\% cat()
+enrobeur(li, robe="\'\%", interstice="\n", symetrique = T) \%>\% cat()
 }
 
 }

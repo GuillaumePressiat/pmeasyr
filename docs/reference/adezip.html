@@ -153,9 +153,19 @@
 <span class='fu'>adezip</span><span class='op'>(</span><span class='va'>.params</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>adezip</span><span class='op'>(</span><span class='va'>finess</span>, <span class='va'>annee</span>, <span class='va'>mois</span>, <span class='va'>path</span>, liste <span class='op'>=</span> <span class='cn'>NULL</span>,
-  pathto <span class='op'>=</span> <span class='va'>path</span>, type <span class='op'>=</span> <span class='st'>"in"</span>, recent <span class='op'>=</span> <span class='cn'>TRUE</span>, nom_archive <span class='op'>=</span> <span class='cn'>NULL</span>,
-  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>adezip</span><span class='op'>(</span>
+  <span class='va'>finess</span>,
+  <span class='va'>annee</span>,
+  <span class='va'>mois</span>,
+  <span class='va'>path</span>,
+  liste <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pathto <span class='op'>=</span> <span class='va'>path</span>,
+  type <span class='op'>=</span> <span class='st'>"in"</span>,
+  recent <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  nom_archive <span class='op'>=</span> <span class='cn'>NULL</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -248,8 +258,8 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt; <span class='message'>Date prod : 2016-03-18 18:26:36</span>
 #&gt; <span class='message'>Fichiers  : med</span></div><div class='input'> 
 <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "123456789.2016.2.med" "downlit"              "fileee21194a946"     
-#&gt; [4] "fileee220e0f76f"      "fileee22202216d.so"  </div><div class='input'>
+</div><div class='output co'>#&gt; [1] "123456789.2016.2.med" "downlit"              "file3e24bc50bf4.so"  
+#&gt; [4] "file3e262bb94d3"      "file3e2927db49"      </div><div class='input'>
 <span class='co'># Décompresser plusieurs types de fichiers d'une archive in</span>
  <span class='fu'>adezip</span><span class='op'>(</span><span class='st'>'123456789'</span>, <span class='fl'>2016</span>, <span class='fl'>2</span>, 
         path <span class='op'>=</span> <span class='va'>dossier_archives</span>,
@@ -267,8 +277,8 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='va'>tmp_dir</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "123456789.2016.2.ano.txt" "123456789.2016.2.med"    
 #&gt; [3] "123456789.2016.2.med.txt" "downlit"                 
-#&gt; [5] "fileee21194a946"          "fileee220e0f76f"         
-#&gt; [7] "fileee22202216d.so"      </div><div class='input'>
+#&gt; [5] "file3e24bc50bf4.so"       "file3e262bb94d3"         
+#&gt; [7] "file3e2927db49"          </div><div class='input'>
 <span class='co'># Utilisation avec un noyau de paramtères</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='noyau_pmeasyr.html'>noyau_pmeasyr</a></span><span class='op'>(</span>
        finess <span class='op'>=</span> <span class='st'>'123456789'</span>,
@@ -293,8 +303,8 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt;  [7] "123456789.2016.12.porg.txt"    "123456789.2016.12.rss.ini.txt"
 #&gt;  [9] "123456789.2016.12.rss.txt"     "123456789.2016.2.ano.txt"     
 #&gt; [11] "123456789.2016.2.med"          "123456789.2016.2.med.txt"     
-#&gt; [13] "downlit"                       "fileee21194a946"              
-#&gt; [15] "fileee220e0f76f"               "fileee22202216d.so"           </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
+#&gt; [13] "downlit"                       "file3e24bc50bf4.so"           
+#&gt; [15] "file3e262bb94d3"               "file3e2927db49"               </div><div class='input'><span class='co'># Modification d'un paramètre du noyau</span>
 <span class='fu'>adezip</span><span class='op'>(</span><span class='va'>p</span>, mois <span class='op'>=</span> <span class='fl'>11</span>, type <span class='op'>=</span> <span class='st'>"in"</span>,  pathto <span class='op'>=</span> <span class='va'>tmp_dir</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Dézippage de l'archive 123456789.2016.11.25122016154608.in.zip</span>
@@ -315,8 +325,8 @@ utiliser un noyau de parametres avec <code><a href='noyau_pmeasyr.html'>noyau_pm
 #&gt; [17] "123456789.2016.12.rss.ini.txt" "123456789.2016.12.rss.txt"    
 #&gt; [19] "123456789.2016.2.ano.txt"      "123456789.2016.2.med"         
 #&gt; [21] "123456789.2016.2.med.txt"      "downlit"                      
-#&gt; [23] "fileee21194a946"               "fileee220e0f76f"              
-#&gt; [25] "fileee22202216d.so"           </div><div class='input'>
+#&gt; [23] "file3e24bc50bf4.so"            "file3e262bb94d3"              
+#&gt; [25] "file3e2927db49"               </div><div class='input'>
 <span class='co'># Pour une même période (année/mois), il peut y avoir plusieurs archives si </span>
 <span class='co'># il y a eu plusieurs envois. Par exemple il y a deux version de l'archive</span>
 <span class='co'># out pour la période 2017.10 dans notre exemple simulé</span>

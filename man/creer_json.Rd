@@ -12,10 +12,6 @@ creer_json(requete, chemin)
 \item{requete}{`list` qui contient la requête}
 
 \item{chemin}{Nom du fichier json qui sera créé}
-
-\item{requete}{`list` qui contient la requête}
-
-\item{chemin}{Nom du fichier json qui sera créé}
 }
 \value{
 un objet de classe rsa de pmeasyr

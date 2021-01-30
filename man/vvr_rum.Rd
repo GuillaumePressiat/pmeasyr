@@ -4,10 +4,14 @@
 \alias{vvr_rum}
 \title{~ VVR - Distribuer la valorisation des rsa au niveau des rum ou des passages UM}
 \usage{
-vvr_rum(p, valo,
+vvr_rum(
+  p,
+  valo,
   repartition_multi = "{prop_pmct_um}*0.5+{prop_pass}*0.5",
-  pmct_mono = c(FALSE, TRUE), seuil_pmct = 10,
-  type_passage = c("RUM", "Passage unique"))
+  pmct_mono = c(FALSE, TRUE),
+  seuil_pmct = 10,
+  type_passage = c("RUM", "Passage unique")
+)
 }
 \arguments{
 \item{p}{Un noyau de paramètres}

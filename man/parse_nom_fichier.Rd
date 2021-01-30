@@ -4,8 +4,7 @@
 \alias{parse_nom_fichier}
 \title{Decoupe un seul nom de fichier}
 \usage{
-parse_nom_fichier(nom_fichier,
-  format_date_archive = "\%d\%m\%Y\%H\%M\%S")
+parse_nom_fichier(nom_fichier, format_date_archive = "\%d\%m\%Y\%H\%M\%S")
 }
 \arguments{
 \item{nom_fichier}{Le nom du fichier à découper. Chaine de caractère de longueur 1.}

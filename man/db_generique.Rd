@@ -20,18 +20,6 @@ db_generique(con, an, table, prefix, suffix, indexes = list(), remove = T)
 \item{suffix}{suffixe de la table dans la db (ex : rum_rum, rha_actes, rapss_rapss, ...)}
 
 \item{indexes}{index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})}
-
-\item{con}{la connexion a la base de donnees (src_..)}
-
-\item{an}{l'annee pmsi}
-
-\item{table}{La table R (tibble) a copier dans la db}
-
-\item{prefix}{prefixe de la table dans la db (ex : mco, rsf, ssr, ...)}
-
-\item{suffix}{suffixe de la table dans la db (ex : rum_rum, rha_actes, rapss_rapss, ...)}
-
-\item{indexes}{index a ajouter a la table dans la base (voir \code{\link[dplyr]{copy_to}})}
 }
 \value{
 nothing

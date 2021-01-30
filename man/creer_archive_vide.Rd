@@ -4,8 +4,11 @@
 \alias{creer_archive_vide}
 \title{Créer une archive vide à partir d'une archive réelle}
 \usage{
-creer_archive_vide(chemin_archive, dossier_cible = "archive_simul/",
-  finess_simul = "123456789")
+creer_archive_vide(
+  chemin_archive,
+  dossier_cible = "archive_simul/",
+  finess_simul = "123456789"
+)
 }
 \arguments{
 \item{chemin_archive}{Chemin vers une archive réelle qui servira de modèle pour l'archive simulée}

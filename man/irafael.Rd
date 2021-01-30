@@ -30,7 +30,7 @@ stat = T, lister = c("A", "B",
 \item{~...}{Autres parametres a specifier \code{n_max = 1e3}, ...}
 }
 \value{
-Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées  (rafaels)
+Une classe S3 contenant les tables (data.frame, tibble ou tbl) importées  (rafaels)
 }
 \description{
 Import des Rafael et des Rafael reprises

@@ -20,7 +20,7 @@ ileg_ssr(finess, annee, mois, path, reshape = F, tolower_names = F, ...)
 \item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 }
 \value{
-Une table (data.frame, tbl_df) contenant les erreurs Out.
+Une table (data.frame, tibble) contenant les erreurs Out.
 }
 \description{
 Import de la liste d'erreurs de génération Genrha

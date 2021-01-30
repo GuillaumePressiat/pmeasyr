@@ -4,9 +4,17 @@
 \alias{renomme_fichier}
 \title{Renommer un fichier au format standardisé}
 \usage{
-renomme_fichier(finess = "000000000", annee, mois, path, nom_fichier,
-  type_fichier, garder_original = TRUE, copie_temporaire = TRUE,
-  dossier_cible = path)
+renomme_fichier(
+  finess = "000000000",
+  annee,
+  mois,
+  path,
+  nom_fichier,
+  type_fichier,
+  garder_original = TRUE,
+  copie_temporaire = TRUE,
+  dossier_cible = path
+)
 }
 \arguments{
 \item{nom_fichier}{Nom du fichier original à renommer}

@@ -19,15 +19,17 @@ iano_had(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 
 \item{tolower_names}{a TRUE les noms de colonnes sont tous en minuscules}
 
+\item{typano}{Type de donnees in / out}
+
 \item{~...}{parametres supplementaires a passer
 dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une table (data.frame, tbl_df) contenant les données Anohosp HAD du Out.
+Une table (data.frame, tibble) contenant les données Anohosp HAD du Out.
 }
 \description{
-Imports du fichier Ano Out
+Imports du fichier Ano
 }
 \details{
 Formats depuis 2011 pris en charge

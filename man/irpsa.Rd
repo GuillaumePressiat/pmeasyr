@@ -24,7 +24,7 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une table (data.frame, tbl_df) contenant les données RPSA.
+Une table (data.frame, tibble) contenant les données RPSA.
 }
 \description{
 Import du fichier RPSA

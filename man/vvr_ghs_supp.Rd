@@ -4,10 +4,20 @@
 \alias{vvr_ghs_supp}
 \title{~ VVR - Attribuer les recettes GHS et suppléments sur des rsa}
 \usage{
-vvr_ghs_supp(rsa, tarifs, supplements = NULL, ano = NULL,
-  porg = dplyr::tibble(), diap = dplyr::tibble(),
-  pie = dplyr::tibble(), mo = dplyr::tibble(), full = FALSE,
-  cgeo = 1.07, prudent = NULL, bee = TRUE)
+vvr_ghs_supp(
+  rsa,
+  tarifs,
+  supplements = NULL,
+  ano = NULL,
+  porg = dplyr::tibble(),
+  diap = dplyr::tibble(),
+  pie = dplyr::tibble(),
+  mo = dplyr::tibble(),
+  full = FALSE,
+  cgeo = 1.07,
+  prudent = NULL,
+  bee = TRUE
+)
 }
 \arguments{
 \item{rsa}{Un tibble rsa partie fixe (créé avec \code{\link{vvr_rsa}})}

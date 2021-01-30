@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="~ SSR - Import des Anohosp — iano_ssr" />
-<meta property="og:description" content="Import du fichier Ano Out" />
+<meta property="og:description" content="Import du fichier Ano" />
 
 
 
@@ -144,7 +144,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Import du fichier Ano Out</p>
+    <p>Import du fichier Ano</p>
     </div>
 
     <pre class="usage"><span class='fu'>iano_ssr</span><span class='op'>(</span><span class='va'>finess</span>, <span class='va'>annee</span>, <span class='va'>mois</span>, <span class='va'>path</span>, lib <span class='op'>=</span> <span class='cn'>T</span>, tolower_names <span class='op'>=</span> <span class='cn'>F</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -169,6 +169,10 @@
       <td><p>Localisation du fichier de donnees</p></td>
     </tr>
     <tr>
+      <th>typano</th>
+      <td><p>Type de donnees in / out</p></td>
+    </tr>
+    <tr>
       <th>lib</th>
       <td><p>Ajout des libelles de colonnes aux tables, par defaut a <code>TRUE</code> ; necessite le package <code>sjlabelled</code></p></td>
     </tr>
@@ -186,7 +190,7 @@ dans la fonction <code><a href='https://readr.tidyverse.org/reference/read_fwf.h
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Une table (data.frame, tbl_df) contenant les données Anohosp SSR du Out.</p>
+    <p>Une table (data.frame, tibble) contenant les données Anohosp SSR du Out.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Formats depuis 2011 pris en charge

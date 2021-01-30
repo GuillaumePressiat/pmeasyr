@@ -26,7 +26,7 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une table (data.frame ou tbl_df) qui contient les données Anohosp in / out
+Une table (data.frame ou tibble) qui contient les données Anohosp in / out
 }
 \description{
 Import du fichier ANO In ou Out.

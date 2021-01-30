@@ -22,7 +22,7 @@ dans la fonction \code{\link[readr]{read_fwf}}, par exemple
 \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}}
 }
 \value{
-Une classe S3 contenant les tables (data.frame, tbl_df ou tbl) importées (rapss, acdi, ght).
+Une classe S3 contenant les tables (data.frame, tibble ou tbl) importées (rapss, acdi, ght).
 }
 \description{
 Imports du fichier RAPSS

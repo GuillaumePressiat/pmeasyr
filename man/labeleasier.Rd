@@ -4,8 +4,15 @@
 \alias{labeleasier}
 \title{~ Labels pour le PMSI}
 \usage{
-labeleasier(col, Mode_entree = F, Mode_sortie = F, Provenance = F,
-  Destination = F, Sexe = F, facteur = F)
+labeleasier(
+  col,
+  Mode_entree = F,
+  Mode_sortie = F,
+  Provenance = F,
+  Destination = F,
+  Sexe = F,
+  facteur = F
+)
 }
 \arguments{
 \item{col}{Colonne à laquelle attribuer le libellé}
