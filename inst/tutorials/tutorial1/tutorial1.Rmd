@@ -1,0 +1,203 @@
+---
+title: "Premier import de données PMSI avec pmeasyr"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: false
+runtime: shiny_prerendered
+description: >
+  Comment importer son premier fichier avec pmeasyr, puis faire de premiers filtres sur les données, un guide étape par étape
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(pmeasyr)
+
+# tutorial_options(exercise.timelimit = 60)
+knitr::opts_chunk$set(error = TRUE, eval = TRUE)
+
+```
+
+
+
+## Bienvenue
+
+Ce premier tutoriel a pour objectif de vous familiariser avec les éléments R et leur utilisation avec pmeasyr.
+
+
+## Les fichiers in/out 
+
+Les fichiers in/out des outils ATIH se trouvent dans les répertoires de travail des outils ATIH (Genrsa, etc.) une fois l'export du .pop.zip réalisé pour le postage sur epmsi, ces fichiers sont également générés.
+
+C'es-à-dire quelque chose comme : 
+
+`C:/Users/**username**/Documents/AppData/ATIH/Roaming/Genrsa/sauvegarde`
+
+
+### Emplacement des fichiers 
+
+Ces fichiers in/out peuvent être placés dans les répertoires suivants :
+
+  - ~/Documents/data/mco
+  - ~/Documents/data/ssr
+  - ~/Documents/data/psy
+  - ~/Documents/data/rsf
+  - ~/Documents/data/had
+
+Voir [ici](https://guillaumepressiat.github.io/pmeasyr-book/archives.html) pour plus d'informations (spécificités Linux/macOS/Windows).
+
+### Noyau de paramètres d'import {data-progressive=TRUE}
+
+Une fois les données placées à l'endroit opportun, on peut définir les paramètre qui serviront à l'import des fichiers.
+
+Mais avant cela, chargons le package pmeasyr dans R :
+
+```{r lib, exercise = TRUE}
+library(pmeasyr)
+```
+
+On se servira beaucoup d'un autre package : 
+
+```{r lib2,exercise = TRUE}
+library(dplyr)
+```
+
+
+Ici, `p` contiendra les informations essentielles pour importer notre premier fichier rsa :
+
+```{r p,exercise = TRUE, exercise.setup = 'one'}
+p <- noyau_pmeasyr(
+  finess = '290000017', # par exemple 290000017 - Finess juridique du CHRU de Brest
+  # changer le finess par le vôtre ainsi que les autres paramètres
+  annee  = 2020L,
+  mois   = 12L,
+  path   = '~/Documents/data/mco'
+  )
+
+p
+
+###### --- cette ligne n'est pas dans l'exercice
+###### ### elle permet de retrouver l'objet p dans l'exercice suivant
+assign('p',p, envir = globalenv()) 
+###### ne pas en tenir compte et ne pas modifier
+```
+
+### Dézipper les fichiers {data-progressive=TRUE}
+
+Ici, on dézippe le fichier rsa du out.
+
+```{r z,exercise = TRUE, exercise.setup = 'one'}
+adezip(p, type = "out", liste = 'rsa')
+```
+
+## Importer son premier fichier {data-progressive=TRUE}
+
+```{r i,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+rsa <- irsa(p)
+
+
+###### --- cette ligne n'est pas dans l'exercice
+###### ### elle permet de retrouver l'objet rsa dans l'exercice suivant 
+assign('rsa',rsa, envir = globalenv())
+###### ne pas en tenir compte et ne pas modifier
+```
+
+À ce stade, on a un objet nommé `rsa` qui contient plusieurs tables :
+
+  - `rsa$rsa` contient les RSA, une ligne par séjour RSS / RSA
+  - `rsa$rsa_um` contient les passages UM des RSA
+  - `rsa$das` contient les diagnostics associés RSA au niveau des passages UM
+  - `rsa$actes` contient les actes des RSA au niveau des passages UM
+
+Pour visualiser ces tables, vous pourrez écrire dans RStudio :
+
+```{r v,exercise = FALSE, exercise.eval = FALSE}
+# View(rsa$rsa)
+
+# View(rsa$actes)
+```
+
+Ou visualiser la table différement, sous forme d'un aperçu :
+
+```{r g,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+glimpse(rsa$rsa)
+```
+
+```{r g2,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+glimpse(rsa$das)
+```
+
+## Compter les GHM {data-progressive=TRUE}
+
+On fait un décompte des rsa par GHM, et on trie par ordre décroissant
+
+```{r filter1,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+count(rsa$rsa, ghm, sort = TRUE)
+```
+
+### Assigner le résultat à un objet {data-progressive=TRUE}
+
+```{r case,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+case_mix <- count(rsa$rsa, ghm, sort = TRUE)
+
+case_mix
+```
+
+
+## Filtrer sur un DP {data-progressive=TRUE}
+
+Voici comment on peut filtrer les lignes ayant comme DP Z511 et lister les 100 premiers RSA.
+
+On utilise l'opérateur `%>%` pour enchainer les opérations.
+
+```{r filtre,exercise = TRUE, exercise.eval = FALSE}
+filter(rsa$rsa, DP == 'Z511') %>%
+  head(n = 100)
+
+```
+
+C'est l'équivalent de :
+
+```{r filtre2,exercise = TRUE, exercise.eval = FALSE}
+head(filter(rsa$rsa, DP == 'Z511'), n = 100)
+```
+
+### Filtrer sur le DR C64 {data-progressive=TRUE}
+
+```{r filtrer,exercise = TRUE, exercise.eval = TRUE}
+
+```
+
+<div id="filtrer-hint">
+**Indice:** La colonne DR s'intitule "DR"
+</div>
+
+```{r filtrer-solution}
+filter(rsa$rsa, DR = 'C64')
+```
+
+
+### Filtrer sur le DP Z511 *et* le DR C64 {data-progressive=TRUE}
+
+```{r filtrepr,exercise = TRUE}
+
+```
+
+
+<div id="filtrepr-hint">
+**Indice:** On peut ajouter des conditions en les séparant par une ,
+</div>
+
+
+## Demander de l'aide
+
+```{r h,exercise = TRUE, exercise.eval = FALSE}
+?irsa
+
+?dplyr::filter
+```
+
+
+Voir ce [tutoriel](https://learnr-examples.shinyapps.io/ex-data-filter/) en ligne pour plus de détails sur la fonction `filter`.
+
