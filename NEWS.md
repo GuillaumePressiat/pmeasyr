@@ -1,3 +1,12 @@
+# pmeasyr 0.2.9
+
+* ano in : lecture pour les 4 champs sur 2011 — 2020
+* Psy in : lecture des rps et raa depuis 2012
+* SSR in : lecture des rhs depuis 2011
+* `dplyr::tbl_df` -> `tibble::as_tibble`
+* tutoriel learnr pour démarrer
+
+
 # pmeasyr 0.2.8
 
 * Ajout de fonctions d'analyse des données MCO : chir ambu GHM C + 7 racines, gestes marqueurs
