@@ -2211,13 +2211,13 @@ ileg_mco.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
   u <- stringr::str_split(leg_i, "\\;", simplify = T)
-  leg_i1 <- dplyr::data_frame(FINESS    = u[,1],
+  leg_i1 <- tibble::tibble(FINESS    = u[,1],
                               MOIS      = u[,2],
                               ANNEE     = u[,3],
                               CLE_RSA   = u[,4],
                               NBERR     = u[,5] %>% as.integer())
   
-  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
   legs <- u[,6:ncol(u)]
   legs<- legs[legs != ""] 
   leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
@@ -3615,7 +3615,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
   u <- stringr::str_split(leg_i, "\\;", simplify = T)
-  leg_i1 <- dplyr::data_frame(FINESS    = u[,1] %>% as.character(),
+  leg_i1 <- tibble::tibble(FINESS    = u[,1] %>% as.character(),
                               MOIS      = u[,2] %>% as.character(),
                               ANNEE     = u[,3] %>% as.character(),
                               NOSEQSEJ  = u[,4] %>% as.character(),
@@ -3623,7 +3623,7 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
                               NOSOUSSEQ = u[,6] %>% as.character(),
                               NBERR     = u[,7] %>% as.integer())
   
-  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
   legs <- u[,8:ncol(u)]
   legs<- legs[legs != ""] 
   leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
@@ -4579,14 +4579,14 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
   u <- stringr::str_split(leg_i, "\\;", simplify = T)
-  leg_i1 <- dplyr::data_frame(FINESS    = u[,1] %>% as.character(),
+  leg_i1 <- tibble::tibble(FINESS    = u[,1] %>% as.character(),
                               MOIS      = u[,2] %>% as.character(),
                               ANNEE     = u[,3] %>% as.character(),
                               NOSEQSEJ  = u[,4] %>% as.character(),
                               NOSEQRHS  = u[,5] %>% as.character(),
                               NBERR     = u[,6] %>% as.integer())
   
-  leg_i1 <- as.data.frame(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
   legs <- u[,7:ncol(u)]
   legs<- legs[legs != ""] 
   leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
@@ -5503,7 +5503,7 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
 
 #' @export
 dico <- function(table){
-  dplyr::data_frame(
+  tibble::tibble(
     nom   = names(table),
     label = sjlabelled::get_label(table),
     type  = sapply(table, class)
@@ -5870,7 +5870,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
   
   if (stat == T){
     print(
-      knitr::kable(dplyr::data_frame(Rafael = c('A', 'B', 'C', 'H', 'L', 'M',  'P'),
+      knitr::kable(tibble::tibble(Rafael = c('A', 'B', 'C', 'H', 'L', 'M',  'P'),
                                      Lignes = c(nrow(rafael_A),
                                                 nrow(rafael_B),
                                                 nrow(rafael_C),
@@ -6979,7 +6979,7 @@ requete <- function (tables, elements, vars = NULL) {
     
   }
   if (length(elements[["actes"]]) > 0) {
-    liste_actes = dplyr::data_frame(cdccam = elements$actes) %>% 
+    liste_actes = tibble::tibble(cdccam = elements$actes) %>% 
       tibble::as_tibble()
     if (length(elements[["activite_actes"]]) > 0) {
       actes = dplyr::inner_join(tables$actes %>% filter(act %in% 
@@ -7118,14 +7118,14 @@ requete_db <- function (con, an, elements, vars = NULL)
   }
   if (length(elements[["actes"]]) > 0) {
     if (length(elements[["activite_actes"]]) > 0){
-      liste_actes = dplyr::data_frame(cdccam = elements$actes) %>%
+      liste_actes = tibble::tibble(cdccam = elements$actes) %>%
         tibble::as_tibble() %>% dplyr::copy_to(con, ., "acc",
                                            overwrite = T)
       actes_filtre = dplyr::inner_join(tbl_mco(con, an, "rsa_actes") %>% filter(act %in% elements[['activite_actes']]),
                                        dplyr::tbl(con, "acc"), by = c(cdccam = "cdccam")) %>%
         dplyr::distinct(cle_rsa)
     } else {
-      liste_actes = dplyr::data_frame(cdccam = elements$actes) %>%
+      liste_actes = tibble::tibble(cdccam = elements$actes) %>%
         tibble::as_tibble() %>% dplyr::copy_to(con, ., "acc",
                                            overwrite = T)
       actes_filtre = dplyr::inner_join(tbl_mco(con, an, "rsa_actes"),
