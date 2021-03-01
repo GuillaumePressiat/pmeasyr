@@ -83,7 +83,7 @@ irum.list <- function(l, ...){
 
 #' @export
 irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_names = F, ...){
-  if (annee < 2011 | annee > 2020){
+  if (annee < 2011 | annee > 2021){
     stop("Année PMSI non prise en charge\n")
   }
   if (mois < 1 | mois > 12){
@@ -694,7 +694,7 @@ irsa.list <- function(l, ...){
 
 #' @export
 irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -1370,7 +1370,7 @@ itra.list <- function(l, ...){
 
 #' @export
 itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolower_names = F, ... ){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -1557,7 +1557,7 @@ iano_mco.list <- function(l, ...){
 
 #' @export
 iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -1819,7 +1819,7 @@ imed_mco.list <- function(l, ...){
 
 #' @export
 imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -2027,7 +2027,7 @@ idmi_mco.list <- function(l, ...){
 
 #' @export
 idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -2377,7 +2377,7 @@ idiap.list <- function(l , ...){
 idiap.default <- function(finess, annee, mois, path, 
                           typdiap = c("out", "in"), lib = T, 
                           tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -2552,7 +2552,7 @@ iium.list <- function(l , ...){
 
 #' @export
 iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -2668,7 +2668,7 @@ ipo.list <- function(l, ...){
 
 #' @export
 ipo.default <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, tolower_names = F, ...){
-if (annee<2011|annee > 2020){
+if (annee<2011|annee > 2021){
   stop('Année PMSI non prise en charge\n')
 }
 if (mois<1|mois>12){
@@ -2852,7 +2852,7 @@ irapss.list <- function(l, ...){
 
 #' @export
 irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -3249,7 +3249,7 @@ iano_had.list <- function(l, ...){
 
 #' @export
 iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out', 'in'), tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   typano <- match.arg(typano)
@@ -3481,7 +3481,7 @@ imed_had.list <- function(l, ...){
 
 #' @export
 imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -3696,7 +3696,7 @@ irha.list <- function(l, ...){
 
 #' @export
 irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -4207,7 +4207,7 @@ iano_ssr.list <- function(l, ...){
 
 #' @export
 iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out', 'in'), tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   typano <- match.arg(typano)
@@ -4438,7 +4438,7 @@ issrha.list <- function(l, ...){
 
 #' @export
 issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -4664,7 +4664,7 @@ imed_ssr.list <- function(l, ...){
 
 #' @export
 imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -4786,7 +4786,7 @@ iium_ssr.list <- function(l , ...){
 
 #' @export
 iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2013|annee > 2020){
+  if (annee<2013|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -4909,7 +4909,7 @@ irpsa.list <- function(l, ...){
 
 #' @export
 irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2020){
+  if (annee<2012|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -5166,7 +5166,7 @@ ir3a.list <- function(l, ...){
 
 #' @export
 ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2020){
+  if (annee<2012|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -5305,7 +5305,7 @@ iano_psy.list <- function(l, ...){
 
 #' @export
 iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'), lib=T, tolower_names = F, ...){
-  if (annee<2012|annee > 2020){
+  if (annee<2012|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   typano <- match.arg(typano)
@@ -5779,7 +5779,7 @@ irafael.list <- function(l, ...){
 irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, 
                             lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), 
                             lamda = F, tolower_names = F, ...){
-  if (annee<2011|annee > 2020){
+  if (annee<2011|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
@@ -5963,7 +5963,7 @@ iano_rafael.list <- function(l, ...){
 
 #' @export
 iano_rafael.default <- function(finess, annee, mois, path,  lib = T, lamda = F, tolower_names = F, ...){
-  if (annee<2012|annee > 2020){
+  if (annee<2012|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
