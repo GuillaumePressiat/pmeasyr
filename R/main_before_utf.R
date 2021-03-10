@@ -3264,11 +3264,13 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
   un<-Sys.time()
   
   if (typano=="out"){
-  # if(annee >= 2020 & mois >= 3) {
-  #   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == "20_H33")
-  # } else {
-    format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == substr(as.character(annee),3,4)) 
-  # }
+  if(annee >= 2020 & mois >= 3) {
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == "20_H33")
+  } else if(annee == 2021 & mois < 3) {
+  format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == "20_H33")
+  } else {
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == substr(as.character(annee),3,4)) 
+  }
   
   af <- format$longueur
   libelles <- format$libelle
