@@ -2206,7 +2206,7 @@ iivg_mco.list <- function(l, ...){
 
 #' @export
 iivg_mco.default <- function(finess, annee, mois, path, typivg = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2017|annee > 2020){
+  if (annee<2017|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){

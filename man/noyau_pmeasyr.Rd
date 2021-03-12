@@ -33,7 +33,7 @@ p \%>\% irsa()     -> rsa
 p \%>\% iano_mco() -> ano
 p \%>\% ipo()      -> po
 
-adezip(type = "in", liste = "")
+p \%>\% adezip(type = "in", liste = "")
  
 p \%>\% irum()     -> rum
 
