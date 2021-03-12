@@ -2151,6 +2151,186 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
   }
 }
 
+#' ~ MCO - Import des IVG
+#'
+#' Import des fichiers IVG In ou Out.
+#'
+#' Formats depuis 2017 pris en charge
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param typmed Type de donnees In / Out
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
+#' @param ~... parametres supplementaires a passer
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
+#'
+#' @return Une table (data.frame, tibble) contenant les IVG In ou Out 
+#' (si le fichier n'existe pas, pas de donnée importée). 
+#' Le TYPEPREST est par defaut 53
+#'
+#' @examples
+#' \dontrun{
+#'    iivg_mco('750712184', 2015, 12,'~/Documents/data/mco') -> ivg_out15
+#'    iivg_mco('750712184', 2015, 12,'~/Documents/data/mco', typivg = "in") -> ivg_in15
+#' }
+#'
+#' @author G. Pressiat, N. Taright
+#'
+#' @usage iivg_mco(finess, annee, mois, path, lib = T, tolower_names = F, typivg = c('out', 'in'))
+#' @seealso \code{\link{irum}}, \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @export iivg_mco
+#' @export
+iivg_mco <- function(...){
+  UseMethod('iivg_mco')
+}
+
+#' @export
+iivg_mco.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
+  do.call(iivg_mco.default, param2)
+}
+
+#' @export
+iivg_mco.list <- function(l, ...){
+  .params <- l
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
+  do.call(iivg_mco.default, param2)
+}
+
+#' @export
+iivg_mco.default <- function(finess, annee, mois, path, typivg = c("out", "in"), lib = T, tolower_names = F, ...){
+  if (annee<2017|annee > 2020){
+    stop('Année PMSI non prise en charge\n')
+  }
+  if (mois<1|mois>12){
+    stop('Mois incorrect\n')
+  }
+  typivg <- match.arg(typivg)
+  if (!(typivg %in% c('in', 'out'))){
+    stop('Paramètre typivg incorrect')
+  }
+  
+  op <- options(digits.secs = 6)
+  un<-Sys.time()
+  
+  if (typivg == "out"){
+    # ivg_out
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_ivg', an == substr(as.character(annee),3,4))
+    
+    af <- format$longueur
+    libelles <- format$libelle
+    an <- format$nom
+    vec <- format$type
+    col_types <-  vec
+    is_character <- vapply(col_types, is.character, logical(1))
+    col_concise <- function(x) {
+      switch(x,
+             "_" = ,
+             "-" = readr::col_skip(),
+             "?" = readr::col_guess(),
+             c = readr::col_character(),
+             D = readr::col_date(),
+             d = readr::col_double(),
+             i = readr::col_integer(),
+             l = readr::col_logical(),
+             n = readr::col_number(),
+             T = readr::col_datetime(),
+             t = readr::col_time(),
+             stop("Unknown shortcut: ", x, call. = FALSE)
+      )
+    }
+    col_types[is_character] <- lapply(col_types[is_character], col_concise)
+    
+    at <- structure(
+      list(
+        cols = col_types
+      ),
+      class = "col_spec"
+    )
+    
+    ivg_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ivg"),
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(ivg_i) -> synthese_import
+    
+    if (lib==T){
+      v <- libelles
+      ivg_i <- ivg_i  %>%  sjlabelled::set_label(v)
+    }
+    if (tolower_names){
+      names(ivg_i) <- tolower(names(ivg_i))
+    }
+    attr(ivg_i,"problems") <- synthese_import
+    return(ivg_i)
+  }
+  if (typivg=="in"){
+    # ivg_in
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rum_ivg', an == substr(as.character(annee),3,4))
+    
+    af <- format$longueur
+    libelles <- format$libelle
+    an <- format$nom
+    vec <- format$type
+    col_types <-  vec
+    is_character <- vapply(col_types, is.character, logical(1))
+    col_concise <- function(x) {
+      switch(x,
+             "_" = ,
+             "-" = readr::col_skip(),
+             "?" = readr::col_guess(),
+             c = readr::col_character(),
+             D = readr::col_date(),
+             d = readr::col_double(),
+             i = readr::col_integer(),
+             l = readr::col_logical(),
+             n = readr::col_number(),
+             T = readr::col_datetime(),
+             t = readr::col_time(),
+             stop("Unknown shortcut: ", x, call. = FALSE)
+      )
+    }
+    col_types[is_character] <- lapply(col_types[is_character], col_concise)
+    
+    at <- structure(
+      list(
+        cols = col_types
+      ),
+      class = "col_spec"
+    )
+    info = file.info(paste0(path,"/",finess,".",annee,".",mois,".ivg.txt"))
+    if (info$size >0 & !is.na(info$size)){
+      ivg_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ivg.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(ivg_i) -> synthese_import
+      
+    }
+    if (lib==T){
+      v <- libelles
+      v<- v[!is.na(v)]
+      ivg_i <- ivg_i %>%  sjlabelled::set_label(v)
+    }
+    
+    ivg_i %>% 
+      dplyr::mutate(D8EEUE = lubridate::dmy(D8EEUE, quiet = TRUE),
+                    D8SOUE = lubridate::dmy(D8SOUE, quiet = TRUE)) -> ivg_i
+    
+    if (tolower_names){
+      names(ivg_i) <- tolower(names(ivg_i))
+    }
+    attr(ivg_i,"problems") <- synthese_import
+    return(ivg_i)
+  }
+  
+}
+
+
 #' ~ MCO - Import des erreurs Leg
 #'
 #' Import de la liste d'erreurs de génération Genrsa
