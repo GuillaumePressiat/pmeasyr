@@ -39,6 +39,7 @@
 #' 
 #' }
 #' @return Chemin vers le fichier renommé.
+#' @importFrom glue glue
 #' @export
 #' 
 renomme_fichier <- function(finess = '000000000', # Argument optionnel, pas d'intérêt dans l'import

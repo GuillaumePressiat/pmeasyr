@@ -3652,7 +3652,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
 #' @usage iano_had(finess, annee, mois, path, lib = T, tolower_names = F, ...)
 #' @export iano_had
 #' @export
-iano_had <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
+iano_had <- function(finess, annee, mois, path, typano = c('out', 'in'), lib = T, tolower_names = F, ...){
   UseMethod('iano_had')
 }
 

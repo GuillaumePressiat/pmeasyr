@@ -25,8 +25,11 @@ Une \code{data.frame} contenant les colonnes :
 Pour lister sans dezipper les fichiers d'une archive.
 }
 \examples{
+
+\dontrun{
 test_files_dir <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
 astat(path = test_files_dir, file = "123456789.2016.2.15032016152413.in.zip", view = FALSE)
+}
 
 }
 \seealso{

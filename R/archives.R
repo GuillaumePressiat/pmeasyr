@@ -16,8 +16,11 @@
 #' @param view par défaut `TRUE` : affiche la liste avec [utils::View()]  Sinon retourne la table dans la console.
 #'
 #' @examples
+#' 
+#' \dontrun{
 #' test_files_dir <- system.file("extdata", "test_data", "test_adezip", package = "pmeasyr")
 #' astat(path = test_files_dir, file = "123456789.2016.2.15032016152413.in.zip", view = FALSE)
+#'}
 #'
 #' @author G. Pressiat
 #'
@@ -85,6 +88,8 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #' @param ... Paramètres supplémentaires. Permet par exemple de changer un des paramètres après avoir passé un noyau de paramètres sans changer le noyau de paramètres.
 
 #' @examples
+#' 
+#' \dontrun{
 #' # Chemin vers un dossier temporaire
 #' tmp_dir <- tempdir()
 #' 
@@ -138,6 +143,7 @@ adezip2 <- function(path, file, liste = "", pathto=""){
 #'         pathto = tmp_dir,
 #'         type = "out") 
 #'  dir(tmp_dir, pattern = "med")
+#'  }
 #'  
 #'  # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
 #'  # à choisir
@@ -493,10 +499,13 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = "", ..
 #' Si il y a plusieurs fichiers, la liste peut être facilement transformée en table avec [dplyr::bind_rows()].
 #' - `type` Type de fichier : *in*, *out*, *rss*...
 #' @examples 
+#' 
+#' \dontrun{
 #' noms_de_fichiers <- c("671234567.2016.1.12032016140012.in.zip",
 #'                       "671234567.2016.1.rum.txt")
 #'  x <- parse_noms_fichiers(noms_de_fichiers)
 #' dplyr::bind_rows(x)
+#' }
 #' @export
 #' @md
 parse_noms_fichiers <- function(noms_fichiers, return_tibble = TRUE) {

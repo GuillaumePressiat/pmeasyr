@@ -17,8 +17,12 @@ Imports:
     knitr,
     DBI,
     jsonlite,
-    sqldf
+    sqldf,
+    glue,
+    scales
 Author: Guillaume Pressiat
+Depends:
+    R (>= 3.5.0)
 Authors@R: c(person('Guillaume Pressiat', role = c("aut", "cre"), email = "guillaume.pressiat@chu-brest.fr"),
              person("Namik Taright", email = "", role = "aut"),
              person("Joris Muller", email = "", role = "aut"),

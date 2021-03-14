@@ -59,6 +59,8 @@ Recherche et dezippe (décompresse) les fichiers contenus dans une archive \emph
 Il est possible de passer directement les paramètres permettant d'identifier l'archive à dézipper (méthode par défaut) ou à l'aide de paramètres enregistrés dans un noyau de paramètres (voir fonction \code{\link{noyau_pmeasyr}}).
 }
 \examples{
+
+\dontrun{
 # Chemin vers un dossier temporaire
 tmp_dir <- tempdir()
 
@@ -112,6 +114,7 @@ dir(dossier_archives, pattern = "2017\\\\.10.*out\\\\.zip")
         pathto = tmp_dir,
         type = "out") 
  dir(tmp_dir, pattern = "med")
+ }
  
  # Si l'arguement `recent` est `FALSE` alors l'utilisateur est invité
  # à choisir

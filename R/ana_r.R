@@ -48,6 +48,7 @@
 #' }
 #' 
 #' @return Taux de chirurgie ambulatoire et DMS > 0 nuit des gestes marqueurs par finess géographique
+#' @importFrom scales percent
 #' @export
 ana_r_ca_gestes_marqueurs <- function(p, periode = list(an = 2018, moi = 12), gestes_marqueurs){
   
