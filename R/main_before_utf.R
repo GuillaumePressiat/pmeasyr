@@ -2161,7 +2161,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
 #' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
 #' @param path Localisation du fichier de donnees
-#' @param typmed Type de donnees In / Out
+#' @param typivg Type de donnees In / Out
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
 #' @param ~... parametres supplementaires a passer
@@ -2174,8 +2174,8 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
 #'
 #' @examples
 #' \dontrun{
-#'    iivg_mco('750712184', 2015, 12,'~/Documents/data/mco') -> ivg_out15
-#'    iivg_mco('750712184', 2015, 12,'~/Documents/data/mco', typivg = "in") -> ivg_in15
+#'    iivg_mco('750712184', 2017, 12,'~/Documents/data/mco') -> ivg_out17
+#'    iivg_mco('750712184', 2017, 12,'~/Documents/data/mco', typivg = "in") -> ivg_in17
 #' }
 #'
 #' @author G. Pressiat, N. Taright
@@ -2303,14 +2303,15 @@ iivg_mco.default <- function(finess, annee, mois, path, typivg = c("out", "in"),
       ),
       class = "col_spec"
     )
-    info = file.info(paste0(path,"/",finess,".",annee,".",mois,".ivg.txt"))
-    if (info$size >0 & !is.na(info$size)){
+    # info = file.info(paste0(path,"/",finess,".",annee,".",mois,".ivg.txt"))
+    # if (info$size >0 & !is.na(info$size)){
       ivg_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ivg.txt"),
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ivg_i) -> synthese_import
       
-    }
+    # }
+      
     if (lib==T){
       v <- libelles
       v<- v[!is.na(v)]
@@ -2330,6 +2331,186 @@ iivg_mco.default <- function(finess, annee, mois, path, typivg = c("out", "in"),
   
 }
 
+#' ~ MCO - Import des transports (TPT)
+#'
+#' Import des fichiers TPT In ou Out.
+#'
+#' Formats depuis 2021 pris en charge
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param typtpt Type de donnees In / Out
+#' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
+#' @param ~... parametres supplementaires a passer
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
+#'
+#' @return Une table (data.frame, tibble) contenant les transports In ou Out 
+#' (si le fichier n'existe pas, pas de donnée importée). 
+#' Le TYPEPREST est par defaut 15
+#'
+#' @examples
+#' \dontrun{
+#'    itpt_mco('750712184', 2021, 12,'~/Documents/data/mco') -> tpt_out15
+#'    itpt_mco('750712184', 2021, 12,'~/Documents/data/mco', typtpt = "in") -> tpt_in15
+#' }
+#'
+#' @author G. Pressiat, N. Taright
+#'
+#' @usage itpt_mco(finess, annee, mois, path, lib = T, tolower_names = F, typtpt = c('out', 'in'))
+#' @seealso \code{\link{irum}}, \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @export itpt_mco
+#' @export
+itpt_mco <- function(...){
+  UseMethod('itpt_mco')
+}
+
+#' @export
+itpt_mco.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
+  do.call(itpt_mco.default, param2)
+}
+
+#' @export
+itpt_mco.list <- function(l, ...){
+  .params <- l
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
+  do.call(itpt_mco.default, param2)
+}
+
+#' @export
+itpt_mco.default <- function(finess, annee, mois, path, typtpt = c("out", "in"), lib = T, tolower_names = F, ...){
+  if (annee < 2021 | annee > 2021){
+    stop('Année PMSI non prise en charge\n')
+  }
+  if (mois<1|mois>12){
+    stop('Mois incorrect\n')
+  }
+  typtpt <- match.arg(typtpt)
+  if (!(typtpt %in% c('in', 'out'))){
+    stop('Paramètre typtpt incorrect')
+  }
+  
+  op <- options(digits.secs = 6)
+  un<-Sys.time()
+  
+  if (typtpt == "out"){
+    # TPT out
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rsa_tpt', an == substr(as.character(annee),3,4))
+    
+    af <- format$longueur
+    libelles <- format$libelle
+    an <- format$nom
+    vec <- format$type
+    col_types <-  vec
+    is_character <- vapply(col_types, is.character, logical(1))
+    col_concise <- function(x) {
+      switch(x,
+             "_" = ,
+             "-" = readr::col_skip(),
+             "?" = readr::col_guess(),
+             c = readr::col_character(),
+             D = readr::col_date(),
+             d = readr::col_double(),
+             i = readr::col_integer(),
+             l = readr::col_logical(),
+             n = readr::col_number(),
+             T = readr::col_datetime(),
+             t = readr::col_time(),
+             stop("Unknown shortcut: ", x, call. = FALSE)
+      )
+    }
+    col_types[is_character] <- lapply(col_types[is_character], col_concise)
+    
+    at <- structure(
+      list(
+        cols = col_types
+      ),
+      class = "col_spec"
+    )
+    
+    tpt_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".transport"),
+                           readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+    readr::problems(tpt_i) -> synthese_import
+    
+    tpt_i <- tpt_i %>% 
+      dplyr::mutate(DTALLER = lubridate::dmy(DTALLER, quiet = TRUE))
+    
+    if (lib==T){
+      v <- libelles
+      tpt_i <- tpt_i  %>%  sjlabelled::set_label(v)
+    }
+    
+    if (tolower_names){
+      names(tpt_i) <- tolower(names(tpt_i))
+    }
+    attr(tpt_i,"problems") <- synthese_import
+    return(tpt_i)
+  }
+  if (typtpt=="in"){
+    # TPT in
+    format <- pmeasyr::formats %>% dplyr::filter(champ == 'mco', table == 'rum_tpt', an == substr(as.character(annee),3,4))
+    
+    af <- format$longueur
+    libelles <- format$libelle
+    an <- format$nom
+    vec <- format$type
+    col_types <-  vec
+    is_character <- vapply(col_types, is.character, logical(1))
+    col_concise <- function(x) {
+      switch(x,
+             "_" = ,
+             "-" = readr::col_skip(),
+             "?" = readr::col_guess(),
+             c = readr::col_character(),
+             D = readr::col_date(),
+             d = readr::col_double(),
+             i = readr::col_integer(),
+             l = readr::col_logical(),
+             n = readr::col_number(),
+             T = readr::col_datetime(),
+             t = readr::col_time(),
+             stop("Unknown shortcut: ", x, call. = FALSE)
+      )
+    }
+    col_types[is_character] <- lapply(col_types[is_character], col_concise)
+    
+    at <- structure(
+      list(
+        cols = col_types
+      ),
+      class = "col_spec"
+    )
+    
+    tpt_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".transp.txt"),
+                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+      
+      readr::problems(tpt_i) -> synthese_import
+      
+    
+    if (lib==T){
+      v <- libelles
+      # v<- v[!is.na(v)]
+      tpt_i <- tpt_i %>%  sjlabelled::set_label(v)
+    }
+    
+      tpt_i %>% 
+      dplyr::mutate(DTALLER = lubridate::dmy(DTALLER, quiet = TRUE)) -> tpt_i
+    
+    if (tolower_names){
+      names(tpt_i) <- tolower(names(tpt_i))
+    }
+    attr(tpt_i,"problems") <- synthese_import
+    return(tpt_i)
+  }
+  
+}
 
 #' ~ MCO - Import des erreurs Leg
 #'
@@ -2796,6 +2977,69 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   return(ium_i)
 }
 
+#' ~ MCO - Import des donnees correspondances d'UM du Out
+#'
+#' Imports du fichier IUM corresp MCO
+#'
+#' Formats depuis 2020 pris en charge
+#'
+#' @param finess Finess du Out a importer : dans le nom du fichier
+#' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2020)
+#' @param mois Mois PMSI (nb) des donnees (janvier : 1, decembre : 12)
+#' @param path Localisation du fichier de donnees
+#' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
+#' @param ~... parametres supplementaires à passer
+#' dans la fonction \code{\link[readr]{read_fwf}}, par exemple
+#' \code{n_max = 1e3} pour lire les 1000 premieres lignes,  \code{progress = F, skip = 1e3}
+#'
+#' @return Une table (data.frame, tibble) contenant les informations Um out/UM in.
+#'
+#' @examples
+#' \dontrun{
+#'    um_corresp <- iium_corresp('750712184',2020,12,"~/Documents/data/mco")
+#' }
+#'
+#' @author G. Pressiat
+#'
+#' @seealso \code{\link{irsa}},
+#' utiliser un noyau de parametres avec \code{\link{noyau_pmeasyr}}
+#' @usage iium_corresp(finess, annee, mois, path, lib = T, tolower_names = F, ...)
+#' @export iium_corresp
+#' @export
+iium_corresp <- function(...){
+  UseMethod('iium_corresp')
+}
+
+
+#' @export
+iium_corresp.pm_param <- function(params, ...){
+  new_par <- list(...)
+  param2 <- utils::modifyList(params, new_par)
+  do.call(iium_corresp.default, param2)
+}
+
+#' @export
+iium_corresp.list <- function(l , ...){
+  .params <- l
+  new_par <- list(...)
+  param2 <- utils::modifyList(.params, new_par)
+  do.call(iium_corresp.default, param2)
+}
+
+#' @export
+iium_corresp.default <- function(finess, annee, mois, path, tolower_names = F, ...){
+  fp <- paste0(path,"/",finess,".",annee,".",mois,".ium.correspnumseq.txt")
+  
+  umcorresp_i <- readr::read_delim(fp, col_names = c('NOSEQUM', 'CDURM'), 
+                                   col_types = readr::cols(NOSEQUM = readr::col_character(),
+                                                           CDURM = readr::col_character()), skip = 0L, delim = ";")
+  if (tolower_names){
+    names(umcorresp_i) <- tolower(names(umcorresp_i))
+  }
+  
+  return(umcorresp_i)
+}
+  
 #' ~ MCO - Import des PO
 #'
 #' Imports des fichiers PO In / Out
