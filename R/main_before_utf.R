@@ -2569,34 +2569,30 @@ ileg_mco.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"), ...)
   
-  extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+  leg_i1 <- tibble::tibble(l = leg_i) %>% 
+    tidyr::separate(l, c('FINESS', 'MOIS', 'ANNEE', 'CLE_RSA', 'NBERR', 'ERRS'), ";", extra = "merge")
   
-  u <- stringr::str_split(leg_i, "\\;", simplify = T)
-  leg_i1 <- tibble::tibble(FINESS    = u[,1],
-                              MOIS      = u[,2],
-                              ANNEE     = u[,3],
-                              CLE_RSA   = u[,4],
-                              NBERR     = u[,5] %>% as.integer())
-  
-  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
-  legs <- u[,6:ncol(u)]
-  legs<- legs[legs != ""] 
-  leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
-  
-  if (reshape==T){
+  if (reshape==FALSE){
+    leg_i1 <- leg_i1 %>% 
+      dplyr::mutate(EG = stringr::str_replace_all(ERRS, ";", ", ")) %>% 
+      dplyr::select(-ERRS)
+    
     if (tolower_names){
       names(leg_i1) <- tolower(names(leg_i1))
     }
     return(leg_i1)
   }
+
+  u <- stringr::str_split(leg_i1$ERRS, ";") %>% purrr::flatten_chr()
+  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  leg_i2 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(u), stringsAsFactors = F))
+  leg_i2 <- leg_i2 %>% 
+    dplyr::mutate(ERRS = stringr::str_replace_all(ERRS, ";", ", "))
   
-  leg_i1 %>% 
-    dplyr::group_by(FINESS, MOIS, ANNEE, CLE_RSA, NBERR) %>%
-    dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
   if (tolower_names){
-    names(leg_i1) <- tolower(names(leg_i1))
+    names(leg_i2) <- tolower(names(leg_i2))
   }
-  return(dplyr::ungroup(leg_i1))
+  return(leg_i2)
   
 }
 
@@ -4040,36 +4036,32 @@ ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
-  extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+  leg_i1 <- tibble::tibble(l = leg_i) %>% 
+    tidyr::separate(l, c('FINESS', 'MOIS', 'ANNEE', 'NOSEQSEJ', 
+                         'NOSEQ', 'NOSOUSSEQ',  'NBERR', 'ERRS'), ";", extra = "merge")
   
-  u <- stringr::str_split(leg_i, "\\;", simplify = T)
-  leg_i1 <- tibble::tibble(FINESS    = u[,1] %>% as.character(),
-                              MOIS      = u[,2] %>% as.character(),
-                              ANNEE     = u[,3] %>% as.character(),
-                              NOSEQSEJ  = u[,4] %>% as.character(),
-                              NOSEQ     = u[,5] %>% as.character(),
-                              NOSOUSSEQ = u[,6] %>% as.character(),
-                              NBERR     = u[,7] %>% as.integer())
-  
-  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
-  legs <- u[,8:ncol(u)]
-  legs<- legs[legs != ""] 
-  leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
-  
-  if (reshape==T){
+  if (reshape==FALSE){
+    leg_i1 <- leg_i1 %>% 
+      dplyr::mutate(EG = stringr::str_replace_all(ERRS, ";", ", ")) %>% 
+      dplyr::select(-ERRS)
+    
     if (tolower_names){
-      names(leg_i) <- tolower(names(leg_i))
+      names(leg_i1) <- tolower(names(leg_i1))
     }
     return(leg_i1)
   }
   
-  leg_i1 %>% 
-    dplyr::group_by(FINESS, MOIS, ANNEE, NOSEQSEJ, NOSEQ, NOSOUSSEQ, NBERR) %>%
-    dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
+  u <- stringr::str_split(leg_i1$ERRS, ";") %>% purrr::flatten_chr()
+  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  leg_i2 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(u), stringsAsFactors = F))
+  leg_i2 <- leg_i2 %>% 
+    dplyr::mutate(ERRS = stringr::str_replace_all(ERRS, ";", ", "))
+  
   if (tolower_names){
-    names(leg_i) <- tolower(names(leg_i))
+    names(leg_i2) <- tolower(names(leg_i2))
   }
-  return(dplyr::ungroup(leg_i1))
+  return(leg_i2)
+
 }
 
 ##############################################
@@ -5004,36 +4996,32 @@ ileg_ssr.default <- function(finess, annee, mois, path, reshape = F, tolower_nam
   
   leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
   
-  extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
+  leg_i1 <- tibble::tibble(l = leg_i) %>% 
+    tidyr::separate(l, c('FINESS', 'MOIS', 'ANNEE', 'NOSEQSEJ', 
+                         'NOSEQRHS', 'NBERR', 'ERRS'), ";", extra = "merge")
   
-  u <- stringr::str_split(leg_i, "\\;", simplify = T)
-  leg_i1 <- tibble::tibble(FINESS    = u[,1] %>% as.character(),
-                              MOIS      = u[,2] %>% as.character(),
-                              ANNEE     = u[,3] %>% as.character(),
-                              NOSEQSEJ  = u[,4] %>% as.character(),
-                              NOSEQRHS  = u[,5] %>% as.character(),
-                              NBERR     = u[,6] %>% as.integer())
-  
-  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
-  legs <- u[,7:ncol(u)]
-  legs<- legs[legs != ""] 
-  leg_i1 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(legs), stringsAsFactors = F))
-  
-  if (reshape==T){
+  if (reshape==FALSE){
+    leg_i1 <- leg_i1 %>% 
+      dplyr::mutate(EG = stringr::str_replace_all(ERRS, ";", ", ")) %>% 
+      dplyr::select(-ERRS)
+    
     if (tolower_names){
       names(leg_i1) <- tolower(names(leg_i1))
     }
     return(leg_i1)
-    
   }
   
-  leg_i1 %>% 
-    dplyr::group_by(FINESS, MOIS, ANNEE, NOSEQSEJ, NOSEQRHS, NBERR) %>%
-    dplyr::summarise(EG = paste(EG, collapse = ", ")) -> leg_i1
+  u <- stringr::str_split(leg_i1$ERRS, ";") %>% purrr::flatten_chr()
+  leg_i1 <- tibble::as_tibble(lapply(leg_i1, rep, leg_i1$NBERR), stringsAsFactors = F)
+  leg_i2 <- dplyr::bind_cols(leg_i1, data.frame(EG = as.character(u), stringsAsFactors = F))
+  leg_i2 <- leg_i2 %>% 
+    dplyr::mutate(ERRS = stringr::str_replace_all(ERRS, ";", ", "))
+  
   if (tolower_names){
-    names(leg_i1) <- tolower(names(leg_i1))
+    names(leg_i2) <- tolower(names(leg_i2))
   }
-  return(dplyr::ungroup(leg_i1))
+  return(leg_i2)
+  
 }
 
 #' ~ SSR - Import des Med
