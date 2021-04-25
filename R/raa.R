@@ -56,7 +56,7 @@ iraa.list <- function(l, ...){
 
 #' @export
 iraa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2020){
+  if (annee<2012|annee > 2021){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
