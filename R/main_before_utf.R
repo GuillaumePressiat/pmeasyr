@@ -6219,7 +6219,8 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
     readr::problems(r) -> synthese_import
     
     typi_r <- 9
-    if (annee > 2016){typi_r <- 11}
+    if (annee > 2016 & annee < 2020){typi_r <- 11}
+    # if (annee > 2019){typi_r <- 9}
   }
   if (lamda == T){
     # cat(paste("Import des rsfa-maj", annee, paste0("M",mois),"\n"))
