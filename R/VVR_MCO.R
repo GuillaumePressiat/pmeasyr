@@ -247,7 +247,7 @@ vvr_ghs_supp <- function(rsa,
                          pie  = dplyr::tibble(),
                          mo   = dplyr::tibble(),
                          full = FALSE, cgeo = 1.07, prudent = NULL,
-                         bee = TRUE) {
+                         bee = TRUE, csegur = 1.0019) {
   
   # Ajout de tarifs nuls pour le GHS 9999
   n_anseqta <- length(unique(rsa$anseqta))
@@ -297,11 +297,12 @@ vvr_ghs_supp <- function(rsa,
       old_noghs = ifelse(!is.na(switch_ghs) & (moissor < "03" | anseqta == "2018"), noghs, ''),
       noghs = ifelse(!is.na(switch_ghs) & (moissor < "03" | anseqta == "2018"), '8973', noghs))
   
+  
   if (is.null(prudent)){
     # Partie GHS
     rsa_2 <- rsa %>%
       dplyr::mutate(cprudent = dplyr::case_when(
-        anseqta == '2021'    ~ 0.9930,
+        anseqta == '2021'    ~ 0.9930 * csegur,
         anseqta == '2020'    ~ 0.9930,
         anseqta == '2019'    ~ 0.9930,
         anseqta == '2018'    ~ 0.9930,
