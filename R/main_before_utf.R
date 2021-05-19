@@ -4172,7 +4172,85 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   #   rha_i <- rha_i %>% dplyr::mutate(RR = as.numeric(RR) / 100)
   # }
   # 
-  if (annee >  2014){
+  
+  if (annee >  2019){
+    fzacte <- function(ccam){
+      dplyr::mutate(ccam,
+                    DELAI  = stringr::str_sub(ccam,1,5),
+                    CDCCAM = stringr::str_sub(ccam,6,12),
+                    DESCRI = stringr::str_sub(ccam,13,14) %>% stringr::str_trim(),
+                    PHASE  = stringr::str_sub(ccam,15,15),
+                    ACT    = stringr::str_sub(ccam,16,16),
+                    EXTDOC = stringr::str_sub(ccam,17,17),
+                    NBEXEC = stringr::str_sub(ccam,18,19),
+                    INDVAL = stringr::str_sub(ccam,20,20)
+      ) %>% dplyr::select(-ccam)
+    }
+    
+    fzsarr <- function(csarr){
+      dplyr::mutate(csarr,
+                    CSARR       = stringr::str_sub(csarr,1,7),
+                    CDAPP       = stringr::str_sub(csarr,8,10),
+                    CDMOD       = stringr::str_sub(csarr,11,12),
+                    CDPAT1      = stringr::str_sub(csarr,13,14),
+                    CDPAT2      = stringr::str_sub(csarr,15,16),
+                    CDINTER     = stringr::str_sub(csarr,17,18),
+                    NBPATIND    = stringr::str_sub(csarr,19,19),
+                    NBEXEC      = stringr::str_sub(csarr,20,21),
+                    INDVAL      = stringr::str_sub(csarr,22,22),
+                    DELAI       = stringr::str_sub(csarr,23,27),
+                    NBPATREEL   = stringr::str_sub(csarr,28,29),
+                    NBINT       = stringr::str_sub(csarr,30,31),
+                    EXTDOCcsarr = stringr::str_sub(csarr,32,33)
+      ) %>% dplyr::select(-csarr)
+    }
+    
+    zad <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,ZAD, NBDA, NBCSARR, NBCCAM) %>%
+      dplyr::mutate(
+        
+        da = ifelse(NBDA>0,stringr::str_sub(ZAD,1,6*NBDA),""),
+        lda = stringr::str_extract_all(da,".{1,6}"),
+        
+        csarr = ifelse(NBCSARR>0,stringr::str_sub(ZAD,6*NBDA+1,6*NBDA + 33*NBCSARR),""),
+        lcsarr = stringr::str_extract_all(csarr, ".{1,33}"),
+        
+        ccam = ifelse(NBCCAM>0,stringr::str_sub(ZAD,6*NBDA+1+33*NBCSARR,6*NBDA + 33*NBCSARR + 20*NBCCAM),""),
+        lccam = stringr::str_extract_all(ccam, ".{1,20}")
+      )
+    da <- purrr::flatten_chr(zad$lda)
+    
+    df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBDA)
+    df <- as.data.frame(lapply(df, rep, df$NBDA), stringsAsFactors = F) %>% tibble::as_tibble()
+    da <- dplyr::bind_cols(df,data.frame(DA = da, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='DA') %>% dplyr::select(-NBDA) %>%
+      dplyr::select(NOSEQSEJ, NOSEQRHS, CODE, DA) %>% dplyr::mutate(DA = stringr::str_trim(DA))
+    
+    csarr <- purrr::flatten_chr(zad$lcsarr)
+    
+    df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCSARR)
+    df <- as.data.frame(lapply(df, rep, df$NBCSARR), stringsAsFactors = F) %>% tibble::as_tibble()
+    csarr <- dplyr::bind_cols(df,data.frame(csarr = csarr, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CSARR') %>% dplyr::select(-NBCSARR)
+    
+    
+    ccam <- purrr::flatten_chr(zad$lccam)
+    
+    df <- rha_i %>% dplyr::select(NOSEQSEJ,NOSEQRHS,NBCCAM)
+    df <- as.data.frame(lapply(df, rep, df$NBCCAM), stringsAsFactors = F) %>% tibble::as_tibble()
+    ccam <- dplyr::bind_cols(df,data.frame(ccam = ccam, stringsAsFactors = F) ) %>% tibble::as_tibble() %>% dplyr::mutate(CODE='CCAM') %>% dplyr::select(-NBCCAM)
+    
+    acdi <-dplyr::bind_rows(da, fzsarr(csarr), fzacte(ccam))
+    
+    if (lib == T){
+      labelacdi <- c('N° Séquentiel du séjour', 'N° Séquentiel du RHS',  "Type de code (DA / CSARR / CCAM)","Diagnostic associé",
+                     "Code CSARR", "Code supplémentaire appareillage", "Code modulateur de lieu", "Code modulateur patient n°1",
+                     "Code modulateur patient n°2", "Code de l'intervenant", "Nb de patients en acte individuel",
+                     "Nb de réalisations","Acte compatible avec la semaine", "Délai depuis la date d'entrée dans l'UM",
+                     "Nb réel de patients", "Nb d'intervenants","Extension documentaire CSARR", "Code CCAM", "Partie descriptive","Phase CCAM",
+                     "Activité CCAM", "Extension documentaire CCAM")
+      
+      acdi <- acdi %>% sjlabelled::set_label(labelacdi)
+    }
+  }
+  if (annee >  2014 & annee < 2020){
     fzacte <- function(ccam){
       dplyr::mutate(ccam,
                     DELAI  = stringr::str_sub(ccam,1,4),
