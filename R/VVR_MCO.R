@@ -298,44 +298,53 @@ vvr_ghs_supp <- function(rsa,
       noghs = ifelse(!is.na(switch_ghs) & (moissor < "03" | anseqta == "2018"), '8973', noghs))
   
   
-  if (is.null(prudent)){
-    # Partie GHS
+  if (is.null(prudent)) {
     rsa_2 <- rsa %>%
-      dplyr::mutate(cprudent = dplyr::case_when(
-        anseqta == '2021'    ~ 0.9930 * csegur,
-        anseqta == '2020'    ~ 0.9930,
-        anseqta == '2019'    ~ 0.9930,
-        anseqta == '2018'    ~ 0.9930,
-        anseqta == '2017'    ~ 0.9930,
-        anseqta == '2016'    ~ 0.9950,
-        anseqta == '2015'    ~ 0.9965,
-        anseqta == '2014'    ~ 0.9965,
-        anseqta == '2013'    ~ 0.9965,
-        TRUE    ~ 1)) %>%
-      dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>%
-      dplyr::mutate(
-        t_base  = nbseance * tarif_base                  * cgeo * cprudent,
-        t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent,
-        t_bas   = dplyr::case_when(
-          sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
-          sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
-          sejinfbi == '0' ~ 0),
-        rec_bee = (t_base + t_haut - t_bas),
-        rec_totale = rec_bee)
-  } else {
-    # Partie GHS
+      dplyr::filter(substr(noghs,1,1) != 'I') %>%
+      dplyr::mutate(cprudent = dplyr::case_when(anseqta ==
+                                                  "2021" ~ 0.993 * csegur, anseqta == "2020" ~ 0.993,
+                                                anseqta == "2019" ~ 0.993, anseqta == "2018" ~ 0.993,
+                                                anseqta == "2017" ~ 0.993, anseqta == "2016" ~ 0.995,
+                                                anseqta == "2015" ~ 0.9965, anseqta == "2014" ~
+                                                  0.9965, anseqta == "2013" ~ 0.9965, TRUE ~ 1)) %>%
+      dplyr::left_join(tarifs %>% dplyr::select(-ghm),
+                       by = c(noghs = "ghs", anseqta = "anseqta")) %>%
+      dplyr::mutate(t_base = nbseance * tarif_base * cgeo *
+                      cprudent, t_haut = nbjrbs * tarif_exh * cgeo *
+                      cprudent, t_bas = dplyr::case_when(sejinfbi ==
+                                                           "2" ~ (nbjrexb/10) * tarif_exb * cgeo * cprudent,
+                                                         sejinfbi == "1" ~ forfait_exb * cgeo * cprudent,
+                                                         sejinfbi == "0" ~ 0), rec_bee = (t_base + t_haut -
+                                                                                            t_bas), rec_totale = rec_bee) %>%
+      bind_rows(rsa %>%
+                  dplyr::filter(substr(noghs,1,1) == 'I') %>%
+                  dplyr::mutate(cprudent = dplyr::case_when(anseqta ==
+                                                              "2021" ~ 0.993, anseqta == "2020" ~ 0.993,
+                                                            anseqta == "2019" ~ 0.993, anseqta == "2018" ~ 0.993,
+                                                            anseqta == "2017" ~ 0.993, anseqta == "2016" ~ 0.995,
+                                                            anseqta == "2015" ~ 0.9965, anseqta == "2014" ~
+                                                              0.9965, anseqta == "2013" ~ 0.9965, TRUE ~ 1)) %>%
+                  dplyr::mutate(t_base = dplyr::case_when(noghs == 'I08' ~ 3119L * cprudent, TRUE ~ NA_real_)))
+  }
+  else {
     rsa_2 <- rsa %>%
-      mutate(cprudent = prudent) %>%
-      dplyr::left_join(tarifs %>% dplyr::select(-ghm), by = c('noghs' = 'ghs', 'anseqta' = 'anseqta')) %>%
-      dplyr::mutate(
-        t_base  = nbseance * tarif_base                 * cgeo * cprudent,
-        t_haut  = nbjrbs * tarif_exh * cgeo  * cprudent,
-        t_bas   = dplyr::case_when(
-          sejinfbi == '2' ~ (nbjrexb / 10) * tarif_exb   * cgeo * cprudent,
-          sejinfbi == '1' ~ forfait_exb                  * cgeo * cprudent,
-          sejinfbi == '0' ~ 0),
-        rec_bee = (t_base + t_haut - t_bas),
-        rec_totale = rec_bee)
+      dplyr::filter(substr(noghs,1,1) != 'I') %>%
+      
+      dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2021" ~ prudent * csegur,
+                                                TRUE ~ prudent)) %>% 
+      dplyr::left_join(tarifs %>%
+                         dplyr::select(-ghm), by = c(noghs = "ghs", anseqta = "anseqta")) %>%
+      dplyr::mutate(t_base = nbseance * tarif_base * cgeo * cprudent, 
+                    t_haut = nbjrbs * tarif_exh * cgeo * cprudent, 
+                    t_bas = dplyr::case_when(sejinfbi == "2" ~ (nbjrexb/10) * tarif_exb * cgeo * cprudent,
+                                             sejinfbi == "1" ~ forfait_exb * cgeo * cprudent,
+                                             sejinfbi == "0" ~ 0), 
+                    rec_bee = (t_base + t_haut - t_bas), 
+                    rec_totale = rec_bee) %>%
+      bind_rows(rsa %>%
+                  dplyr::filter(substr(noghs,1,1) == 'I') %>%
+                  mutate(cprudent = prudent) %>%
+                  dplyr::mutate(t_base = dplyr::case_when(noghs == 'I08' ~ 3119L * cprudent * cgeo, TRUE ~ NA_real_)))
   }
   
   if (bee == TRUE){
