@@ -324,7 +324,8 @@ vvr_ghs_supp <- function(rsa,
                                                             anseqta == "2017" ~ 0.993, anseqta == "2016" ~ 0.995,
                                                             anseqta == "2015" ~ 0.9965, anseqta == "2014" ~
                                                               0.9965, anseqta == "2013" ~ 0.9965, TRUE ~ 1)) %>%
-                  dplyr::mutate(t_base = dplyr::case_when(noghs == 'I08' ~ 3119L * cprudent, TRUE ~ NA_real_)))
+                  dplyr::mutate(t_base = dplyr::case_when(noghs == 'I08' ~ 3119L * cprudent, TRUE ~ NA_real_)),
+                rec_bee = t_base, rec_totale = rec_bee, t_haut = 0, t_bas = 0)
   }
   else {
     rsa_2 <- rsa %>%
@@ -344,7 +345,8 @@ vvr_ghs_supp <- function(rsa,
       bind_rows(rsa %>%
                   dplyr::filter(substr(noghs,1,1) == 'I') %>%
                   mutate(cprudent = prudent) %>%
-                  dplyr::mutate(t_base = dplyr::case_when(noghs == 'I08' ~ 3119L * cprudent * cgeo, TRUE ~ NA_real_)))
+                  dplyr::mutate(t_base = dplyr::case_when(noghs == 'I08' ~ 3119L * cprudent * cgeo, TRUE ~ NA_real_)),
+                rec_bee = t_base, rec_totale = rec_bee, t_haut = 0, t_bas = 0)
   }
   
   if (bee == TRUE){
