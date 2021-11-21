@@ -33,11 +33,11 @@ Une vidéo est aussi [disponible](https://guillaumepressiat.github.io/blog/2017/
 
 ## Installation du package
 
-### Depuis github avec devtools
+### Depuis github avec remotes
 
 ```r
-# install.packages('devtools')
-library(devtools)
+# install.packages('remotes')
+library(remotes)
 install_github('guillaumepressiat/pmeasyr')
 ```
 
@@ -58,8 +58,8 @@ set_config( use_proxy(
     password = "password" #Remplacer password par votre nom d'utilisateur du proxy
 ))
 
-# install.packages('devtools')
-library(devtools)
+# install.packages('remotes')
+library(remotes)
 install_github('guillaumepressiat/pmeasyr')
 ```
 
