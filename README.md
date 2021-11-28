@@ -3,7 +3,7 @@
 [![https://guillaumepressiat.r-universe.dev/badges/pmeasyr](https://guillaumepressiat.r-universe.dev/badges/pmeasyr)](https://guillaumepressiat.r-universe.dev/ui#builds)
 <!-- badges: end -->
 
-# pmeasyr : données PMSI avec R <img src="man/figures/logo.png" align="right" />
+# pmeasyr : données PMSI avec R <img src="logo.png" align="right" />
 
 <!-- ![rigologo](rigologo_pmeasyr.png) -->
 
