@@ -1,4 +1,4 @@
-pandoc: 2.11.2
+pandoc: 2.16.1
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -8,7 +8,7 @@ articles:
   vignette4: vignette4.html
   vignette5: vignette5.html
   vignette6: vignette6.html
-last_built: 2021-01-30T22:12Z
+last_built: 2021-11-28T19:01Z
 urls:
   reference: https://guillaumepressiat.github.io/pmeasyr//reference
   article: https://guillaumepressiat.github.io/pmeasyr//articles

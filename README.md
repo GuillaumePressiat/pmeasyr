@@ -2,12 +2,14 @@
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![https://guillaumepressiat.r-universe.dev/badges/pmeasyr](https://guillaumepressiat.r-universe.dev/badges/pmeasyr)](https://guillaumepressiat.r-universe.dev/ui#builds)
 <!-- badges: end -->
-<a href='https://guillaumepressiat.github.io/pmeasyr'><img src='man/figures/logo.png' align="right" height="120" /></a>
+<a href='https://guillaumepressiat.github.io/pmeasyr'><img src='man/figures/logo.png' align="right" height="140" /></a>
 
 
 # pmeasyr : données PMSI avec R
 
-![rigologo](rigologo_pmeasyr.png)
+# pkgdown <img src="man/figures/logo.png" align="right" />
+
+<!-- ![rigologo](rigologo_pmeasyr.png) -->
 
 
 ***Guillaume Pressiat***
