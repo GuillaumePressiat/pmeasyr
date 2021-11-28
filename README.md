@@ -33,6 +33,18 @@ Une vidéo est aussi [disponible](https://guillaumepressiat.github.io/blog/2017/
 
 ## Installation du package
 
+### Depuis r-universe (pre-build)
+
+Le plus simple pour installer pmeasyr est de lancer directement :
+
+```r
+install.packages('pmeasyr', repos = 'https://guillaumepressiat.r-universe.dev')
+```
+
+Cf [guillaumepressiat.r-universe](https://guillaumepressiat.r-universe.dev/ui#builds).
+
+
+
 ### Depuis github avec remotes
 
 ```r
