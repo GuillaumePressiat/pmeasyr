@@ -3,7 +3,7 @@
 [![https://guillaumepressiat.r-universe.dev/badges/pmeasyr](https://guillaumepressiat.r-universe.dev/badges/pmeasyr)](https://guillaumepressiat.r-universe.dev/ui#builds)
 <!-- badges: end -->
 
-# pmeasyr : données PMSI avec R <img src="logo.png" align="right" />
+# pmeasyr : données PMSI avec R <img src="hex-pmeasyr.png" align="right" width="160px"/>
 
 <!-- ![rigologo](rigologo_pmeasyr.png) -->
 
@@ -13,7 +13,10 @@
 *28 novembre 2021*
 
 
-**Le développement de ce package a été initié au DIM du siège de l'AP-HP**. Il était auparavant hébergé sur le github [IM-APHP](https://github.com/IM-APHP/).
+**Le développement de ce package a été initié au DIM du siège de l'AP-HP**. 
+
+
+Il était auparavant hébergé sur le github [IM-APHP](https://github.com/IM-APHP/).
 
 ## Contenu du package
 
