@@ -50,7 +50,7 @@ irhs.list <- function(l, ...){
 
 #' @export
 irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
-  if (annee<2011|annee > 2021){
+  if (annee<2011|annee > 2022){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
