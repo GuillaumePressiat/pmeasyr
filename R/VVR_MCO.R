@@ -301,9 +301,9 @@ vvr_ghs_supp <- function(rsa,
   if (is.null(prudent)) {
     rsa_2 <- rsa %>%
       dplyr::filter(substr(noghs,1,1) != 'I') %>%
-      dplyr::mutate(cprudent = dplyr::case_when(anseqta ==
-                                                  "2022" ~ 0.993 * csegur,
-                                                "2021" ~ 0.993 * csegur, anseqta == "2020" ~ 0.993,
+      dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2022" ~ 0.993 * csegur,
+                                                anseqta == "2021" ~ 0.993 * csegur, 
+                                                anseqta == "2020" ~ 0.993,
                                                 anseqta == "2019" ~ 0.993, anseqta == "2018" ~ 0.993,
                                                 anseqta == "2017" ~ 0.993, anseqta == "2016" ~ 0.995,
                                                 anseqta == "2015" ~ 0.9965, anseqta == "2014" ~
@@ -319,9 +319,8 @@ vvr_ghs_supp <- function(rsa,
                                                                                             t_bas), rec_totale = rec_bee) %>%
       bind_rows(rsa %>%
                   dplyr::filter(substr(noghs,1,1) == 'I') %>%
-                  dplyr::mutate(cprudent = dplyr::case_when(anseqta ==
-                                                              "2022" ~ 0.993, 
-                                                            "2021" ~ 0.993, anseqta == "2020" ~ 0.993,
+                  dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2022" ~ 0.993, 
+                                                            anseqta == "2021" ~ 0.993, anseqta == "2020" ~ 0.993,
                                                             anseqta == "2019" ~ 0.993, anseqta == "2018" ~ 0.993,
                                                             anseqta == "2017" ~ 0.993, anseqta == "2016" ~ 0.995,
                                                             anseqta == "2015" ~ 0.9965, anseqta == "2014" ~
