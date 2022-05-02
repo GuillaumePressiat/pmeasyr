@@ -333,8 +333,8 @@ vvr_ghs_supp <- function(rsa,
       dplyr::filter(substr(noghs,1,1) != 'I') %>%
       
       dplyr::mutate(cprudent = dplyr::case_when(
-        anseqta == "2022" ~ prudent * csegur,
-        anseqta == "2021" ~ prudent * csegur,
+        anseqta == "2022" ~ prudent * 1.0013,
+        anseqta == "2021" ~ prudent * 1.0019,
                                                 TRUE ~ prudent)) %>% 
       dplyr::left_join(tarifs %>%
                          dplyr::select(-ghm), by = c(noghs = "ghs", anseqta = "anseqta")) %>%
