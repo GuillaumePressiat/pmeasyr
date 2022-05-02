@@ -229,6 +229,8 @@ adezip.default <- function(finess, annee, mois,
                            type = "in", recent = TRUE, nom_archive = NULL,
                            quiet = FALSE, ...){
   
+  path <- path.expand(path)
+  
   # Si le nom de l'archive n'est pas donné, alors rechercher l'archive
   # qui correspond aux arguments finess, annee et mois
   if (is.null(nom_archive)) {
