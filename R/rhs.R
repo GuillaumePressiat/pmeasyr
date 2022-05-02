@@ -92,7 +92,19 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     ),
     class = "col_spec"
   )
-  suppressWarnings(rhs_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt.txt"),trim_ws = FALSE,
+  
+  if (annee == 2022){
+    readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt.txt")) %>% 
+      dplyr::tibble(l = .) %>% 
+      dplyr::mutate(l = case_when(substr(l,11,13) == "M1B" ~ paste0(substr(l,1, 59), " ", substr(l,60, nchar(l))), TRUE ~ l)) %>% 
+      pull(l) %>% 
+      readr::write_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt2.txt"))
+    
+    joker <- '2'
+  } else {
+    joker <- ''
+  }
+  suppressWarnings(rhs_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt", joker, ".txt"),trim_ws = FALSE,
                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(rhs_i) -> synthese_import
@@ -101,7 +113,10 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     dplyr::mutate(FPPC = stringr::str_trim(FPPC),
                   MMP = stringr::str_trim(MMP),
                   AE = stringr::str_trim(AE), 
-                  shift_zad  = dplyr::case_when(NOVRHS == 'M1A' ~ 4L,
+                  shift_zad  = dplyr::case_when(
+                    NOVRHS == 'M1C' ~ 1L,
+                    NOVRHS == 'M1A' ~ 1L,
+                                         NOVRHS == 'M1B' & annee == 2022 ~ 1L,
                                          NOVRHS == 'M1B' ~ 6L, 
                                          NOVRHS == 'M19' ~ 1L,
                                          NOVRHS == 'M18' ~ 0L,
