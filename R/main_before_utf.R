@@ -4989,6 +4989,32 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
       sjlabelled::set_label(libelles)
   }
 
+  if (annee > 2021){
+    zac  <- ssrha_i %>% dplyr::select(NBZGP, ZGP)
+    fixe <- ssrha_i %>% dplyr::select(NOFINESS, NOSEQSEJ, NBZGP)
+    zac1 <- purrr::flatten_chr(stringr::str_extract_all(zac$ZGP, '.{1,14}'))
+    fixe <- as.data.frame(lapply(fixe, rep, fixe$NBZGP), stringsAsFactors = F)
+    gp <- data.frame(zac1 = as.character(zac1), stringsAsFactors = F)
+    gp <- dplyr::mutate(gp, 
+                        GME = stringr::str_sub(zac1, 1, 7),
+                        GMT = stringr::str_sub(zac1, 8, 11),
+                        NJ = stringr::str_sub(zac1, 12, 14) %>% as.integer()) %>%
+      dplyr::select(-zac1)
+    
+    if (lib == T){
+      gp <- sjlabelled::set_label(gp, c("GME", "GMT", "Nombre de jours de présence"))
+    }
+    
+    gp <- dplyr::as_tibble(dplyr::bind_cols(fixe, gp))
+    
+    if (tolower_names){
+      names(ssrha_i) <- tolower(names(ssrha_i))
+      names(gp) <- tolower(names(gp))
+    }
+    ssrha_1 <- list(ssrha = ssrha_i, gme = gp)
+    attr(ssrha_1,"problems") <- synthese_import
+    return(ssrha_1)
+  }
   if (annee > 2016){
     zac  <- ssrha_i %>% dplyr::select(NBZGP, ZGP)
     fixe <- ssrha_i %>% dplyr::select(NOFINESS, NOSEQSEJ, NBZGP)
