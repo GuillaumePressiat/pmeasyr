@@ -3288,11 +3288,7 @@ irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F
   #           $acdi pour accéder à la table ACDI
   #           $ght pour accéder aux ght etb et paprica\n\n"))
   
-  if(annee == 2022 & mois >= 3) {
-  format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == "22_H35")
-  } else if(annee == 2022 & mois < 3) {
-  format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == substr(as.character(annee),3,4)) 
-  } else if(annee >= 2020 & mois >= 3) {
+if(annee >= 2020 & mois >= 3) {
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == "20_H33")
   } else if(annee == 2021 & mois < 3) {
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss', an == "20_H33")
