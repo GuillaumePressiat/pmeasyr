@@ -7412,6 +7412,8 @@ enrobeur <- function(a, robe = "\'", colonne = F, interstice = ", ", symetrique 
 #' @importFrom purrr flatten_chr
 #' @importFrom sqldf sqldf
 #' @export
+
+
 requete <- function (tables, elements, vars = NULL) {
   chaine = list()
   if (length(elements[["ghm"]]) > 0) {
@@ -7473,8 +7475,15 @@ requete <- function (tables, elements, vars = NULL) {
   if (length(chaine) == 0) {
     chaine = list("TRUE")
   }
-  rsa_filtre <- tables$rsa %>% filter_(paste0(purrr::flatten_chr(chaine), 
-                                              collapse = " & ")) %>% select(cle_rsa)
+  
+  chaine <- rlang::parse_exprs(paste0(purrr::flatten_chr(chaine),
+                                      collapse = " & "))    # Again, note the plural s
+  
+  rsa_filtre <- tables$rsa %>% filter(!!!chaine)
+  
+  # rsa_filtre <- tables$rsa %>% filter_(paste0(purrr::flatten_chr(chaine), 
+  #                                             collapse = " & ")) %>% select(cle_rsa)
+  
   if (length(elements[["diags"]]) > 0) {
     if (elements[["positions_diags"]][1] == "toutes") {
       d <- tables$diags
@@ -7536,6 +7545,7 @@ requete <- function (tables, elements, vars = NULL) {
   }
 }
 
+
 #' ~ req : requeter les rsa dans une db avec une liste
 #'
 #' @examples
@@ -7552,6 +7562,7 @@ requete <- function (tables, elements, vars = NULL) {
 #' @author G. Pressiat
 #' @importFrom dplyr mutate inner_join select filter_ distinct tibble tibble data_frame
 #' @export
+
 requete_db <- function (con, an, elements, vars = NULL)
 {
   chaine = list()
@@ -7611,8 +7622,12 @@ requete_db <- function (con, an, elements, vars = NULL)
   if (length(chaine) == 0) {
     chaine = list("TRUE")
   }
-  rsa_filtre <- tbl_mco(con, an, "rsa_rsa") %>% dplyr::filter_(paste0(purrr::flatten_chr(chaine),
-                                                                               collapse = " & ")) %>% dplyr::select(cle_rsa)
+  
+  chaine <- rlang::parse_exprs(paste0(purrr::flatten_chr(chaine),
+                                      collapse = " & "))
+  
+  rsa_filtre <- tbl_mco(con, an, "rsa_rsa") %>% dplyr::filter(!!!chaine) %>% dplyr::select(cle_rsa)
+  
   if (length(elements[["diags"]]) > 0) {
     if (elements[["positions_diags"]][1] == "toutes"){
       chaine_d <- paste0("(", paste0("diag %like% '",elements$diags, "%'", collapse = " | "), ' )')
@@ -7625,8 +7640,10 @@ requete_db <- function (con, an, elements, vars = NULL)
                                                                                         elements$diags, "%'", collapse = " | "), ' )')
       }
     
+    chaine_d <- rlang::parse_exprs(chaine_d)
+    
     diags_filtre <- tbl_mco(con, an, "rsa_diags") %>%
-      dplyr::filter_(chaine_d) %>% dplyr::distinct(cle_rsa)
+      dplyr::filter(!!!chaine_d) %>% dplyr::distinct(cle_rsa)
   }
   else {
     diags_filtre <- NULL
@@ -7634,24 +7651,25 @@ requete_db <- function (con, an, elements, vars = NULL)
   if (length(elements[["diags_exclus"]]) > 0) {
     
     chaine_d <- paste0('( ', paste0("diag %like% '", elements$diags_exclus, "%'", collapse = " | "), ' )')
+    chaine_d <- rlang::parse_exprs(chaine_d)
     
     antidiags_filtre <- tbl_mco(con, an, "rsa_diags") %>%
-      dplyr::filter_(chaine_d) %>% dplyr::distinct(cle_rsa)
+      dplyr::filter(!!!chaine_d) %>% dplyr::distinct(cle_rsa)
   }
   else {
     antidiags_filtre <- NULL
   }
   if (length(elements[["actes"]]) > 0) {
     if (length(elements[["activite_actes"]]) > 0){
-      liste_actes = tibble::tibble(cdccam = elements$actes) %>%
-        tibble::as_tibble() %>% dplyr::copy_to(con, ., "acc",
+      liste_actes = dplyr::data_frame(cdccam = elements$actes) %>%
+        dplyr::tibble() %>% dplyr::copy_to(con, ., "acc",
                                            overwrite = T)
       actes_filtre = dplyr::inner_join(tbl_mco(con, an, "rsa_actes") %>% filter(act %in% elements[['activite_actes']]),
                                        dplyr::tbl(con, "acc"), by = c(cdccam = "cdccam")) %>%
         dplyr::distinct(cle_rsa)
     } else {
-      liste_actes = tibble::tibble(cdccam = elements$actes) %>%
-        tibble::as_tibble() %>% dplyr::copy_to(con, ., "acc",
+      liste_actes = dplyr::data_frame(cdccam = elements$actes) %>%
+        dplyr::tibble() %>% dplyr::copy_to(con, ., "acc",
                                            overwrite = T)
       actes_filtre = dplyr::inner_join(tbl_mco(con, an, "rsa_actes"),
                                        dplyr::tbl(con, "acc"), by = c(cdccam = "cdccam")) %>%
@@ -7680,10 +7698,11 @@ requete_db <- function (con, an, elements, vars = NULL)
   }
   else {
     return(resultat %>% dplyr::inner_join(tbl_mco(con,
-                                                           an, "rsa_rsa") %>% dplyr::select(cle_rsa, vars),
+                                                  an, "rsa_rsa") %>% dplyr::select(cle_rsa, vars),
                                           by = "cle_rsa") %>% dplyr::collect())
   }
 }
+
 
 #' ~ req : lancer une ou plusieurs requetes dans une db avec une ou des listes
 #'
