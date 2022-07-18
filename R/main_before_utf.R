@@ -7479,7 +7479,8 @@ requete <- function (tables, elements, vars = NULL) {
   chaine <- rlang::parse_exprs(paste0(purrr::flatten_chr(chaine),
                                       collapse = " & "))    # Again, note the plural s
   
-  rsa_filtre <- tables$rsa %>% filter(!!!chaine)
+  rsa_filtre <- tables$rsa %>% dplyr::filter(!!!chaine) %>% 
+    dplyr::select(cle_rsa)
   
   # rsa_filtre <- tables$rsa %>% filter_(paste0(purrr::flatten_chr(chaine), 
   #                                             collapse = " & ")) %>% select(cle_rsa)
