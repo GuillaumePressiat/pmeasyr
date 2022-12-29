@@ -270,7 +270,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
                              col_types = readr::cols('c','c','c','c','c'), trim_ws = F,
                              na=character(), ...)  %>%
       dplyr::mutate(
-        CDERG         = ifelse(stringr::str_sub(RUM,1,3) == "   ","", stringr::str_trim(str_sub(RUM,1,3))),
+        CDERG         = ifelse(stringr::str_sub(RUM,1,3) == "   ","", stringr::str_trim(stringr::str_sub(RUM,1,3))),
         NOFINESS      = stringr::str_sub(RUM,4,12),
         NOVERS        = stringr::str_sub(RUM,13,15),
         NORSS         = stringr::str_sub(RUM,16,35),
@@ -289,7 +289,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
         CDRESI        = stringr::str_sub(RUM,101,105),
         PDNAIS        = stringr::str_sub(RUM,106,109) %>% as.numeric(),
         AGEGEST       = stringr::str_sub(RUM,110,111) %>% as.integer(),
-        DDR2          = trimws(ifelse(NOVERG=='115', "", stringr::str_sub(RUM,112,119))),
+        DDR2          = ifelse(NOVERG=='115', "", stringr::str_sub(RUM,112,119)) %>% stringr::str_trim(),
         NBSEAN        = ifelse(NOVERG=='115', stringr::str_sub(RUM,112,113) , stringr::str_sub(RUM,120,121)) %>% as.integer(),
         NBDAS         = ifelse(NOVERG=='115', stringr::str_sub(RUM,114,115) , stringr::str_sub(RUM,122,123)) %>% as.integer(),
         NBDAD         = ifelse(NOVERG=='115', stringr::str_sub(RUM,116,117) , stringr::str_sub(RUM,124,125)) %>% as.integer(),
