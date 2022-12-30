@@ -294,7 +294,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
         NBDAS         = ifelse(NOVERG=='115', stringr::str_sub(RUM,114,115) , stringr::str_sub(RUM,122,123)) %>% as.integer(),
         NBDAD         = ifelse(NOVERG=='115', stringr::str_sub(RUM,116,117) , stringr::str_sub(RUM,124,125)) %>% as.integer(),
         NBACTE        = ifelse(NOVERG=='115', stringr::str_sub(RUM,118,120) , stringr::str_sub(RUM,126,128)) %>% as.integer(),
-        DP            = ifelse(NOVERG=='115', stringr::str_sub(RUM,121,128) , stringr::str_sub(RUM,129,137)) %>% stringr::str_trim(),
+        DP            = ifelse(NOVERG=='115', stringr::str_sub(RUM,121,128) , stringr::str_sub(RUM,129,136)) %>% stringr::str_trim(),
         DR            = ifelse(NOVERG=='115', stringr::str_sub(RUM,129,136) , stringr::str_sub(RUM,137,144)) %>% stringr::str_trim(),
         IGS           = ifelse(NOVERG=='115', stringr::str_sub(RUM,137,139) , stringr::str_sub(RUM,145,147)),
         CONFCDRSS     = ifelse(NOVERG=='115', stringr::str_sub(RUM,140,140) , stringr::str_sub(RUM,148,148)),
