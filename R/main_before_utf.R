@@ -6825,21 +6825,20 @@ db_mco_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
   if (remove == T) {
-    #u <- DBI::dbListTables(con)
-    u <- dplyr::src_tbls(con)
+    u <- DBI::dbListTables(con)
+    #u <- dplyr::src_tbls(con)
     lr <- u[grepl("_rsa_", u) & grepl(an, u)]
     lapply(lr, function(x) {
       DBI::dbRemoveTable(con$con, x)
     })
   }
   if (zip == T) {
-    adezip(p, type = "out", liste = c("rsa", "ano", "tra"))
+    pmeasyr::adezip(p, type = "out", liste = c("rsa", "ano", "tra"))
   }
   rsa <- pmeasyr::irsa(p, typi = 6) %>% pmeasyr::tdiag()
   rsa_ano <- pmeasyr::iano_mco(p)
   tra <- pmeasyr::itra(p)
-  rsa$rsa <- pmeasyr::inner_tra(rsa$rsa, tra) %>% mutate(diags = paste0(dpdrum,
-                                                                        das, sep = " "))
+  rsa$rsa <- pmeasyr::inner_tra(rsa$rsa, tra) %>% dplyr::mutate(diags = paste0(dpdrum, das, sep = " "))
   rsa$actes <- pmeasyr::inner_tra(rsa$actes, tra)
   rsa$diags <- pmeasyr::inner_tra(rsa$diags, tra)
   rsa$rsa_um <- pmeasyr::inner_tra(rsa$rsa_um, tra)
