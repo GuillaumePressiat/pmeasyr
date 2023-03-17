@@ -6892,8 +6892,8 @@ db_ssr_out <- function (con, p, remove = T, zip = T, indexes = list(), ...){
   p <- utils::modifyList(p, list(...))
   an <- substr(as.character(p$annee), 3, 4)
   if (remove == T) {
-    #u <- DBI::dbListTables(con)
-    u <- dplyr::src_tbls(con)
+    u <- DBI::dbListTables(con)
+    #u <- dplyr::src_tbls(con)
     lr <- u[grepl("ssr", u) & grepl(an, u)]
     lapply(lr, function(x) {
       DBI::dbRemoveTable(con$con, x)
