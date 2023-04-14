@@ -617,7 +617,7 @@ vvr_ghs_supp <- function(rsa,
 #' 
 #' 
 #' @param rsa un tibble rsa contenant les variables nécessaires (créé avec \code{\link{vvr_rsa}})
-#' @param ano un tibble ano contenant les variables nécessaires (créé avec \code{\link{vvr_mco_ano}})
+#' @param ano un tibble ano contenant les variables nécessaires (créé avec \code{\link{vvr_ano_mco}})
 #' @param porg un tibble porg contenant les prélevements d'organes du out (créé avec \code{\link{ipo}})
 #' 
 #' @return Un tibble contenant la catégorie du tableau SV epmsi, une ligne par clé rsa
