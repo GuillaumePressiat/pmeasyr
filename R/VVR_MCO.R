@@ -60,6 +60,7 @@ vvr_rsa.pm_param <- function(p, ...){
     dplyr::select(cle_rsa, duree, rsacmd, ghm, typesej, noghs, moissor, ansor, sexe, agean, agejr,
                   anseqta, nbjrbs, nbjrexb, sejinfbi, agean, agejr, nbseance,
                   dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
+                  dplyr::starts_with('topctc'),
                   nb_rdth, nbacte9615,
                   echpmsi, prov, dest, schpmsi,
                   rdth, nb_rdth, nbrum) %>%
@@ -85,6 +86,7 @@ vvr_rsa.src <- function(con, an,  ...){
     dplyr::select(cle_rsa, duree, rsacmd, ghm, typesej, noghs, moissor, ansor, sexe, agean, agejr,
                   anseqta, nbjrbs, nbjrexb, sejinfbi, agean, agejr, nbseance,
                   dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
+                  dplyr::starts_with('topctc'),
                   nb_rdth, nbacte9615,
                   echpmsi, prov, dest, schpmsi,
                   rdth, nb_rdth, nbrum) %>% 
@@ -502,7 +504,7 @@ vvr_ghs_supp <- function(rsa,
       dplyr::mutate(suppdefcard = '0')
   }
   
-  if (max(unique(rsa_2$anseqta)) < '2024'){
+  if (max(unique(rsa_2$anseqta)) < '2023'){
     rsa_2 <- rsa_2 %>%
       dplyr::mutate(topctc = '0')
   }
@@ -610,7 +612,7 @@ vvr_ghs_supp <- function(rsa,
       return(rsa_3 %>% dplyr::select(cle_rsa, nbseance, moissor, anseqta, rec_totale, rec_bee, rec_base = t_base, rec_exb =  t_bas, rec_exh = t_haut,
                                      rec_rep, rec_rea, rec_stf, rec_src, rec_nn1, rec_nn2, rec_nn3,
                                      rec_dialhosp, rec_caishyp, rec_aph, rec_ant, rec_rap, rec_rehosp_ghm,
-                                     rec_rdt_tot, rec_sdc, rec_po_tot))
+                                     rec_rdt_tot, rec_sdc, rec_ctc, rec_po_tot))
     }
   
 }
@@ -972,8 +974,9 @@ vvr_libelles_valo <- function(wich){
       17L,"rec_dialhosp",                            "Valorisation suppléments de dialyse",
       18L,"rec_sdc",                "Valorisation supplément défibrilateur cardiaque",
       19L, "rec_i04",                "Valorisation suppléments Forfait Innovation I04",
-      20L,"rec_src",              "Valorisation suppléments de surveillance continue",
-      21L,"rec_stf",                    "Valorisation suppléments de soins intensifs",
+      20L,"rec_ctc",                             "Valorisation suppléments Car-t Cells",
+      21L,"rec_src",              "Valorisation suppléments de surveillance continue",
+      22L,"rec_stf",                    "Valorisation suppléments de soins intensifs",
       
     )
   
