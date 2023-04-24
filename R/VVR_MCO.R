@@ -502,6 +502,11 @@ vvr_ghs_supp <- function(rsa,
       dplyr::mutate(suppdefcard = '0')
   }
   
+  if (max(unique(rsa_2$anseqta)) < '2024'){
+    rsa_2 <- rsa_2 %>%
+      dplyr::mutate(topctc = '0')
+  }
+  
   # Partie suppléments
   rsa_3 <- rsa_2 %>%
     dplyr::left_join(dip, by = 'cle_rsa') %>%
@@ -531,7 +536,8 @@ vvr_ghs_supp <- function(rsa,
                   rec_aph     = pmax(taph_9615 * nbacte9615,   0) * cgeo * cprudent,
                   rec_ant     = pmax(tant      * nbsupatpart,  0) * cgeo * cprudent,
                   rec_rap     = pmax(trap      * nbsupreaped,  0) * cgeo * cprudent,
-                  rec_sdc     = pmax(sdc       * (suppdefcard == '1'), 0) * cgeo * cprudent) %>%
+                  rec_sdc     = pmax(sdc       * (suppdefcard == '1'), 0) * cgeo * cprudent,
+                  rec_ctc     = pmax(ctc       * (topctc == '1'), 0) * cgeo * cprudent) %>%
     # supplements irradiation hors séances
     dplyr::mutate(
       rec_rdt5    = pmax(trdt5_9610  * nbacte9610, 0) * cgeo * cprudent,
@@ -587,7 +593,7 @@ vvr_ghs_supp <- function(rsa,
     rsa_3 <- rsa_3 %>%
       dplyr::mutate(rec_totale = rec_bee + rec_rep + rec_rea + rec_stf + rec_src + rec_nn1 + rec_nn2 + rec_nn3 +
                       rec_dialhosp + rec_caishyp + rec_aph + rec_ant + rec_rap + rec_rehosp_ghm +
-                      rec_rdt_tot + rec_sdc + rec_po_tot)
+                      rec_rdt_tot + rec_sdc + rec_po_tot + rec_ctc)
   } else {
     rsa_3 <- rsa_3 %>%
       dplyr::mutate(rec_sdc = 0) %>%
