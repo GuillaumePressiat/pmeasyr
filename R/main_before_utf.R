@@ -3688,7 +3688,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == "22_H35")
   } else if(annee == 2022 & mois < 3) {
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == substr(as.character(annee),3,4)) 
-  } else if(annee >= 2020 & mois >= 3) {
+  } else if(annee == 2020 & mois >= 3) {
     format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == "20_H33")
   } else if(annee == 2021 & mois < 3) {
   format <- pmeasyr::formats %>% dplyr::filter(champ == 'had', table == 'rapss_ano', an == "20_H33")
