@@ -6386,7 +6386,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
   if ('L' %in% lister){rafael_L <- suppressWarnings(cutt('L', lib))}else{rafael_L <- data.frame()}
   r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'L') -> r
   if ('P' %in% lister){rafael_P <- suppressWarnings(cutt('P', lib))}else{rafael_P <- data.frame()}
-  r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'H') -> r
+  r %>%  dplyr::filter(substr(lon,typi_r,typi_r) != 'P') -> r
   if ('H' %in% lister){rafael_H <- suppressWarnings(cutt('H', lib))}else{rafael_H <- data.frame()}
   rm(r)
   
