@@ -1394,7 +1394,8 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     tra_i <- tra_i %>%
       dplyr::mutate(DTENT  = lubridate::dmy(DTENT, quiet = TRUE),
                     DTSORT = lubridate::dmy(DTSORT, quiet = TRUE),
-                    NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
+                    NOHOP = paste0("000",stringr::str_sub(NAS,1,2))) %>% 
+      dplyr::mutate_if(is.character, stringr::str_trim)
     
     if (lib == T){
       if (tolower_names){
