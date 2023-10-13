@@ -265,7 +265,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
   if (annee==2011){
     
     i <- function(annee,mois){
-      rum_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
+      rum_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.ini.txt"),
                                readr::fwf_widths(c(2,6,1,3,NA),c("NOCLAS","CDGHM","Fil1","NOVERG","RUM")),
                                col_types = readr::cols('c','c','c','c','c'), trim_ws = FALSE,
                                na=character(), ...)  %>%
@@ -308,7 +308,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
   if (annee>=2012){
     
     i <- function(annee,mois){
-      suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.txt"),
+      suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.ini.txt"),
                                        readr::fwf_widths(af,an), col_types = at , na=character(), ...))}
   }
   
