@@ -1379,13 +1379,40 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
-  if (!grepl("psy",champ)){
+  
+  if (champ == "mco" & paste0(annee, stringr::str_pad(mois, 2, 'left', '0')) >= '202303') {
+    # Druides
+    champ1 = champ
+    format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
+    
+    tra_i <- readr::read_delim(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"), delim = ";",
+                              col_names = c('CLE_RSA', 'NORSS', 'NAS', 'DTENT', 'DTSORT', 'GHM1', 'filler'),
+                              col_types = readr::cols(.default = readr::col_character())) %>% 
+      dplyr::mutate(NO_ligne_RSS = "") %>% 
+      dplyr::select(format$nom)
+    
+    tra_i <- tra_i %>%
+      dplyr::mutate(DTENT  = lubridate::dmy(DTENT, quiet = TRUE),
+                    DTSORT = lubridate::dmy(DTSORT, quiet = TRUE),
+                    NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
+    
+    if (lib == T){
+      if (tolower_names){
+        names(tra_i) <- tolower(names(tra_i))
+      }
+      v <- c(format$libelle, 'Établissement')
+      return(tra_i  %>%  sjlabelled::set_label(v))
+    } else {
+      return(tra_i)
+    }
+  } else if (!grepl("psy",champ)){
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
   } else {
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == "psy", table == champ1)
-  }
+  } 
+  
   af <- format$longueur
   libelles <- format$libelle
   an <- format$nom
@@ -1450,7 +1477,12 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
       dplyr::mutate(NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
   }
   if (champ=="psy_rpsa"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"),
+    if (as.character(annee) < '2020'){
+      extens <- '.tra.txt'
+    } else {
+      extens <- '.tra'
+    }
+    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois, extens),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     tra_i <- tra_i %>%
@@ -1461,7 +1493,12 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     DT_FIN_SEQ = lubridate::dmy(DT_FIN_SEQ, quiet = TRUE))
   }
   if (champ=="psy_r3a"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.raa.txt"),
+    if (as.character(annee) < '2020'){
+      extens <- '.tra.raa.txt'
+    } else {
+      extens <- '.tra.raa'
+    }
+    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois, extens),
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     tra_i <- tra_i %>%
