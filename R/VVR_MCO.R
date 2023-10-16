@@ -850,7 +850,7 @@ vvr_mco_sv <- function(rsa, ano, porg = dplyr::tibble(cle_rsa = "")){
       dplyr::anti_join(rsa %>% 
                          dplyr::filter(
                            ((agejr <= 30 & agejr >= 0) & (agean == 0 | is.na(agean)))), by = 'cle_rsa') %>% 
-      dplyr::anti_join(porg, by = 'cle_rsa')
+      dplyr::anti_join(porg, by = 'cle_rsa') -> bloq1
   }
   fin <- dplyr::select(test, cle_rsa) %>% 
     dplyr::left_join(dplyr::select(ok, cle_rsa, type), by = 'cle_rsa') %>% 
