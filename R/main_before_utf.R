@@ -1397,10 +1397,11 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2))) %>% 
       dplyr::mutate_if(is.character, stringr::str_trim)
     
+    if (tolower_names){
+      names(tra_i) <- tolower(names(tra_i))
+    }
+    
     if (lib == T){
-      if (tolower_names){
-        names(tra_i) <- tolower(names(tra_i))
-      }
       v <- c(format$libelle, 'Établissement')
       return(tra_i  %>%  sjlabelled::set_label(v))
     } else {
