@@ -57,7 +57,7 @@ irsf.list <- function(l, ...){
 irsf.default <- function(finess, annee, mois, path, lib = T, stat = T, 
                          lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), 
                             lamda = F, tolower_names = F, ...){
-  if (annee<2011|annee > 2023){
+  if (annee<2011|annee > 2024){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
