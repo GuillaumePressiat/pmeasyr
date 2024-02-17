@@ -38,6 +38,16 @@ Une vidéo est aussi [disponible](https://guillaumepressiat.github.io/blog/2017/
 
 ## Installation du package
 
+### Pré-requis
+
+pmeasyr utilise les packages suivants, il faut donc les installer avant de préférence.
+
+```r
+install.packages('tidyverse')
+install.packages('sjlabelled')
+install.packages('sqldf')
+```
+
 ### Depuis r-universe (CRAN-like pre-build)
 
 Le plus simple pour installer pmeasyr est de lancer directement :
