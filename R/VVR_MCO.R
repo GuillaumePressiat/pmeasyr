@@ -305,14 +305,19 @@ vvr_ghs_supp <- function(rsa,
   if (is.null(prudent)) {
     rsa_2 <- rsa %>%
       dplyr::filter(substr(noghs,1,1) != 'I') %>%
-      dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2023" ~ 0.993 * 1.0023,
+      dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2024" ~ 0.993 * 1.0023,
+                                                anseqta == "2023" ~ 0.993 * 1.0023,
                                                 anseqta == "2022" ~ 0.993 * 1.0013,
                                                 anseqta == "2021" ~ 0.993 * 1.0019, 
                                                 anseqta == "2020" ~ 0.993,
-                                                anseqta == "2019" ~ 0.993, anseqta == "2018" ~ 0.993,
-                                                anseqta == "2017" ~ 0.993, anseqta == "2016" ~ 0.995,
-                                                anseqta == "2015" ~ 0.9965, anseqta == "2014" ~
-                                                  0.9965, anseqta == "2013" ~ 0.9965, TRUE ~ 1)) %>%
+                                                anseqta == "2019" ~ 0.993, 
+                                                anseqta == "2018" ~ 0.993,
+                                                anseqta == "2017" ~ 0.993, 
+                                                anseqta == "2016" ~ 0.995,
+                                                anseqta == "2015" ~ 0.9965, 
+                                                anseqta == "2014" ~ 0.9965, 
+                                                anseqta == "2013" ~ 0.9965, 
+                                                TRUE ~ 1)) %>%
       dplyr::left_join(tarifs %>% dplyr::select(-ghm),
                        by = c(noghs = "ghs", anseqta = "anseqta")) %>%
       dplyr::mutate(t_base = nbseance * tarif_base * cgeo *
@@ -324,12 +329,19 @@ vvr_ghs_supp <- function(rsa,
                                                                                             t_bas), rec_totale = rec_bee) %>%
       bind_rows(rsa %>%
                   dplyr::filter(substr(noghs,1,1) == 'I') %>%
-                  dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2023" ~ 0.993, anseqta == "2022" ~ 0.993, 
-                                                            anseqta == "2021" ~ 0.993, anseqta == "2020" ~ 0.993,
-                                                            anseqta == "2019" ~ 0.993, anseqta == "2018" ~ 0.993,
-                                                            anseqta == "2017" ~ 0.993, anseqta == "2016" ~ 0.995,
-                                                            anseqta == "2015" ~ 0.9965, anseqta == "2014" ~
-                                                              0.9965, anseqta == "2013" ~ 0.9965, TRUE ~ 1)) %>%
+                  dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2024" ~ 0.993,
+                                                            anseqta == "2023" ~ 0.993, 
+                                                            anseqta == "2022" ~ 0.993, 
+                                                            anseqta == "2021" ~ 0.993, 
+                                                            anseqta == "2020" ~ 0.993,
+                                                            anseqta == "2019" ~ 0.993, 
+                                                            anseqta == "2018" ~ 0.993,
+                                                            anseqta == "2017" ~ 0.993, 
+                                                            anseqta == "2016" ~ 0.995,
+                                                            anseqta == "2015" ~ 0.9965, 
+                                                            anseqta == "2014" ~ 0.9965, 
+                                                            anseqta == "2013" ~ 0.9965, 
+                                                            TRUE ~ 1)) %>%
                   dplyr::mutate(t_base = dplyr::case_when(noghs == 'I08' ~ 3119L * cprudent, TRUE ~ NA_real_),
                 rec_bee = t_base, rec_totale = rec_bee, t_haut = 0, t_bas = 0))
   }
@@ -338,6 +350,7 @@ vvr_ghs_supp <- function(rsa,
       dplyr::filter(substr(noghs,1,1) != 'I') %>%
       
       dplyr::mutate(cprudent = dplyr::case_when(
+        anseqta == "2024" ~ prudent * 1.0023,
         anseqta == "2023" ~ prudent * 1.0023,
         anseqta == "2022" ~ prudent * 1.0013,
         anseqta == "2021" ~ prudent * 1.0019,
