@@ -305,7 +305,7 @@ vvr_ghs_supp <- function(rsa,
   if (is.null(prudent)) {
     rsa_2 <- rsa %>%
       dplyr::filter(substr(noghs,1,1) != 'I') %>%
-      dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2024" ~ 0.993 * 1.0023,
+      dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2024" ~ 0.993 * 1.0042,
                                                 anseqta == "2023" ~ 0.993 * 1.0023,
                                                 anseqta == "2022" ~ 0.993 * 1.0013,
                                                 anseqta == "2021" ~ 0.993 * 1.0019, 
@@ -350,7 +350,7 @@ vvr_ghs_supp <- function(rsa,
       dplyr::filter(substr(noghs,1,1) != 'I') %>%
       
       dplyr::mutate(cprudent = dplyr::case_when(
-        anseqta == "2024" ~ prudent * 1.0023,
+        anseqta == "2024" ~ prudent * 1.0042,
         anseqta == "2023" ~ prudent * 1.0023,
         anseqta == "2022" ~ prudent * 1.0013,
         anseqta == "2021" ~ prudent * 1.0019,
