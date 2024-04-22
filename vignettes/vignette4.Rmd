@@ -91,7 +91,7 @@ Pour les RSA transmis hors période (année précédente, mois d'après, souvent
 ```{r eval = F}
 vrsa <- vrsa %>% 
   vvr_rsa_hors_periode(as.character(p$annee), stringr::str_pad(p$mois, 2, "left", '0'))
-````
+```
 
 ### Cas d'une valorisation base + Extrême haut - Extrême bas
 
