@@ -56,7 +56,7 @@ Le plus simple pour installer pmeasyr est de lancer directement :
 install.packages('pmeasyr', repos = 'https://guillaumepressiat.r-universe.dev')
 ```
 
-Cf [guillaumepressiat.r-universe](https://guillaumepressiat.r-universe.dev/ui#builds).
+Cf [guillaumepressiat.r-universe](https://guillaumepressiat.r-universe.dev/).
 
 
 ### Depuis github avec remotes
