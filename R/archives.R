@@ -250,7 +250,7 @@ adezip.default <- function(finess, annee, mois,
   info_archive$taille_mo <- signif(file.size(chemin_archive)/10^6, 2)
   
   # Selection des fichiers à extraire
-  if (is.null(liste) || liste == "") {
+  if (is.null(liste) || any(liste == "")) {
     selection_fichiers_a_extraire <- NULL
   } else {
     selection_fichiers_a_extraire <- selectionne_fichiers(
