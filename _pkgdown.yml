@@ -58,6 +58,7 @@ reference:
     - epmsi_mco_rae
     - vvr_rum
     - epmsi_mco_rav_rum
+    - epmsi_mco_rav2
   - title: Valorisation des passages MCO
     desc: "Voir vignette"
     contents:
