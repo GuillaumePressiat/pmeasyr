@@ -290,6 +290,7 @@ adezip.default <- function(finess, annee, mois,
 #' @inherit adezip.default params
 #' @inherit parse_nom_fichier return
 #' @seealso [adezip.default()] et [parse_nom_fichier()]
+#' @keywords internal
 #' @export
 #' @md
 selectionne_archive <- function(finess, mois, annee, dossier_archives, 
@@ -331,6 +332,7 @@ selectionne_archive <- function(finess, mois, annee, dossier_archives,
 
 #' Selectionne les fichiers dans une archive
 #' 
+#' @keywords internal
 #' @return Le noms dans fichiers dans l'archive
 #' @export
 selectionne_fichiers <- function(chemin_archive, types_fichier) {
@@ -508,6 +510,7 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = "", ..
 #'  x <- parse_noms_fichiers(noms_de_fichiers)
 #' dplyr::bind_rows(x)
 #' }
+#' @keywords internal
 #' @export
 #' @md
 parse_noms_fichiers <- function(noms_fichiers, return_tibble = TRUE) {
@@ -524,7 +527,7 @@ parse_noms_fichiers <- function(noms_fichiers, return_tibble = TRUE) {
 #' @param nom_fichier Le nom du fichier à découper. Chaine de caractère de longueur 1.
 #' @param format_date_archive Format de date d'horodatage pour les fichiers archive avec la notation de [base::strptime()].
 #' @seealso [parse_noms_fichiers()] pour traiter plusieurs noms de fichiers.
-#' @inherit parse_noms_fichiers
+#' @keywords internal
 #' @md
 parse_nom_fichier <- function(
   nom_fichier, 
@@ -566,9 +569,9 @@ parse_nom_fichier <- function(
 }
 
 #' Creer des archives simulees a partir de plusieurs archives reelles
-#' @inherit creer_archive_vide
 #' @param chemins_archives Chemin vers les archives qui servira de modèle pour l'archive simulée
 #' @seealso [creer_archive_vide()]
+#' @keywords internal
 #' @md
 creer_archives_vides <- function(chemins_archives) {
   lapply(dir(chemins_archives, full.names = TRUE, pattern = "zip$"), FUN = creer_archive_vide)
@@ -581,6 +584,7 @@ creer_archives_vides <- function(chemins_archives) {
 #' @param dossier_cible Chemin vers le dossier où l'archive simulée sera stockée
 #' @param finess_simul Un numéro finess pour le fichier simulé
 #' @return `NULL`
+#' @keywords internal
 #' @importFrom utils zip
 #' @md
 creer_archive_vide <- function(chemin_archive, 
@@ -630,6 +634,7 @@ creer_archive_vide <- function(chemin_archive,
 #' @inherit adezip.default params
 #' @return Un nom d'archive compatible
 #' @importFrom stats runif
+#' @keywords internal
 #' @md
 creer_nom_archive <- function(
   finess,
@@ -663,6 +668,7 @@ creer_nom_archive <- function(
 #' Permet d'afficher les types de fichiers d'une archive (ano, rss, rsa, ...)
 #' @param selection_fichiers_a_extraire Fichiers sélectionnés dans le zip (résultat de selectionne_fichiers)
 #' @param info_archive informatin de l'archive (résultat de selectionne_archive)
+#' @keywords internal
 #' @return un vecteur
 extraire_types_fichiers <- function(selection_fichiers_a_extraire, info_archive){
   # l_f <- stringr::str_replace_all(selection_fichiers_a_extraire,
