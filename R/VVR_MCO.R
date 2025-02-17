@@ -1562,7 +1562,6 @@ vvr_rum <- function(p, valo,
 #'
 #' @author G. Pressiat
 #'
-#' @export
 #' @export epmsi_mco_rav2
 epmsi_mco_rav2 <- function(valo, theorique = TRUE){
   if (theorique){
