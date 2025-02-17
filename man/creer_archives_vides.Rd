@@ -9,12 +9,10 @@ creer_archives_vides(chemins_archives)
 \arguments{
 \item{chemins_archives}{Chemin vers les archives qui servira de modèle pour l'archive simulée}
 }
-\value{
-\code{NULL}
-}
 \description{
 Creer des archives simulees a partir de plusieurs archives reelles
 }
 \seealso{
 \code{\link[=creer_archive_vide]{creer_archive_vide()}}
 }
+\keyword{internal}

@@ -23,3 +23,4 @@ creer_archive_vide(
 \description{
 Créer une archive vide à partir d'une archive réelle
 }
+\keyword{internal}

@@ -26,21 +26,10 @@ selectionne_archive(
 
 \item{recent}{par défaut \code{TRUE}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
 }
-\value{
-Une liste ou une table avec les informations extraites du nom de fichier :
-\itemize{
-\item \code{nom_fichier} Le nom de fichier passé en arguement
-\item \code{finess}
-\item \code{annee}
-\item \code{mois}
-\item \code{horodatage_production} L'horodatage de production pour les fichiers \emph{in} et \emph{out} au format POSIXlt
-Si il y a plusieurs fichiers, la liste peut être facilement transformée en table avec \code{\link[dplyr:bind_rows]{dplyr::bind_rows()}}.
-\item \code{type} Type de fichier : \emph{in}, \emph{out}, \emph{rss}...
-}
-}
 \description{
 Selectionne une archive in/out
 }
 \seealso{
 \code{\link[=adezip.default]{adezip.default()}} et \code{\link[=parse_nom_fichier]{parse_nom_fichier()}}
 }
+\keyword{internal}

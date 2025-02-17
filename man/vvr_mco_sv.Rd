@@ -9,7 +9,7 @@ vvr_mco_sv(rsa, ano, porg = dplyr::tibble(cle_rsa = ""))
 \arguments{
 \item{rsa}{un tibble rsa contenant les variables nécessaires (créé avec \code{\link{vvr_rsa}})}
 
-\item{ano}{un tibble ano contenant les variables nécessaires (créé avec \code{\link{vvr_mco_ano}})}
+\item{ano}{un tibble ano contenant les variables nécessaires (créé avec \code{\link{vvr_ano_mco}})}
 
 \item{porg}{un tibble porg contenant les prélevements d'organes du out (créé avec \code{\link{ipo}})}
 }

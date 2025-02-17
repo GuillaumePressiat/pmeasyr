@@ -16,7 +16,8 @@ vvr_ghs_supp(
   full = FALSE,
   cgeo = 1.07,
   prudent = NULL,
-  bee = TRUE
+  bee = TRUE,
+  csegur = 1.0019
 )
 }
 \arguments{

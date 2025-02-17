@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pmeasyr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -54,7 +56,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -86,7 +88,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/GuillaumePressiat/pmeasyr/">
+  <a href="https://github.com/GuillaumePressiat/pmeasyr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -105,17 +107,16 @@
   <div class="contents col-md-9">
 
 
-<div id="pmeasyr--données-pmsi-avec-r-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#pmeasyr--donn%C3%A9es-pmsi-avec-r-" class="anchor"></a>pmeasyr : données PMSI avec R <img src="logo.png" align="right">
+<div class="section level1">
+<div class="page-header"><h1 id="pmeasyr--données-pmsi-avec-r-">pmeasyr : données PMSI avec R <img src="logo.png" align="right"><a class="anchor" aria-label="anchor" href="#pmeasyr--donn%C3%A9es-pmsi-avec-r-"></a>
 </h1></div>
 <!-- ![rigologo](rigologo_pmeasyr.png) -->
 <p><strong><em>Guillaume Pressiat</em></strong></p>
 <p><em>28 novembre 2021</em></p>
-<p><strong>Le développement de ce package a été initié au DIM du siège de l’AP-HP</strong>. Il était auparavant hébergé sur le github <a href="https://github.com/IM-APHP/">IM-APHP</a>.</p>
-<div id="contenu-du-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contenu-du-package" class="anchor"></a>Contenu du package</h2>
+<p><strong>Le développement de ce package a été initié au DIM du siège de l’AP-HP</strong>. Il était auparavant hébergé sur le github <a href="https://github.com/IM-APHP/" class="external-link">IM-APHP</a>.</p>
+<div class="section level2">
+<h2 id="contenu-du-package">Contenu du package<a class="anchor" aria-label="anchor" href="#contenu-du-package"></a>
+</h2>
 <p>Ce package contient des fonctions pour :</p>
 <ul>
 <li>la gestion des archives PMSI en entrée / sortie des logiciels de l’ATIH : dézippage, suppression des archives, voir <a href="https://guillaumepressiat.github.io/pmeasyr/reference/#section-gestion-des-archives">ici</a>
@@ -130,88 +131,97 @@
 </li>
 </ul>
 </div>
-<div id="support-documentaire-et-annexes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#support-documentaire-et-annexes" class="anchor"></a>Support documentaire et annexes</h2>
+<div class="section level2">
+<h2 id="support-documentaire-et-annexes">Support documentaire et annexes<a class="anchor" aria-label="anchor" href="#support-documentaire-et-annexes"></a>
+</h2>
 <ul>
 <li><p>Un <a href="https://guillaumepressiat.github.io/pmeasyr/">livret numérique en ligne</a> présente le fonctionnement du package et donne des exemples de codes (imports, requêtes, analyses) pour se familiariser à son utilisation.</p></li>
-<li><p><code>pmeasyr</code> s’inscrit désormais dans un ensemble de packages et de projets pour le PMSI avec R, auquel appartient par exemple le package <a href="https://guillaumepressiat.github.io/nomensland/articles/vignette1.html">nomensland</a>.</p></li>
-<li><p>Une <a href="https://guillaumepressiat.github.io/">page github</a> rassemble toutes les informations autour du package : la documentation, des exemples ainsi que la présentation et le suivi des évolutions avec la partie <a href="https://guillaumepressiat.github.io/blog/">bloc-notes</a>.</p></li>
+<li><p><code>pmeasyr</code> s’inscrit désormais dans un ensemble de packages et de projets pour le PMSI avec R, auquel appartient par exemple le package <a href="https://guillaumepressiat.github.io/nomensland/articles/vignette1.html" class="external-link">nomensland</a>.</p></li>
+<li><p>Une <a href="https://guillaumepressiat.github.io/" class="external-link">page github</a> rassemble toutes les informations autour du package : la documentation, des exemples ainsi que la présentation et le suivi des évolutions avec la partie <a href="https://guillaumepressiat.github.io/blog/" class="external-link">bloc-notes</a>.</p></li>
 </ul>
-<p>Une vidéo est aussi <a href="https://guillaumepressiat.github.io/blog/2017/06/video-intro">disponible</a>.</p>
+<p>Une vidéo est aussi <a href="https://guillaumepressiat.github.io/blog/2017/06/video-intro" class="external-link">disponible</a>.</p>
 </div>
-<div id="installation-du-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation-du-package" class="anchor"></a>Installation du package</h2>
-<div id="depuis-r-universe-cran-like-pre-build" class="section level3">
-<h3 class="hasAnchor">
-<a href="#depuis-r-universe-cran-like-pre-build" class="anchor"></a>Depuis r-universe (CRAN-like pre-build)</h3>
-<p>Le plus simple pour installer pmeasyr est de lancer directement :</p>
+<div class="section level2">
+<h2 id="installation-du-package">Installation du package<a class="anchor" aria-label="anchor" href="#installation-du-package"></a>
+</h2>
+<div class="section level3">
+<h3 id="pré-requis">Pré-requis<a class="anchor" aria-label="anchor" href="#pr%C3%A9-requis"></a>
+</h3>
+<p>pmeasyr utilise les packages suivants, il faut donc les installer avant de préférence.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'pmeasyr'</span>, repos <span class="op">=</span> <span class="st">'https://guillaumepressiat.r-universe.dev'</span><span class="op">)</span></code></pre></div>
-<p>Cf <a href="https://guillaumepressiat.r-universe.dev/ui#builds">guillaumepressiat.r-universe</a>.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'tidyverse'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'sjlabelled'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'sqldf'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="depuis-github-avec-remotes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#depuis-github-avec-remotes" class="anchor"></a>Depuis github avec remotes</h3>
+<div class="section level3">
+<h3 id="depuis-r-universe-cran-like-pre-build">Depuis r-universe (CRAN-like pre-build)<a class="anchor" aria-label="anchor" href="#depuis-r-universe-cran-like-pre-build"></a>
+</h3>
+<p>Le plus simple pour installer pmeasyr est de lancer directement :</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages('remotes')</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org">remotes</a></span><span class="op">)</span>
-<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'guillaumepressiat/pmeasyr'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'pmeasyr'</span>, repos <span class="op">=</span> <span class="st">'https://guillaumepressiat.r-universe.dev'</span><span class="op">)</span></span></code></pre></div>
+<p>Cf <a href="https://guillaumepressiat.r-universe.dev/" class="external-link">guillaumepressiat.r-universe</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="depuis-github-avec-remotes">Depuis github avec remotes<a class="anchor" aria-label="anchor" href="#depuis-github-avec-remotes"></a>
+</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages('remotes')</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'guillaumepressiat/pmeasyr'</span><span class="op">)</span></span></code></pre></div>
 <p>Cette commande lance l’installation du package et de ses dépendances.</p>
 </div>
-<div id="installation-derrière-un-proxy" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation-derri%C3%A8re-un-proxy" class="anchor"></a>Installation derrière un proxy</h3>
+<div class="section level3">
+<h3 id="installation-derrière-un-proxy">Installation derrière un proxy<a class="anchor" aria-label="anchor" href="#installation-derri%C3%A8re-un-proxy"></a>
+</h3>
 <p>Souvent, les établissements hospitaliers ont mis en place un proxy qui empèche l’installation pratique d’un package sur github. Voici comment faire dans ce cas.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages('httr')</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://httr.r-lib.org/reference/set_config.html">set_config</a></span><span class="op">(</span> <span class="fu"><a href="https://httr.r-lib.org/reference/use_proxy.html">use_proxy</a></span><span class="op">(</span>
-    url <span class="op">=</span> <span class="st">"proxy_url"</span>,    <span class="co"># Remplacer proxy_url par l'URL de votre proxy</span>
-    port <span class="op">=</span> <span class="fl">8080</span>,
-    username <span class="op">=</span> <span class="st">"user"</span>,    <span class="co"># Remplacer user par votre nom d'utilisateur du proxy</span>
-    password <span class="op">=</span> <span class="st">"password"</span> <span class="co">#Remplacer password par votre nom d'utilisateur du proxy</span>
-<span class="op">)</span><span class="op">)</span>
-
-<span class="co"># install.packages('remotes')</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org">remotes</a></span><span class="op">)</span>
-<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'guillaumepressiat/pmeasyr'</span><span class="op">)</span></code></pre></div>
-<p>Une autre option dans ce contexte est la configuration définitive des proxys du logiciel R au sein du fichier <a href="https://support.rstudio.com/hc/en-us/articles/200488488-Configuring-R-to-Use-an-HTTP-or-HTTPS-Proxy">Renviron.site, voir ici par exemple</a>. En cas de question, n’hésitez pas à ouvrir une <a href="https://github.com/guillaumepressiat/pmeasyr/issues">issue</a>.</p>
-<p>Par exemple, si vous ne connaissez pas votre proxy, vous pouvez faire comme indiqué <a href="https://github.com/guillaumepressiat/pmeasyr/issues/23">ici</a>.</p>
-</div>
-</div>
-<div id="pour-commencer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pour-commencer" class="anchor"></a>Pour commencer</h2>
-<p>La vignette introductive du package donne des exemples de commandes pour les traitements des données du champ PMSI MCO.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html">browseVignettes</a></span><span class="op">(</span><span class="st">'pmeasyr'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages('httr')</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/" class="external-link">httr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://httr.r-lib.org/reference/set_config.html" class="external-link">set_config</a></span><span class="op">(</span> <span class="fu"><a href="https://httr.r-lib.org/reference/use_proxy.html" class="external-link">use_proxy</a></span><span class="op">(</span></span>
+<span>    url <span class="op">=</span> <span class="st">"proxy_url"</span>,    <span class="co"># Remplacer proxy_url par l'URL de votre proxy</span></span>
+<span>    port <span class="op">=</span> <span class="fl">8080</span>,</span>
+<span>    username <span class="op">=</span> <span class="st">"user"</span>,    <span class="co"># Remplacer user par votre nom d'utilisateur du proxy</span></span>
+<span>    password <span class="op">=</span> <span class="st">"password"</span> <span class="co">#Remplacer password par votre nom d'utilisateur du proxy</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># install.packages('remotes')</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'guillaumepressiat/pmeasyr'</span><span class="op">)</span></span></code></pre></div>
+<p>Une autre option dans ce contexte est la configuration définitive des proxys du logiciel R au sein du fichier <a href="https://support.rstudio.com/hc/en-us/articles/200488488-Configuring-R-to-Use-an-HTTP-or-HTTPS-Proxy" class="external-link">Renviron.site, voir ici par exemple</a>. En cas de question, n’hésitez pas à ouvrir une <a href="https://github.com/guillaumepressiat/pmeasyr/issues" class="external-link">issue</a>.</p>
+<p>Par exemple, si vous ne connaissez pas votre proxy, vous pouvez faire comme indiqué <a href="https://github.com/guillaumepressiat/pmeasyr/issues/23" class="external-link">ici</a>.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="pour-commencer">Pour commencer<a class="anchor" aria-label="anchor" href="#pour-commencer"></a>
+</h2>
+<p>La vignette introductive du package donne des exemples de commandes pour les traitements des données du champ PMSI MCO.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">'pmeasyr'</span><span class="op">)</span></span></code></pre></div>
 <p>Ou bien consulter la <a href="https://guillaumepressiat.github.io/pmeasyr/articles/vignette.html">vignette en ligne</a>.</p>
 </div>
-<div id="le-pourquoi-du-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#le-pourquoi-du-package" class="anchor"></a>Le pourquoi du package</h2>
+<div class="section level2">
+<h2 id="le-pourquoi-du-package">Le pourquoi du package<a class="anchor" aria-label="anchor" href="#le-pourquoi-du-package"></a>
+</h2>
 <p>Ci-après, des arguments en faveur de l’utilisation de R dans le contexte des données PMSI.</p>
-<div id="contexte" class="section level3">
-<h3 class="hasAnchor">
-<a href="#contexte" class="anchor"></a>Contexte</h3>
+<div class="section level3">
+<h3 id="contexte">Contexte<a class="anchor" aria-label="anchor" href="#contexte"></a>
+</h3>
 <p>Les données du Programme de Médicalisation des Systèmes d’Informations (PMSI) sont souvent traitées via des logiciels spécifiques au PMSI (ou des outils statistiques / bases de données du marché) ne permettant pas de réaliser des traitements statistiques et des infographies satisfaisantes. Les départements d’information médicale sont donc souvent amenés à retraiter ces données avec R.</p>
 <p>L’évolution récente de R intègre la manipulation de bases de données de taille importante. Le package <em>pmeasyr</em> s’inscrit dans cette veine et permet de réaliser de façon autonome l’ensemble des traitements (de l’import des données à leur analyse) avec R.</p>
 </div>
-<div id="avantages-de-r" class="section level3">
-<h3 class="hasAnchor">
-<a href="#avantages-de-r" class="anchor"></a>Avantages de R</h3>
-<div id="un-flux-de-travail-unique" class="section level4">
-<h4 class="hasAnchor">
-<a href="#un-flux-de-travail-unique" class="anchor"></a>Un flux de travail unique</h4>
+<div class="section level3">
+<h3 id="avantages-de-r">Avantages de R<a class="anchor" aria-label="anchor" href="#avantages-de-r"></a>
+</h3>
+<div class="section level4">
+<h4 id="un-flux-de-travail-unique">Un flux de travail unique<a class="anchor" aria-label="anchor" href="#un-flux-de-travail-unique"></a>
+</h4>
 <p>En travaillant uniquement avec R, on peut mettre en place un flux de travail épuré : un seul projet, un seul programme, un seul logiciel. La traçabilité, la reproductibilité et la mise à jour des opérations sont ainsi facilitées.</p>
 <p>Le travail avec de multiples logiciels oblige à l’export / import de fichiers entre les différents logiciels, et chaque modification du début du flux de travail génère des fichiers exportés v1, v2, …</p>
 <p>Avec un flux complet dans R, toute nouvelle modification est intégrée au processus de travail global. La localisation de toutes les étapes d’une analyse en un seul point évite les erreurs et la confusion lorsque l’on reprend l’analyse ultérieurement.</p>
 </div>
-<div id="r-et-le-pmsi" class="section level4">
-<h4 class="hasAnchor">
-<a href="#r-et-le-pmsi" class="anchor"></a>R et le PMSI</h4>
+<div class="section level4">
+<h4 id="r-et-le-pmsi">R et le PMSI<a class="anchor" aria-label="anchor" href="#r-et-le-pmsi"></a>
+</h4>
 <p>L’utilisation de R confère aux données du PMSI la liberté proposée par le logiciel :</p>
 <ul>
 <li>les requêtes sur les diagnostics et les actes peuvent s’écrire de multiples façons et c’est l’utilisateur qui crée ses propres programmes</li>
@@ -224,9 +234,9 @@
 </ul>
 <p>**NB: Données In / Out : données en entrée / sortie des logiciels de l’ATIH*</p>
 </div>
-<div id="des-outils-performants" class="section level4">
-<h4 class="hasAnchor">
-<a href="#des-outils-performants" class="anchor"></a>Des outils performants</h4>
+<div class="section level4">
+<h4 id="des-outils-performants">Des outils performants<a class="anchor" aria-label="anchor" href="#des-outils-performants"></a>
+</h4>
 <p>L’engouement autour de R est lié au développement de packages intuitifs et performants : <em>readr</em>, <em>dplyr</em>, <em>tidyr</em>, <em>magrittr</em>, pour n’en citer que quelques-uns. <em>pmeasyr</em> s’appuie sur ces packages pour proposer des imports de données rapides sur des fichiers de taille importante (l’entité juridique de l’AP-HP est prise en charge sans problème avec un ordinateur récent).</p>
 <p>Dans le cas de <em>pmeasyr</em>, l’import de 100 000 rsa (partie fixe, parsing des passages unités médicales, des diagnostics associés et des actes) nécessite en moyenne 5 secondes avec un processeur i7 – 16Go de ram.</p>
 <p>En dernier ressort, R travaillant en mémoire vive, les exécutions de requêtes sont très rapides.</p>
@@ -240,30 +250,38 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/GuillaumePressiat/pmeasyr/">https://​github.com/​GuillaumePressiat/​pmeasyr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/GuillaumePressiat/pmeasyr/issues">https://​github.com/​GuillaumePressiat/​pmeasyr/​issues</a>
-</li>
+<li><a href="https://github.com/GuillaumePressiat/pmeasyr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/GuillaumePressiat/pmeasyr/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a> | file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a> | file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 </ul>
 </div>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing pmeasyr</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Guillaume Pressiat <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Namik Taright <br><small class="roles"> Author </small>  </li>
@@ -272,23 +290,26 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
-<li><a href="https://guillaumepressiat.r-universe.dev/ui#builds"><img src="https://guillaumepressiat.r-universe.dev/badges/pmeasyr" alt="https://guillaumepressiat.r-universe.dev/badges/pmeasyr"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
+<li><a href="https://guillaumepressiat.r-universe.dev/ui#builds" class="external-link"><img src="https://guillaumepressiat.r-universe.dev/badges/pmeasyr" alt="https://guillaumepressiat.r-universe.dev/badges/pmeasyr"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Guillaume Pressiat, Namik Taright, Joris Muller, IM-APHP.</p>
+  <p></p>
+<p>Developed by Guillaume Pressiat, Namik Taright, Joris Muller, IM-APHP.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -296,6 +317,8 @@
 
   
 
+
+  
 
   </body>
 </html>

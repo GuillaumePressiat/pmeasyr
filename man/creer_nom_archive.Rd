@@ -25,3 +25,4 @@ Un nom d'archive compatible
 Creer le nom d'une archive
 Permet de simuler ou de créer des noms d'archives PMSI
 }
+\keyword{internal}

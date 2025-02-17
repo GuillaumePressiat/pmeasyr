@@ -35,3 +35,4 @@ noms_de_fichiers <- c("671234567.2016.1.12032016140012.in.zip",
 dplyr::bind_rows(x)
 }
 }
+\keyword{internal}

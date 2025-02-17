@@ -19,3 +19,4 @@ un vecteur
 Extraire les types de fichiers
 Permet d'afficher les types de fichiers d'une archive (ano, rss, rsa, ...)
 }
+\keyword{internal}
