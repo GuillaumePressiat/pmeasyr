@@ -1407,7 +1407,50 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     } else {
       return(tra_i)
     }
-  } else if (!grepl("psy",champ)){
+  } 
+  
+  else if (grepl("psy",champ) & paste0(annee, stringr::str_pad(mois, 2, 'left', '0')) >= '202501') {
+    
+    champ1 = champ
+    format <-  pmeasyr::formats %>% dplyr::filter(champ == "psy", table == champ1)
+    
+    if (champ == 'psy_rpsa'){
+      extens <- '.tra'
+      liste_vars <- c(format$nom)
+    } else {
+      extens <- '.tra.raa'
+      liste_vars <- c(format$nom, 'CATINTERV')
+    }
+    
+    
+    tra_i <- readr::read_delim(paste0(path,"/",finess,".",annee,".",stringr::str_pad(mois, 2, 'left', '0'),extens), delim = ";",
+                               col_names = liste_vars,
+                               col_types = readr::cols(.default = readr::col_character())) %>% 
+      dplyr::mutate_if(is.character, stringr::str_trim) %>% 
+      dplyr::mutate_at(dplyr::vars(dplyr::starts_with('DT')), lubridate::dmy)
+    
+    if (champ == 'psy_rpsa'){
+      tra_i <- tra_i %>%
+        mutate(NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
+    }
+    
+    if (tolower_names){
+      names(tra_i) <- tolower(names(tra_i))
+    }
+    
+    if (lib == T){
+      if (champ1 == 'psy_rpsa'){
+        v <- c(format$libelle, 'Établissement')
+        
+      } else {
+        v <- c(format$libelle, "Catégorie d'intervenant")
+      }
+      return(tra_i  %>%  sjlabelled::set_label(v))
+    } else {
+      return(tra_i)
+    }
+  }
+  else if (!grepl("psy",champ)){
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
   } else {
