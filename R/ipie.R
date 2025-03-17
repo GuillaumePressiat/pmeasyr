@@ -53,17 +53,16 @@ ipie.list <- function(l , ...){
 ipie.default <- function(finess, annee, mois, path, 
                           typpie = c("out", "in"), lib = T, 
                           tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
   typpie <- match.arg(typpie)
   if (!(typpie %in% c('in', 'out'))){
     stop('Paramètre typdiap incorrect')
   }
   
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typpie, 'in' = 'pie.txt', 'out' = 'pie'))
+  )
   
   #op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -103,7 +102,7 @@ ipie.default <- function(finess, annee, mois, path,
       class = "col_spec"
     )
     
-    pie_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".pie"),
+    pie_i<-readr::read_fwf(pmsi_file,
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...)
     readr::problems(pie_i) -> synthese_import
     
