@@ -50,12 +50,11 @@ irhs.list <- function(l, ...){
 
 #' @export
 irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'ssr', 'rhs.rtt.txt')
+  )
   
   #op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -94,7 +93,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   )
   
   if (annee == 2022){
-    readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt.txt")) %>% 
+    readr::read_lines(pmsi_file) %>% 
       dplyr::tibble(l = .) %>% 
       dplyr::mutate(l = case_when(substr(l,11,13) == "M1B" ~ paste0(substr(l,1, 59), " ", substr(l,60, nchar(l))), TRUE ~ l)) %>% 
       pull(l) %>% 
