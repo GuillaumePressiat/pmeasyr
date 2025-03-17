@@ -5274,7 +5274,7 @@ imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
   
   pmsi_file <- file.path(
     path,
-    pmsi_glue_fullname(finess, annee, mois, 'mco', 'med')
+    pmsi_glue_fullname(finess, annee, mois, 'ssr', 'med')
   )
   
   op <- options(digits.secs = 6)
@@ -5513,12 +5513,11 @@ irpsa.list <- function(l, ...){
 
 #' @export
 irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'rpsa')
+  )
+  
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -5557,7 +5556,7 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  suppressWarnings(rpsa_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rpsa"),
+  suppressWarnings(rpsa_i <- readr::read_fwf(pmsi_file,
                                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(rpsa_i) -> synthese_import
@@ -5770,12 +5769,12 @@ ir3a.list <- function(l, ...){
 
 #' @export
 ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'r3a')
+  )
+  
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -5814,7 +5813,7 @@ ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  suppressWarnings(r3a_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".r3a"),
+  suppressWarnings(r3a_i <- readr::read_fwf(pmsi_file,
                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(r3a_i) -> synthese_import
@@ -5909,14 +5908,13 @@ iano_psy.list <- function(l, ...){
 
 #' @export
 iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'), lib=T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
+
   typano <- match.arg(typano)
   
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', switch(typano, 'in' = 'anohosp.txt', 'out' = 'ano'))
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -5973,7 +5971,7 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
                     MTRMBAMC = MTRMBAMC/100)
   }
   if (annee>2012){
-    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+    ano_i <- readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
     readr::problems(ano_i) -> synthese_import
     ano_i <- ano_i %>%
@@ -6032,7 +6030,7 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
     
     
     if (2011<annee){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".anohosp.txt"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ano_i) -> synthese_import

@@ -55,12 +55,11 @@ irps.list <- function(l, ...){
 
 #' @export
 irps.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'rps.txt')
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -99,7 +98,7 @@ irps.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  suppressWarnings(rps_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rps.txt"),
+  suppressWarnings(rps_i <- readr::read_fwf(pmsi_file,
                                              readr::fwf_widths(af,an), col_types = at , na=character()))#, ...)) 
   
   readr::problems(rps_i) -> synthese_import
