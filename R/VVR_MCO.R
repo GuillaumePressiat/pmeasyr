@@ -352,6 +352,7 @@ vvr_ghs_supp <- function(rsa,
       dplyr::filter(substr(noghs,1,1) != 'I') %>%
       
       dplyr::mutate(cprudent = dplyr::case_when(
+        anseqta == "2025" ~ prudent * 1.0035,
         anseqta == "2024" ~ prudent * 1.0042,
         anseqta == "2023" ~ prudent * 1.0023,
         anseqta == "2022" ~ prudent * 1.0013,
