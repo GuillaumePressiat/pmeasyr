@@ -101,6 +101,14 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
       readr::write_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt2.txt"))
     
     joker <- '2'
+  } else  if (annee == 2025){
+    readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt.txt")) %>% 
+      dplyr::tibble(l = .) %>% 
+      dplyr::mutate(l = case_when(substr(l,11,13) == "M1C" ~ paste0(substr(l,1, 181), "000", substr(l,182, nchar(l))), TRUE ~ l)) %>% 
+      pull(l) %>% 
+      readr::write_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt2.txt"))
+    
+    joker <- '2'
   } else {
     joker <- ''
   }
@@ -114,6 +122,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                   MMP = stringr::str_trim(MMP),
                   AE = stringr::str_trim(AE), 
                   shift_zad  = dplyr::case_when(
+                    NOVRHS == 'M1D' ~ 0L,
                     NOVRHS == 'M1C' ~ 1L,
                     NOVRHS == 'M1A' ~ 1L,
                                          NOVRHS == 'M1B' & annee == 2022 ~ 1L,
