@@ -97,7 +97,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt.txt")) %>% 
       dplyr::tibble(l = .) %>% 
       dplyr::mutate(l = case_when(substr(l,11,13) == "M1B" ~ paste0(substr(l,1, 59), " ", substr(l,60, nchar(l))), TRUE ~ l)) %>% 
-      pull(l) %>% 
+      dplyr::pull(l) %>% 
       readr::write_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt2.txt"))
     
     joker <- '2'
