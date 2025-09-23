@@ -93,7 +93,7 @@ isrpsa.default <- function(finess, annee, mois, path,
     class = "col_spec"
   )
   
-  srpsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".srpsa"),
+  srpsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",stringr::str_pad(mois, 2, 'left', '0'),".srpsa"),
                          readr::fwf_widths(af,an), col_types =at, na=character(), ...)
   
   readr::problems(srpsa_i) -> synthese_import

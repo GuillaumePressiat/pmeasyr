@@ -4,14 +4,14 @@
 #' Import du fichier raa
 #'
 #' Formats depuis 2012 pris en charge
-#' Structure du nom du fichier attendu (sortie de Pivoine) :
+#' Structure du nom du fichier attendu (sortie de Druides) :
 #' \emph{finess.annee.moisc.rpa.txt}
 #'
-#' \strong{750712184.2016.3.rpa.txt}
+#' \strong{750712184.2025.03.rpa.txt}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
-#' @param mois Mois PMSI (nb) des données (janvier : 1, decembre : 12)
+#' @param mois Mois PMSI (nb) des données (janvier : 01, decembre : 12)
 #' @param path Localisation du fichier de donnees
 #' @param lib Ajout des libelles de colonnes aux tables, par defaut a \code{TRUE} ; necessite le package \code{sjlabelled}
 #' @param tolower_names a TRUE les noms de colonnes sont tous en minuscules
@@ -100,7 +100,7 @@ iraa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  suppressWarnings(raa_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rpa.txt"),
+  suppressWarnings(raa_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",stringr::str_pad(mois, 2, 'left', '0'),".rpa.txt"),
                                             readr::fwf_widths(af,an), col_types = at , na=character()))#, ...)) 
   
   readr::problems(raa_i) -> synthese_import
