@@ -82,6 +82,8 @@ vvr_had_ght <- function(p, ghts, coeff_geo = 1.07, coeff_prudent = NULL){
     dplyr::mutate(anseqta = ifelse(mois_fin_ss_seq %in% c('01', '02'), p$annee - 1, p$annee) %>% as.character()) %>%
     dplyr::mutate(cgeo = coeff_geo,
            cprudent = case_when(
+             anseqta == '2025'    ~ 0.9930,
+             anseqta == '2024'    ~ 0.9930,
              anseqta == '2023'    ~ 0.9930,
              anseqta == '2022'    ~ 0.9930,
              anseqta == '2021'    ~ 0.9930,
