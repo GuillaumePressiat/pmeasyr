@@ -3,7 +3,8 @@
 atih_mappings <-   tibble::tribble(
   ~debut, ~fin, ~champ_,~outil_atih, ~pmsi_formatter, 
   "201101", "202312", "mco", "genrsa",  "{finess}.{annee}.{mois}",
-  "202401", "209912", "mco", "druides", "{finess}.{annee}.{mois}",
+  "202401", "202507", "mco", "druides", "{finess}.{annee}.{mois}",
+  "202508", "209912", "mco", "druides", "{finess}.{annee}.{mois2}",
   
   "200000", "202412", "psy", "pivoine", "{finess}.{annee}.{mois}",
   "202501", "209912", "psy", "druides", "{finess}.{annee}.{mois2}",
