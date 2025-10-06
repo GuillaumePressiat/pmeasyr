@@ -42,6 +42,7 @@
 #' @author G. Pressiat
 #'
 #' @seealso \code{\link{epmsi_mco_sv}}, \code{\link{vvr_ano_mco}}, \code{\link{vvr_mco}}
+#' @importFrom stats IQR median sd var
 #' @export vvr_rsa
 #' @export
 vvr_rsa <- function(...){
@@ -228,7 +229,8 @@ vvr_ano_mco.src <- function(con, an, ...){
 #' \dontrun{
 #' # Récupérer les tarifs GHS et des suppléments (ex-DGF) : 
 #' tarifs      <- nomensland::get_table('tarifs_mco_ghs') %>% distinct(ghs, anseqta, .keep_all = TRUE)
-#' supplements <- nomensland::get_table('tarifs_mco_supplements') %>% mutate_if(is.numeric, tidyr::replace_na, 0)
+#' supplements <- nomensland::get_table('tarifs_mco_supplements') %>% 
+#' mutate_if(is.numeric, tidyr::replace_na, 0)
 #' 
 #' # Recette GHS de base et suppléments EXB, EXH
 #' vvr_ghs_supp(rsa = vrsa, tarifs = tarifs)

@@ -10,7 +10,8 @@ selectionne_archive(
   annee,
   dossier_archives,
   type_archive = "in",
-  recent = TRUE
+  recent = TRUE,
+  champ
 )
 }
 \arguments{

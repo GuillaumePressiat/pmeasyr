@@ -6749,7 +6749,6 @@ NULL
 #' 
 #' Voir exemple
 #' 
-#' @exportClass pm_param
 #' @author G. Pressiat
 #' 
 #' @examples
