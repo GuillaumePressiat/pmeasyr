@@ -58,7 +58,7 @@ irps.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   
   pmsi_file <- file.path(
     path,
-    pmsi_glue_fullname(finess, annee, mois, 'psy', 'rps.txt')
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'rps.txt') %>% pmsi_strip_month()
   )
   
   op <- options(digits.secs = 6)
