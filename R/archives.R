@@ -226,8 +226,9 @@ adezip.default <- function(finess, annee, mois,
                            # en Français afin d'avoir une constance dans les
                            # règles de nommage des arguments
                            pathto = path, 
-                           type = "in", recent = TRUE, nom_archive = NULL,
-                           quiet = FALSE, ...){
+                           type = "in", 
+                           recent = TRUE, nom_archive = NULL,
+                           quiet = FALSE, champ = "mco",  ...){
   
   path <- path.expand(path)
   
@@ -236,7 +237,7 @@ adezip.default <- function(finess, annee, mois,
   if (is.null(nom_archive)) {
     info_archive <- selectionne_archive(finess = finess, annee = annee, 
                                         mois = mois, dossier_archives = path,
-                                        type_archive = type, recent = recent)
+                                        type_archive = type, recent = recent, champ = champ)
     
     nom_archive <- info_archive$nom_fichier
   } else {
@@ -271,10 +272,11 @@ adezip.default <- function(finess, annee, mois,
     message(
       "\n",
       "Dézippage de l'archive ", info_archive$nom_fichier, '\n',
+      'Type ATIH : ', info_archive$outil_atih, ' / ', info_archive$champ, '\n',
       'Taille    : ', info_archive$taille_mo, " Mo\n",
-      'Type      : ', info_archive$type, '\n',
-      'Finess    : ', info_archive$finess, '\n',
-      'Période   : ', info_archive$annee, ' M', info_archive$mois, '\n',
+      'Type      : ', info_archive$t, '\n',
+      'Finess    : ', info_archive$f, '\n',
+      'Période   : ', info_archive$a, ' M', info_archive$m, '\n',
       'Date prod : ', info_archive$horodatage_production, '\n',
       'Fichiers  : ', liste_fichiers,'\n'
     )
@@ -294,17 +296,41 @@ adezip.default <- function(finess, annee, mois,
 #' @export
 #' @md
 selectionne_archive <- function(finess, mois, annee, dossier_archives, 
-                                type_archive = "in", recent = TRUE) {
+                                type_archive = "in", recent = TRUE, champ) {
   # Récupérer la liste de fichiers .zip
   path_archives <- list.files(dossier_archives, pattern = "\\.zip$")
   
-  # Créer une table avec les caractéristiques des fichiers ZIP
-  df_zip <- parse_noms_fichiers(path_archives)
+  # ajout fourche de test druides et formattage du nom de l'archive
+  fenetre_atih <- pmsi_check_periode(annee, mois, champ)
   
+  # Créer une table avec les caractéristiques des fichiers ZIP
+  df_zip <- tibble::tibble(nom_fichier = path_archives) %>% 
+    tidyr::separate(nom_fichier, into = c('f', 'a', 'm'), sep = '\\.', 
+                    remove = FALSE, extra = "drop") %>% 
+    dplyr::mutate(t = stringr::str_extract(nom_fichier, '(in|out)\\.zip', 1)) %>% 
+    dplyr::mutate(d = stringr::str_extract(nom_fichier, '([0-9]{14})\\.(in|out)\\.zip', 1)) %>% 
+    dplyr::mutate(m = as.character(as.integer(m))) %>% 
+    dplyr::filter(f == !!finess, a == !!annee, 
+            m == !!mois, t == !!type_archive) %>% 
+    dplyr::inner_join(fenetre_atih, by = c('a' = 'annee', 'm' = 'mois')) %>% 
+    dplyr::mutate(check = purrr::map2_lgl(nom_fichier, zip_formatter, pmsi_check_archive_name)) %>% 
+    dplyr::filter(check) %>% 
+    dplyr::mutate(champ = dplyr::case_when(outil_atih == 'druides' ~ tolower(stringr::str_extract(nom_fichier, 'SMR|MCO|PSY|HAD')),
+                                    TRUE ~ champ)) %>% 
+    dplyr::mutate(champ = dplyr::case_when(champ == 'smr' ~ 'ssr',
+                                           TRUE ~champ)) %>% 
+    dplyr::filter(champ == champ_) %>% 
+    dplyr::mutate(time_format = stringr::str_extract(zip_formatter, 'zipisotime|zipfratime')) %>% 
+    dplyr::mutate(horodatage_production = dplyr::case_when(
+      time_format == 'zipisotime' ~ lubridate::ymd_hms(d, quiet = TRUE),
+      time_format == 'zipfratime' ~ lubridate::dmy_hms(d, quiet = TRUE)))
+
+  if (nrow(df_zip) == 0L){
+    stop("Aucune archive zip correspondante n'a été trouvée.")
+  }
+
   # Sélectionner les fichiers d'archives correspondants aux critères
-  df_zip_selectionne <- df_zip %>%
-    filter(finess == !!finess, annee == !!annee, 
-           mois == !!mois, type == !!type_archive) %>%
+  df_zip_selectionne <- df_zip %>% 
     # Trier du plus récent au plus ancien
     arrange(desc(horodatage_production))
   
@@ -673,7 +699,7 @@ creer_nom_archive <- function(
 extraire_types_fichiers <- function(selection_fichiers_a_extraire, info_archive){
   # l_f <- stringr::str_replace_all(selection_fichiers_a_extraire,
   #                                 paste(info_archive$finess,info_archive$annee, info_archive$mois, "txt", sep = "|"), "")
-  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, paste(info_archive$finess, "txt", sep = "|"), "")
+  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, paste(info_archive$f, "txt", sep = "|"), "")
   l_f <- stringr::str_replace_all(l_f, "[0-9]+|\\.$", "")
   l_f <- stringr::str_replace_all(l_f, "\\.{2,}", "")
   l_f

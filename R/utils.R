@@ -1,18 +1,19 @@
 
 
 atih_mappings <-   tibble::tribble(
-  ~debut, ~fin, ~champ_,~outil_atih, ~pmsi_formatter, 
-  "201101", "202312", "mco", "genrsa",  "{finess}.{annee}.{mois}",
-  "202401", "202507", "mco", "druides", "{finess}.{annee}.{mois}",
-  "202508", "209912", "mco", "druides", "{finess}.{annee}.{mois2}",
+  ~debut, ~fin, ~champ_,~outil_atih, ~pmsi_formatter, ~zip_formatter,
+  "201101", "202304", "mco", "genrsa",  "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipfratime}.{ziptype}.zip",
+  "202305", "202312", "mco", "genrsa",  "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipisotime}.{ziptype}.zip",
+  "202401", "202507", "mco", "druides", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipisotime}.{ziptype}.zip",
+  "202508", "209912", "mco", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.MCO.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
   
-  "200000", "202412", "psy", "pivoine", "{finess}.{annee}.{mois}",
-  "202501", "209912", "psy", "druides", "{finess}.{annee}.{mois2}",
+  "200000", "202412", "psy", "pivoine", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipisotime}.{ziptype}.zip",
+  "202501", "209912", "psy", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.PSY.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
   
-  "201101", "202407", "ssr", "genrha",  "{finess}.{annee}.{mois}",
-  "202408", "209912", "ssr", "druides", "{finess}.{annee}.{mois2}",
+  "201101", "202407", "ssr", "genrha",  "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipfratime}.{ziptype}.zip",
+  "202408", "209912", "ssr", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.SMR.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
   
-  "201101", "209912", "had", "paprica", "{finess}.{annee}.{mois}"
+  "201101", "209912", "had", "paprica", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipfratime}.{ziptype}.zip",
 )
 
 pmsi_check_periode <- function(annee, mois, champ = "mco"){
@@ -33,7 +34,8 @@ pmsi_check_periode <- function(annee, mois, champ = "mco"){
                   mois = mois,
                   annee = annee) %>% 
     dplyr::filter(dplyr::between(input, debut, fin),
-                  champ_ == champ)
+                  champ_ == champ) %>% 
+    dplyr::mutate_all(as.character)
   
 }
 
@@ -59,3 +61,13 @@ pmsi_glue_fullname <- function(finess, annee, mois, champ, pmsi_extension){
 # 
 # pmsi_glue_fullname('750712184', 2025L, 2L, 'ssr', 'rhs.ini.txt')
 # 
+
+
+pmsi_check_archive_name <- function(archive_name, zip_formatter){
+
+  regex_test <- glue::glue(zip_formatter, finess = '[0-9]{9}', annee = '20[0-9]{2}', mois2 = '[0-9]{1,2}',mois = '[0-9]{1,2}',  
+                           zipfratime = "[0-9]{14}", ziptype = "(in|out)", zipisotime = "[0-9]{14}") %>% 
+    stringr::str_replace_all("\\.", "\\\\.")
+  
+  stringr::str_detect(archive_name, regex_test)
+}
