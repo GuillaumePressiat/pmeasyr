@@ -1384,8 +1384,12 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     # Druides
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, 'mco', 'tra.txt')
+    )
     
-    tra_i <- readr::read_delim(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"), delim = ";",
+    tra_i <- readr::read_delim(pmsi_file, delim = ";",
                               col_names = c('CLE_RSA', 'NORSS', 'NAS', 'DTENT', 'DTSORT', 'GHM1', 'filler'),
                               col_types = readr::cols(.default = readr::col_character())) %>% 
       dplyr::mutate(NO_ligne_RSS = "") %>% 
@@ -1457,6 +1461,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == "psy", table == champ1)
   } 
+
   
   af <- format$longueur
   libelles <- format$libelle
@@ -1490,7 +1495,11 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   )
   
   if (champ=="mco"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"),
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, champ, 'tra.txt')
+    )
+    tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     
@@ -1500,7 +1509,11 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
   }
   if (champ=="had"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra"),
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, champ, 'tra')
+    )
+    tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     
@@ -1515,7 +1528,11 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     DT_FIN_SS_SEQ = lubridate::dmy(DT_FIN_SS_SEQ, quiet = TRUE))
   }
   if (champ=="ssr"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra"),
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, champ, 'tra')
+    )
+    tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     tra_i <- tra_i %>%
