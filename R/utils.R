@@ -76,3 +76,9 @@ pmsi_check_archive_name <- function(archive_name, zip_formatter){
   
   stringr::str_detect(archive_name, regex_test)
 }
+
+pmsi_strip_month <- function(file_name){
+  file_name %>% 
+    stringr::str_replace('\\.0([0-9])\\.', ".\\1.")
+}
+
