@@ -66,7 +66,7 @@ library(dplyr)
 
 Ici, `p` contiendra les informations essentielles pour importer notre premier fichier rsa :
 
-```{r p,exercise = TRUE, exercise.setup = 'one'}
+```{r p,exercise = TRUE}
 p <- noyau_pmeasyr(
   finess = '290000017', # par exemple 290000017 - Finess juridique du CHRU de Brest
   # changer le finess par le vôtre ainsi que les autres paramètres
@@ -87,13 +87,13 @@ assign('p',p, envir = globalenv())
 
 Ici, on dézippe le fichier rsa du out.
 
-```{r z,exercise = TRUE, exercise.setup = 'one'}
+```{r z,exercise = TRUE}
 adezip(p, type = "out", liste = 'rsa')
 ```
 
 ## Importer son premier fichier {data-progressive=TRUE}
 
-```{r i,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+```{r i,exercise = TRUE, exercise.eval = FALSE}
 rsa <- irsa(p)
 
 
@@ -120,11 +120,11 @@ Pour visualiser ces tables, vous pourrez écrire dans RStudio :
 
 Ou visualiser la table différement, sous forme d'un aperçu :
 
-```{r g,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+```{r g,exercise = TRUE, exercise.eval = FALSE}
 glimpse(rsa$rsa)
 ```
 
-```{r g2,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+```{r g2,exercise = TRUE, exercise.eval = FALSE}
 glimpse(rsa$das)
 ```
 
@@ -132,13 +132,13 @@ glimpse(rsa$das)
 
 On fait un décompte des rsa par GHM, et on trie par ordre décroissant
 
-```{r filter1,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+```{r filter1,exercise = TRUE, exercise.eval = FALSE}
 count(rsa$rsa, ghm, sort = TRUE)
 ```
 
 ### Assigner le résultat à un objet {data-progressive=TRUE}
 
-```{r case,exercise = TRUE, exercise.eval = FALSE, exercise.setup = 'one'}
+```{r case,exercise = TRUE, exercise.eval = FALSE}
 case_mix <- count(rsa$rsa, ghm, sort = TRUE)
 
 case_mix
