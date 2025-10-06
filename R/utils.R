@@ -65,8 +65,13 @@ pmsi_glue_fullname <- function(finess, annee, mois, champ, pmsi_extension){
 
 pmsi_check_archive_name <- function(archive_name, zip_formatter){
 
-  regex_test <- glue::glue(zip_formatter, finess = '[0-9]{9}', annee = '20[0-9]{2}', mois2 = '[0-9]{1,2}',mois = '[0-9]{1,2}',  
-                           zipfratime = "[0-9]{14}", ziptype = "(in|out)", zipisotime = "[0-9]{14}") %>% 
+  regex_test <- glue::glue(zip_formatter, 
+                           finess = '[0-9]{9}', 
+                           annee = '20[0-9]{2}', 
+                           mois2 = '[0-9]{1,2}', mois = '[0-9]{1,2}',  
+                           zipfratime = "[0-9]{14}", 
+                           ziptype = "(in|out)", 
+                           zipisotime = "[0-9]{14}") %>% 
     stringr::str_replace_all("\\.", "\\\\.")
   
   stringr::str_detect(archive_name, regex_test)
