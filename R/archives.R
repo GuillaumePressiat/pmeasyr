@@ -177,7 +177,7 @@ adezip <- function(...){
 #' @rdname adezip
 adezip.pm_param <- function(.params, ...){
   new_par <- list(...)
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet')
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet', 'champ')
   param2 <- utils::modifyList(.params, new_par)
   param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
@@ -190,7 +190,7 @@ adezip.list <- function(l, ...){
   .params <- l
   new_par <- list(...) 
   param2 <- utils::modifyList(.params, new_par)
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet')
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet', 'champ')
   param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
   do.call(adezip.default, param2)
