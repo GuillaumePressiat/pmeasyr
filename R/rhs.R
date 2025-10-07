@@ -97,21 +97,21 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
       dplyr::tibble(l = .) %>% 
       dplyr::mutate(l = case_when(substr(l,11,13) == "M1B" ~ paste0(substr(l,1, 59), " ", substr(l,60, nchar(l))), TRUE ~ l)) %>% 
       dplyr::pull(l) %>% 
-      readr::write_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt2.txt"))
+      readr::write_lines(paste0(path,"/",pmsi_glue_fullname(finess, annee, mois, "ssr", "rhs.rtt2.txt")))
     
     joker <- '2'
   } else  if (annee == 2025){
-    readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt.txt")) %>% 
+    readr::read_lines(pmsi_file) %>% 
       dplyr::tibble(l = .) %>% 
       dplyr::mutate(l = case_when(substr(l,11,13) == "M1C" ~ paste0(substr(l,1, 181), "000", substr(l,182, nchar(l))), TRUE ~ l)) %>% 
       pull(l) %>% 
-      readr::write_lines(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt2.txt"))
+      readr::write_lines(paste0(path,"/",pmsi_glue_fullname(finess, annee, mois, "ssr", "rhs.rtt2.txt")))
     
     joker <- '2'
   } else {
     joker <- ''
   }
-  suppressWarnings(rhs_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rhs.rtt", joker, ".txt"),trim_ws = FALSE,
+  suppressWarnings(rhs_i <- readr::read_fwf(paste0(path,"/",pmsi_glue_fullname(finess, annee, mois, "ssr", paste0("rhs.rtt", joker, ".txt"))),trim_ws = FALSE,
                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(rhs_i) -> synthese_import
