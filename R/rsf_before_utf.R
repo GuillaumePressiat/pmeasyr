@@ -57,12 +57,10 @@ irsf.list <- function(l, ...){
 irsf.default <- function(finess, annee, mois, path, lib = T, stat = T, 
                          lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), 
                             lamda = F, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', '.rsf.txt')
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -76,7 +74,7 @@ irsf.default <- function(finess, annee, mois, path, lib = T, stat = T,
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rsf", an == substr(annee, 3, 4))
     # formats <- formats %>% dplyr::filter(champ == "rsf", table == "rsf", an == substr(annee, 3, 4))
     
-    r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsf.txt"),
+    r <- readr::read_fwf(pmsi_file,
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
     readr::problems(r) -> synthese_import

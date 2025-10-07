@@ -6477,12 +6477,11 @@ irafael.list <- function(l, ...){
 irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, 
                             lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), 
                             lamda = F, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'rsfa')
+  )
+  
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -6495,7 +6494,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael", an == substr(annee,3,4))
     
-    r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa"),
+    r <- readr::read_fwf(pmsi_file,
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
     readr::problems(r) -> synthese_import
@@ -6512,7 +6511,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael-maj", an == substr(annee,3,4))
     
-    r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa-maj"),
+    r <- readr::read_fwf(paste0(pmsi_file, "-maj"),
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
     readr::problems(r) -> synthese_import
