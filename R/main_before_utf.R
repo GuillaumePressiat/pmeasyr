@@ -3376,12 +3376,10 @@ irapss.list <- function(l, ...){
 
 #' @export
 irapss.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'had', 'rapss')
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -3432,7 +3430,7 @@ if(annee >= 2020 & mois >= 3) {
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  rapss_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rapss"),
+  rapss_i <- readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types = at , na=character(),...)
   readr::problems(rapss_i) -> synthese_import
   
@@ -3775,15 +3773,14 @@ iano_had.list <- function(l, ...){
 
 #' @export
 iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out', 'in'), tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
+
   typano <- match.arg(typano)
   
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
-  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'had', ifelse(typano == 'in', 'ano.txt', 'ano'))
+  )
+
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
@@ -3831,7 +3828,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
     class = "col_spec"
   )
   if (annee<=2012){
-    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+    ano_i <- readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
     readr::problems(ano_i) -> synthese_import
     
@@ -3847,7 +3844,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
                     TAUXRM   = TAUXRM  /100)
   }
   if (annee>2012){
-    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+    ano_i <- readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
     readr::problems(ano_i) -> synthese_import
     
@@ -3906,7 +3903,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
     
     
     if (2011<annee){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ano_i) -> synthese_import
@@ -3922,7 +3919,7 @@ iano_had.default <- function(finess, annee,mois, path, lib = T, typano = c('out'
                       MTMAJPAR = MTMAJPAR/100)
     }
     if (annee == 2011){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ano_i) -> synthese_import
@@ -4013,12 +4010,21 @@ imed_had.list <- function(l, ...){
 
 #' @export
 imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  
+  pmsi_file_med <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'had', 'med')
+  )
+  
+  pmsi_file_atu <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'had', 'medatu')
+  )
+  
+  pmsi_file_mchl <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'had', 'mchl')
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -4055,7 +4061,7 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
     ),
     class = "col_spec"
   )
-  med_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
+  med_i <- readr::read_fwf(pmsi_file_med,
                            readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
   readr::problems(med_i) -> synthese_import
   
@@ -4063,9 +4069,9 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
     dplyr::mutate(NBADM = NBADM/1000,
                   PRIX  = PRIX /1000) %>% sjlabelled::set_label(libelles)
   
-  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
+  info = file.info(pmsi_file_atu)
   if (info$size >0 & !is.na(info$size)){
-    med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
+    med_i2<-readr::read_fwf(pmsi_file_atu,
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
      synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i2))
     
@@ -4074,9 +4080,9 @@ imed_had.default <- function(finess, annee, mois, path, lib=T, tolower_names = F
                     PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
     med_i <- rbind(med_i,med_i2)
   }
-  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".mchl"))
+  info = file.info(pmsi_file_mchl)
   if (info$size >0 & !is.na(info$size)){
-    med_i3<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".mchl"),
+    med_i3<-readr::read_fwf(pmsi_file_mchl,
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i3))
     
@@ -4142,7 +4148,12 @@ ileg_had.list <- function(l, ...){
 #' @export
 ileg_had.default <- function(finess, annee, mois, path, reshape = F, tolower_names = F, ...){
   
-  leg_i <- readr::read_lines(paste0(path,"/",finess,".",annee,".",mois,".leg"))
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'had', 'leg')
+  )
+  
+  leg_i <- readr::read_lines(pmsi_file)
   
   leg_i1 <- tibble::tibble(l = leg_i) %>% 
     tidyr::separate(l, c('FINESS', 'MOIS', 'ANNEE', 'NOSEQSEJ', 
