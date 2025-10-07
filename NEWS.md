@@ -1,3 +1,20 @@
+# 0.5.0
+
+## Intégrer de premières modifications pour s'adapter aux sorties de Druides
+
+* Changement dans la charte de nommage des archives PMSI
+* Changement dans la charte de nommage des fichiers PMSI
+
+
+# 0.4....
+
+Incremental versions
+
+
+# 0.3....
+
+Incremental versions
+
 # pmeasyr 0.2.9
 
 * ano in : lecture pour les 4 champs sur 2011 — 2020

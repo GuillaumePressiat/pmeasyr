@@ -83,12 +83,12 @@ irum.list <- function(l, ...){
 
 #' @export
 irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_names = F, ...){
-  if (annee < 2011 | annee > 2025){
-    stop("Année PMSI non prise en charge\n")
-  }
-  if (mois < 1 | mois > 12){
-    stop("Mois incorrect\n")
-  }
+
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'rss.ini.txt')
+  )
+  
   if (!(typi %in% 0:4)){
     stop("Type d'import incorrect : 0 ou 1, 2, 3 et 4\n")
   }
@@ -265,7 +265,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
   if (annee==2011){
     
     i <- function(annee,mois){
-      rum_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.ini.txt"),
+      rum_i <- readr::read_fwf(pmsi_file,
                                readr::fwf_widths(c(2,6,1,3,NA),c("NOCLAS","CDGHM","Fil1","NOVERG","RUM")),
                                col_types = readr::cols('c','c','c','c','c'), trim_ws = FALSE,
                                na=character(), ...)  %>%
@@ -308,7 +308,7 @@ irum.default <- function(finess, annee, mois, path, lib = T, typi = 3, tolower_n
   if (annee>=2012){
     
     i <- function(annee,mois){
-      suppressWarnings(readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rss.ini.txt"),
+      suppressWarnings(readr::read_fwf(pmsi_file,
                                        readr::fwf_widths(af,an), col_types = at , na=character(), ...))}
   }
   
@@ -694,12 +694,12 @@ irsa.list <- function(l, ...){
 
 #' @export
 irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'rsa')
+  )
+  
   if (!(typi %in% 0:6)){
     stop("Type d'import incorrect : 0 ou 1, 2, 3, 4, 5 et 6\n")
   }
@@ -763,7 +763,7 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
   
   if (typi !=0){
     #cat('Lecture du fichier | Parsing partie fixe...\n')
-    rsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsa"),
+    rsa_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ... ) 
     readr::problems(rsa_i) -> synthese_import
     
@@ -1384,8 +1384,12 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     # Druides
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, 'mco', 'tra.txt')
+    )
     
-    tra_i <- readr::read_delim(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"), delim = ";",
+    tra_i <- readr::read_delim(pmsi_file, delim = ";",
                               col_names = c('CLE_RSA', 'NORSS', 'NAS', 'DTENT', 'DTSORT', 'GHM1', 'filler'),
                               col_types = readr::cols(.default = readr::col_character())) %>% 
       dplyr::mutate(NO_ligne_RSS = "") %>% 
@@ -1457,6 +1461,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == "psy", table == champ1)
   } 
+
   
   af <- format$longueur
   libelles <- format$libelle
@@ -1490,7 +1495,11 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   )
   
   if (champ=="mco"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra.txt"),
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, champ, 'tra.txt')
+    )
+    tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     
@@ -1500,7 +1509,11 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
   }
   if (champ=="had"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra"),
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, champ, 'tra')
+    )
+    tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     
@@ -1515,7 +1528,11 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     DT_FIN_SS_SEQ = lubridate::dmy(DT_FIN_SS_SEQ, quiet = TRUE))
   }
   if (champ=="ssr"){
-    tra_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".tra"),
+    pmsi_file <- file.path(
+      path,
+      pmsi_glue_fullname(finess, annee, mois, champ, 'tra')
+    )
+    tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tra_i) -> synthese_import
     tra_i <- tra_i %>%
@@ -1639,16 +1656,16 @@ iano_mco.list <- function(l, ...){
 
 #' @export
 iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
   typano <- match.arg(typano)
   if (!(typano %in% c('in', 'out'))){
     stop('Paramètre typano incorrect')
   }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typano, 'in' = 'ano.txt', 'out' = 'ano'))
+  )
+  
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -1689,7 +1706,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
       class = "col_spec"
     )
     if (annee>=2013){
-      ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+      ano_i <- readr::read_fwf(pmsi_file,
                                readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
       
       readr::problems(ano_i) -> synthese_import
@@ -1712,7 +1729,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
     }
     if (2011<annee & annee<2013){
       
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+      ano_i<-readr::read_fwf(pmsi_file,
                                               readr::fwf_widths(af,an), col_types =at, na=character(), ...)  
   readr::problems(ano_i) -> synthese_import
   ano_i <- ano_i %>%
@@ -1730,7 +1747,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
   
     }
     if (annee == 2011){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...)  
       readr::problems(ano_i) -> synthese_import
       
@@ -1793,7 +1810,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
     
     
     if (2011<annee){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
        
       readr::problems(ano_i) -> synthese_import
@@ -1809,7 +1826,7 @@ iano_mco.default <- function(finess, annee, mois, path, typano = c("out", "in"),
                       MTMAJPAR = MTMAJPAR/100)
     }
     if (annee == 2011){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano.txt"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ano_i) -> synthese_import
@@ -1901,16 +1918,24 @@ imed_mco.list <- function(l, ...){
 
 #' @export
 imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
   typmed <- match.arg(typmed)
   if (!(typmed %in% c('in', 'out'))){
     stop('Paramètre typmed incorrect')
   }
+  
+  pmsi_file_med <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typmed, 'in' = 'med.txt', 'out' = 'med'))
+  )
+  pmsi_file_atu <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'medatu')
+  )
+  pmsi_file_thrombo <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'medthrombo')
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -1951,7 +1976,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
       class = "col_spec"
     )
     
-    med_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
+    med_i<-readr::read_fwf(pmsi_file_med,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(med_i) -> synthese_import
     
@@ -1960,9 +1985,9 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
                     PRIX =  PRIX /1000)
     
     
-    info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
+    info = file.info(pmsi_file_atu)
     if (info$size >0 & !is.na(info$size)){
-      med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
+      med_i2<-readr::read_fwf(pmsi_file_atu,
                               readr::fwf_widths(af,an), col_types =at, na=character(), ...)
       synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i2))
       
@@ -1972,9 +1997,9 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
       med_i <- rbind(med_i,med_i2)
     }
     
-    info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medthrombo"))
+    info = file.info(pmsi_file_thrombo)
     if (info$size >0 & !is.na(info$size)){
-      med_i3<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medthrombo"),
+      med_i3<-readr::read_fwf(pmsi_file_thrombo,
                               readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       synthese_import <- dplyr::bind_rows(synthese_import, readr::problems(med_i3))
@@ -2028,9 +2053,9 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
       ),
       class = "col_spec"
     )
-    info = file.info(paste0(path,"/",finess,".",annee,".",mois,".med.txt"))
+    info = file.info(pmsi_file_med)
     if (info$size >0 & !is.na(info$size)){
-      med_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med.txt"),
+      med_i<-readr::read_fwf(pmsi_file_thrombo,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(med_i) -> synthese_import
@@ -2109,18 +2134,16 @@ idmi_mco.list <- function(l, ...){
 
 #' @export
 idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
   typdmi <- match.arg(typdmi)
   if (!(typdmi %in% c('in', 'out'))){
     stop('Paramètre typdmi incorrect')
   }
   
-  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typdmi, 'in' = 'dmi.txt', 'out' = 'dmip'))
+  )
   #op <- options(digits.secs = 6)
   un<-Sys.time()
   
@@ -2158,7 +2181,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
       ),
       class = "col_spec"
     )
-    dmi_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".dmip"),
+    dmi_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     
     readr::problems(dmi_i) -> synthese_import
@@ -2210,7 +2233,7 @@ idmi_mco.default <- function(finess, annee, mois, path, typdmi = c("out", "in"),
       ),
       class = "col_spec"
     )
-    dmi_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".dmi.txt"),
+    dmi_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     
     readr::problems(dmi_i) -> synthese_import
@@ -2288,16 +2311,16 @@ iivg_mco.list <- function(l, ...){
 
 #' @export
 iivg_mco.default <- function(finess, annee, mois, path, typivg = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee<2017|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
   typivg <- match.arg(typivg)
   if (!(typivg %in% c('in', 'out'))){
     stop('Paramètre typivg incorrect')
   }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typivg, 'in' = 'ivg.txt', 'out' = 'ivg'))
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -2337,7 +2360,7 @@ iivg_mco.default <- function(finess, annee, mois, path, typivg = c("out", "in"),
       class = "col_spec"
     )
     
-    ivg_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ivg"),
+    ivg_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(ivg_i) -> synthese_import
     
@@ -2387,7 +2410,7 @@ iivg_mco.default <- function(finess, annee, mois, path, typivg = c("out", "in"),
     )
     # info = file.info(paste0(path,"/",finess,".",annee,".",mois,".ivg.txt"))
     # if (info$size >0 & !is.na(info$size)){
-      ivg_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ivg.txt"),
+      ivg_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ivg_i) -> synthese_import
@@ -2468,16 +2491,16 @@ itpt_mco.list <- function(l, ...){
 
 #' @export
 itpt_mco.default <- function(finess, annee, mois, path, typtpt = c("out", "in"), lib = T, tolower_names = F, ...){
-  if (annee < 2021 | annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
   typtpt <- match.arg(typtpt)
   if (!(typtpt %in% c('in', 'out'))){
     stop('Paramètre typtpt incorrect')
   }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typtpt, 'in' = 'transp.txt', 'out' = 'transport'))
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -2517,7 +2540,7 @@ itpt_mco.default <- function(finess, annee, mois, path, typtpt = c("out", "in"),
       class = "col_spec"
     )
     
-    tpt_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".transport"),
+    tpt_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(tpt_i) -> synthese_import
     
@@ -2570,7 +2593,7 @@ itpt_mco.default <- function(finess, annee, mois, path, typtpt = c("out", "in"),
       class = "col_spec"
     )
     
-    tpt_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".transp.txt"),
+    tpt_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(tpt_i) -> synthese_import
@@ -2816,17 +2839,16 @@ idiap.list <- function(l , ...){
 idiap.default <- function(finess, annee, mois, path, 
                           typdiap = c("out", "in"), lib = T, 
                           tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
   typdiap <- match.arg(typdiap)
   if (!(typdiap %in% c('in', 'out'))){
     stop('Paramètre typdiap incorrect')
   }
   
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typdiap, 'in' = 'diap.txt', 'out' = 'diap'))
+  )
   
   #op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -2866,7 +2888,7 @@ idiap.default <- function(finess, annee, mois, path,
       class = "col_spec"
     )
     
-    diap_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".diap"),
+    diap_i<-readr::read_fwf(pmsi_file,
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...)
     readr::problems(diap_i) -> synthese_import
     
@@ -2915,7 +2937,7 @@ idiap.default <- function(finess, annee, mois, path,
       class = "col_spec"
     )
     
-    diap_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".diap.txt"),
+    diap_i<-readr::read_fwf(pmsi_file,
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
     readr::problems(diap_i) -> synthese_import
     
@@ -2991,12 +3013,10 @@ iium.list <- function(l , ...){
 
 #' @export
 iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'ium')
+  )
   
   
   op <- options(digits.secs = 6)
@@ -3036,7 +3056,7 @@ iium.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
     class = "col_spec"
   )
   
-  ium_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ium"),
+  ium_i<-readr::read_fwf(pmsi_file,
                          readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
   readr::problems(ium_i) -> synthese_import
   
@@ -3106,9 +3126,12 @@ iium_corresp.list <- function(l , ...){
 
 #' @export
 iium_corresp.default <- function(finess, annee, mois, path, tolower_names = F, ...){
-  fp <- paste0(path,"/",finess,".",annee,".",mois,".ium.correspnumseq.txt")
-  
-  umcorresp_i <- readr::read_delim(fp, col_names = c('NOSEQUM', 'CDURM'), 
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'ium.correspnumseq.txt')
+  )
+
+  umcorresp_i <- readr::read_delim(pmsi_file, col_names = c('NOSEQUM', 'CDURM'), 
                                    col_types = readr::cols(NOSEQUM = readr::col_character(),
                                                            CDURM = readr::col_character()), skip = 0L, delim = ";")
   if (tolower_names){
@@ -3170,19 +3193,18 @@ ipo.list <- function(l, ...){
 
 #' @export
 ipo.default <- function(finess, annee, mois, path, typpo = c("out", "in"), lib = T, tolower_names = F, ...){
-if (annee<2011|annee > 2025){
-  stop('Année PMSI non prise en charge\n')
-}
-if (mois<1|mois>12){
-  stop('Mois incorrect\n')
-}
-typpo <- match.arg(typpo)
-if (!(typpo %in% c('in', 'out'))){
-  stop('Paramètre typpo incorrect')
-}
-
-
-#op <- options(digits.secs = 6)
+  
+  typpo <- match.arg(typpo)
+  if (!(typpo %in% c('in', 'out'))){
+    stop('Paramètre typpo incorrect')
+  }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', switch(typpo, 'in' = 'porg.txt', 'out' = 'porg'))
+  )
+  
+  #op <- options(digits.secs = 6)
 un<-Sys.time()
 
 
@@ -3220,7 +3242,7 @@ if (typpo=="out"){
     class = "col_spec"
   )
   
-  po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg"),
+  po_i<-readr::read_fwf(pmsi_file,
                         readr::fwf_widths(af,an), col_types =at, na=character(), ...)
   readr::problems(po_i) -> synthese_import
   
@@ -3270,7 +3292,7 @@ if (typpo=="in"){
     class = "col_spec"
   )
   
-  po_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".porg.txt"),
+  po_i<-readr::read_fwf(pmsi_file,
                         readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
   readr::problems(po_i) -> synthese_import
   
@@ -4202,12 +4224,11 @@ irha.list <- function(l, ...){
 
 #' @export
 irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'ssr', 'rha')
+  )
   
   #op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -4244,7 +4265,7 @@ irha.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     ),
     class = "col_spec"
   )
-  suppressWarnings(rha_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rha"),
+  suppressWarnings(rha_i <- readr::read_fwf(pmsi_file,
                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(rha_i) -> synthese_import
@@ -4870,14 +4891,12 @@ iano_ssr.list <- function(l, ...){
 
 #' @export
 iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out', 'in'), tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  typano <- match.arg(typano)
+
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'ssr', switch(typano, 'in' = 'anoh.txt', 'out' = 'ano'))
+  )
   
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -4917,7 +4936,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out
     class = "col_spec"
   )
   
-  ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+  ano_i <- readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
   readr::problems(ano_i) -> synthese_import
   
@@ -4993,7 +5012,7 @@ iano_ssr.default <- function(finess, annee, mois, path, lib = T, typano = c('out
     
     
     if (2011<annee){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".anoh.txt"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ano_i) -> synthese_import
@@ -5101,12 +5120,11 @@ issrha.list <- function(l, ...){
 
 #' @export
 issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'ssr', 'sha')
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -5145,7 +5163,7 @@ issrha.default <- function(finess, annee,mois, path, lib = T, tolower_names = F,
   )
   
 
-  ssrha_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".sha"),
+  ssrha_i <- readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...) 
   readr::problems(ssrha_i) -> synthese_import
   
@@ -5349,12 +5367,11 @@ imed_ssr.list <- function(l, ...){
 
 #' @export
 imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'ssr', 'med')
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -5391,9 +5408,9 @@ imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
     ),
     class = "col_spec"
   )
-  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".med"))
+  info = file.info(pmsi_file)
   if (info$size >0 & !is.na(info$size)){
-  med_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".med"),
+  med_i <- readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types = at , na=character(), ...)  %>%
     dplyr::mutate(NBADM = NBADM/1000,
                   PRIX  = PRIX /1000) %>% sjlabelled::set_label(libelles)
@@ -5401,9 +5418,9 @@ imed_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
   else {
     med_i <- tibble::as_tibble(data.frame())
     }
-  info = file.info(paste0(path,"/",finess,".",annee,".",mois,".medatu"))
+  info = file.info(paste0(pmsi_file, "atu"))
   if (info$size >0 & !is.na(info$size)){
-    med_i2<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".medatu"),
+    med_i2<-readr::read_fwf(paste0(pmsi_file, "atu"),
                             readr::fwf_widths(af,an), col_types =at, na=character(), ...) %>%
       dplyr::mutate(NBADM = NBADM/1000,
                     PRIX =  PRIX /1000) %>% sjlabelled::set_label(libelles)
@@ -5471,12 +5488,10 @@ iium_ssr.list <- function(l , ...){
 
 #' @export
 iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2013|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'ssr', 'ium')
+  )
   
   
   op <- options(digits.secs = 6)
@@ -5516,7 +5531,7 @@ iium_ssr.default <- function(finess, annee, mois, path, lib = T, tolower_names =
     class = "col_spec"
   )
   
-  ium_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ium"),
+  ium_i<-readr::read_fwf(pmsi_file,
                          readr::fwf_widths(af,an), col_types =at, na=character(), ...)
   readr::problems(ium_i) -> synthese_import
   
@@ -5594,12 +5609,11 @@ irpsa.list <- function(l, ...){
 
 #' @export
 irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'rpsa')
+  )
+  
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -5638,7 +5652,7 @@ irpsa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F,
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  suppressWarnings(rpsa_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rpsa"),
+  suppressWarnings(rpsa_i <- readr::read_fwf(pmsi_file,
                                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(rpsa_i) -> synthese_import
@@ -5851,12 +5865,12 @@ ir3a.list <- function(l, ...){
 
 #' @export
 ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'r3a')
+  )
+  
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -5895,7 +5909,7 @@ ir3a.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  suppressWarnings(r3a_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".r3a"),
+  suppressWarnings(r3a_i <- readr::read_fwf(pmsi_file,
                                             readr::fwf_widths(af,an), col_types = at , na=character(), ...)) 
   
   readr::problems(r3a_i) -> synthese_import
@@ -5990,14 +6004,13 @@ iano_psy.list <- function(l, ...){
 
 #' @export
 iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'), lib=T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
+
   typano <- match.arg(typano)
   
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', switch(typano, 'in' = 'anohosp.txt', 'out' = 'ano'))
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -6054,7 +6067,7 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
                     MTRMBAMC = MTRMBAMC/100)
   }
   if (annee>2012){
-    ano_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".ano"),
+    ano_i <- readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types = at , na=character(), ...)  
     readr::problems(ano_i) -> synthese_import
     ano_i <- ano_i %>%
@@ -6113,7 +6126,7 @@ iano_psy.default <- function(finess, annee, mois, path, typano = c('out', 'in'),
     
     
     if (2011<annee){
-      ano_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".anohosp.txt"),
+      ano_i<-readr::read_fwf(pmsi_file,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(ano_i) -> synthese_import
@@ -6464,12 +6477,11 @@ irafael.list <- function(l, ...){
 irafael.default <- function(finess, annee, mois, path, lib = T, stat = T, 
                             lister = c('A', 'B', 'C', 'H', 'L', 'M',  'P'), 
                             lamda = F, tolower_names = F, ...){
-  if (annee<2011|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'rsfa')
+  )
+  
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -6482,7 +6494,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael", an == substr(annee,3,4))
     
-    r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa"),
+    r <- readr::read_fwf(pmsi_file,
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
     readr::problems(r) -> synthese_import
@@ -6499,7 +6511,7 @@ irafael.default <- function(finess, annee, mois, path, lib = T, stat = T,
     
     formats <- pmeasyr::formats %>% dplyr::filter(champ == "rsf", table == "rafael-maj", an == substr(annee,3,4))
     
-    r <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",mois,".rsfa-maj"),
+    r <- readr::read_fwf(paste0(pmsi_file, "-maj"),
                          readr::fwf_widths(NA, 'lon'),
                          col_types = readr::cols('c'),  ...)
     readr::problems(r) -> synthese_import
@@ -6736,7 +6748,6 @@ NULL
 #' 
 #' Voir exemple
 #' 
-#' @exportClass pm_param
 #' @author G. Pressiat
 #' 
 #' @examples

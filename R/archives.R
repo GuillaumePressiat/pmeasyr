@@ -177,7 +177,7 @@ adezip <- function(...){
 #' @rdname adezip
 adezip.pm_param <- function(.params, ...){
   new_par <- list(...)
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet')
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet', 'champ')
   param2 <- utils::modifyList(.params, new_par)
   param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
@@ -190,7 +190,7 @@ adezip.list <- function(l, ...){
   .params <- l
   new_par <- list(...) 
   param2 <- utils::modifyList(.params, new_par)
-  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet')
+  noms <- c('finess', 'annee', 'mois', 'path', 'liste', 'type', 'recent', 'pathto', 'quiet', 'champ')
   param2 <- param2[noms]
   param2 <- param2[!is.na(names(param2))]
   do.call(adezip.default, param2)
@@ -226,8 +226,9 @@ adezip.default <- function(finess, annee, mois,
                            # en Français afin d'avoir une constance dans les
                            # règles de nommage des arguments
                            pathto = path, 
-                           type = "in", recent = TRUE, nom_archive = NULL,
-                           quiet = FALSE, ...){
+                           type = "in", 
+                           recent = TRUE, nom_archive = NULL,
+                           quiet = FALSE, champ = "mco",  ...){
   
   path <- path.expand(path)
   
@@ -236,7 +237,7 @@ adezip.default <- function(finess, annee, mois,
   if (is.null(nom_archive)) {
     info_archive <- selectionne_archive(finess = finess, annee = annee, 
                                         mois = mois, dossier_archives = path,
-                                        type_archive = type, recent = recent)
+                                        type_archive = type, recent = recent, champ = champ)
     
     nom_archive <- info_archive$nom_fichier
   } else {
@@ -271,10 +272,12 @@ adezip.default <- function(finess, annee, mois,
     message(
       "\n",
       "Dézippage de l'archive ", info_archive$nom_fichier, '\n',
+      'Nommage   : ', ifelse(grepl('HAD|MCO|SMR|RSF|HAD', info_archive$nom_fichier), 'Avec champ PMSI (harmonisation Druides)', 'Sans champ PMSI'), '\n',
+      'Logiciel  : ', info_archive$outil_atih, ' / ', info_archive$champ, '\n',
       'Taille    : ', info_archive$taille_mo, " Mo\n",
-      'Type      : ', info_archive$type, '\n',
-      'Finess    : ', info_archive$finess, '\n',
-      'Période   : ', info_archive$annee, ' M', info_archive$mois, '\n',
+      'Type      : ', info_archive$t, '\n',
+      'Finess    : ', info_archive$f, '\n',
+      'Période   : ', info_archive$a, ' M', info_archive$m, '\n',
       'Date prod : ', info_archive$horodatage_production, '\n',
       'Fichiers  : ', liste_fichiers,'\n'
     )
@@ -294,17 +297,42 @@ adezip.default <- function(finess, annee, mois,
 #' @export
 #' @md
 selectionne_archive <- function(finess, mois, annee, dossier_archives, 
-                                type_archive = "in", recent = TRUE) {
+                                type_archive = "in", recent = TRUE, champ) {
+  champ_buffer <- champ
   # Récupérer la liste de fichiers .zip
   path_archives <- list.files(dossier_archives, pattern = "\\.zip$")
   
-  # Créer une table avec les caractéristiques des fichiers ZIP
-  df_zip <- parse_noms_fichiers(path_archives)
+  # ajout fourche de test druides et formattage du nom de l'archive
+  fenetre_atih <- pmsi_check_periode(annee, mois, champ)
   
+  # Créer une table avec les caractéristiques des fichiers ZIP
+  df_zip <- tibble::tibble(nom_fichier = path_archives) %>% 
+    tidyr::separate(nom_fichier, into = c('f', 'a', 'm'), sep = '\\.', 
+                    remove = FALSE, extra = "drop") %>% 
+    dplyr::mutate(t = stringr::str_extract(nom_fichier, '(in|out)\\.zip', 1)) %>% 
+    dplyr::mutate(d = stringr::str_extract(nom_fichier, '([0-9]{14})\\.(in|out)\\.zip', 1)) %>% 
+    dplyr::mutate(m = as.character(as.integer(m))) %>% 
+    dplyr::filter(f == !!finess, a == !!annee, 
+            m == !!mois, t == !!type_archive) %>% 
+    dplyr::inner_join(fenetre_atih, by = c('a' = 'annee', 'm' = 'mois')) %>% 
+    dplyr::mutate(check = purrr::map2_lgl(nom_fichier, zip_formatter, pmsi_check_archive_name)) %>% 
+    dplyr::filter(check) %>% 
+    dplyr::mutate(champ = dplyr::case_when(outil_atih == 'druides' & stringr::str_detect(nom_fichier, '(MCO.RSFACE)|SMR|MCO|PSY|HAD') ~ tolower(stringr::str_extract(nom_fichier, '(MCO.RSFACE)|SMR|MCO|PSY|HAD')),
+                                    TRUE ~ champ_buffer)) %>% 
+    dplyr::mutate(champ = dplyr::case_when(champ == 'smr' ~ 'ssr',
+                                           TRUE ~ champ)) %>% 
+    dplyr::filter(champ == champ_) %>% 
+    dplyr::mutate(time_format = stringr::str_extract(zip_formatter, 'zipisotime|zipfratime')) %>% 
+    dplyr::mutate(horodatage_production = dplyr::case_when(
+      time_format == 'zipisotime' ~ lubridate::ymd_hms(d, quiet = TRUE),
+      time_format == 'zipfratime' ~ lubridate::dmy_hms(d, quiet = TRUE)))
+
+  if (nrow(df_zip) == 0L){
+    stop("Aucune archive zip correspondante n'a été trouvée.")
+  }
+
   # Sélectionner les fichiers d'archives correspondants aux critères
-  df_zip_selectionne <- df_zip %>%
-    filter(finess == !!finess, annee == !!annee, 
-           mois == !!mois, type == !!type_archive) %>%
+  df_zip_selectionne <- df_zip %>% 
     # Trier du plus récent au plus ancien
     arrange(desc(horodatage_production))
   
@@ -472,11 +500,11 @@ adelete.list <- function(l, ...){
 }
 
 #' @export
-adelete.default <- function(finess, annee, mois, path, liste = "", type = "", ...){
+adelete.default <- function(finess, annee, mois, path, liste = "", type = "", champ = "mco", ...){
   
   if (type == "" & liste == ""){
     liste <- list.files(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)))
-    liste <- liste[grepl(paste0(finess,'.',annee,'.',mois,'.'), liste) & !grepl('\\.zip', liste)]
+    liste <- liste[grepl(pmsi_glue_fullname(finess,annee,mois,champ, ""), liste) & !grepl('\\.zip', liste)]
     if (length(liste) == 0){stop('Aucun fichier correspondant.')}
     file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',liste))
     return(TRUE)
@@ -485,8 +513,8 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = "", ..
   if ((type != "" & liste == "" )||( type == "" & liste != "")){stop("Type et liste doivent etre vides ensemble ou precises ensemble.")}
   liste[grepl("tra",liste)] <- "tra.txt"
   
-  if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste,".txt"))}
-  if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste))}
+  if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',pmsi_glue_fullname(finess,annee,mois,champ, liste), ".txt"))}
+  if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',pmsi_glue_fullname(finess,annee,mois,champ, liste)))}
 }
 
 #' Extraire les informations d'un nom de fichier
@@ -673,7 +701,7 @@ creer_nom_archive <- function(
 extraire_types_fichiers <- function(selection_fichiers_a_extraire, info_archive){
   # l_f <- stringr::str_replace_all(selection_fichiers_a_extraire,
   #                                 paste(info_archive$finess,info_archive$annee, info_archive$mois, "txt", sep = "|"), "")
-  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, paste(info_archive$finess, "txt", sep = "|"), "")
+  l_f <- stringr::str_replace_all(selection_fichiers_a_extraire, paste(info_archive$f, "txt", sep = "|"), "")
   l_f <- stringr::str_replace_all(l_f, "[0-9]+|\\.$", "")
   l_f <- stringr::str_replace_all(l_f, "\\.{2,}", "")
   l_f

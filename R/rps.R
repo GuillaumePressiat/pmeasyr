@@ -3,10 +3,10 @@
 #' Import du fichier rps
 #'
 #' Formats depuis 2012 pris en charge
-#' Structure du nom du fichier attendu (sortie de Druides) :
+#' Structure du nom du fichier attendu (sortie de Pivoine) :
 #' \emph{finess.annee.moisc.rps.txt}
 #'
-#' \strong{750712184.2025.02.rps.txt}
+#' \strong{750712184.2016.2.rps.txt}
 #'
 #' @param finess Finess du Out a importer : dans le nom du fichier
 #' @param annee Annee PMSI (nb) des donnees sur 4 caracteres (2016)
@@ -55,12 +55,11 @@ irps.list <- function(l, ...){
 
 #' @export
 irps.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, ...){
-  if (annee<2012|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+  
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'rps.txt') # %>% pmsi_strip_month()
+  )
   
   op <- options(digits.secs = 6)
   un<-Sys.time()
@@ -99,7 +98,7 @@ irps.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   )
   extz <- function(x,pat){unlist(lapply(stringr::str_extract_all(x,pat),toString) )}
   
-  suppressWarnings(rps_i <- readr::read_fwf(paste0(path,"/",finess,".",annee,".",stringr::str_pad(mois, 2, 'left', '0'),".rps.txt"),
+  suppressWarnings(rps_i <- readr::read_fwf(pmsi_file,
                                              readr::fwf_widths(af,an), col_types = at , na=character()))#, ...)) 
   
   readr::problems(rps_i) -> synthese_import

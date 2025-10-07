@@ -51,12 +51,11 @@ isrpsa.list <- function(l , ...){
 isrpsa.default <- function(finess, annee, mois, path, 
                   lib = T, 
                   tolower_names = F, ...){
-  if (annee<2015|annee > 2025){
-    stop('Année PMSI non prise en charge\n')
-  }
-  if (mois<1|mois>12){
-    stop('Mois incorrect\n')
-  }
+
+  pmsi_file <- file.path(
+    path,
+    pmsi_glue_fullname(finess, annee, mois, 'psy', 'srpsa')
+  )
   
 
   
@@ -93,7 +92,7 @@ isrpsa.default <- function(finess, annee, mois, path,
     class = "col_spec"
   )
   
-  srpsa_i<-readr::read_fwf(paste0(path,"/",finess,".",annee,".",stringr::str_pad(mois, 2, 'left', '0'),".srpsa"),
+  srpsa_i<-readr::read_fwf(pmsi_file,
                          readr::fwf_widths(af,an), col_types =at, na=character(), ...)
   
   readr::problems(srpsa_i) -> synthese_import
