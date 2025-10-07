@@ -272,7 +272,8 @@ adezip.default <- function(finess, annee, mois,
     message(
       "\n",
       "Dézippage de l'archive ", info_archive$nom_fichier, '\n',
-      'Type ATIH : ', info_archive$outil_atih, ' / ', info_archive$champ, '\n',
+      'Nommage   : ', ifelse(grepl('HAD|MCO|SMR|RSF|HAD', info_archive$nom_fichier), 'Avec champ PMSI (harmonisation Druides)', 'Sans champ PMSI'), '\n',
+      'Logiciel  : ', info_archive$outil_atih, ' / ', info_archive$champ, '\n',
       'Taille    : ', info_archive$taille_mo, " Mo\n",
       'Type      : ', info_archive$t, '\n',
       'Finess    : ', info_archive$f, '\n',
@@ -297,6 +298,7 @@ adezip.default <- function(finess, annee, mois,
 #' @md
 selectionne_archive <- function(finess, mois, annee, dossier_archives, 
                                 type_archive = "in", recent = TRUE, champ) {
+  champ_buffer <- champ
   # Récupérer la liste de fichiers .zip
   path_archives <- list.files(dossier_archives, pattern = "\\.zip$")
   
@@ -315,10 +317,10 @@ selectionne_archive <- function(finess, mois, annee, dossier_archives,
     dplyr::inner_join(fenetre_atih, by = c('a' = 'annee', 'm' = 'mois')) %>% 
     dplyr::mutate(check = purrr::map2_lgl(nom_fichier, zip_formatter, pmsi_check_archive_name)) %>% 
     dplyr::filter(check) %>% 
-    dplyr::mutate(champ = dplyr::case_when(outil_atih == 'druides' ~ tolower(stringr::str_extract(nom_fichier, 'SMR|MCO|PSY|HAD')),
-                                    TRUE ~ champ)) %>% 
+    dplyr::mutate(champ = dplyr::case_when(outil_atih == 'druides' & stringr::str_detect(nom_fichier, 'SMR|MCO|PSY|HAD') ~ tolower(stringr::str_extract(nom_fichier, 'SMR|MCO|PSY|HAD')),
+                                    TRUE ~ champ_buffer)) %>% 
     dplyr::mutate(champ = dplyr::case_when(champ == 'smr' ~ 'ssr',
-                                           TRUE ~champ)) %>% 
+                                           TRUE ~ champ)) %>% 
     dplyr::filter(champ == champ_) %>% 
     dplyr::mutate(time_format = stringr::str_extract(zip_formatter, 'zipisotime|zipfratime')) %>% 
     dplyr::mutate(horodatage_production = dplyr::case_when(
@@ -498,11 +500,11 @@ adelete.list <- function(l, ...){
 }
 
 #' @export
-adelete.default <- function(finess, annee, mois, path, liste = "", type = "", ...){
+adelete.default <- function(finess, annee, mois, path, liste = "", type = "", champ = "mco", ...){
   
   if (type == "" & liste == ""){
     liste <- list.files(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path)))
-    liste <- liste[grepl(paste0(finess,'.',annee,'.',mois,'.'), liste) & !grepl('\\.zip', liste)]
+    liste <- liste[grepl(pmsi_glue_fullname(finess,annee,mois,champ, ""), liste) & !grepl('\\.zip', liste)]
     if (length(liste) == 0){stop('Aucun fichier correspondant.')}
     file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',liste))
     return(TRUE)
@@ -511,8 +513,8 @@ adelete.default <- function(finess, annee, mois, path, liste = "", type = "", ..
   if ((type != "" & liste == "" )||( type == "" & liste != "")){stop("Type et liste doivent etre vides ensemble ou precises ensemble.")}
   liste[grepl("tra",liste)] <- "tra.txt"
   
-  if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste,".txt"))}
-  if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',finess,'.',annee,'.',mois,'.',liste))}
+  if (type == "in") { file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',pmsi_glue_fullname(finess,annee,mois,champ, liste), ".txt"))}
+  if (type == "out"){ file.remove(paste0(ifelse(substr(path,nchar(path),nchar(path))=="/",substr(path,1,nchar(path)-1),path),'/',pmsi_glue_fullname(finess,annee,mois,champ, liste)))}
 }
 
 #' Extraire les informations d'un nom de fichier
