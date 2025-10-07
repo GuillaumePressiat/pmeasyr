@@ -317,7 +317,7 @@ selectionne_archive <- function(finess, mois, annee, dossier_archives,
     dplyr::inner_join(fenetre_atih, by = c('a' = 'annee', 'm' = 'mois')) %>% 
     dplyr::mutate(check = purrr::map2_lgl(nom_fichier, zip_formatter, pmsi_check_archive_name)) %>% 
     dplyr::filter(check) %>% 
-    dplyr::mutate(champ = dplyr::case_when(outil_atih == 'druides' & stringr::str_detect(nom_fichier, 'SMR|MCO|PSY|HAD') ~ tolower(stringr::str_extract(nom_fichier, 'SMR|MCO|PSY|HAD')),
+    dplyr::mutate(champ = dplyr::case_when(outil_atih == 'druides' & stringr::str_detect(nom_fichier, '(MCO.RSFACE)|SMR|MCO|PSY|HAD') ~ tolower(stringr::str_extract(nom_fichier, '(MCO.RSFACE)|SMR|MCO|PSY|HAD')),
                                     TRUE ~ champ_buffer)) %>% 
     dplyr::mutate(champ = dplyr::case_when(champ == 'smr' ~ 'ssr',
                                            TRUE ~ champ)) %>% 

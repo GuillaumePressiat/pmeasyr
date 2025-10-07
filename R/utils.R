@@ -7,6 +7,11 @@ atih_mappings <-   tibble::tribble(
   "202401", "202507", "mco", "druides", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipisotime}.{ziptype}.zip",
   "202508", "209912", "mco", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.MCO.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
   
+  "201101", "202304", "mco.rsface", "preface",  "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipfratime}.{ziptype}.zip",
+  "202305", "202312", "mco.rsface", "preface",  "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipisotime}.{ziptype}.zip",
+  "202401", "202507", "mco.rsface", "druides", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipisotime}.{ziptype}.zip",
+  "202508", "209912", "mco.rsface", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.MCO.RSFACE.RSFACE.{zipisotime}.{ziptype}.zip",
+  
   "200000", "202412", "psy", "pivoine", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipisotime}.{ziptype}.zip",
   "202501", "209912", "psy", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.PSY.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
   
@@ -14,7 +19,7 @@ atih_mappings <-   tibble::tribble(
   "202408", "209912", "ssr", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.SMR.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
   
   "201101", "202507", "had", "paprica", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipfratime}.{ziptype}.zip",
-  "202508", "209912", "had", "paprica", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois2}.HAD.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
+  "202508", "209912", "had", "druides", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois2}.HAD.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
 )
 
 pmsi_check_periode <- function(annee, mois, champ = "mco"){
