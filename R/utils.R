@@ -19,7 +19,7 @@ atih_mappings <-   tibble::tribble(
   "202408", "209912", "ssr", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.SMR.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
   
   "201101", "202507", "had", "paprica", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois}.{zipfratime}.{ziptype}.zip",
-  "202508", "209912", "had", "druides", "{finess}.{annee}.{mois}", "{finess}.{annee}.{mois2}.HAD.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
+  "202508", "209912", "had", "druides", "{finess}.{annee}.{mois2}", "{finess}.{annee}.{mois2}.HAD.SEJOURS.SEJOURS.{zipisotime}.{ziptype}.zip",
 )
 
 pmsi_check_periode <- function(annee, mois, champ = "mco"){
