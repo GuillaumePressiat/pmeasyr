@@ -1380,7 +1380,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
-  if (champ %in% c('mco','had') & paste0(annee, stringr::str_pad(mois, 2, 'left', '0')) >= '202303') {
+  if (champ %in% c('mco') & paste0(annee, stringr::str_pad(mois, 2, 'left', '0')) >= '202303') {
     # Druides
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
@@ -1511,7 +1511,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   if (champ=="had"){
     pmsi_file <- file.path(
       path,
-      pmsi_glue_fullname(finess, annee, mois, champ, 'tra')
+      pmsi_glue_fullname(finess, annee, mois, champ, 'tra.txt')
     )
     tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
