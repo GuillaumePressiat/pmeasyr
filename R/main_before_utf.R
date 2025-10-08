@@ -1516,7 +1516,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
      tra_i <- readr::read_delim(pmsi_file, delim = ";",
                               col_names = c("NAS", "NOSEQSEJ", "NOSEQ", "NOSOUSSEQ", "NIP", "DTNAI", "DTENT",
                                             "ECHPMSI", "PROV", "DTSORT", "SCHPMSI", "DEST", "DT_DEB_SEQ",
-                                            "DT_FIN_SEQ", "DT_DEB_SS_SEQ", "DT_FIN_SS_SEQ", "DERNIERE_SS_SEQ", "NOHOP")
+                                            "DT_FIN_SEQ", "DT_DEB_SS_SEQ", "DT_FIN_SS_SEQ", "DERNIERE_SS_SEQ", "NOHOP"),
                               col_types = readr::cols(.default = readr::col_character()))
     
     readr::problems(tra_i) -> synthese_import
