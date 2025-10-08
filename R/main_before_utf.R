@@ -1380,7 +1380,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
   op <- options(digits.secs = 6)
   un<-Sys.time()
   
-  if (champ == "mco" & paste0(annee, stringr::str_pad(mois, 2, 'left', '0')) >= '202303') {
+  if (champ %in% c('mco','had') & paste0(annee, stringr::str_pad(mois, 2, 'left', '0')) >= '202303') {
     # Druides
     champ1 = champ
     format <- pmeasyr::formats %>% dplyr::filter(champ == champ1, table == 'tra')
