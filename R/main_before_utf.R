@@ -1509,12 +1509,27 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2)))
   }
   if (champ=="had"){
+    if (paste0(annee, stringr::str_pad(mois, 2, 'left', '0')) >= '202508'){
+      pmsi_file <- file.path(
+        path,
+        pmsi_glue_fullname(finess, annee, mois, champ, 'tra.txt')
+      )
+      tra_i <- readr::read_delim(pmsi_file, delim = ";",
+                                 col_names = c("NAS", "NOSEQSEJ", "NOSEQ", "NOSOUSSEQ", "NIP", "DTNAI", "DTENT",
+                                               "ECHPMSI", "PROV", "DTSORT", "SCHPMSI", "DEST", "DT_DEB_SEQ",
+                                               "DT_FIN_SEQ", "DT_DEB_SS_SEQ", "DT_FIN_SS_SEQ", "DERNIERE_SS_SEQ", "NOHOP"),
+                                 col_types = readr::cols(.default = readr::col_character()))
+    }
+    else {
     pmsi_file <- file.path(
       path,
       pmsi_glue_fullname(finess, annee, mois, champ, 'tra')
     )
+    
     tra_i<-readr::read_fwf(pmsi_file,
                            readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
+
+    }
     readr::problems(tra_i) -> synthese_import
     
     tra_i <- tra_i %>%
@@ -1526,6 +1541,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
                     DT_FIN_SEQ = lubridate::dmy(DT_FIN_SEQ, quiet = TRUE),
                     DT_DEB_SS_SEQ = lubridate::dmy(DT_DEB_SS_SEQ, quiet = TRUE),
                     DT_FIN_SS_SEQ = lubridate::dmy(DT_FIN_SS_SEQ, quiet = TRUE))
+
   }
   if (champ=="ssr"){
     pmsi_file <- file.path(
