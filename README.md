@@ -7,10 +7,7 @@
 
 <!-- ![rigologo](rigologo_pmeasyr.png) -->
 
-
-***Guillaume Pressiat***
-
-*28 novembre 2021*
+*11 octobre 2025*
 
 
 **Le développement de ce package a été initié au DIM du siège de l'AP-HP**. Il était auparavant hébergé sur le github [IM-APHP](https://github.com/IM-APHP/).
