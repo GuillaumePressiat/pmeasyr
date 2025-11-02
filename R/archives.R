@@ -311,7 +311,7 @@ selectionne_archive <- function(finess, mois, annee, dossier_archives,
                     remove = FALSE, extra = "drop") %>% 
     dplyr::mutate(t = stringr::str_extract(nom_fichier, '(in|out)\\.zip', 1)) %>% 
     dplyr::mutate(d = stringr::str_extract(nom_fichier, '([0-9]{14})\\.(in|out)\\.zip', 1)) %>% 
-    dplyr::mutate(m = as.character(as.integer(m))) %>% 
+    dplyr::mutate(m = stringr::str_replace(m, '0([0-9])', "\\1")) %>% 
     dplyr::filter(f == !!finess, a == !!annee, 
             m == !!mois, t == !!type_archive) %>% 
     dplyr::inner_join(fenetre_atih, by = c('a' = 'annee', 'm' = 'mois')) %>% 
