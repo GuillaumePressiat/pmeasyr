@@ -2071,7 +2071,7 @@ imed_mco.default <- function(finess, annee, mois, path, typmed = c("out", "in"),
     )
     info = file.info(pmsi_file_med)
     if (info$size >0 & !is.na(info$size)){
-      med_i<-readr::read_fwf(pmsi_file_thrombo,
+      med_i<-readr::read_fwf(pmsi_file_med,
                              readr::fwf_widths(af,an), col_types =at, na=character(), ...) 
       
       readr::problems(med_i) -> synthese_import
