@@ -59,7 +59,7 @@ irsf.default <- function(finess, annee, mois, path, lib = T, stat = T,
                             lamda = F, tolower_names = F, ...){
   pmsi_file <- file.path(
     path,
-    pmsi_glue_fullname(finess, annee, mois, 'mco', '.rsf.txt')
+    pmsi_glue_fullname(finess, annee, mois, 'mco', 'rsf.txt')
   )
   
   op <- options(digits.secs = 6)
