@@ -24,7 +24,7 @@ atih_mappings <-   tibble::tribble(
 
 pmsi_check_periode <- function(annee, mois, champ = "mco"){
   
-  if (annee < 2011 | annee > 2025){
+  if (annee < 2011 | annee > 2026){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois < 0 | mois > 12){
