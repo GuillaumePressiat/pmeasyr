@@ -1,3 +1,18 @@
+# 0.5.1
+
+## Préparation progressive à 2026
+
+* Autoriser la lecture de fichiers PMSI avec année 2026 : ok
+
+### Etape 1 : in
+
+* Lecture des in 2026, avec zone acte étendue... testé, ok
+
+### Reste à suivre
+
+* out MCO, et les autres champs
+
+
 # 0.5.0
 
 ## Intégrer de premières modifications pour s'adapter aux sorties de Druides
