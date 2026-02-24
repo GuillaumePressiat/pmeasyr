@@ -771,7 +771,8 @@ irsa.default <- function(finess, annee, mois, path, lib = T, typi = 4, tolower_n
       dplyr::mutate(DP = stringr::str_trim(DP),
                     DR = stringr::str_trim(DR),
       ghm = paste0(RSACMD, RSATYPE, RSANUM, RSACOMPX),
-                    anseqta = dplyr::if_else(MOISSOR < "03", as.character(annee - 1), as.character(annee)))
+                    anseqta = dplyr::case_when(ANSOR < "2026" ~ dplyr::if_else(MOISSOR < "03", as.character(annee - 1), as.character(annee)),
+                                               TRUE ~ as.character(annee)))
     
   }
   
