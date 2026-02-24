@@ -26,6 +26,8 @@ selectionne_archive(
 \item{type_archive}{Type d'archive : \emph{in} (par défaut) ou \emph{out}}
 
 \item{recent}{par défaut \code{TRUE}, l'archive la plus recente sera utilisee, sinon propose à l'utilisateur de choisir quelle archive dezipper}
+
+\item{champ}{champ PMSI de l'archive (utile depuis Druides), en minuscule, valeur parmi : mco, had, psy, ssr, mco.rsface}
 }
 \description{
 Selectionne une archive in/out

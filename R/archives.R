@@ -207,6 +207,7 @@ adezip.list <- function(l, ...){
 #' @param pathto Par defaut la même valeur que `path`, dézipper dans le même répertoire que l'archive, sinon préciser le chemin ou dezipper les fichiers dans le répertoire indiqué par `pathto`.
 #' @param nom_archive Nom de l'archive à décompresser dans le dossier `path`. Par défaut, `NULL`, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres `finess`, `annee`, `mois` et `recent` ne sont pas utilisés.
 #' @param quiet Affichage d'un message au dézippage `TRUE` / `FALSE`
+#' @param champ champ PMSI de l'archive (utile depuis Druides), en minuscule, valeur parmi : mco, had, psy, ssr, mco.rsface
 #' @return Les chemins d'accès des fichiers décompressés, de manière invisible.
 #' 
 #' @seealso [utils::unzip()]

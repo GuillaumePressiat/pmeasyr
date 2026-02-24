@@ -49,6 +49,8 @@ adezip(...)
 \item{nom_archive}{Nom de l'archive à décompresser dans le dossier \code{path}. Par défaut, \code{NULL}, n'utilise pas ce paramètre. Si le chemin est spécifié, alors les paramètres \code{finess}, \code{annee}, \code{mois} et \code{recent} ne sont pas utilisés.}
 
 \item{quiet}{Affichage d'un message au dézippage \code{TRUE} / \code{FALSE}}
+
+\item{champ}{champ PMSI de l'archive (utile depuis Druides), en minuscule, valeur parmi : mco, had, psy, ssr, mco.rsface}
 }
 \value{
 Les chemins d'accès des fichiers décompressés, de manière invisible.
