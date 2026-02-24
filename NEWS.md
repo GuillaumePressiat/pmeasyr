@@ -1,19 +1,20 @@
-# 0.5.1
+# pmeasyr 0.5.1
 
-## Préparation progressive à 2026
+## Préparation à 2026
 
-* Autoriser la lecture de fichiers PMSI avec année 2026 : ok
+* Autoriser la lecture de fichiers PMSI avec année 2026 : ok [1da14f9](https://github.com/GuillaumePressiat/pmeasyr/commit/1da14f96ac023b06b446e17fb57414fdbdb37d29)
 
-### Etape 1 : in
+* Lecture des in 2026, avec zone acte étendue... testé, ok [90f5b0f](https://github.com/GuillaumePressiat/pmeasyr/commit/90f5b0f4e92753803e13f7e8964d2f66f6c7e184)
 
-* Lecture des in 2026, avec zone acte étendue... testé, ok
+* coefficients Ségur, prudentiel [b346603](https://github.com/GuillaumePressiat/pmeasyr/commit/b34660321d627a87aa5cb24734cb07a6a668458f), [eddb02e](https://github.com/GuillaumePressiat/pmeasyr/commit/eddb02e947527bc10ccebec925798b77a3a44c4a)
+* année séquentielle des tarifs correspond à l'année N désormais, et non plus à l'année N-1 quand mois janvier février [1fe529e](https://github.com/GuillaumePressiat/pmeasyr/commit/1fe529e9136dedf61f1aaa06af439095c0decdf2)
 
 ### Reste à suivre
 
 * out MCO, et les autres champs
 
 
-# 0.5.0
+# pmeasyr 0.5.0
 
 ## Intégrer de premières modifications pour s'adapter aux sorties de Druides
 
@@ -21,12 +22,12 @@
 * Changement dans la charte de nommage des fichiers PMSI
 
 
-# 0.4....
+# pmeasyr 0.4....
 
 Incremental versions
 
 
-# 0.3....
+# pmeasyr 0.3....
 
 Incremental versions
 
