@@ -1,303 +1,114 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//index.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/adelete.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/adezip.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/adezip2.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/adezip3.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ana_r_ca_gestes_marqueurs.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ana_r_ghm_ambu_dms.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/astat.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/collect_rsa_from_db.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/creer_archive_vide.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/creer_archives_vides.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/creer_json.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/creer_nom_archive.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_generique.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_had_out.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_liste_tables.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_mco_in.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_mco_out.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_psy_out.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_rsf_out.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/db_ssr_out.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/dico.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/enrobeur.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rae.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rav.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rav2.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_rav_rum.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_sv.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/epmsi_mco_vmed_f.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/extraire_types_fichiers.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/formats.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iano_had.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iano_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iano_psy.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iano_rafael.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iano_ssr.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/idiap.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/idmi_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iium.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iium_corresp.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iium_ssr.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iivg_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ileg_had.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ileg_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ileg_ssr.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/imed_had.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/imed_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/imed_ssr.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/inner_tra.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ipie.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ipo.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/ir3a.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/iraa.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irafael.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irapss.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irha.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irhs.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irps.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irpsa.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irsa.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irsf.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/irum.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/issrha.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/itpt_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/itra.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/labeleasier.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/lancer_requete.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/lancer_requete_db.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/noyau_pmeasyr.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/noyau_skeleton.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/parse_nom_fichier.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/parse_noms_fichiers.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/prepare_rsa.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/renomme_fichier.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/requete.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/requete_db.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/selectionne_archive.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/selectionne_fichiers.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/tbl_had.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/tbl_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/tbl_psy.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/tbl_rsf.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/tbl_ssr.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/tdiag.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_ano_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_ghs_supp.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_had_ght.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_libelles_valo.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_mco.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_mco_sv.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rsa.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rsa_hors_periode.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rum.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//reference/vvr_rum_check_rubriques_rav.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette1.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette2.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette3.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette4.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette5.html</loc>
-  </url>
-  <url>
-    <loc>https://guillaumepressiat.github.io/pmeasyr//articles/vignette6.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/404.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/CONTRIBUTING.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/LICENSE-text.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/LICENSE.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/index.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/vignette.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/vignette1.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/vignette2.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/vignette3.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/vignette4.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/vignette5.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/articles/vignette6.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/authors.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/index.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/news/index.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/adelete.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/adezip.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/adezip2.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/adezip3.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ana_r_ca_gestes_marqueurs.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ana_r_ghm_ambu_dms.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/astat.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/collect_rsa_from_db.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/creer_archive_vide.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/creer_archives_vides.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/creer_json.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/creer_nom_archive.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_generique.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_had_out.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_liste_tables.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_mco_in.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_mco_out.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_psy_out.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_rsf_out.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/db_ssr_out.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/dico.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/enrobeur.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/epmsi_mco_rae.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/epmsi_mco_rav.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/epmsi_mco_rav2.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/epmsi_mco_rav_rum.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/epmsi_mco_sv.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/epmsi_mco_vmed_f.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/extraire_types_fichiers.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/formats.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/grapes-plus-grapes.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iano_had.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iano_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iano_psy.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iano_rafael.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iano_ssr.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/idiap.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/idmi_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iium.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iium_corresp.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iium_ssr.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iivg_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ileg_had.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ileg_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ileg_ssr.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/imed_had.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/imed_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/imed_ssr.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/index.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/inner_tra.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ipie.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ipo.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/ir3a.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/iraa.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irafael.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irapss.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irha.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irhs.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irps.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irpsa.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irsa.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irsf.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/irum.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/isrpsa.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/issrha.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/itpt_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/itra.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/labeleasier.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/lancer_requete.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/lancer_requete_db.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/noyau_pmeasyr.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/noyau_skeleton.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/parse_nom_fichier.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/parse_noms_fichiers.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/prepare_rsa.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/renomme_fichier.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/requete.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/requete_db.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/selectionne_archive.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/selectionne_fichiers.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/tbl_had.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/tbl_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/tbl_psy.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/tbl_rsf.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/tbl_ssr.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/tdiag.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_ano_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_ghs_supp.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_had_ght.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_libelles_valo.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_mco.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_mco_sv.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_rsa.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_rsa_hors_periode.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_rum.html</loc></url>
+<url><loc>https://guillaumepressiat.github.io/pmeasyr/reference/vvr_rum_check_rubriques_rav.html</loc></url>
 </urlset>
+
