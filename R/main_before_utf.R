@@ -1371,7 +1371,7 @@ itra.list <- function(l, ...){
 
 #' @export
 itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolower_names = F, ... ){
-  if (annee<2011|annee > 2025){
+  if (annee<2011|annee > 2026){
     stop('Année PMSI non prise en charge\n')
   }
   if (mois<1|mois>12){
