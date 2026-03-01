@@ -105,7 +105,7 @@ irps.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   
   rps_i <- rps_i %>%
     dplyr::mutate(DP = stringr::str_trim(DP)) %>% 
-    dplyr::mutate_at(dplyr::vars(dplyr::starts_with('DT')), lubridate::dmy, quiet = TRUE)
+    dplyr::mutate(dplyr::across(dplyr::starts_with('DT'), \(d)lubridate::dmy(d, quiet = TRUE)))
   
   if (annee < 2017 ){
     rps_i <- rps_i %>%  
@@ -171,7 +171,8 @@ irps.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
       ) %>% dplyr::select(-ACTES)
     }
     
-    fzacte(actes) %>% dplyr::mutate_if(is.character, stringr::str_trim) -> actes
+    fzacte(actes) %>% 
+      dplyr::mutate(dplyr::across(dplyr::where(is.character), stringr::str_trim)) -> actes
     rps_i$ZAD[is.na(rps_i$ZAD)] <- ""
     rps_i <- rps_i %>% dplyr::mutate(das = extz(da, ".{1,8}"), 
                                        actes = extz(actes, "[A-Z]{4}[0-9]{3}")) %>% dplyr::select(-ZAD, -da, -lactes, -lda)

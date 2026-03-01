@@ -104,7 +104,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
     readr::read_lines(pmsi_file) %>% 
       dplyr::tibble(l = .) %>% 
       dplyr::mutate(l = case_when(substr(l,11,13) == "M1C" ~ paste0(substr(l,1, 181), "000", substr(l,182, nchar(l))), TRUE ~ l)) %>% 
-      pull(l) %>% 
+      dplyr::pull(l) %>% 
       readr::write_lines(paste0(path,"/",pmsi_glue_fullname(finess, annee, mois, "ssr", "rhs.rtt2.txt")))
     
     joker <- '2'
@@ -130,8 +130,8 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
                                          NOVRHS == 'M18' ~ 0L,
                                          NOVRHS == 'M17' ~ 0L,
                                          NOVRHS == 'M16' ~ 0L)) %>% 
-    dplyr::mutate_at(dplyr::vars(dplyr::starts_with('DT')), lubridate::dmy, quiet = TRUE) %>% 
-    dplyr::mutate_at(dplyr::vars(dplyr::starts_with('D8')), lubridate::dmy, quiet = TRUE)
+    dplyr::mutate(dplyr::across(dplyr::starts_with('DT'), \(d)lubridate::dmy(d, quiet = TRUE))) %>% 
+    dplyr::mutate(dplyr::across(dplyr::starts_with('D8'), \(d)lubridate::dmy(d, quiet = TRUE)))
   
   # TODO : variables en fin de partie fixe sur 2017 -- 2020 (LISP / unité spécifique)
   
@@ -519,10 +519,10 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
   rhs_i <- rhs_i[,!(names(rhs_i) %in% Fillers)]
   
   rhs_i <- rhs_i  %>% 
-    dplyr::mutate_if(is.character, stringr::str_trim)
+    dplyr::mutate(dplyr::across(dplyr::where(is.character), stringr::str_trim))
   
   acdi  <- acdi %>% 
-    dplyr::mutate_if(is.character, stringr::str_trim)
+    dplyr::mutate(dplyr::across(dplyr::where(is.character), stringr::str_trim))
   
   rhs_i <- rhs_i   %>% dplyr::select(-ZAD, -shift_zad)
   if (lib == T){

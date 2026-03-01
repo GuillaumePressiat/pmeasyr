@@ -43,7 +43,7 @@ pmsi_check_periode <- function(annee, mois, champ = "mco"){
       # comment between since it's not backward compatible for chars (dplyr < 1.1)
       # dplyr::between(input, debut, fin),
                   champ_ == champ) %>% 
-    dplyr::mutate_all(as.character)
+    dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
   
 }
 

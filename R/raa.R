@@ -105,7 +105,7 @@ iraa.default <- function(finess, annee, mois, path, lib = T, tolower_names = F, 
   
   raa_i <- raa_i %>%
     dplyr::mutate(DP = stringr::str_trim(DP)) %>% 
-    dplyr::mutate_at(dplyr::vars(dplyr::starts_with('DT'), dplyr::starts_with('DATE')), lubridate::dmy, quiet = TRUE) %>% 
+    dplyr::mutate(dplyr::across(dplyr::starts_with('DT'), dplyr::starts_with('DATE'), \(d)lubridate::dmy(d, quiet = TRUE))) %>% 
     dplyr::mutate(ID_RAA = dplyr::row_number())
   
   zad <- raa_i %>% dplyr::select(ID_RAA, IPP,DATE_ACTE, NBDA, ZAD) %>%  dplyr::mutate(da  = ifelse(NBDA>0,ZAD,""),

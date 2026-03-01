@@ -1400,7 +1400,7 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
       dplyr::mutate(DTENT  = lubridate::dmy(DTENT, quiet = TRUE),
                     DTSORT = lubridate::dmy(DTSORT, quiet = TRUE),
                     NOHOP = paste0("000",stringr::str_sub(NAS,1,2))) %>% 
-      dplyr::mutate_if(is.character, stringr::str_trim)
+      dplyr::mutate(dplyr::across(dplyr::where(is.character), stringr::str_trim))
     
     if (tolower_names){
       names(tra_i) <- tolower(names(tra_i))
@@ -1431,8 +1431,8 @@ itra.default <- function(finess, annee, mois, path, lib = T, champ= "mco", tolow
     tra_i <- readr::read_delim(paste0(path,"/",finess,".",annee,".",stringr::str_pad(mois, 2, 'left', '0'),extens), delim = ";",
                                col_names = liste_vars,
                                col_types = readr::cols(.default = readr::col_character())) %>% 
-      dplyr::mutate_if(is.character, stringr::str_trim) %>% 
-      dplyr::mutate_at(dplyr::vars(dplyr::starts_with('DT')), lubridate::dmy)
+      dplyr::mutate(dplyr::across(dplyr::where(is.character), stringr::str_trim))
+      dplyr::mutate(dplyr::across(dplyr::starts_with('DT'), lubridate::dmy))
     
     if (champ == 'psy_rpsa'){
       tra_i <- tra_i %>%

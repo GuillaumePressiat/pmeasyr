@@ -57,7 +57,7 @@ vvr_rsa.pm_param <- function(p, ...){
   
   rsa <- pmeasyr::irsa(p2)
   rsa$rsa %>% 
-    dplyr::select_all(tolower) %>% 
+    dplyr::rename_with(tolower) %>% 
     dplyr::select(cle_rsa, duree, rsacmd, ghm, typesej, noghs, moissor, ansor, sexe, agean, agejr,
                   anseqta, nbjrbs, nbjrexb, sejinfbi, agean, agejr, nbseance,
                   dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
@@ -71,7 +71,7 @@ vvr_rsa.pm_param <- function(p, ...){
       TRUE ~ 1L
     )) %>% 
     dplyr::left_join(rsa$rsa_um %>% 
-                       dplyr::select_all(tolower) %>% 
+                       dplyr::rename_with(tolower) %>% 
                        dplyr::filter(substr(typaut1, 1, 2) == '07') %>% 
                        dplyr::distinct(cle_rsa) %>%
                        dplyr::mutate(uhcd = 1), by = 'cle_rsa') %>%
@@ -83,7 +83,7 @@ vvr_rsa.pm_param <- function(p, ...){
 #' @export
 vvr_rsa.src <- function(con, an,  ...){
   pmeasyr::tbl_mco(con, an, 'rsa_rsa')  %>% 
-    dplyr::select_all(tolower) %>% 
+    dplyr::rename_with(tolower) %>% 
     dplyr::select(cle_rsa, duree, rsacmd, ghm, typesej, noghs, moissor, ansor, sexe, agean, agejr,
                   anseqta, nbjrbs, nbjrexb, sejinfbi, agean, agejr, nbseance,
                   dplyr::starts_with('nbsup'), dplyr::starts_with('sup'),
@@ -97,7 +97,7 @@ vvr_rsa.src <- function(con, an,  ...){
       TRUE ~ 1L
     )) %>% 
     dplyr::left_join(pmeasyr::tbl_mco(con, an, 'rsa_um') %>% 
-                       dplyr::select_all(tolower) %>% 
+                       dplyr::rename_with(tolower) %>% 
                        dplyr::filter(substr(typaut1, 1, 2) == '07') %>% 
                        dplyr::distinct(cle_rsa) %>%
                        dplyr::mutate(uhcd = 1), by = 'cle_rsa') %>%
@@ -192,14 +192,14 @@ vvr_ano_mco.pm_param <- function(p, ...){
   new_par <- list(...)
   p2 <- utils::modifyList(p, new_par)
   iano_mco(p) %>% 
-    dplyr::select_all(tolower)
+    dplyr::rename_with(tolower)
 }
 
 #' @export
 vvr_ano_mco.src <- function(con, an, ...){
   pmeasyr::tbl_mco(con, an, 'rsa_ano') %>% 
     dplyr::collect() %>% 
-    dplyr::select_all(tolower)
+    dplyr::rename_with(tolower)
 }
 
 #' ~ VVR - Attribuer les recettes GHS et suppléments sur des rsa
@@ -333,7 +333,8 @@ vvr_ghs_supp <- function(rsa,
                                                                                             t_bas), rec_totale = rec_bee) %>%
       bind_rows(rsa %>%
                   dplyr::filter(substr(noghs,1,1) == 'I') %>%
-                  dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2025" ~ 0.993,
+                  dplyr::mutate(cprudent = dplyr::case_when(anseqta == "2026" ~ 0.993,
+                                                            anseqta == "2025" ~ 0.993,
                                                             anseqta == "2024" ~ 0.993,
                                                             anseqta == "2023" ~ 0.993, 
                                                             anseqta == "2022" ~ 0.993, 
@@ -414,10 +415,10 @@ vvr_ghs_supp <- function(rsa,
       nbacte9623 = nbsupra * (codsupra == '9623')
     ) %>%
     dplyr::group_by(cle_rsa) %>%
-    dplyr::summarise_at(vars(starts_with('nbacte')), sum) %>%
-    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>%
-    dplyr::mutate_if(is.numeric, function(x)ifelse(is.na(x), 0, x))
-  
+    dplyr::summarise(dplyr::across(dplyr::starts_with('nbacte'), sum)) %>%
+    dplyr::right_join(dplyr::distinct(rsa, cle_rsa), by = "cle_rsa") %>%
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x)tidyr::replace_na(x, 0)))
+
   
   rsa_2 <- rsa_2 %>%
     dplyr::left_join(rdth, by = 'cle_rsa')
@@ -427,17 +428,16 @@ vvr_ghs_supp <- function(rsa,
   
   trans_pie <- pie %>%
     dplyr::group_by(cle_rsa, code_pie) %>%
-    dplyr::summarise(nbsuppie = sum(nbsuppie)) %>%
-    dplyr::ungroup() %>%
+    dplyr::summarise(nbsuppie = sum(nbsuppie), .groups = "drop") %>%
+    # dplyr::ungroup() %>%
     dplyr::right_join(tibble(liste_pie = c('STF', 'SRC', 'REA', 'REP', 'NN1', 'NN2', 'NN3')), by = c('code_pie' = 'liste_pie')) %>%
     tidyr::complete(cle_rsa, code_pie, fill = list(nbsuppie = 0)) %>%
     dplyr::mutate(code_pie = paste0('pie_', tolower(code_pie))) %>%
     tidyr::spread(code_pie, nbsuppie, fill = 0) %>%
     dplyr::filter(!is.na(cle_rsa))
   trans_pie <- trans_pie %>%
-    dplyr::right_join(distinct(rsa, cle_rsa), by = "cle_rsa") %>%
-    dplyr::mutate_if(is.numeric, function(x)dplyr::if_else(is.na(x), 0, x))
-  
+    dplyr::right_join(dplyr::distinct(rsa, cle_rsa), by = "cle_rsa") %>%
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x)tidyr::replace_na(x, 0)))
   
   # rehosp
   if (is.null(ano)){
@@ -503,7 +503,7 @@ vvr_ghs_supp <- function(rsa,
     )
   po_synthese <- po %>%
     dplyr::group_by(cle_rsa) %>%
-    dplyr::summarise_at(dplyr::vars(dplyr::starts_with('nb_')), sum)
+    dplyr::summarise(dplyr::across(dplyr::starts_with('nb_'), sum))
   
   
   for (i in 1:nrow(po_synthese)){
@@ -516,8 +516,7 @@ vvr_ghs_supp <- function(rsa,
   
   po_synthese <- dplyr::distinct(rsa, cle_rsa) %>%
     dplyr::left_join(po_synthese, by = 'cle_rsa') %>%
-    dplyr::mutate_if(is.numeric, function(x){ifelse(is.na(x), 0, x)})
-  
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x)tidyr::replace_na(x, 0)))
   
   if (max(unique(rsa_2$anseqta)) < '2017'){
     rsa_2 <- rsa_2 %>%
@@ -1168,7 +1167,9 @@ epmsi_mco_rav <- function(valo, knit = FALSE){
 epmsi_mco_rae <- function(valo, knit = FALSE){
   rr <- valo %>% 
     dplyr::select(cle_rsa, dplyr::starts_with('nb'), dplyr::starts_with('pie'), 
-                  type_fin, rehosp_ghm, -nbsupsi, - nb_rdth) %>% 
+                  dplyr::contains('rehosp_ghm'),
+                  type_fin, -dplyr::contains('nbsupsi'), 
+                  - dplyr::contains('nb_rdth')) %>% 
     tidyr::gather(var, val, - cle_rsa, - type_fin) %>%
     dplyr::filter(abs(val) > 0) %>%
     dplyr::inner_join(vvr_libelles_valo('lib_detail_valo'), by = 'var') %>% 
@@ -1262,7 +1263,7 @@ vvr_rum <- function(p, valo,
     dplyr::mutate(nbsupp1 = as.integer(nbsupp1)) %>% 
     dplyr::mutate(nbsupp2 = as.integer(nbsupp2)) %>% 
     dplyr::mutate(typaut1 = substr(typaut1,1,3)) %>% 
-    mutate_if(is.numeric, tidyr::replace_na, 0) %>% 
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x)tidyr::replace_na(x, 0))) %>% 
     inner_tra(itra(p))
   
   rum <- irum(p, typi = 1)$rum %>% 
@@ -1317,12 +1318,12 @@ vvr_rum <- function(p, valo,
     )
     
   checks_coincide <- rsa_rum %>% 
-    group_by(cle_rsa, norss) %>% 
-    summarise_at(vars(starts_with('sup')), sum) %>% 
-    ungroup() %>% 
-    left_join(rsa$rsa %>% select(cle_rsa, ghm, nbsuprea, nbsupstf, 
+    dplyr::group_by(cle_rsa, norss) %>% 
+    dplyr::summarise(dplyr::across(dplyr::starts_with('sup'), sum))
+    dplyr::ungroup() %>% 
+    dplyr::left_join(rsa$rsa %>% dplyr::select(cle_rsa, ghm, nbsuprea, nbsupstf, 
                                  nbsupsrc, nbsuprep, nbsupnn1, nbsupnn2, nbsupnn3), by = 'cle_rsa') %>% 
-    mutate(check_rea = suprea == nbsuprea,
+    dplyr::mutate(check_rea = suprea == nbsuprea,
            check_src = supsrc == nbsupsrc,
            check_stf = supstf == nbsupstf,
            check_rep = suprep == nbsuprep,
@@ -1332,7 +1333,7 @@ vvr_rum <- function(p, valo,
   
   
   
-  checks <- group_by_at(checks_coincide, vars(starts_with('check'))) %>% count()
+  checks <- dplyr::group_by(checks_coincide, dplyr::across(vars(starts_with('check')))) %>% count()
   
   message('-- Check correspondance des suppléments RUM <-> RSA : ', ifelse(nrow(checks) == 1L, "ok", "nok !"))
   if (nrow(checks) > 1){
@@ -1383,8 +1384,7 @@ vvr_rum <- function(p, valo,
            supnn2_prop = supnn2 / sum(supnn2),
            supnn3_prop = supnn3 / sum(supnn3)) %>% 
     ungroup() %>% 
-    mutate_if(is.numeric, tidyr::replace_na, 0)
-  
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x)tidyr::replace_na(x, 0)))
   
   rum_uma_valo <- rum_uma %>% 
     left_join(valo %>% select(cle_rsa, type_fin, ghm, nbrum, duree, rec_base, rec_exb, rec_exh, rec_bee, rec_po_tot, rec_rea, 
@@ -1541,14 +1541,18 @@ vvr_rum <- function(p, valo,
   #   mutate_at(vars(starts_with('rec_')), tidyr::replace_na, 0)
 
   if (type_passage == "RUM"){
-    return(valo_rum %>% select(cle_rsa, nseqrum, nbrum, p1, p2, n, pmct_um_dp,
-                               nb_uma, norss, cdurm, typaut1, ends_with("_rum"), starts_with('sup'), starts_with("flag_")) %>%
-             mutate_at(vars(starts_with("rec_")), tidyr::replace_na,
-                       0))} else {
-                         return(valo_rum %>% select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp,
+    return(valo_rum %>% dplyr::select(cle_rsa, nseqrum, nbrum, p1, p2, n, pmct_um_dp,
+                               nb_uma, norss, cdurm, typaut1, 
+                               ends_with("_rum"), 
+                               starts_with('sup'), 
+                               starts_with("flag_")) %>%
+             dplyr::mutate(dplyr::across(starts_with("rec_"), \(x)tidyr::replace_na(x,0)))
+    )
+    } else {
+                         return(valo_rum %>% dplyr::select(cle_rsa, nbrum, p1, p2, n, pmct_um_dp,
                                                     nb_uma, norss, cdurm, typaut1, ends_with("_rum"), starts_with('sup'), starts_with("flag_")) %>%
-                                  mutate_at(vars(starts_with("rec_")), tidyr::replace_na,
-                                            0))
+                                  dplyr::mutate(dplyr::across(starts_with("rec_"), \(x)tidyr::replace_na(x,0)))
+                         )
                        }  
 }
 
@@ -1575,31 +1579,31 @@ epmsi_mco_rav2 <- function(valo, theorique = TRUE){
   rr <- valo %>% 
     dplyr::select(dplyr::starts_with('rec_'), -rec_totale, -rec_bee) %>% 
     dplyr::mutate(rec_exb = -rec_exb) %>% 
-    summarise_all(sum) %>% 
+    dplyr::summarise(dplyr::across(dplyr::everything(), sum)) %>% 
     tidyr::gather(var, val) %>% 
-    filter(abs(val) > 0) %>% 
-    inner_join(vvr_libelles_valo('lib_valo'), by = "var") %>% 
-    group_by(ordre_epmsi, var, lib_valo) %>% 
-    summarise(val = round(sum(val),0)) %>% 
-    ungroup()
+    dplyr::filter(abs(val) > 0) %>% 
+    dplyr::inner_join(vvr_libelles_valo('lib_valo'), by = "var") %>% 
+    dplyr::group_by(ordre_epmsi, var, lib_valo) %>% 
+    dplyr::summarise(val = round(sum(val),0)) %>% 
+    dplyr::ungroup()
   } else {
     rr <- valo %>% 
       dplyr::select(cle_rsa, dplyr::starts_with('rec_'), type_fin, -rec_totale, -rec_bee) %>% 
       dplyr::mutate(rec_exb = -rec_exb) %>% 
       group_by(type_fin, cle_rsa) %>% 
-      summarise_all(sum) %>% 
+      dplyr::summarise(dplyr::across(dplyr::everything(), sum)) %>% 
       tidyr::gather(var, val, - type_fin, - cle_rsa) %>% 
       filter(abs(val) > 0) %>% 
-      mutate(flag_po = sum(("rec_po_tot" == var)) > 0) %>% 
-      ungroup() %>% 
-      mutate(val_reelle = case_when((type_fin == 0L | flag_po) ~ val,
+      dplyr::mutate(flag_po = sum(("rec_po_tot" == var)) > 0) %>% 
+      dplyr::ungroup() %>% 
+      dplyr::mutate(val_reelle = case_when((type_fin == 0L | flag_po) ~ val,
                                     TRUE ~ 0)) %>% 
-      filter(val_reelle != 0L) %>% 
-      inner_join(vvr_libelles_valo('lib_valo')) %>% 
-      group_by(ordre_epmsi, var, lib_valo) %>% 
-      summarise(val = round(sum(val_reelle),0)) %>% 
-      ungroup() %>% 
-      bind_rows(summarise_if(., is.numeric, sum))
+      dplyr::filter(val_reelle != 0L) %>% 
+      dplyr::inner_join(vvr_libelles_valo('lib_valo')) %>% 
+      dplyr::group_by(ordre_epmsi, var, lib_valo) %>% 
+      dplyr::summarise(val = round(sum(val_reelle),0)) %>% 
+      dplyr::ungroup() %>% 
+      dplyr::bind_rows(dplyr::summarise(., dplyr::across(dplyr::where(is.numeric), sum)))
   }
   rr
 }
@@ -1627,33 +1631,33 @@ epmsi_mco_rav_rum <- function(valo_rum, theorique = TRUE){
   rr <- valo_rum %>% 
     dplyr::select(dplyr::ends_with('_rum')) %>% 
       dplyr::mutate(rec_exb_rum = -rec_exb_rum) %>% 
-    summarise_all(sum) %>% 
+    dplyr::summarise(dplyr::across(dplyr::everything(), sum)) %>% 
     tidyr::gather(var, val) %>% 
-    filter(abs(val) > 0) %>% 
-    mutate(var = stringr::str_remove(var, '_rum')) %>% 
-    left_join(vvr_libelles_valo('lib_valo'), by = "var") %>% 
-    group_by(ordre_epmsi, var, lib_valo) %>% 
-    summarise(val = round(sum(val),0)) %>% 
-    ungroup()  -> rr_rum
+    dplyr::filter(abs(val) > 0) %>% 
+    dplyr::mutate(var = stringr::str_remove(var, '_rum')) %>% 
+    dplyr::left_join(vvr_libelles_valo('lib_valo'), by = "var") %>% 
+    dplyr::group_by(ordre_epmsi, var, lib_valo) %>% 
+    dplyr::summarise(val = round(sum(val),0)) %>% 
+    dplyr::ungroup()  -> rr_rum
      
   } else {
     rr <- valo_rum %>% 
       dplyr::select(cle_rsa, type_fin, dplyr::ends_with('_rum')) %>% 
       dplyr::mutate(rec_exb_rum = -rec_exb_rum) %>% 
-      group_by(type_fin, cle_rsa) %>% 
-      summarise_all(sum) %>% 
+      dplyr::group_by(type_fin, cle_rsa) %>% 
+      dplyr::summarise(dplyr::across(dplyr::everything(), sum)) %>% 
       tidyr::gather(var, val, - type_fin, - cle_rsa) %>% 
-      filter(abs(val) > 0) %>% 
-      mutate(flag_po = sum(("rec_po_rum" == var)) > 0) %>% 
-      ungroup() %>% 
-      mutate(val_reelle = case_when((type_fin == 0L | flag_po) ~ val,
+      dplyr::filter(abs(val) > 0) %>% 
+      dplyr::mutate(flag_po = sum(("rec_po_rum" == var)) > 0) %>% 
+      dplyr::ungroup() %>% 
+      dplyr::mutate(val_reelle = dplyr::case_when((type_fin == 0L | flag_po) ~ val,
                                     TRUE ~ 0)) %>% 
-      filter(val_reelle != 0L) %>% 
-      mutate(var = stringr::str_remove(var, '_rum')) %>% 
-      left_join(vvr_libelles_valo('lib_valo')) %>% 
-      group_by(ordre_epmsi, var, lib_valo) %>% 
-      summarise(val = round(sum(val_reelle),0)) %>% 
-      ungroup()  -> rr_rum
+      dplyr::filter(val_reelle != 0L) %>% 
+      dplyr::mutate(var = stringr::str_remove(var, '_rum')) %>% 
+      dplyr::left_join(vvr_libelles_valo('lib_valo')) %>% 
+      dplyr::group_by(ordre_epmsi, var, lib_valo) %>% 
+      dplyr::summarise(val = round(sum(val_reelle),0)) %>% 
+      dplyr::ungroup()  -> rr_rum
     
   }
   rr
@@ -1679,10 +1683,10 @@ epmsi_mco_rav_rum <- function(valo_rum, theorique = TRUE){
 #' @export vvr_rum_check_rubriques_rav
 vvr_rum_check_rubriques_rav <- function(valo, valo_rum){
   epmsi_mco_rav2(valo) %>% 
-    left_join(epmsi_mco_rav_rum(valo_rum), 
+    dplyr::left_join(epmsi_mco_rav_rum(valo_rum), 
               by = c('ordre_epmsi', 'lib_valo', 'var'), 
               suffix = c('_rsa', '_rum')) %>% 
-    mutate_if(is.numeric, tidyr::replace_na, 0) %>% 
-    mutate(delta = val_rum - val_rsa)
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x)tidyr::replace_na(x, 0))) %>% 
+    dplyr::mutate(delta = val_rum - val_rsa)
 }
 
