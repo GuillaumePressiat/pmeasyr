@@ -455,7 +455,7 @@ vvr_ghs_supp <- function(rsa,
                   mdsort = paste0(schpmsi, dest)) %>%
     dplyr::arrange(noanon, nosej) %>% # , ghm (suivant version de vvs ?)
     dplyr::group_by(noanon) %>%
-    dplyr::mutate(r = row_number()) %>%
+    dplyr::mutate(r = dplyr::row_number()) %>%
     dplyr::ungroup()
   
   reh <- reh %>%
@@ -1176,7 +1176,7 @@ epmsi_mco_rae <- function(valo, knit = FALSE){
     dplyr::group_by(cle_rsa) %>% 
     dplyr::mutate(flag_po = sum(libelle_detail_valo == "Supplément prélèvement d'organe", na.rm = TRUE) > 0) %>% 
     dplyr::ungroup() %>% 
-    dplyr::mutate(val = case_when(
+    dplyr::mutate(val = dplyr::case_when(
       type_fin == 0L ~ val,
       flag_po & substr(var,1,5) == "nb_po" ~ val,
       TRUE ~ 0)) %>%
@@ -1490,11 +1490,11 @@ vvr_rum <- function(p, valo,
     bind_cols(tibble(rec_dialhosp_tot_hop_enf = rep(sum(valo[is.na(valo$agean) | valo$agean < 16,]$rec_dialhosp), nrow(.)))) %>% 
     bind_cols(tibble(rec_dialhosp_tot_hop_adu = rep(sum(valo[! is.na(valo$agean) & valo$agean > 15,]$rec_dialhosp), nrow(.)))) %>% 
     group_by(ped = (agean < 16 | is.na(agean))) %>% 
-    mutate(typaut1 = case_when(
+    mutate(typaut1 = dplyr::case_when(
       substr(typaut1,1,2) %in% c('21', '23') ~ '21',
       substr(typaut1,1,2)== '22' ~ '22')) %>% 
     add_count(typaut1, name = "nb_passage") %>% 
-    mutate(rec_dialhosp_rum = case_when(
+    mutate(rec_dialhosp_rum = dplyr::case_when(
       typaut1 == '21' & !ped ~ rec_dialhosp_tot_hop_adu / nb_passage,
       typaut1 == '22' &  ped ~ rec_dialhosp_tot_hop_enf / nb_passage,
       TRUE ~ 0)) %>% 
@@ -1596,7 +1596,7 @@ epmsi_mco_rav2 <- function(valo, theorique = TRUE){
       filter(abs(val) > 0) %>% 
       dplyr::mutate(flag_po = sum(("rec_po_tot" == var)) > 0) %>% 
       dplyr::ungroup() %>% 
-      dplyr::mutate(val_reelle = case_when((type_fin == 0L | flag_po) ~ val,
+      dplyr::mutate(val_reelle = dplyr::case_when((type_fin == 0L | flag_po) ~ val,
                                     TRUE ~ 0)) %>% 
       dplyr::filter(val_reelle != 0L) %>% 
       dplyr::inner_join(vvr_libelles_valo('lib_valo')) %>% 
