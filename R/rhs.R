@@ -100,7 +100,7 @@ irhs.default <- function(finess, annee, mois, path, lib=T, tolower_names = F, ..
       readr::write_lines(paste0(path,"/",pmsi_glue_fullname(finess, annee, mois, "ssr", "rhs.rtt2.txt")))
     
     joker <- '2'
-  } else  if (annee == 2025){
+  } else  if (annee >= 2025){
     readr::read_lines(pmsi_file) %>% 
       dplyr::tibble(l = .) %>% 
       dplyr::mutate(l = case_when(substr(l,11,13) == "M1C" ~ paste0(substr(l,1, 181), "000", substr(l,182, nchar(l))), TRUE ~ l)) %>% 
