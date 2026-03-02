@@ -9,10 +9,7 @@
 * coefficients Ségur, prudentiel [b346603](https://github.com/GuillaumePressiat/pmeasyr/commit/b34660321d627a87aa5cb24734cb07a6a668458f), [eddb02e](https://github.com/GuillaumePressiat/pmeasyr/commit/eddb02e947527bc10ccebec925798b77a3a44c4a)
 * année séquentielle des tarifs correspond à l'année N désormais, et non plus à l'année N-1 quand mois janvier février [1fe529e](https://github.com/GuillaumePressiat/pmeasyr/commit/1fe529e9136dedf61f1aaa06af439095c0decdf2)
 
-### Reste à suivre
-
-* out MCO, et les autres champs
-
+* autres champs (replication de 2025 vers 2026 dans formats_pmeasyr) [256b9aa](https://github.com/GuillaumePressiat/pmeasyr/commit/256b9aa1d1c771c4c4b992cb90ee8bb8334356c2), [f452228](https://github.com/GuillaumePressiat/pmeasyr/commit/f45222857ed35c02b6c3bb408f40e92cc1571c68), cf [formats_pmeasyr](https://github.com/GuillaumePressiat/formats_pmeasyr/commits/master/)
 
 # pmeasyr 0.5.0
 
