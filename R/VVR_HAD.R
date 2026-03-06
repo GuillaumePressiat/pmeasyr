@@ -79,7 +79,7 @@ vvr_had_ght <- function(p, ghts, coeff_geo = 1.07, coeff_prudent = NULL){
                                            typdom %in% c('3', '4') ~ "esms",
                                            typdom == "6" ~ "ssiad")), 
                by = c("noseqsej", "noseq", "nosousseq")) %>%
-    dplyr::mutate(anseqta = ifelse(mois_fin_ss_seq %in% c('01', '02'), p$annee - 1, p$annee) %>% as.character()) %>%
+    dplyr::mutate(anseqta = ifelse(mois_fin_ss_seq %in% c('01', '02') & p$annee < 2026, p$annee - 1, p$annee) %>% as.character()) %>%
     dplyr::mutate(cgeo = coeff_geo,
            cprudent = case_when(
              anseqta == '2026'    ~ 0.9930,
